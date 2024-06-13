@@ -7,6 +7,8 @@ def receive_messages(client_socket):
             message = client_socket.recv(1024).decode('utf-8')
             if not message:
                 break
+            if message == 'START':
+                client_socket.send("START".encode('utf-8'))
             print(f"SERVER: {message}")
         except ConnectionResetError:
             break

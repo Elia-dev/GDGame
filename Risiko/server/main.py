@@ -19,16 +19,19 @@ def handle_client(client_socket, client_address):
         client_socket.send("Choose if you want to host a game or join in an existing game\nHost -> \"H\" \nJoin -> \"J\"".encode("utf-8"))
         response = client_socket.recv(1024).decode('utf-8')
     if (response.lower() == "j"):
-        joined_game = cm.choose_game(client_socket, game_hosts)
-        client_sockets = game_hosts[joined_game]
-        client_sockets.append(client_socket)
+        host_id = cm.choose_game(client_socket, game_hosts)
         with hosts_lock:
-            game_hosts[joined_game] = client_sockets
-        client_socket.send(f"Correctly joined on match: {joined_game}".encode('utf-8'))
+            game_hosts[host_id].append(client_socket)
+        client_socket.send(f"Correctly joined on match: {host_id}".encode('utf-8'))
+        cm.match_making_joiner(client_socket, game_hosts, host_id, user)
     else:
         host_id = cm.host_creation(client_socket)
         with hosts_lock:
             game_hosts[host_id] = [client_socket]
+        cm.match_making_owner(client_socket, game_hosts, host_id)
+
+
+
 
     client_socket.send("Hey! If you have come this far, it means that the code I programmed works well\n".encode('utf-8'))
     while True:
@@ -39,7 +42,7 @@ def handle_client(client_socket, client_address):
                 break
             if (message.lower() == 'miao'):
                 cat = """
-_._     _,-'""`-._
+ _._     _,-'""`-._
 (,-.`._,'(       |\`-/|
     `-.-' \ )-`( , o o)
           `-    \`_`"'-\n"""
@@ -49,6 +52,10 @@ _._     _,-'""`-._
             break
 
     print(f"Connection from {client_address} has been closed.")
+
+    # Remove match if host disconnected
+    if game_hosts[host_id][0] == client_socket:
+        del game_hosts[host_id]
     client_socket.close()
 
 # Function to start the server and listen for connections

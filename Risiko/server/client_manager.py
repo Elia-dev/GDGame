@@ -19,14 +19,62 @@ def host_creation(client_socket):
     client_socket.send(f"Match {game_id} correctly generated\n".encode('utf-8'))
     return game_id
 
+
 def choose_game(client_socket, game_hosts):
     while True:
         client_socket.send("Enter a valid game id".encode('utf-8'))
         response = client_socket.recv(1024).decode('utf-8')
         if response in game_hosts:
+            if len(game_hosts[response]) > 6:
+                client_socket.send("Full match making. Try another game id.\n".encode('utf-8'))
             break
-        client_socket.send("This game does not exist\n".encode('utf-8'))
+        else:
+            client_socket.send("This game does not exist\n".encode('utf-8'))
     return response
+
+
+def match_making_joiner(client_socket, game_hosts, host_id, user):
+    match_owner = game_hosts[host_id][0]
+    match_owner.send(f"{user} join the game!\n".encode('utf-8'))
+    players_ready = len(game_hosts[host_id])
+    updated_players_ready = 0
+    while True:
+        if players_ready != updated_players_ready:
+            updated_players_ready = players_ready
+            if players_ready < 3:
+                client_socket.send(f"{players_ready}/6 players. Waiting for others...\n".encode('utf-8'))
+            else:
+                client_socket.send(f"All players ready. Waiting for host to start the match.\n".encode('utf-8'))
+                response = client_socket.recv(1024).decode('utf-8')
+                if response == 'START':
+                    break
+        else:
+            players_ready = len(game_hosts[host_id])
+
+
+def match_making_owner(client_socket, game_hosts, host_id):
+    players_ready = len(game_hosts[host_id])
+    updated_players_ready = 0
+    while True:
+        if players_ready != updated_players_ready:
+            updated_players_ready = players_ready
+            if players_ready < 3:
+                client_socket.send(f"{players_ready}/6 players. Waiting for others...\n".encode('utf-8'))
+            else:
+                while True:
+                    client_socket.send(f"{players_ready}/6 players.\n- 's': Start the match\n- 'u': Check for other players".encode('utf-8'))
+                    message = client_socket.recv(1024).decode('utf-8')
+                    if message.lower() == 's':
+                        for i, player in enumerate(game_hosts[host_id]):
+                            if i > 0:
+                                player.send("START".encode('utf-8'))
+                        break
+                    else:
+                        players_ready = len(game_hosts[host_id])
+                break
+
+        else:
+            players_ready = len(game_hosts[host_id])
 
 
 def _generate_game_id():
