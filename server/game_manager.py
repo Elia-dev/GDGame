@@ -10,10 +10,12 @@ def _game_order(players):
             player.recv(1024).decode("utf-8")
             gaming_dice = random.randint(1, 6)
             response[player] = gaming_dice
-            player.send(f"You got {gaming_dice}".encode("utf-8"))
+            player.send(f"You got {gaming_dice}\n".encode("utf-8"))
 
     sorted_player = [item[0] for item in sorted(response.items(), key=lambda item: item[1])]
     sorted_player.reverse()
+    for i, player in enumerate(sorted_player):
+        player.send(f"You are the {i + 1}° player")
     return sorted_player
 
 
