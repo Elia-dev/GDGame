@@ -1,5 +1,8 @@
 import socket
 import random
+import threading
+import game_manager as gm
+
 
 def registration_form(client_socket):
     client_socket.send("Enter the name you will be displayed with online.".encode("utf-8"))
@@ -14,7 +17,7 @@ def registration_form(client_socket):
     return user
 
 
-def host_creation(client_socket):    
+def host_creation(client_socket):
     game_id = _generate_game_id()
     client_socket.send(f"Match {game_id} correctly generated\n".encode('utf-8'))
     return game_id
@@ -62,7 +65,9 @@ def match_making_owner(client_socket, game_hosts, host_id):
                 client_socket.send(f"{players_ready}/6 players. Waiting for others...\n".encode('utf-8'))
             else:
                 while True:
-                    client_socket.send(f"{players_ready}/6 players.\n- 's': Start the match\n- 'u': Check for other players".encode('utf-8'))
+                    client_socket.send(
+                        f"{players_ready}/6 players.\n- 's': Start the match\n- 'u': Check for other players".encode(
+                            'utf-8'))
                     message = client_socket.recv(1024).decode('utf-8')
                     if message.lower() == 's':
                         for i, player in enumerate(game_hosts[host_id]):
@@ -72,11 +77,37 @@ def match_making_owner(client_socket, game_hosts, host_id):
                     else:
                         players_ready = len(game_hosts[host_id])
                 break
-
         else:
             players_ready = len(game_hosts[host_id])
+
+
+def send_miao(client_socket):
+    client_socket.send(
+        "Hey! If you have come this far, it means that the code I programmed works well\n".encode('utf-8'))
+    while True:
+        try:
+            client_socket.send(
+                "If you are proud of me type 'miao' to get a gift\nElse type 'exit' to close connection".encode(
+                    'utf-8'))
+            message = client_socket.recv(1024).decode('utf-8')
+            if not message:
+                break
+            if (message.lower() == 'miao'):
+                cat = """
+ _._     _,-'""`-._
+(,-.`._,'(       |\`-/|
+    `-.-' \ )-`( , o o)
+          `-    \`_`"'-\n"""
+                client_socket.send(cat.encode('utf-8'))
+
+        except ConnectionResetError:
+            break
 
 
 def _generate_game_id():
     return ' '.join([str(random.randint(0, 999)).zfill(3) for _ in range(2)])
 
+
+def create_game(players, host_id):
+    game_thread = threading.Thread(target=gm.game_main, args=(players, host_id))
+    game_thread.start()

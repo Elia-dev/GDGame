@@ -1,6 +1,7 @@
 import socket
 import threading
 
+
 def receive_messages(client_socket):
     while True:
         try:
@@ -13,6 +14,7 @@ def receive_messages(client_socket):
         except ConnectionResetError:
             break
     client_socket.close()
+
 
 def start_client(host='127.0.0.1', port=1234):
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -31,6 +33,7 @@ def start_client(host='127.0.0.1', port=1234):
         client.send(message.encode('utf-8'))
 
     client.close()
+
 
 if __name__ == "__main__":
     start_client()
