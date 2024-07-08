@@ -1,8 +1,10 @@
 import xml.etree.ElementTree as ET
+from card import Card
 
-def readCards():
+
+def read_goal_cards():
     # Carica il file XML
-    tree = ET.parse('config.xml')
+    tree = ET.parse('asset/config.xml')
     root = tree.getroot()
 
     # Lista per salvare le carte
@@ -10,17 +12,12 @@ def readCards():
 
     # Itera su tutti i nodi <card> nel file XML
     for card in root.findall('Card'):
-        image_path = card.find('Image').text
-        function = card.find('Function').text
-        description = card.find('Description').text
+        card_obj = Card(1,
+                        card.find('Image').text,
+                        card.find('Function').text,
+                        card.find('Description').text)
+        print(card.find('Image').text)
+        cards.append(card_obj)
 
-    # Crea un dizionario per ogni carta e aggiungilo alla lista
-    cards.append({'image_path': image_path, 'function': function, 'description': description})
-    # Stampa la lista di carte
-
-#for card in cards:
-    #print(card)
-
-
-
+    return cards
 
