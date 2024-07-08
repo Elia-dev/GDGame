@@ -13,13 +13,15 @@ def _game_order(players):
             player.send(f"You got {gaming_dice}".encode("utf-8"))
 
     sorted_player = [item[0] for item in sorted(response.items(), key=lambda item: item[1])]
+    sorted_player.reverse()
     return sorted_player
 
 
 def game_main(players, host_id):
+
+    # Define the game order
     for player in players:
         player.send(f"Game {host_id} started!".encode("utf-8"))
-
     players = _game_order(players)
 
 
