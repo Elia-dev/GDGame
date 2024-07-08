@@ -9,7 +9,7 @@ class Player:
 
     def setGoal_card(self, goal_card):
         self.goal_card = goal_card
-        
+
     def addTerritory(self, territory_card):
         self.territory_card.append(territory_card)
     def removeTerritory(self, territory_card):

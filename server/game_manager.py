@@ -1,7 +1,13 @@
 import random
-import xmlReader as XR
-from player import Player
+import sys
+import os
+from Player import Player
 from collections import OrderedDict
+import utils
+
+
+
+
 
 goals = ["Conquistare 18 territori presidiandoli con almeno due armate ciascuno"]
 
@@ -44,7 +50,7 @@ def _give_tank(players):
 
 
 def _give_objective_card(players):
-    cards = XR.read_goal_cards()
+    cards = utils.read_objects_cards()
     print(len(cards))
     for player in players:
         card_drawn = cards[random.randint(0, len(cards) - 1)]
