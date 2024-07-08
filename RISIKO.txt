@@ -1,1 +1,4 @@
-
+Font: https://www.dafont.com/mtheme.php?id=4
+Mappa: https://pixabay.com/vectors/board-of-risk-risk-game-of-risk-4308773/
+Menu: https://www.gamedevelopment.blog/unity-2d-game-tutorial-2019-main-menu/
+Codice colore sfondo: CA9D5D
