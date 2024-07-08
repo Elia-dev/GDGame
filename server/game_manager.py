@@ -1,4 +1,5 @@
 import random
+import xmlReader as XR
 from player import Player
 from collections import OrderedDict
 
@@ -17,13 +18,12 @@ def _tank_start_num(num_player):
 
 def _game_order(players):
     response = {}
-    while len(response) < 4:
-        for player in players:
-            player.send(f"Press any key to throw a gaming dice!".encode("utf-8"))
-            player.recv(1024).decode("utf-8")
-            gaming_dice = random.randint(1, 6)
-            response[player] = gaming_dice
-            player.send(f"You got {gaming_dice}\n".encode("utf-8"))
+    for player in players:
+        player.send(f"Press any key to throw a gaming dice!".encode("utf-8"))
+        player.recv(1024).decode("utf-8")
+        gaming_dice = random.randint(1, 6)
+        response[player] = gaming_dice
+        player.send(f"You got {gaming_dice}\n".encode("utf-8"))
 
     sorted_player = [item[0] for item in sorted(response.items(), key=lambda item: item[1])]
     sorted_player.reverse()
@@ -44,14 +44,16 @@ def _give_tank(players):
 
 
 def _give_objective_card(players):
+    cards = XR.read_goal_cards()
+    print(len(cards))
     for player in players:
-
-
-
+        card_drawn = cards[random.randint(0, len(cards) - 1)]
+        player.goal_card = card_drawn
+        cards.remove(card_drawn)
+        player.sock.send(f"GOAL:\n{card_drawn.description}".encode("utf-8"))
 
 
 def game_main(players, host_id):
-
     # Define the game order
     for player in players:
         player.send(f"Game {host_id} started!".encode("utf-8"))
