@@ -38,7 +38,10 @@ def handle_client(client_socket, client_address):
     # Create the game
     if client_socket == game_hosts[host_id][0]:
         print(f"Game {host_id} started with {len(game_hosts[host_id])} players")
-        cm.create_game(game_hosts, host_id)
+        players = game_hosts[host_id]
+        with hosts_lock:
+            game_hosts.pop(host_id)
+        cm.create_game(players, host_id)
 
 
 # Function to start the server and listen for connections

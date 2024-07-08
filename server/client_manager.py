@@ -108,7 +108,6 @@ def _generate_game_id():
     return ' '.join([str(random.randint(0, 999)).zfill(3) for _ in range(2)])
 
 
-def create_game(game_hosts, host_id):
-    players = game_hosts[host_id]
+def create_game(players, host_id):
     game_thread = threading.Thread(target=gm.game_main, args=(players, host_id))
     game_thread.start()
