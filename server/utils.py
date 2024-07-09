@@ -2,7 +2,6 @@ import xml.etree.ElementTree as ET
 from Card import Card
 from Territory import Territory
 
-
 def read_objects_cards():
     tree = ET.parse('assets/config.xml')
     root = tree.getroot()

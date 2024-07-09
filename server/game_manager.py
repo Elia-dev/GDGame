@@ -1,8 +1,5 @@
 import random
-import sys
-import os
 from Player import Player
-from collections import OrderedDict
 import utils
 
 
@@ -51,7 +48,6 @@ def _give_tank(players):
 
 def _give_objective_cards(players):
     cards = utils.read_objects_cards()
-    print(len(cards))
     for player in players:
         card_drawn = cards[random.randint(0, len(cards) - 1)]
         player.goal_card = card_drawn
@@ -60,14 +56,20 @@ def _give_objective_cards(players):
 
 def _give_territory_cards(players): #DA TESTARE
     cards = utils.read_territories_cards()
-    print(len(cards))
     i = 0
-    while cards: #SBAGLIATO
+    while cards:
         for player in players:
-            card_drawn = cards[random.randint(0, len(cards) - 1)]
-            player.addTerritory(card_drawn)
-            cards.remove(card_drawn)
-            player.sock.send(f"Territory extracted:\n{card_drawn.description}".encode("utf-8"))
+            if(cards):
+                card_drawn = cards[random.randint(0, len(cards) - 1)]
+                player.addTerritory(card_drawn)
+                cards.remove(card_drawn)
+                player.sock.send(f"Territory extracted:\n{card_drawn.description}".encode("utf-8"))
+
+def _assign_default_tanks_to_territories(players): # DA TESTARE
+    for player in players:
+        territories = player.getTerritories()
+        for territory in territories:
+            territory.num_tanks = 1
 
 def game_main(players, host_id):
     # Define the game order
@@ -77,11 +79,10 @@ def game_main(players, host_id):
 
     # Give tank
     _give_tank(players)
-
     # Give objective card
     _give_objective_cards(players)
     # Give territory card
     _give_territory_cards(players) # DA TESTARE
-
-
+    # Give 1 tank for each player's territory
+    _assign_default_tanks_to_territories(players) # DA TESTARE
 
