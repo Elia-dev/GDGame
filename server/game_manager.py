@@ -49,7 +49,7 @@ def _give_tank(players):
         player.tank_num = num_tanks
 
 
-def _give_objective_card(players):
+def _give_objective_cards(players):
     cards = utils.read_objects_cards()
     print(len(cards))
     for player in players:
@@ -58,6 +58,16 @@ def _give_objective_card(players):
         cards.remove(card_drawn)
         player.sock.send(f"GOAL:\n{card_drawn.description}".encode("utf-8"))
 
+def _give_territory_cards(players): #DA TESTARE
+    cards = utils.read_territories_cards()
+    print(len(cards))
+    i = 0
+    while cards: #SBAGLIATO
+        for player in players:
+            card_drawn = cards[random.randint(0, len(cards) - 1)]
+            player.addTerritory(card_drawn)
+            cards.remove(card_drawn)
+            player.sock.send(f"Territory extracted:\n{card_drawn.description}".encode("utf-8"))
 
 def game_main(players, host_id):
     # Define the game order
@@ -69,8 +79,9 @@ def game_main(players, host_id):
     _give_tank(players)
 
     # Give objective card
-    _give_objective_card(players)
-
+    _give_objective_cards(players)
+    # Give territory card
+    _give_territory_cards(players) # DA TESTARE
 
 
 
