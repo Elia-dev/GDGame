@@ -11,10 +11,10 @@ goals = ["Conquistare 18 territori presidiandoli con almeno due armate ciascuno"
 
 def _tank_start_num(num_player):
     switcher = {
-        35: 3,
-        30: 4,
-        25: 5,
-        20: 6
+        3: 35,
+        4: 30,
+        5: 25,
+        6: 20
     }
     return switcher.get(num_player)
 
@@ -22,11 +22,11 @@ def _tank_start_num(num_player):
 def _game_order(players):
     response = {}
     for player in players:
-        player.send(f"Press any key to throw a gaming dice!".encode("utf-8"))
-        player.recv(1024).decode("utf-8")
+        #player.send(f"Press any key to throw a gaming dice!".encode("utf-8"))
+        #player.recv(1024).decode("utf-8")
         gaming_dice = random.randint(1, 6)
         response[player] = gaming_dice
-        player.send(f"You got {gaming_dice}\n".encode("utf-8"))
+        #player.send(f"You got {gaming_dice}\n".encode("utf-8"))
 
     sorted_player = [item[0] for item in sorted(response.items(), key=lambda item: item[1])]
     sorted_player.reverse()
@@ -34,7 +34,7 @@ def _game_order(players):
     # Create player object and notify its position
     players = []
     for i, player in enumerate(sorted_player):
-        player.send(f"You are the {i + 1}° player".encode("utf-8"))
+        #player.send(f"You are the {i + 1}° player".encode("utf-8"))
         players.append(Player(player))
 
     return players
@@ -52,7 +52,7 @@ def _give_objective_cards(players):
         card_drawn = cards[random.randint(0, len(cards) - 1)]
         player.goal_card = card_drawn
         cards.remove(card_drawn)
-        player.sock.send(f"GOAL:\n{card_drawn.description}".encode("utf-8"))
+        #player.sock.send(f"GOAL:\n{card_drawn.description}".encode("utf-8"))
 
 def _give_territory_cards(players): #DA TESTARE
     cards = utils.read_territories_cards()
@@ -63,9 +63,9 @@ def _give_territory_cards(players): #DA TESTARE
                 card_drawn = cards[random.randint(0, len(cards) - 1)]
                 player.addTerritory(card_drawn)
                 cards.remove(card_drawn)
-                player.sock.send(f"Territory extracted:\n{card_drawn.description}".encode("utf-8"))
+                #player.sock.send(f"Territory extracted:\n{card_drawn.description}".encode("utf-8"))
 
-def _assign_default_tanks_to_territories(players): # DA TESTARE
+def _assign_default_tanks_to_territories(players):
     for player in players:
         territories = player.getTerritories()
         for territory in territories:
@@ -77,6 +77,7 @@ def game_main(players, host_id):
         player.send(f"Game {host_id} started!".encode("utf-8"))
     players = _game_order(players)
 
+
     # Give tank
     _give_tank(players)
     # Give objective card
@@ -85,4 +86,3 @@ def game_main(players, host_id):
     _give_territory_cards(players) # DA TESTARE
     # Give 1 tank for each player's territory
     _assign_default_tanks_to_territories(players) # DA TESTARE
-

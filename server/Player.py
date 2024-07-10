@@ -5,8 +5,8 @@ class Player:
         self.id_lobby = id_lobby
         self.id_player = id_player # Unique id for player, to internal manage
         self.tank_num = 0
-        self.goal_card = None
-        self.territories = None
+        self.goal_card = []
+        self.territories = []
 
     def setGoal_card(self, goal_card):
         self.goal_card = goal_card
