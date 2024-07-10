@@ -54,7 +54,7 @@ def _give_objective_cards(players):
         cards.remove(card_drawn)
         #player.sock.send(f"GOAL:\n{card_drawn.description}".encode("utf-8"))
 
-def _give_territory_cards(players): #DA TESTARE
+def _give_territory_cards(players):
     cards = utils.read_territories_cards()
     i = 0
     while cards:
