@@ -1,4 +1,6 @@
 import random
+
+import connection_manager
 from Player import Player
 import utils
 
@@ -83,18 +85,24 @@ def game_main(players, host_id):
 
     # Give tank
     _give_tank(players)
+    connection_manager.update_state(players)
     # Give objective card
     _give_objective_cards(players)
+    connection_manager.update_state(players)
     # Give territory card
     _give_territory_cards(players)
+    connection_manager.update_state(players)
     # Give 1 tank for each player's territory
     _assign_default_tanks_to_territories(players)
+    connection_manager.update_state(players)
 
     # First tank assignment by players
     '''S = server, C = client, P = problema'''
     ''' 
     S: ripeto l'assegnazione finché ogni player non ha piazzato tutti i suoi tank
-        S: assegno token al primo giocatore
+        S: assegno token al primo giocatore, il token servirà solo come aggancio tra client e server
+            il server sa a chi sta il turno, ma il client non sa se sta a lui
+            riesce a capirlo in base a se possiede il token o no
            C: attendo di avere il token, appena lo ricevo sblocco la UI
            P: come codifico il concetto di token?
            C: piazzo 3 tank dove voglio nei miei territori
