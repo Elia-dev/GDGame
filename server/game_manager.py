@@ -2,10 +2,6 @@ import random
 from Player import Player
 import utils
 
-
-
-
-
 goals = ["Conquistare 18 territori presidiandoli con almeno due armate ciascuno"]
 
 
@@ -43,33 +39,41 @@ def _game_order(players):
 def _give_tank(players):
     num_tanks = _tank_start_num(len(players))
     for player in players:
-        player.tank_num = num_tanks
+        player.tanks_num = num_tanks
+        player.tanks_available = num_tanks
 
 
 def _give_objective_cards(players):
     cards = utils.read_objects_cards()
     for player in players:
         card_drawn = cards[random.randint(0, len(cards) - 1)]
-        player.goal_card = card_drawn
+        card_drawn.player_id = player.player_id
+        player.objective_card = card_drawn
         cards.remove(card_drawn)
         #player.sock.send(f"GOAL:\n{card_drawn.description}".encode("utf-8"))
+
 
 def _give_territory_cards(players):
     cards = utils.read_territories_cards()
     i = 0
     while cards:
         for player in players:
-            if(cards):
+            if (cards):
                 card_drawn = cards[random.randint(0, len(cards) - 1)]
+                card_drawn.player_id = player.player_id
                 player.addTerritory(card_drawn)
                 cards.remove(card_drawn)
                 #player.sock.send(f"Territory extracted:\n{card_drawn.description}".encode("utf-8"))
+
 
 def _assign_default_tanks_to_territories(players):
     for player in players:
         territories = player.getTerritories()
         for territory in territories:
             territory.num_tanks = 1
+        player.tanks_placed = player.tanks_num - len(player.territories)
+        player.tanks_available = player.tanks_num - player.tanks_placed
+
 
 def game_main(players, host_id):
     # Define the game order
@@ -77,12 +81,11 @@ def game_main(players, host_id):
         player.send(f"Game {host_id} started!".encode("utf-8"))
     players = _game_order(players)
 
-
     # Give tank
     _give_tank(players)
     # Give objective card
     _give_objective_cards(players)
     # Give territory card
-    _give_territory_cards(players) # DA TESTARE
+    _give_territory_cards(players)  # DA TESTARE
     # Give 1 tank for each player's territory
-    _assign_default_tanks_to_territories(players) # DA TESTARE
+    _assign_default_tanks_to_territories(players)  # DA TESTARE

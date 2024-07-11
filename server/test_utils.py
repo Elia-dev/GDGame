@@ -1,6 +1,7 @@
 import unittest
 import utils
 
+
 class MyTestCase(unittest.TestCase):
     def test_read_objects_cards(self):
         cards = utils.read_objects_cards()
@@ -63,6 +64,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(cards[39].id, "OC_ter2")
         self.assertEqual(cards[40].id, "OC_ter3")
         self.assertEqual(cards[41].id, "OC_ter4")
+
 
 if __name__ == '__main__':
     unittest.main()
