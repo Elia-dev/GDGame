@@ -8,3 +8,7 @@ class Objective(Card):
     def to_dict(self):
         data = super().to_dict()
         return data
+
+    @classmethod
+    def from_dict(cls, data):
+        return cls(data["id"], data["image"], data["function"], data["description"], data["player_id"])
