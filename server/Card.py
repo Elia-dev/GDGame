@@ -7,3 +7,16 @@ class Card:
         self.description = description
         self.player_id = player_id
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "image": self.image,
+            "function": self.function,
+            "description": self.description,
+            "player_id": self.player_id
+        }
+
+    def __repr__(self):
+        return (f"Card(id={self.id}, image={self.image}, function={self.function}, "
+                f"description={self.description}, player_id={self.player_id})")
+

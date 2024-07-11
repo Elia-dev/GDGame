@@ -1,3 +1,8 @@
+from Card import Card
+from Objective import Objective
+from Territory import Territory
+
+
 class Player:
     def __init__(self, socket, name, lobby_id, player_id):
         self.name = name
@@ -9,6 +14,27 @@ class Player:
         self.tanks_placed = 0
         self.objective_card = []
         self.territories = []
+
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "sock": "sock",  # How to rapresent socket ?
+            "lobby_id": self.lobby_id,
+            "player_id": self.player_id,
+            "tanks_num": self.tanks_num,
+            "tanks_available": self.tanks_available,
+            "tanks_placed": self.tanks_placed,
+            "objective_card": [objective.to_dict() for objective in self.objective_card],
+            "territories": [territory.to_dict() for territory in self.territories]
+        }
+
+
+
+
+    def __repr__(self):
+        return (f"Player(name={self.name}, socket={self.sock}, lobby_id={self.lobby_id}, player_id={self.player_id}, "
+                f"tanks_num={self.tanks_num}, tanks_available={self.tanks_available}, tanks_placed={self.tanks_placed}, "
+                f"objective_card={self.objective_card}, territories={self.territories})")
 
     def setObjectiveCard(self, goal_card):
         self.objective_card = goal_card
@@ -26,3 +52,14 @@ class Player:
         self.tanks_available -= 1
         self.tanks_placed += 1
         next((territory for territory in self.territories if territory_id == territory.id)).num_tanks += 1
+
+    @classmethod
+    def from_dict(cls, data):
+        player = cls(data["name"], data["sock"], data["lobby_id"], data["player_id"])
+        player.tanks_num = data["tanks_num"]
+        player.tanks_available = data["tanks_available"]
+        player.tanks_placed = data["tanks_placed"]
+        player.objective_card = [Objective(**objective_data) if objective_data["function"] == "obj" else Territory(**objective_data) for
+                                 objective_data in data["objective_card"]]
+        player.territories = [Territory(**territory_data) for territory_data in data["territories"]]
+        return player
