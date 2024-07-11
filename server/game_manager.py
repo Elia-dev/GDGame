@@ -86,6 +86,25 @@ def game_main(players, host_id):
     # Give objective card
     _give_objective_cards(players)
     # Give territory card
-    _give_territory_cards(players)  # DA TESTARE
+    _give_territory_cards(players)
     # Give 1 tank for each player's territory
-    _assign_default_tanks_to_territories(players)  # DA TESTARE
+    _assign_default_tanks_to_territories(players)
+
+    # First tank assignment by players
+    '''S = server, C = client, P = problema'''
+    ''' 
+    S: ripeto l'assegnazione finché ogni player non ha piazzato tutti i suoi tank
+        S: assegno token al primo giocatore
+           C: attendo di avere il token, appena lo ricevo sblocco la UI
+           P: come codifico il concetto di token?
+           C: piazzo 3 tank dove voglio nei miei territori
+           P: come faccio a far piazzare esattamente 3 tank al player?
+           C: appena piazzati i tank passo il turno e perdo il token
+        S: assegno il token al secondo giocatore e ripeto       
+    '''
+
+    # Main loop
+
+
+
+

@@ -15,6 +15,7 @@ class Player:
 
     def addTerritory(self, territory_card):
         self.territories.append(territory_card)
+
     def removeTerritory(self, territory_card):
         self.territories.remove(territory_card)
 
