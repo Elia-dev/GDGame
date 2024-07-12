@@ -109,6 +109,7 @@ def game_main(players, host_id):
     while not_assignment_yet:
         for player in not_assignment_yet:
             new_player_state = _request_tank_assignment(player, 3)
+            new_player_state.sock = player.sock
             players[players.index(player)] = new_player_state
             if player.tanks_available == 0:
                 not_assignment_yet.remove(player)
