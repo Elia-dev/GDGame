@@ -22,8 +22,7 @@ class Program
                     byte[] startMessage = Encoding.UTF8.GetBytes("START");
                     stream.Write(startMessage, 0, startMessage.Length);
                 }
-                // TODO - Recieve the command from the serverx  
-                // Console.WriteLine("SERVER: {message}", message);
+                RequestHandler.FunctionHandller(message);
             }
         }
         catch (SocketException)

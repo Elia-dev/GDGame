@@ -8,15 +8,28 @@ public class GameMenuUI : MonoBehaviour
 {
     [SerializeField] private Button BackButton;
 	[SerializeField] private Button CreateLobbyButton;
-    
+    [SerializeField] InputField usernameInputField;
+    private string username;
+
     private void Awake() {
         BackButton.onClick.AddListener(() => {
             SceneManager.LoadScene("MainMenu");
         });
 		
 		CreateLobbyButton.onClick.AddListener(() => {
-			SceneManager.LoadScene("Main");
+            if (username != null)
+            {
+                SceneManager.LoadScene("Main");
+            } else
+            {
+
+            }
 		});
-        
+
+        usernameInputField.onValueChanged.AddListener(OnUsernameFieldChange);
+    }
+    private void OnUsernameFieldChange(string username)
+    {
+        this.username = username;
     }
 }
