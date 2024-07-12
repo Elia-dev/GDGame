@@ -4,7 +4,8 @@ import game_manager as gm
 
 
 def registration_form(client_socket):
-    client_socket.send("Enter the name you will be displayed with online.".encode("utf-8"))
+    client_socket.send("UserRegistration".encode("utf-8"))
+    #client_socket.send("Enter the name you will be displayed with online.".encode("utf-8"))
     user = client_socket.recv(1024).decode('utf-8')
     message = ""
     while message.lower() != "y" and message.lower() != "n":

@@ -1,7 +1,11 @@
-﻿namespace Client;
-
+<<<<<<< Updated upstream
+﻿class Client
+=======
+﻿
 class Client
+>>>>>>> Stashed changes
 {
+    /*
     private string name;
     private string ipHost;
     private int port;
@@ -25,4 +29,5 @@ class Client
         lobbyCode = "";
         id_player = "";
     }
+    */
 }

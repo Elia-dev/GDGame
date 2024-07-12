@@ -11,6 +11,7 @@ Library: /home/filo/MEGA/Università/Magistrale/Game_Development/GDGame/Risiko/T
 --assembly-defines=Assembly-CSharp;
 --assembly-defines=Unity.2D.IK.Runtime;
 --assembly-defines=Unity.RenderPipelines.Core.Runtime;
+--assembly-defines=Unity.VectorGraphics;
 --assembly-defines=Unity.RenderPipelines.Universal.Config.Runtime;
 --assembly-defines=Unity.VisualScripting.Flow;
 --assembly-defines=Unity.RenderPipelines.Core.ShaderLibrary;
@@ -28,6 +29,7 @@ Library: /home/filo/MEGA/Università/Magistrale/Game_Development/GDGame/Risiko/T
 --assembly-defines=Unity.2D.Common.Runtime;
 --assembly-defines=Unity.RenderPipeline.Universal.ShaderLibrary;
 --assembly-defines=Unity.Timeline;
+--assembly-defines=Unity.InternalAPIEngineBridge.003;
 --assembly-defines=Unity.Mathematics;
 --assembly-defines=Unity.RenderPipelines.Universal.Shaders;
 --assembly-defines=Unity.VisualScripting.State;
@@ -111,6 +113,7 @@ Library: /home/filo/MEGA/Università/Magistrale/Game_Development/GDGame/Risiko/T
 --assembly-defines=Assembly-CSharp;
 --assembly-defines=Unity.2D.IK.Runtime;
 --assembly-defines=Unity.RenderPipelines.Core.Runtime;
+--assembly-defines=Unity.VectorGraphics;
 --assembly-defines=Unity.RenderPipelines.Universal.Config.Runtime;
 --assembly-defines=Unity.VisualScripting.Flow;
 --assembly-defines=Unity.RenderPipelines.Core.ShaderLibrary;
@@ -128,6 +131,7 @@ Library: /home/filo/MEGA/Università/Magistrale/Game_Development/GDGame/Risiko/T
 --assembly-defines=Unity.2D.Common.Runtime;
 --assembly-defines=Unity.RenderPipeline.Universal.ShaderLibrary;
 --assembly-defines=Unity.Timeline;
+--assembly-defines=Unity.InternalAPIEngineBridge.003;
 --assembly-defines=Unity.Mathematics;
 --assembly-defines=Unity.RenderPipelines.Universal.Shaders;
 --assembly-defines=Unity.VisualScripting.State;
@@ -213,6 +217,7 @@ Library: /home/filo/MEGA/Università/Magistrale/Game_Development/GDGame/Risiko/T
 --assembly-defines=Assembly-CSharp;
 --assembly-defines=Unity.2D.IK.Runtime;
 --assembly-defines=Unity.RenderPipelines.Core.Runtime;
+--assembly-defines=Unity.VectorGraphics;
 --assembly-defines=Unity.RenderPipelines.Universal.Config.Runtime;
 --assembly-defines=Unity.VisualScripting.Flow;
 --assembly-defines=Unity.RenderPipelines.Core.ShaderLibrary;
@@ -230,6 +235,7 @@ Library: /home/filo/MEGA/Università/Magistrale/Game_Development/GDGame/Risiko/T
 --assembly-defines=Unity.2D.Common.Runtime;
 --assembly-defines=Unity.RenderPipeline.Universal.ShaderLibrary;
 --assembly-defines=Unity.Timeline;
+--assembly-defines=Unity.InternalAPIEngineBridge.003;
 --assembly-defines=Unity.Mathematics;
 --assembly-defines=Unity.RenderPipelines.Universal.Shaders;
 --assembly-defines=Unity.VisualScripting.State;
@@ -281,6 +287,7 @@ Library: /home/filo/MEGA/Università/Magistrale/Game_Development/GDGame/Risiko/T
 --assembly-defines=Assembly-CSharp;
 --assembly-defines=Unity.2D.IK.Runtime;
 --assembly-defines=Unity.RenderPipelines.Core.Runtime;
+--assembly-defines=Unity.VectorGraphics;
 --assembly-defines=Unity.RenderPipelines.Universal.Config.Runtime;
 --assembly-defines=Unity.VisualScripting.Flow;
 --assembly-defines=Unity.RenderPipelines.Core.ShaderLibrary;
@@ -298,6 +305,7 @@ Library: /home/filo/MEGA/Università/Magistrale/Game_Development/GDGame/Risiko/T
 --assembly-defines=Unity.2D.Common.Runtime;
 --assembly-defines=Unity.RenderPipeline.Universal.ShaderLibrary;
 --assembly-defines=Unity.Timeline;
+--assembly-defines=Unity.InternalAPIEngineBridge.003;
 --assembly-defines=Unity.Mathematics;
 --assembly-defines=Unity.RenderPipelines.Universal.Shaders;
 --assembly-defines=Unity.VisualScripting.State;
