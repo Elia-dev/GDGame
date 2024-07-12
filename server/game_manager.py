@@ -20,11 +20,11 @@ def _tank_start_num(num_player):
 def _game_order(players):
     response = {}
     for player in players:
-        #player.send(f"Press any key to throw a gaming dice!".encode("utf-8"))
-        #player.recv(1024).decode("utf-8")
+        # player.send(f"Press any key to throw a gaming dice!".encode("utf-8"))
+        # player.recv(1024).decode("utf-8")
         gaming_dice = random.randint(1, 6)
         response[player] = gaming_dice
-        #player.send(f"You got {gaming_dice}\n".encode("utf-8"))
+        # player.send(f"You got {gaming_dice}\n".encode("utf-8"))
 
     sorted_player = [item[0] for item in sorted(response.items(), key=lambda item: item[1])]
     sorted_player.reverse()
@@ -32,7 +32,7 @@ def _game_order(players):
     # Create player object and notify its position
     players = []
     for i, player in enumerate(sorted_player):
-        #player.send(f"You are the {i + 1}° player".encode("utf-8"))
+        # player.send(f"You are the {i + 1}° player".encode("utf-8"))
         players.append(Player(player))
 
     return players
@@ -52,7 +52,7 @@ def _give_objective_cards(players):
         card_drawn.player_id = player.player_id
         player.objective_card = card_drawn
         cards.remove(card_drawn)
-        #player.sock.send(f"GOAL:\n{card_drawn.description}".encode("utf-8"))
+        # player.sock.send(f"GOAL:\n{card_drawn.description}".encode("utf-8"))
 
 
 def _give_territory_cards(players):
@@ -65,7 +65,7 @@ def _give_territory_cards(players):
                 card_drawn.player_id = player.player_id
                 player.addTerritory(card_drawn)
                 cards.remove(card_drawn)
-                #player.sock.send(f"Territory extracted:\n{card_drawn.description}".encode("utf-8"))
+                # player.sock.send(f"Territory extracted:\n{card_drawn.description}".encode("utf-8"))
 
 
 def _assign_default_tanks_to_territories(players):
@@ -75,6 +75,12 @@ def _assign_default_tanks_to_territories(players):
             territory.num_tanks = 1
         player.tanks_placed = player.tanks_num - len(player.territories)
         player.tanks_available = player.tanks_num - player.tanks_placed
+
+
+def _request_tank_assignment(player, assignments):
+    player.sock.send(str(assignments).encode("utf-8"))
+    new_player_state = player.sock.recv(1024).decode("utf-8")
+    return Player.from_dict(new_player_state)
 
 
 def game_main(players, host_id):
@@ -97,6 +103,14 @@ def game_main(players, host_id):
     connection_manager.update_state(players)
 
     # First tank assignment by players
+    not_assignment_yet = players
+    while not_assignment_yet:
+        for player in not_assignment_yet:
+            new_player_state = _request_tank_assignment(player, 3)
+            players[players.index(player)] = new_player_state
+            if player.tanks_available == 0:
+                not_assignment_yet.remove(player)
+
     '''S = server, C = client, P = problema'''
     ''' 
     S: ripeto l'assegnazione finché ogni player non ha piazzato tutti i suoi tank
@@ -112,7 +126,3 @@ def game_main(players, host_id):
     '''
 
     # Main loop
-
-
-
-
