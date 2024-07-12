@@ -8,28 +8,53 @@ public class GameMenuUI : MonoBehaviour
 {
     [SerializeField] private Button BackButton;
 	[SerializeField] private Button CreateLobbyButton;
+    [SerializeField] private Button JoinLobbyButton; 
     [SerializeField] InputField usernameInputField;
     private string username;
-
+    
     private void Awake() {
         BackButton.onClick.AddListener(() => {
             SceneManager.LoadScene("MainMenu");
         });
 		
-		CreateLobbyButton.onClick.AddListener(() => {
+		CreateLobbyButton.onClick.AddListener(() =>
+        {
+            username = usernameInputField.text;
             if (username != null)
             {
-                SceneManager.LoadScene("Main");
-            } else
+                Debug.Log("Missing username");
+                //Popup
+            }
+            else if (Utils.CheckUsername(username))
             {
-
+                SceneManager.LoadScene("HostMenu");
+                //Create Lobby
+            }
+            else
+            {
+                Debug.Log("Invalid username");
+                //Popup
             }
 		});
 
-        usernameInputField.onValueChanged.AddListener(OnUsernameFieldChange);
-    }
-    private void OnUsernameFieldChange(string username)
-    {
-        this.username = username;
+        JoinLobbyButton.onClick.AddListener(() =>
+        {
+            username = usernameInputField.text;
+            if (username != null)
+            {
+                Debug.Log("Missing username");
+                //Popup
+            }
+            else if (Utils.CheckUsername(username))
+            {
+                SceneManager.LoadScene("Main");
+                //Join Lobby
+            }
+            else
+            {
+                Debug.Log("Invalid username");
+                //Popup
+            }
+        });
     }
 }

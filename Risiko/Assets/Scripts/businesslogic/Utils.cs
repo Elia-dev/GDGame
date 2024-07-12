@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Utils 
 {
-    public static void CheckUsername()
+    public static bool CheckUsername(string username)
     {
-        // TODO - Exeption
+        // TODO - Exception
+        return true;
     }
 }
