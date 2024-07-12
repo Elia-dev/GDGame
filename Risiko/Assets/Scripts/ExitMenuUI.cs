@@ -8,6 +8,8 @@ public class ExitMenuUI : MonoBehaviour
 {
     [SerializeField] private Button StaytButton;
     [SerializeField] private Button QuitButton;
+    [SerializeField] private InputField UserInput;
+    private string username;
 
     private void Awake() {
         StaytButton.onClick.AddListener(() => {
@@ -18,4 +20,5 @@ public class ExitMenuUI : MonoBehaviour
             Application.Quit();
         });
     }
+
 }
