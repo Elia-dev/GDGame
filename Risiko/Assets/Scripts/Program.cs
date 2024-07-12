@@ -1,6 +1,4 @@
-﻿namespace Client;
-
-class Client
+﻿class Client
 {
     private string name;
     private string ipHost;
