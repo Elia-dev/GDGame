@@ -1,3 +1,4 @@
+import json
 import random
 
 import connection_manager
@@ -79,7 +80,7 @@ def _assign_default_tanks_to_territories(players):
 
 def _request_tank_assignment(player, assignments):
     player.sock.send(str(assignments).encode("utf-8"))
-    new_player_state = player.sock.recv(1024).decode("utf-8")
+    new_player_state = json.loads(player.sock.recv(1024).decode("utf-8"))
     return Player.from_dict(new_player_state)
 
 
@@ -103,6 +104,7 @@ def game_main(players, host_id):
     connection_manager.update_state(players)
 
     # First tank assignment by players
+
     not_assignment_yet = players
     while not_assignment_yet:
         for player in not_assignment_yet:
