@@ -1,5 +1,6 @@
 public class Card
 {
+    /*
     public int Id { get; set; }
     public string Image { get; set; }
     public string Function { get; set; }
@@ -41,5 +42,5 @@ public class Card
     public override string ToString()
     {
         return $"Card(id={Id}, image={Image}, function={Function}, description={Description}, player_id={PlayerId})";
-    }
+    }*/
 }

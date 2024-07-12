@@ -1,5 +1,11 @@
+<<<<<<< Updated upstream
 ﻿class Client
+=======
+﻿
+class Client
+>>>>>>> Stashed changes
 {
+    /*
     private string name;
     private string ipHost;
     private int port;
@@ -23,4 +29,5 @@
         lobbyCode = "";
         id_player = "";
     }
+    */
 }
