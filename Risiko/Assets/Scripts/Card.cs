@@ -1,13 +1,15 @@
+using System.Collections.Generic;
+
 public class Card
 {
-    /*
-    public int Id { get; set; }
+    
+    public string Id { get; set; }
     public string Image { get; set; }
     public string Function { get; set; }
     public string Description { get; set; }
-    public int PlayerId { get; set; }
+    public string PlayerId { get; set; }
 
-    public Card(int cardId, string image, string function, string description, int playerId)
+    public Card(string cardId, string image, string function, string description, string playerId)
     {
         Id = cardId;
         Image = image;
@@ -31,16 +33,16 @@ public class Card
     public static Card FromDict(Dictionary<string, object> data)
     {
         return new Card(
-            (int)data["id"],
+            (string)data["id"],
             (string)data["image"],
             (string)data["function"],
             (string)data["description"],
-            (int)data["player_id"]
+            (string)data["player_id"]
         );
     }
 
     public override string ToString()
     {
         return $"Card(id={Id}, image={Image}, function={Function}, description={Description}, player_id={PlayerId})";
-    }*/
+    }
 }

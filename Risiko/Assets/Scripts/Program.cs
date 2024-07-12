@@ -1,9 +1,6 @@
-<<<<<<< Updated upstream
-﻿class Client
-=======
-﻿
+
 class Client
->>>>>>> Stashed changes
+
 {
     /*
     private string name;
