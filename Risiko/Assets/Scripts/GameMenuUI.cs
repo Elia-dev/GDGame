@@ -20,6 +20,7 @@ public class GameMenuUI : MonoBehaviour
 		CreateLobbyButton.onClick.AddListener(() =>
         {
             username = usernameInputField.text;
+            Debug.Log(username);
             if (username != null)
             {
                 Debug.Log("Missing username");
@@ -27,6 +28,7 @@ public class GameMenuUI : MonoBehaviour
             }
             else if (Utils.CheckUsername(username))
             {
+                Debug.Log("Changing scene from GameMenu to HostMenu");
                 SceneManager.LoadScene("HostMenu");
                 //Create Lobby
             }

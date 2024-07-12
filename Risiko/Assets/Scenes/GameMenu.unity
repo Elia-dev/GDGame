@@ -311,6 +311,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BackButton: {fileID: 2018687022}
   CreateLobbyButton: {fileID: 2101592996}
+  JoinLobbyButton: {fileID: 1296863858}
+  usernameInputField: {fileID: 0}
 --- !u!1 &298910883
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,16 +10,47 @@ using UnityEngine;
 
 public class ClientManager
 {
-    private string host = "127.0.0.1";
+    private static ClientManager _instance;
+    private static readonly object Lock = new object();
+    private ClientManager() // Private constructor to allow instantiation using singleton only
+    {
+    }
+    public static ClientManager Instance // Implementing singleton pattern
+    {
+        get
+        {
+            // Using lock to manage concurrency
+            lock (Lock)
+            {
+                if (_instance == null)
+                {
+                    _instance = new ClientManager();
+                }
+                return _instance;
+            }
+        }
+    }
+    
+    private string server = "127.0.0.1";
     private int port = 1234;
     private TcpClient client;
+
+    private string lobby_id;
+    public string getLobbyId()
+    {
+        return lobby_id;
+    }
+    public void setLobbyId(string lobby_id)
+    {
+        this.lobby_id = lobby_id;
+    }
     public TcpClient Client
     {get { return client; } }
 
     public void StartClient()
     {
         client = new TcpClient();
-        client.Connect(this.host, this.port);
+        client.Connect(this.server, this.port);
 
         Console.WriteLine("Type 'exit' anytime to quit");
 
@@ -66,11 +97,11 @@ public class ClientManager
             while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) != 0)
             {
                 string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                if (message == "START")
+                /*if (message == "START")
                 {
                     byte[] startMessage = Encoding.UTF8.GetBytes("START");
                     stream.Write(startMessage, 0, startMessage.Length);
-                }
+                }*/
                 RequestHandler.FunctionHandller(message);
             }
         }
