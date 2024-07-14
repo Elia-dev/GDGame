@@ -114,18 +114,4 @@ def game_main(players, host_id):
             if player.tanks_available == 0:
                 not_assignment_yet.remove(player)
 
-    '''S = server, C = client, P = problema'''
-    ''' 
-    S: ripeto l'assegnazione finché ogni player non ha piazzato tutti i suoi tank
-        S: assegno token al primo giocatore, il token servirà solo come aggancio tra client e server
-            il server sa a chi sta il turno, ma il client non sa se sta a lui
-            riesce a capirlo in base a se possiede il token o no
-           C: attendo di avere il token, appena lo ricevo sblocco la UI
-           P: come codifico il concetto di token?
-           C: piazzo 3 tank dove voglio nei miei territori
-           P: come faccio a far piazzare esattamente 3 tank al player?
-           C: appena piazzati i tank passo il turno e perdo il token
-        S: assegno il token al secondo giocatore e ripeto       
-    '''
-
     # Main loop

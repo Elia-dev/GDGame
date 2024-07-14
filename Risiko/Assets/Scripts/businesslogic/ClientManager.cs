@@ -60,6 +60,7 @@ public class ClientManager
 
     public string StartHost(string name)
     {
+        //Manda messaggio al server che risponde con l'id della lobby che hosterà
         return "HOST ID";
     }
 

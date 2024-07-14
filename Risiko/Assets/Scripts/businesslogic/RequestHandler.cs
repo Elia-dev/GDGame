@@ -14,6 +14,7 @@ public class RequestHandler
             request = removeRequest(request, "Lobby_id:");
             ClientManager.Instance.setLobbyId(request);
             // Setta l'id della lobby nella grafica e nello stato del giocatore
+            //someClass.updateUI()
         }
         switch(request)
         {
