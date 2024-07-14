@@ -51,20 +51,20 @@ public class ClientManager
     {
         client = new TcpClient();
         client.Connect(this.server, this.port);
-
-        Console.WriteLine("Type 'exit' anytime to quit");
+        
+        //Console.WriteLine("Type 'exit' anytime to quit");
 
         Thread receiverThread = new Thread(new ParameterizedThreadStart(ReceiveMessages));
         receiverThread.Start(client);
+        
     }
 
-    public string StartHost(string name)
+    public void CreateLobbyAsHost()
     {
-        //Manda messaggio al server che risponde con l'id della lobby che hosterà
-        return "HOST ID";
+        Send("HOST: " + Player.Instance.PlayerId); // Telling the server that I will be the host
     }
 
-    public void JoinHost(string name, string LobbyID)
+    public void JoinLobbyAsClient(string name, string LobbyID)
     {
 
     }
@@ -74,11 +74,12 @@ public class ClientManager
         NetworkStream stream = this.client.GetStream();
         while ((message = Console.ReadLine()) != null)
         {
+            /*
             if (message.ToLower() == "exit")
             {
                 break;
             }
-
+            */
             byte[] data = Encoding.UTF8.GetBytes(message);
             stream.Write(data, 0, data.Length);
         }
@@ -103,7 +104,7 @@ public class ClientManager
                     byte[] startMessage = Encoding.UTF8.GetBytes("START");
                     stream.Write(startMessage, 0, startMessage.Length);
                 }*/
-                RequestHandler.FunctionHandller(message);
+                RequestHandler.FunctionHandler(message); // Andrebbe messo qui o dopo il while? Da testare/ragionarci
             }
         }
         catch (SocketException)

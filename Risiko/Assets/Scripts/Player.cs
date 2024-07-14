@@ -4,6 +4,59 @@ using System.Linq;
 
 public class Player
 {
+
+	private static Player _instance = null;
+    private static readonly object _lock = new object();
+
+
+	private Player() { }
+    
+    private Player(object socket, string name, string lobbyId, string playerId)
+    {
+            Sock = socket;
+            Name = name;
+            LobbyId = lobbyId; // Forse questo lo possiamo togliere, sul player non serve perché è già salvato in ClientManager
+            PlayerId = playerId;
+            TanksNum = 0;
+            TanksAvailable = 0;
+            TanksPlaced = 0;
+            ObjectiveCard = null;
+            Territories = new List<Territory>();
+    }
+
+    public void Initialize(object socket, string name, string lobbyId, string playerId)
+    {
+        if (Sock == null && Name == null && LobbyId == null && PlayerId == null)
+        {
+            Sock = socket;
+            Name = name;
+            LobbyId = lobbyId;
+            PlayerId = playerId;
+            TanksNum = 0;
+            TanksAvailable = 0;
+            TanksPlaced = 0;
+            ObjectiveCard = null;
+            Territories = new List<Territory>();
+        }
+    }
+
+    public static Player Instance
+    {
+        get
+        {
+            lock (_lock)
+            {
+                if (_instance == null)
+                {
+                    _instance = new Player();
+                }
+                return _instance;
+            }
+        }
+    }
+
+
+
     public string Name { get; set; }
     public object Sock { get; set; } // Assumendo che il tipo di socket sia object per semplicità
     public string LobbyId { get; set; }
@@ -13,19 +66,6 @@ public class Player
     public int TanksPlaced { get; set; }
     public Objective ObjectiveCard { get; set; }
     public List<Territory> Territories { get; set; } = new List<Territory>();
-
-    public Player(object socket, string name, string lobbyId, string playerId)
-    {
-        Name = name;
-        Sock = socket;
-        LobbyId = lobbyId;
-        PlayerId = playerId;
-        TanksNum = 0;
-        TanksAvailable = 0;
-        TanksPlaced = 0;
-        ObjectiveCard = null;
-        Territories = new List<Territory>();
-    }
 
     public Dictionary<string, object> ToDict()
     {

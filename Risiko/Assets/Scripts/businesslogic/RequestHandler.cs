@@ -6,14 +6,17 @@ using UnityEngine;
 
 public class RequestHandler
 {
-    public static void FunctionHandller(string request)
+    public static void FunctionHandler(string request)
     {
         
         if(request.Contains("Lobby_id:")) // Manage lobby_id request
         {
             request = removeRequest(request, "Lobby_id:");
             ClientManager.Instance.setLobbyId(request);
-            // Setta l'id della lobby nella grafica e nello stato del giocatore
+            
+            // Setta l'id della lobby nella grafica
+            // e nello stato del giocatore, ma ci serve davvero nello stato del giocatore se già ce l'abbiamo nel client manager?
+            // forse no, si risolve qualche problema di concorrenza
             //someClass.updateUI()
         }
         switch(request)

@@ -8,16 +8,24 @@ using UnityEngine;
 
 public class HostMenu : MonoBehaviour
 {
+    ClientManager cm = ClientManager.Instance;
+    Player player = Player.Instance;
+    
+    
     // Start is called before the first frame update
     void Start()
     {
-        ClientManager cm = ClientManager.Instance;
-        
         cm.StartClient();
-        cm.Send("username"); // Qui deve prendere il nome dalla classe player, che l'avrà precedentemente presa dalla UI
-        cm.StartHost();
-        // Adesso deve fare lo show della UI della lobby di attesa in modo che l'host possa far cominciare la partita
-        // appena il numero di player è sufficiente
+        cm.Send(player.Name); // Qui deve prendere il nome dalla classe player, che l'avrà precedentemente presa dalla UI
+        cm.CreateLobbyAsHost();
     }
 
+    private void Update()
+    {
+        cm.getLobbyId(); //Fare lo show di questo a manetta,
+                         //prima o poi ci sarà qualcosa di settato in quanto il server prima o poi risponderà
+        
+                         // Appena viene premuto il bottone start cambiare scena per far cominciare la partita
+                         // DUBBIO: Come aggiorno i giocatori nella lobby di attesa apena si connettono al server?
+    }
 }

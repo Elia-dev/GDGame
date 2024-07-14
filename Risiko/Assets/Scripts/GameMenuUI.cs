@@ -24,11 +24,13 @@ public class GameMenuUI : MonoBehaviour
             if (username != null)
             {
                 Debug.Log("Missing username");
-                //Popup
+                // Implementare Popup
             }
             else if (Utils.CheckUsername(username))
             {
-                Debug.Log("Changing scene from GameMenu to HostMenu");
+                Debug.Log("Username OK, changing scene from GameMenu to HostMenu");
+                Player player = Player.Instance;
+                player.Name = username;
                 SceneManager.LoadScene("HostMenu");
                 //Create Lobby
             }
