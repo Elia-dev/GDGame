@@ -19,6 +19,7 @@ public class RequestHandler
             // forse no, si risolve qualche problema di concorrenza
             //someClass.updateUI()
         }
+        
         switch(request)
         {
              //case "UserRegistration": GameManager.UserRegistration();
