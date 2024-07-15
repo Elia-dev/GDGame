@@ -51,8 +51,10 @@ public class GameMenuUI : MonoBehaviour
             }
             else if (Utils.CheckUsername(username))
             {
-                SceneManager.LoadScene("Main");
-                //Join Lobby
+                Debug.Log("Username OK, changing scene from GameMenu to JoinLobbyMenu");
+                Player player = Player.Instance;
+                player.Name = username;
+                SceneManager.LoadScene("JoinGameMenu");
             }
             else
             {

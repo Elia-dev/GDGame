@@ -64,9 +64,9 @@ public class ClientManager
         Send("HOST: " + Player.Instance.PlayerId); // Telling the server that I will be the host
     }
 
-    public void JoinLobbyAsClient(string name, string LobbyID)
+    public void JoinLobbyAsClient(string LobbyID)
     {
-
+        Send("CLIENT - LOBBY_ID: " + LobbyID);
     }
 
     public void Send(string message)

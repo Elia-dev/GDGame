@@ -16,8 +16,8 @@ public class HostMenu : MonoBehaviour
     void Start()
     {
         cm.StartClient();
-        cm.Send(player.Name); // Qui deve prendere il nome dalla classe player, che l'avrà precedentemente presa dalla UI
-        cm.CreateLobbyAsHost();
+        cm.Send(player.Name);
+        cm.CreateLobbyAsHost(); // DAL SERVER DEVE PRIMA ESSERE ARRIVATO L'ID DEL PLAYER (da implementare)
     }
 
     private void Update()
