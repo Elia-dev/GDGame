@@ -1,6 +1,7 @@
 import socket
 import threading
 import client_manager as cm
+import logging
 
 game_hosts = {}
 hosts_lock = threading.Lock()
@@ -20,6 +21,7 @@ def handle_client(client_socket, client_address):
         client_socket.send(
             "Choose if you want to host a game or join in an existing game\nHost -> \"H\" \nJoin -> \"J\"".encode(
                 "utf-8"))
+
         response = client_socket.recv(1024).decode('utf-8')
 
     # Create or join the match

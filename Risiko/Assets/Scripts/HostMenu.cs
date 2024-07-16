@@ -26,6 +26,6 @@ public class HostMenu : MonoBehaviour
                          //prima o poi ci sarà qualcosa di settato in quanto il server prima o poi risponderà
         
                          // Appena viene premuto il bottone start cambiare scena per far cominciare la partita
-                         // DUBBIO: Come aggiorno i giocatori nella lobby di attesa apena si connettono al server?
+                         // DUBBIO: Come aggiorno i giocatori nella lobby di attesa appena si connettono al server?
     }
 }

@@ -1,6 +1,6 @@
 import unittest
 import utils
-
+import logging
 
 class MyTestCase(unittest.TestCase):
     def test_read_objects_cards(self):

@@ -40,7 +40,7 @@ public class JoingameMenu : MonoBehaviour
             {
                 cm.JoinLobbyAsClient(lobby_id);
                 // Attendere in qualche modo che si colleghi alla lobby
-                // Appena connesso mostrare lalobby di attesa con gli altri player
+                // Appena connesso mostrare la lobby di attesa con gli altri player
             }
 		});
     }
