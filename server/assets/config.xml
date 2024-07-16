@@ -92,14 +92,14 @@
                 <continent>NA</continent>
             </territory>
             <territory id="NA_ter7">
-                <name>West United States</name>
+                <name>Western United States</name>
                 <image>image7.png</image>
                 <function>ter</function>
                 <description>state of West United States</description>
                 <continent>NA</continent>
             </territory>
             <territory id="NA_ter8">
-                <name>Estern U.S.</name>
+                <name>Estern United States</name>
                 <image>image7.png</image>
                 <function>ter</function>
                 <description>state of Estern U.S.</description>
