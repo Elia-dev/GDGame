@@ -254,10 +254,10 @@
                 <continent>AS</continent>
             </territory>
             <territory id="AS_ter3">
-                <name>Yakutia</name>
+                <name>Yakutsk</name>
                 <image>image7.png</image>
                 <function>ter</function>
-                <description>state of Yakutia</description>
+                <description>state of Yakutsk</description>
                 <continent>AS</continent>
             </territory>
             <territory id="AS_ter4">
