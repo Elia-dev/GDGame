@@ -323,6 +323,13 @@
                 <description>state of Siam</description>
                 <continent>AS</continent>
             </territory>
+			<territory id="AS_ter13">
+                <name>Irkutsk</name>
+                <image>image7.png</image>
+                <function>ter</function>
+                <description>state of Irkutsk</description>
+                <continent>AS</continent>
+            </territory>
         </asia>
          <oceania id="OC">
             <territory id="OC_ter1">
@@ -340,10 +347,10 @@
                 <continent>OC</continent>
             </territory>
             <territory id="OC_ter3">
-                <name>East Australia</name>
+                <name>Eastern Australia</name>
                 <image>image7.png</image>
                 <function>ter</function>
-                <description>state of East Australia</description>
+                <description>state of Eastern Australia</description>
                 <continent>OC</continent>
             </territory>
             <territory id="OC_ter4">
