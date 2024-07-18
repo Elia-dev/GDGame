@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Scenes/HostMenu.unity
     guid: ff5861fe543bf3f46928cb7dcdb55742
   - enabled: 1
+    path: Assets/Scenes/JoinGameMenu.unity
+    guid: 21b9a9e591bdfb6cdb7aab32ebff3990
+  - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: 4a65b8e5d2f00aabcb826683c14e6227
   m_configObjects: {}

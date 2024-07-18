@@ -15,7 +15,6 @@ public class HostMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        cm.StartClient();
         cm.Send(player.Name);
         cm.CreateLobbyAsHost(); // DAL SERVER DEVE PRIMA ESSERE ARRIVATO L'ID DEL PLAYER (da implementare)
     }
