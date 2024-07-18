@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5731430920543c049a5ac5c17cc1472a
+guid: 5f3269de87b66384b8f1ecac29cf9274
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -69,10 +69,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 16384
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,10 +100,10 @@ TextureImporter:
       name: MappaStati_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 20
-        width: 3965
-        height: 2627
+        x: 34
+        y: 27
+        width: 3926
+        height: 2618
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,8 +111,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e7f877b3a226be04d895524f796fed35
-      internalID: 1021278986
+      spriteID: b5154aaee1932a4479ea762abd7da3a1
+      internalID: -707473015
       vertices: []
       indices: 
       edges: []
@@ -121,10 +121,10 @@ TextureImporter:
       name: MappaStati_1
       rect:
         serializedVersion: 2
-        x: 4400
-        y: 2417
-        width: 621
-        height: 217
+        x: 3987
+        y: 2355
+        width: 310
+        height: 281
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,8 +132,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 397432eb4070eec498d490d6b7d802d6
-      internalID: -866997059
+      spriteID: 09210a243e2f5de489518274097117b9
+      internalID: -1015270445
       vertices: []
       indices: 
       edges: []
@@ -142,10 +142,10 @@ TextureImporter:
       name: MappaStati_2
       rect:
         serializedVersion: 2
-        x: 5069
-        y: 2148
-        width: 874
-        height: 473
+        x: 4410
+        y: 2170
+        width: 870
+        height: 462
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,8 +153,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5517bfb870c98b344ad7c6dfa58843c0
-      internalID: 2111256424
+      spriteID: 4ae3ada1ced3b3843b6d962dff194973
+      internalID: -782990960
       vertices: []
       indices: 
       edges: []
@@ -163,10 +163,10 @@ TextureImporter:
       name: MappaStati_3
       rect:
         serializedVersion: 2
-        x: 6160
-        y: 2547
-        width: 178
-        height: 96
+        x: 5322
+        y: 2540
+        width: 167
+        height: 89
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,8 +174,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 092afdcfbd7962f48911f44bb47a7974
-      internalID: 378743008
+      spriteID: f7fe37657440d4d418630adfcbb2c39c
+      internalID: -840258467
       vertices: []
       indices: 
       edges: []
@@ -184,10 +184,10 @@ TextureImporter:
       name: MappaStati_4
       rect:
         serializedVersion: 2
-        x: 6556
-        y: 2374
-        width: 269
-        height: 260
+        x: 5601
+        y: 2367
+        width: 261
+        height: 255
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -195,8 +195,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 723052318f4f2a2458661df59961df45
-      internalID: -2091721309
+      spriteID: 7f62ebfe2fb3608448d6373a6a8f0ac2
+      internalID: -753903093
       vertices: []
       indices: 
       edges: []
@@ -205,10 +205,10 @@ TextureImporter:
       name: MappaStati_5
       rect:
         serializedVersion: 2
-        x: 7016
-        y: 2191
-        width: 456
-        height: 434
+        x: 5984
+        y: 2201
+        width: 447
+        height: 428
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -216,8 +216,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8abc9e42cbe9d3243a9d0bd867970e8f
-      internalID: 128226221
+      spriteID: d6a1a3681d33b7d4fa15beefac6c61fd
+      internalID: 1473693473
       vertices: []
       indices: 
       edges: []
@@ -226,513 +226,9 @@ TextureImporter:
       name: MappaStati_6
       rect:
         serializedVersion: 2
-        x: 7551
-        y: 2382
-        width: 473
-        height: 252
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e99efe3253f404049835150dce287b61
-      internalID: 1992253162
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_7
-      rect:
-        serializedVersion: 2
-        x: 8250
-        y: 2226
-        width: 650
-        height: 408
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4518f6eb2a93ed44483d703dd81652ef
-      internalID: 1356537775
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_8
-      rect:
-        serializedVersion: 2
-        x: 4496
-        y: 1939
+        x: 6506
+        y: 2198
         width: 399
-        height: 282
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 06b983588f5980c4a9a501d476cdfbe8
-      internalID: -826594211
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_9
-      rect:
-        serializedVersion: 2
-        x: 6112
-        y: 2100
-        width: 257
-        height: 278
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ede77730c77c8194b9334a2d87446d28
-      internalID: -124858451
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_10
-      rect:
-        serializedVersion: 2
-        x: 6556
-        y: 2048
-        width: 217
-        height: 147
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d830b1345c8e57f49997a4ca8998eefa
-      internalID: 1587916217
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_11
-      rect:
-        serializedVersion: 2
-        x: 7042
-        y: 1922
-        width: 357
-        height: 213
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a7425728db9142643bd777cd62377381
-      internalID: -1239779690
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_12
-      rect:
-        serializedVersion: 2
-        x: 7572
-        y: 2039
-        width: 396
-        height: 200
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 99524343005b9e54dbbf6b3d7e7397bf
-      internalID: 1708521323
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_13
-      rect:
-        serializedVersion: 2
-        x: 5091
-        y: 1805
-        width: 321
-        height: 286
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1d5fe2bdab6174d4d8c8799e24979c6f
-      internalID: 765939388
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_14
-      rect:
-        serializedVersion: 2
-        x: 6151
-        y: 1848
-        width: 131
-        height: 135
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a18e77ccbd7524149801cefa200ad4bb
-      internalID: 1478752718
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_15
-      rect:
-        serializedVersion: 2
-        x: 6651
-        y: 1718
-        width: 83
-        height: 152
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: cb6fdcb4424e44a4aa37bae77460151d
-      internalID: -1195494147
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_16
-      rect:
-        serializedVersion: 2
-        x: 4491
-        y: 1540
-        width: 348
-        height: 208
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fb51517f90ee8ec4784538664da55cf1
-      internalID: 70180773
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_17
-      rect:
-        serializedVersion: 2
-        x: 5095
-        y: 1409
-        width: 370
-        height: 296
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3db01499063dfc44e97bb4913f7c7fcd
-      internalID: -1794596222
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_18
-      rect:
-        serializedVersion: 2
-        x: 6125
-        y: 1448
-        width: 189
-        height: 191
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6f28826c78b9c29429066d0363e05850
-      internalID: -814804995
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_19
-      rect:
-        serializedVersion: 2
-        x: 6573
-        y: 1409
-        width: 239
-        height: 187
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7b7b090e0a264e841a2b617332d5ea1a
-      internalID: 1000192725
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_20
-      rect:
-        serializedVersion: 2
-        x: 7012
-        y: 1488
-        width: 495
-        height: 347
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 231c0998be6996d429cb40afaeb0bfa8
-      internalID: 318360217
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_21
-      rect:
-        serializedVersion: 2
-        x: 7585
-        y: 1489
-        width: 461
-        height: 229
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5b00d5874b39da54593b56b4af170464
-      internalID: 347378366
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_22
-      rect:
-        serializedVersion: 2
-        x: 8424
-        y: 1496
-        width: 178
-        height: 298
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c73bc335e1a337e4db435d58216fef7f
-      internalID: -354058183
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_23
-      rect:
-        serializedVersion: 2
-        x: 4531
-        y: 1084
-        width: 295
-        height: 247
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8ac41ae4671fdbc49839aae38ae351f1
-      internalID: 340796299
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_24
-      rect:
-        serializedVersion: 2
-        x: 5113
-        y: 1053
-        width: 317
-        height: 187
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0105e75594665134e884f471437f4bec
-      internalID: 1517133563
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_25
-      rect:
-        serializedVersion: 2
-        x: 6051
-        y: 945
-        width: 417
-        height: 382
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0719c44d111079c4cb788869b7ee3120
-      internalID: -940395738
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_26
-      rect:
-        serializedVersion: 2
-        x: 6569
-        y: 1045
-        width: 265
-        height: 147
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3480ac06019b45c42b9a5983eb8429ff
-      internalID: 776907355
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_27
-      rect:
-        serializedVersion: 2
-        x: 7081
-        y: 1019
-        width: 361
-        height: 325
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ce91943b03dce9141a9d419d8fdb2f2c
-      internalID: -1123992671
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_28
-      rect:
-        serializedVersion: 2
-        x: 7559
-        y: 910
-        width: 587
-        height: 404
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 719699624bd85e348a7033ae144db0b5
-      internalID: 2143640510
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_29
-      rect:
-        serializedVersion: 2
-        x: 5074
-        y: 528
-        width: 408
-        height: 434
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 891e6bc4408306641ba2df5f184af14d
-      internalID: -919873768
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: MappaStati_30
-      rect:
-        serializedVersion: 2
-        x: 6577
-        y: 489
-        width: 300
         height: 425
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -741,8 +237,512 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6906861523b59234ca9141781b23ab83
-      internalID: -1809823
+      spriteID: 33ea6719f1cf094409bbf5b53a6ba482
+      internalID: -1065151429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_7
+      rect:
+        serializedVersion: 2
+        x: 5326
+        y: 2378
+        width: 122
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f88a07b8287abe4686d77f6ebf3cd3c
+      internalID: -1416475840
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_8
+      rect:
+        serializedVersion: 2
+        x: 3980
+        y: 1943
+        width: 389
+        height: 271
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f753d0fa34d1dc34cb8efbe877f4da0b
+      internalID: -1801278805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_9
+      rect:
+        serializedVersion: 2
+        x: 5314
+        y: 2149
+        width: 178
+        height: 181
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3f6be785fa800948a04927e704c9028
+      internalID: -254938903
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_10
+      rect:
+        serializedVersion: 2
+        x: 5600
+        y: 2032
+        width: 248
+        height: 269
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dd4be95ca7914d04e974b8973836ed3a
+      internalID: 1119727526
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_11
+      rect:
+        serializedVersion: 2
+        x: 4526
+        y: 1907
+        width: 611
+        height: 210
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a50fc9ba7ea67041bf7e852a4aee7a2
+      internalID: 1285595253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_12
+      rect:
+        serializedVersion: 2
+        x: 5335
+        y: 1983
+        width: 73
+        height: 142
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb815eceffff6104c90795d89eab525b
+      internalID: 506979881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_13
+      rect:
+        serializedVersion: 2
+        x: 5598
+        y: 1631
+        width: 288
+        height: 358
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55a4d2426e0ef944096d60cc639e408c
+      internalID: -1481811287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_14
+      rect:
+        serializedVersion: 2
+        x: 5981
+        y: 1707
+        width: 490
+        height: 339
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08d7930b245792d429fbd936ed0d700c
+      internalID: -247317386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_15
+      rect:
+        serializedVersion: 2
+        x: 4539
+        y: 1477
+        width: 578
+        height: 396
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 160157395bfeff942a4e3821a9b3f846
+      internalID: -701416184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_16
+      rect:
+        serializedVersion: 2
+        x: 5306
+        y: 1811
+        width: 209
+        height: 141
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e283714e73c28e545bb104d0a9fa6417
+      internalID: 337519458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_17
+      rect:
+        serializedVersion: 2
+        x: 6516
+        y: 1631
+        width: 364
+        height: 285
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8cdf42bb30a9e3f499bb1ece9253bf46
+      internalID: -237719913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_18
+      rect:
+        serializedVersion: 2
+        x: 3986
+        y: 1547
+        width: 335
+        height: 200
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 655b0cc4d3359ea4b8a01fc6e7b6dfac
+      internalID: 485222882
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_19
+      rect:
+        serializedVersion: 2
+        x: 5313
+        y: 1575
+        width: 233
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 547d98587f095b341b5fce7bde45cea3
+      internalID: 1928360942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_20
+      rect:
+        serializedVersion: 2
+        x: 5596
+        y: 1169
+        width: 279
+        height: 421
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8c28c38110362a45848230709d2d7b9
+      internalID: -685546378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_21
+      rect:
+        serializedVersion: 2
+        x: 5984
+        y: 1375
+        width: 467
+        height: 242
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5dfa9a3e4570481458b4203d5b5fbe35
+      internalID: -1569253695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_22
+      rect:
+        serializedVersion: 2
+        x: 4685
+        y: 1257
+        width: 306
+        height: 182
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3cb8c66f2a702a44b85c253ad898cb62
+      internalID: -79973361
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_23
+      rect:
+        serializedVersion: 2
+        x: 5312
+        y: 1391
+        width: 256
+        height: 142
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb07298395d85794bb067f05f1db5126
+      internalID: 1057998135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_24
+      rect:
+        serializedVersion: 2
+        x: 3981
+        y: 1092
+        width: 284
+        height: 237
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25fb018e9ca35e74e918d5a4592d6e4f
+      internalID: 158232784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_25
+      rect:
+        serializedVersion: 2
+        x: 4507
+        y: 782
+        width: 646
+        height: 400
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bbaa3defbb5792a45be6791a8c2c6ba2
+      internalID: -2077416827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_26
+      rect:
+        serializedVersion: 2
+        x: 5309
+        y: 1166
+        width: 237
+        height: 151
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 083955a9b2a99d8439c26b6ca5f3094e
+      internalID: 1675138262
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_27
+      rect:
+        serializedVersion: 2
+        x: 5987
+        y: 1069
+        width: 454
+        height: 219
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63b8a0f3bfda23f4e8a062bec422978b
+      internalID: -1466150001
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_28
+      rect:
+        serializedVersion: 2
+        x: 5328
+        y: 829
+        width: 170
+        height: 292
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3047f47dc0f96f40a21b6eebad7a75d
+      internalID: -1313297752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_29
+      rect:
+        serializedVersion: 2
+        x: 5603
+        y: 921
+        width: 350
+        height: 207
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1636698ce75fa4f4c8808d8a7d5ab077
+      internalID: -1915900952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MappaStati_30
+      rect:
+        serializedVersion: 2
+        x: 6520
+        y: 1006
+        width: 375
+        height: 134
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d3adfafdc9f63f547b3e1481550fddd1
+      internalID: 2066230187
       vertices: []
       indices: 
       edges: []
@@ -751,10 +751,10 @@ TextureImporter:
       name: MappaStati_31
       rect:
         serializedVersion: 2
-        x: 7107
-        y: 428
-        width: 287
-        height: 430
+        x: 5313
+        y: 489
+        width: 174
+        height: 285
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -762,8 +762,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d1af3b62f12a1e94785e19f00990d72f
-      internalID: 404494597
+      spriteID: 4f2dbbdaa13bc3841830fff2ccc741a4
+      internalID: 811832311
       vertices: []
       indices: 
       edges: []
@@ -772,10 +772,10 @@ TextureImporter:
       name: MappaStati_32
       rect:
         serializedVersion: 2
-        x: 8450
-        y: 771
-        width: 183
-        height: 291
+        x: 5601
+        y: 416
+        width: 290
+        height: 416
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -783,8 +783,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 37b8add1422ec2c4fa89176b0fea70fa
-      internalID: 211272552
+      spriteID: afe45ebe5f8adc74992ad9c3da871195
+      internalID: -907925961
       vertices: []
       indices: 
       edges: []
@@ -793,10 +793,10 @@ TextureImporter:
       name: MappaStati_33
       rect:
         serializedVersion: 2
-        x: 4483
-        y: 463
-        width: 412
-        height: 277
+        x: 5981
+        y: 769
+        width: 388
+        height: 194
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -804,8 +804,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5659f2e52d08fbc48b7d46354a8e953a
-      internalID: -400898553
+      spriteID: 80a838ce37f7d0048bf0fe9579ccc846
+      internalID: -1918912468
       vertices: []
       indices: 
       edges: []
@@ -814,10 +814,10 @@ TextureImporter:
       name: MappaStati_34
       rect:
         serializedVersion: 2
-        x: 6130
-        y: 445
-        width: 226
-        height: 261
+        x: 3983
+        y: 471
+        width: 405
+        height: 270
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -825,8 +825,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ec144e2fa8947d64c8e46e49d0a19e0a
-      internalID: -947518899
+      spriteID: 1445c41ae13e9a44c8bc6920306639e1
+      internalID: -465814276
       vertices: []
       indices: 
       edges: []
@@ -835,10 +835,10 @@ TextureImporter:
       name: MappaStati_35
       rect:
         serializedVersion: 2
-        x: 7725
-        y: 384
-        width: 241
-        height: 378
+        x: 4676
+        y: 503
+        width: 220
+        height: 250
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -846,8 +846,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9e2081b6602f3424b878c5185b7bde7f
-      internalID: 867039417
+      spriteID: 286fec63f488ebc46a39092972120922
+      internalID: -1068637140
       vertices: []
       indices: 
       edges: []
@@ -856,10 +856,10 @@ TextureImporter:
       name: MappaStati_36
       rect:
         serializedVersion: 2
-        x: 4522
-        y: 7
-        width: 282
-        height: 290
+        x: 5982
+        y: 360
+        width: 352
+        height: 317
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -867,8 +867,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 10e4e06a51a9f6b49978e8cce3a60c57
-      internalID: -1601511405
+      spriteID: fc377a9e68f139e4b818c71f214ef231
+      internalID: 1402938704
       vertices: []
       indices: 
       edges: []
@@ -877,10 +877,10 @@ TextureImporter:
       name: MappaStati_37
       rect:
         serializedVersion: 2
-        x: 5135
-        y: 2
-        width: 238
-        height: 460
+        x: 3984
+        y: 4
+        width: 276
+        height: 284
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -888,8 +888,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 96803f984cd01c848bc43372e76dc6f7
-      internalID: 1576312415
+      spriteID: 3e4d88f26242de34d97e836bf1f6a8ad
+      internalID: -1506624529
       vertices: []
       indices: 
       edges: []
@@ -898,10 +898,10 @@ TextureImporter:
       name: MappaStati_38
       rect:
         serializedVersion: 2
-        x: 6095
-        y: 2
-        width: 291
-        height: 313
+        x: 4748
+        y: 6
+        width: 228
+        height: 455
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -909,8 +909,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2c11268dd328dda4982e13f726276276
-      internalID: 1004293480
+      spriteID: 526dcf3e71257594ca0dc4b2afccf5f5
+      internalID: -1652164912
       vertices: []
       indices: 
       edges: []
@@ -919,10 +919,10 @@ TextureImporter:
       name: MappaStati_39
       rect:
         serializedVersion: 2
-        x: 6625
-        y: 2
-        width: 295
-        height: 365
+        x: 5316
+        y: 0
+        width: 232
+        height: 370
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -930,8 +930,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bba107cfd399a5a418f810c5b9b1e5dc
-      internalID: -613645948
+      spriteID: 6b4f6ec833b55f94eaa67a3ccfe28782
+      internalID: 1081264807
       vertices: []
       indices: 
       edges: []
@@ -940,10 +940,10 @@ TextureImporter:
       name: MappaStati_40
       rect:
         serializedVersion: 2
-        x: 7060
-        y: 7
-        width: 330
-        height: 303
+        x: 5598
+        y: 5
+        width: 283
+        height: 305
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -951,8 +951,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a795fb98beea5b049997c69ef0de6f38
-      internalID: 663892323
+      spriteID: e8317e136035aa3408d00c3c0583385d
+      internalID: 379172704
       vertices: []
       indices: 
       edges: []
@@ -961,10 +961,10 @@ TextureImporter:
       name: MappaStati_41
       rect:
         serializedVersion: 2
-        x: 7651
-        y: 11
-        width: 247
-        height: 156
+        x: 5986
+        y: 7
+        width: 321
+        height: 293
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -972,8 +972,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d575f6d2eba57744e8287de8c22053fc
-      internalID: -629828483
+      spriteID: 40ed05c44349e1340b618af2b291ec4e
+      internalID: 549994459
       vertices: []
       indices: 
       edges: []
@@ -982,10 +982,10 @@ TextureImporter:
       name: MappaStati_42
       rect:
         serializedVersion: 2
-        x: 8298
-        y: 7
-        width: 383
-        height: 143
+        x: 6502
+        y: 1
+        width: 406
+        height: 374
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -993,8 +993,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 79c47040d12efeb449a981264b751e68
-      internalID: -86897258
+      spriteID: dee5c6ef0ba61f34f8f2f7eaac94cd97
+      internalID: -1161799896
       vertices: []
       indices: 
       edges: []
@@ -1010,49 +1010,49 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      MappaStati_0: 1021278986
-      MappaStati_1: -866997059
-      MappaStati_10: 1587916217
-      MappaStati_11: -1239779690
-      MappaStati_12: 1708521323
-      MappaStati_13: 765939388
-      MappaStati_14: 1478752718
-      MappaStati_15: -1195494147
-      MappaStati_16: 70180773
-      MappaStati_17: -1794596222
-      MappaStati_18: -814804995
-      MappaStati_19: 1000192725
-      MappaStati_2: 2111256424
-      MappaStati_20: 318360217
-      MappaStati_21: 347378366
-      MappaStati_22: -354058183
-      MappaStati_23: 340796299
-      MappaStati_24: 1517133563
-      MappaStati_25: -940395738
-      MappaStati_26: 776907355
-      MappaStati_27: -1123992671
-      MappaStati_28: 2143640510
-      MappaStati_29: -919873768
-      MappaStati_3: 378743008
-      MappaStati_30: -1809823
-      MappaStati_31: 404494597
-      MappaStati_32: 211272552
-      MappaStati_33: -400898553
-      MappaStati_34: -947518899
-      MappaStati_35: 867039417
-      MappaStati_36: -1601511405
-      MappaStati_37: 1576312415
-      MappaStati_38: 1004293480
-      MappaStati_39: -613645948
-      MappaStati_4: -2091721309
-      MappaStati_40: 663892323
-      MappaStati_41: -629828483
-      MappaStati_42: -86897258
-      MappaStati_5: 128226221
-      MappaStati_6: 1992253162
-      MappaStati_7: 1356537775
-      MappaStati_8: -826594211
-      MappaStati_9: -124858451
+      MappaStati_0: -707473015
+      MappaStati_1: -1015270445
+      MappaStati_10: 1119727526
+      MappaStati_11: 1285595253
+      MappaStati_12: 506979881
+      MappaStati_13: -1481811287
+      MappaStati_14: -247317386
+      MappaStati_15: -701416184
+      MappaStati_16: 337519458
+      MappaStati_17: -237719913
+      MappaStati_18: 485222882
+      MappaStati_19: 1928360942
+      MappaStati_2: -782990960
+      MappaStati_20: -685546378
+      MappaStati_21: -1569253695
+      MappaStati_22: -79973361
+      MappaStati_23: 1057998135
+      MappaStati_24: 158232784
+      MappaStati_25: -2077416827
+      MappaStati_26: 1675138262
+      MappaStati_27: -1466150001
+      MappaStati_28: -1313297752
+      MappaStati_29: -1915900952
+      MappaStati_3: -840258467
+      MappaStati_30: 2066230187
+      MappaStati_31: 811832311
+      MappaStati_32: -907925961
+      MappaStati_33: -1918912468
+      MappaStati_34: -465814276
+      MappaStati_35: -1068637140
+      MappaStati_36: 1402938704
+      MappaStati_37: -1506624529
+      MappaStati_38: -1652164912
+      MappaStati_39: 1081264807
+      MappaStati_4: -753903093
+      MappaStati_40: 379172704
+      MappaStati_41: 549994459
+      MappaStati_42: -1161799896
+      MappaStati_5: 1473693473
+      MappaStati_6: -1065151429
+      MappaStati_7: -1416475840
+      MappaStati_8: -1801278805
+      MappaStati_9: -254938903
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
