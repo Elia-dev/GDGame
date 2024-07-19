@@ -10,7 +10,7 @@ public class GameMenuUI : MonoBehaviour
 	[SerializeField] private Button CreateLobbyButton;
     [SerializeField] private Button JoinLobbyButton; 
     [SerializeField] InputField usernameInputField;
-    private string username;
+    
     
     private void Awake() {
         BackButton.onClick.AddListener(() => {
@@ -19,16 +19,10 @@ public class GameMenuUI : MonoBehaviour
 		
 		CreateLobbyButton.onClick.AddListener(() =>
         {
-            username = usernameInputField.text;
-            Debug.Log(username);
-            if (username != null)
+            string username = usernameInputField.text; 
+            if (Utils.CheckUsername(username))
             {
-                Debug.Log("Missing username");
-                // Implementare Popup
-            }
-            else if (Utils.CheckUsername(username))
-            {
-                Debug.Log("Username OK, changing scene from GameMenu to HostMenu");
+                //Debug.Log("Username OK, changing scene from GameMenu to HostMenu");
                 Player player = Player.Instance;
                 player.Name = username;
                 SceneManager.LoadScene("HostMenu");
@@ -36,29 +30,24 @@ public class GameMenuUI : MonoBehaviour
             }
             else
             {
-                Debug.Log("Invalid username");
+                //Debug.Log("Invalid username");
                 //Popup
             }
 		});
 
         JoinLobbyButton.onClick.AddListener(() =>
         {
-            username = usernameInputField.text;
-            if (username != null)
+            string username = usernameInputField.text;
+            if (Utils.CheckUsername(username))
             {
-                Debug.Log("Missing username");
-                //Popup
-            }
-            else if (Utils.CheckUsername(username))
-            {
-                Debug.Log("Username OK, changing scene from GameMenu to JoinLobbyMenu");
+                //Debug.Log("Username OK, changing scene from GameMenu to JoinLobbyMenu");
                 Player player = Player.Instance;
                 player.Name = username;
                 SceneManager.LoadScene("JoinGameMenu");
             }
             else
             {
-                Debug.Log("Invalid username");
+                //Debug.Log("Invalid username");
                 //Popup
             }
         });

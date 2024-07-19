@@ -54,23 +54,22 @@ public class ClientManager
 
     public async Task StartClient()
     {
-        
-        var cancellationTokenSource = new CancellationTokenSource();
-
-        var handlerTask = RequestHandler.HandleRequests(cancellationTokenSource.Token);
-        var uri = new Uri(_server);
-
-        using ( _webSocket = new ClientWebSocket())
+        if (_webSocket == null)
         {
-            
-            await _webSocket.ConnectAsync(uri, cancellationTokenSource.Token);
-            
-            var receiveTask = ReceiveMessage(_webSocket, cancellationTokenSource.Token);
+            var cancellationTokenSource = new CancellationTokenSource();
+            var handlerTask = RequestHandler.HandleRequests(cancellationTokenSource.Token);
+            var uri = new Uri(_server);
 
-            await Task.WhenAll(receiveTask);
+            using ( _webSocket = new ClientWebSocket())
+            {
+                await _webSocket.ConnectAsync(uri, cancellationTokenSource.Token);
+                var receiveTask = ReceiveMessage(_webSocket, cancellationTokenSource.Token);
+                await Task.WhenAll(receiveTask);
+            }
+
+            await handlerTask;
         }
-
-        await handlerTask;
+        
     }
     
     private static async Task SendMessage(ClientWebSocket webSocket, CancellationToken cancellationToken, string message)

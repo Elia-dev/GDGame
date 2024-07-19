@@ -11,26 +11,12 @@ public class StartMenuUI : MonoBehaviour
     [SerializeField] private Button ExitButton;
 
     private ClientManager cm;
-
-    void Start()
-    {
-        
-
-    }
     
     private void Awake() {
         StartButton.onClick.AddListener(() => {
             cm = ClientManager.Instance;
             Console.WriteLine("Trying to connect to database...");
             cm.StartClient();
-            if (cm.IsConnected())
-            {
-                Console.WriteLine("Connected");
-            }
-            else
-            {
-                Console.WriteLine("Connection failed");
-            }
             SceneManager.LoadScene("GameMenu");
         });
         
