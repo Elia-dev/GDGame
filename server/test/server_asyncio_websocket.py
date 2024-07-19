@@ -37,7 +37,7 @@ async def send_messages_to_clients():
 async def main():
     handler_task = asyncio.create_task(request_handler.handle_requests())
     input_task = asyncio.create_task(send_messages_to_clients())
-    async with websockets.serve(handler, "localhost", 8765):
+    async with websockets.serve(handler, "localhost", 8766):
         await asyncio.Future()  # Run forever
     await handler_task  # Assicura che il task del request handler venga atteso
     await input_task  # Assicura che il task dell'input venga atteso

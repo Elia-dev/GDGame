@@ -18,7 +18,7 @@ async def receive_messages(websocket):
 
 async def main():
     handler_task = asyncio.create_task(request_handler.handle_requests())
-    uri = "ws://localhost:8765"
+    uri = "ws://localhost:8766"
     async with websockets.connect(uri) as websocket:
         send_task = asyncio.create_task(send_messages(websocket))
         receive_task = asyncio.create_task(receive_messages(websocket))
