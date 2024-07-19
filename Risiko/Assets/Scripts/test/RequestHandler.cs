@@ -1,11 +1,11 @@
 using System;
 using System.Threading;
-using System.Threading.Channels;
+//using System.Threading.Channels;
 using System.Threading.Tasks;
 using UnityEngine;
-using WebSocketSharp;
+//using WebSocketSharp;
 public class RequestHandler
-{
+{/*
     private readonly Channel<(string, string)> _queue = Channel.CreateUnbounded<(string, string)>();
 
     public async Task HandleRequests(CancellationToken cancellationToken)
@@ -30,5 +30,5 @@ public class RequestHandler
     public async Task AddRequest(string clientId, string message)
     {
         await _queue.Writer.WriteAsync((clientId, message));
-    }
+    }*/
 }

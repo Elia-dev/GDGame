@@ -1,9 +1,9 @@
 using System;
-using WebSocketSharp;
-using WebSocketSharp.Server;
+//using WebSocketSharp;
+//using WebSocketSharp.Server;
 
 namespace test
-{
+{/*
     public class TestService : WebSocketBehavior
     {
         protected override void OnMessage(MessageEventArgs e)
@@ -30,5 +30,5 @@ namespace test
             Console.ReadKey(true);
             ws.Stop();      
         }
-    }
+    }*/
 }
