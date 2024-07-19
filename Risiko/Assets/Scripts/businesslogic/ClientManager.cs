@@ -1,17 +1,15 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using UnityEditor.PackageManager;
-using UnityEngine;
+using System.Net.WebSockets;
+using System.Threading.Tasks;
+
 
 public class ClientManager
 {
     private static ClientManager _instance;
     private static readonly object Lock = new object();
+    
     private ClientManager() // Private constructor to allow instantiation using singleton only
     {
     }
@@ -30,12 +28,21 @@ public class ClientManager
             }
         }
     }
-    
-    private string server = "127.0.0.1";
-    private int port = 1234;
-    private TcpClient client;
-
+    private static readonly RequestHandler RequestHandler = new RequestHandler();
+    private string _server = "ws://localhost:8766";
+    private ClientWebSocket _webSocket = null;
+    private CancellationToken _cancellationToken;
     private string lobby_id;
+
+    public bool IsConnected()
+    {
+        if (_webSocket != null)
+        {
+            return true;
+        }
+
+        return false;
+    }
     public string getLobbyId()
     {
         return lobby_id;
@@ -44,76 +51,56 @@ public class ClientManager
     {
         this.lobby_id = lobby_id;
     }
-    public TcpClient Client
-    {get { return client; } }
 
-    public void StartClient()
+    public async Task StartClient()
     {
-        client = new TcpClient();
-        client.Connect(this.server, this.port);
         
-        //Console.WriteLine("Type 'exit' anytime to quit");
+        var cancellationTokenSource = new CancellationTokenSource();
 
-        Thread receiverThread = new Thread(new ParameterizedThreadStart(ReceiveMessages));
-        receiverThread.Start(client);
-        
+        var handlerTask = RequestHandler.HandleRequests(cancellationTokenSource.Token);
+        var uri = new Uri(_server);
+
+        using ( _webSocket = new ClientWebSocket())
+        {
+            
+            await _webSocket.ConnectAsync(uri, cancellationTokenSource.Token);
+            
+            var receiveTask = ReceiveMessage(_webSocket, cancellationTokenSource.Token);
+
+            await Task.WhenAll(receiveTask);
+        }
+
+        await handlerTask;
+    }
+    
+    private static async Task SendMessage(ClientWebSocket webSocket, CancellationToken cancellationToken, string message)
+    {
+        var buffer = Encoding.UTF8.GetBytes(message);
+        await webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, cancellationToken);
     }
 
+    
+    private static async Task ReceiveMessage(ClientWebSocket webSocket, CancellationToken cancellationToken)
+    {
+        var buffer = new byte[1024 * 4];
+        while (!cancellationToken.IsCancellationRequested)
+        {
+            var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), cancellationToken);
+            var response = Encoding.UTF8.GetString(buffer, 0, result.Count);
+            Console.WriteLine($"Received from server: {response}");
+            await RequestHandler.AddRequest(webSocket.Options.ClientCertificates.ToString(), response);
+        }
+    }
+    
+    
     public void CreateLobbyAsHost()
     {
-        Send("HOST: " + Player.Instance.PlayerId); // Telling the server that I will be the host
+        SendMessage(_webSocket, _cancellationToken, "HOST: " + Player.Instance.PlayerId); // Telling the server that I will be the host
     }
-
+    /*
     public void JoinLobbyAsClient(string LobbyID)
     {
         Send("CLIENT - LOBBY_ID: " + LobbyID);
     }
-
-    public void Send(string message)
-    {
-        NetworkStream stream = this.client.GetStream();
-        while ((message = Console.ReadLine()) != null)
-        {
-            /*
-            if (message.ToLower() == "exit")
-            {
-                break;
-            }
-            */
-            byte[] data = Encoding.UTF8.GetBytes(message);
-            stream.Write(data, 0, data.Length);
-        }
-
-        stream.Close();
-    }
-
-    static void ReceiveMessages(object clientObj)
-    {
-        TcpClient client = (TcpClient)clientObj;
-        NetworkStream stream = client.GetStream();
-        byte[] buffer = new byte[1024];
-        int bytesRead;
-
-        try
-        {
-            while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) != 0)
-            {
-                string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                /*if (message == "START")
-                {
-                    byte[] startMessage = Encoding.UTF8.GetBytes("START");
-                    stream.Write(startMessage, 0, startMessage.Length);
-                }*/
-                //RequestHandler.FunctionHandler(message); // Andrebbe messo qui o dopo il while? Da testare/ragionarci
-            }
-        }
-        catch (SocketException)
-        {
-            // Handle the connection reset error
-        }
-        finally
-        {
-            client.Close();
-        }
-    }
+    */
 }

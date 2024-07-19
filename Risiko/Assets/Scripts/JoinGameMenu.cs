@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class JoingameMenu : MonoBehaviour
 {
     
-    ClientManager cm = ClientManager.Instance;
+    ClientManager_old cm = ClientManager_old.Instance;
     Player player = Player.Instance;
     
     [SerializeField] private Button BackButton;

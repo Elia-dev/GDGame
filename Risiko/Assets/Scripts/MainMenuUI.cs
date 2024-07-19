@@ -1,4 +1,5 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,16 +9,28 @@ public class StartMenuUI : MonoBehaviour
 {
     [SerializeField] private Button StartButton;
     [SerializeField] private Button ExitButton;
-    
-    ClientManager cm = ClientManager.Instance;
 
-    void start()
+    private ClientManager cm;
+
+    void Start()
     {
-        cm.StartClient();
+        
+
     }
     
     private void Awake() {
         StartButton.onClick.AddListener(() => {
+            cm = ClientManager.Instance;
+            Console.WriteLine("Trying to connect to database...");
+            cm.StartClient();
+            if (cm.IsConnected())
+            {
+                Console.WriteLine("Connected");
+            }
+            else
+            {
+                Console.WriteLine("Connection failed");
+            }
             SceneManager.LoadScene("GameMenu");
         });
         
