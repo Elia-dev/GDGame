@@ -104,7 +104,7 @@ public class ClientManager
                     byte[] startMessage = Encoding.UTF8.GetBytes("START");
                     stream.Write(startMessage, 0, startMessage.Length);
                 }*/
-                RequestHandler2.FunctionHandler(message); // Andrebbe messo qui o dopo il while? Da testare/ragionarci
+                //RequestHandler2.FunctionHandler(message); // Andrebbe messo qui o dopo il while? Da testare/ragionarci
             }
         }
         catch (SocketException)
