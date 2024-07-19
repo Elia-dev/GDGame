@@ -1,11 +1,10 @@
 using System;
-using System.Threading;
-//using System.Threading.Channels;
+using System.Threading.Channels;
 using System.Threading.Tasks;
-using UnityEngine;
-//using WebSocketSharp;
+
+
 public class RequestHandler
-{/*
+{
     private readonly Channel<(string, string)> _queue = Channel.CreateUnbounded<(string, string)>();
 
     public async Task HandleRequests(CancellationToken cancellationToken)
@@ -21,14 +20,12 @@ public class RequestHandler
             {
                 Console.WriteLine("I love dogs, doesn't everyone?");
             }
-            // Qui puoi aggiungere la logica per gestire il messaggio
-            // Ad esempio, rispondere al client, fare una richiesta ad un altro servizio, ecc.
-            await Task.Delay(5000); // Simula il tempo di gestione della richiesta
+            await Task.Delay(5000);
         }
     }
 
     public async Task AddRequest(string clientId, string message)
     {
         await _queue.Writer.WriteAsync((clientId, message));
-    }*/
+    }
 }

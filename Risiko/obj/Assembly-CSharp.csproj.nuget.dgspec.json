@@ -1,0 +1,44 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/filo/MEGA/Università/Magistrale/Game_Development/GDGame/Risiko/Assembly-CSharp.csproj": {}
+  },
+  "projects": {
+    "/home/filo/MEGA/Università/Magistrale/Game_Development/GDGame/Risiko/Assembly-CSharp.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/filo/MEGA/Università/Magistrale/Game_Development/GDGame/Risiko/Assembly-CSharp.csproj",
+        "projectName": "Assembly-CSharp",
+        "projectPath": "/home/filo/MEGA/Università/Magistrale/Game_Development/GDGame/Risiko/Assembly-CSharp.csproj",
+        "packagesPath": "/home/filo/.nuget/packages/",
+        "outputPath": "/home/filo/MEGA/Università/Magistrale/Game_Development/GDGame/Risiko/obj/",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "configFilePaths": [
+          "/home/filo/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net471"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net471": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net471": {
+          "dependencies": {
+            "System.Threading.Channels": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            }
+          }
+        }
+      }
+    }
+  }
+}
