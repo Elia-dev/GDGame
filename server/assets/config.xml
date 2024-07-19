@@ -95,14 +95,14 @@
                 <name>Western United States</name>
                 <image>image7.png</image>
                 <function>ter</function>
-                <description>state of West United States</description>
+                <description>state of Western United States</description>
                 <continent>NA</continent>
             </territory>
             <territory id="NA_ter8">
                 <name>Estern United States</name>
                 <image>image7.png</image>
                 <function>ter</function>
-                <description>state of Estern U.S.</description>
+                <description>state of Estern United States</description>
                 <continent>NA</continent>
             </territory>
             <territory id="NA_ter9">
@@ -166,24 +166,24 @@
                 <continent>EU</continent>
             </territory>
             <territory id="EU_ter4">
-                <name>North Europe</name>
+                <name>Northern Europe</name>
                 <image>image7.png</image>
                 <function>ter</function>
-                <description>state of North Europe</description>
+                <description>state of Northern Europe</description>
                 <continent>EU</continent>
             </territory>
             <territory id="EU_ter5">
-                <name>West Europe</name>
+                <name>Western Europe</name>
                 <image>image7.png</image>
                 <function>ter</function>
-                <description>state of West Europe</description>
+                <description>state of Western Europe</description>
                 <continent>EU</continent>
             </territory>
             <territory id="EU_ter6">
-                <name>South Europe</name>
+                <name>Southern Europe</name>
                 <image>image7.png</image>
                 <function>ter</function>
-                <description>state of South Europe</description>
+                <description>state of Southern Europe</description>
                 <continent>EU</continent>
             </territory>
             <territory id="EU_ter7">
@@ -196,10 +196,10 @@
         </europe>
         <africa id="AF">
             <territory id="AF_ter1">
-                <name>North Africa</name>
+                <name>Northern Africa</name>
                 <image>image7.png</image>
                 <function>ter</function>
-                <description>state of North Africa</description>
+                <description>state of Northern Africa</description>
                 <continent>AF</continent>
             </territory>
             <territory id="AF_ter2">
@@ -217,10 +217,10 @@
                 <continent>AF</continent>
             </territory>
             <territory id="AF_ter4">
-                <name>East Africa</name>
+                <name>Eastern Africa</name>
                 <image>image7.png</image>
                 <function>ter</function>
-                <description>state of East Africa</description>
+                <description>state of Eastern Africa</description>
                 <continent>AF</continent>
             </territory>
             <territory id="AF_ter5">
@@ -261,10 +261,10 @@
                 <continent>AS</continent>
             </territory>
             <territory id="AS_ter4">
-                <name>Chita</name>
+                <name>Irkutsk</name>
                 <image>image7.png</image>
                 <function>ter</function>
-                <description>state of Chita</description>
+                <description>state of Irkutsk</description>
                 <continent>AS</continent>
             </territory>
             <territory id="AS_ter5">
@@ -321,13 +321,6 @@
                 <image>image7.png</image>
                 <function>ter</function>
                 <description>state of Siam</description>
-                <continent>AS</continent>
-            </territory>
-			<territory id="AS_ter13">
-                <name>Irkutsk</name>
-                <image>image7.png</image>
-                <function>ter</function>
-                <description>state of Irkutsk</description>
                 <continent>AS</continent>
             </territory>
         </asia>
