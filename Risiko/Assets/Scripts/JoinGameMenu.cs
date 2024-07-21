@@ -31,7 +31,7 @@ public class JoingameMenu : MonoBehaviour
             lobby_id = lobbyIdInputField.text;
             player.LobbyId = lobby_id;
             Debug.Log(lobby_id);
-            if (lobby_id != null)
+            if (lobby_id == null)
             {
                 Debug.Log("Missing lobby id");
                 // Implementare Popup
