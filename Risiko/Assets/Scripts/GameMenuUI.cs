@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,7 +10,7 @@ public class GameMenuUI : MonoBehaviour
     [SerializeField] private Button BackButton;
 	[SerializeField] private Button CreateLobbyButton;
     [SerializeField] private Button JoinLobbyButton; 
-    [SerializeField] InputField usernameInputField;
+    [SerializeField] TMP_InputField usernameInputField;
     
     
     private void Awake() {

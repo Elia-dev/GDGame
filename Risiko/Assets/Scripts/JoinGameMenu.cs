@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -12,13 +13,14 @@ public class JoingameMenu : MonoBehaviour
     
     [SerializeField] private Button BackButton;
     [SerializeField] private Button JoinLobbyButton; 
-    [SerializeField] InputField lobbyIdInputField;
+    [SerializeField] TMP_InputField lobbyIdInputField;
+    [SerializeField] private GameObject PopUpIdLobbyError;
     private string lobby_id;
     
     void Start()
     {
-        cm.StartClient();
-        cm.Send(player.Name);
+        //cm.StartClient();
+        //cm.Send(player.Name);
     }
     
     private void Awake() {
@@ -31,10 +33,9 @@ public class JoingameMenu : MonoBehaviour
             lobby_id = lobbyIdInputField.text;
             player.LobbyId = lobby_id;
             Debug.Log(lobby_id);
-            if (lobby_id == null)
+            if (lobby_id.Equals(""))
             {
-                Debug.Log("Missing lobby id");
-                // Implementare Popup
+                PopUpIdLobbyError.SetActive(true);
             }
             else
             {
