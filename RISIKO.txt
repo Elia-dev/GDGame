@@ -1,6 +1,14 @@
 Font: https://www.dafont.com/mtheme.php?id=4
+
 Mappa: https://pixabay.com/vectors/board-of-risk-risk-game-of-risk-4308773/
+
 Menu: https://www.gamedevelopment.blog/unity-2d-game-tutorial-2019-main-menu/
+
 Sito mappa selezionabile: https://naoufelbougueroua.itch.io/interactive-worldmap/download/eyJleHBpcmVzIjoxNzIwNjg2MTk2LCJpZCI6MTgyNTgzNn0%3d.OmXx9an9LeGKaKaH8LsZuFuWK2I%3d
+
 Può essere utile per la mappa: https://discussions.unity.com/t/interactive-2d-world-map/79585/5
+
+Canva carte: https://www.canva.com/design/DAGLrgAy75I/gPzFjwXbotYKXdLUtgDTgA/edit?utm_content=DAGLrgAy75I&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton 
+
 Codice colore sfondo: CA9D5D
+
