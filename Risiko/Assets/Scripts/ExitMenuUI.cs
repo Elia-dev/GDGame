@@ -6,13 +6,12 @@ using UnityEngine.UI;
 
 public class ExitMenuUI : MonoBehaviour
 {
-    [SerializeField] private Button StartButton;
+    [SerializeField] private Button StayButton;
     [SerializeField] private Button QuitButton;
-    [SerializeField] private InputField UserInput;
     private string username;
 
     private void Awake() {
-        StartButton.onClick.AddListener(() => {
+        StayButton.onClick.AddListener(() => {
             SceneManager.LoadScene("MainMenu");
         });
         

@@ -5,7 +5,6 @@ using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class ClientManager_old

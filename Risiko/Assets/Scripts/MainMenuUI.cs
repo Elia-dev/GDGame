@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class StartMenuUI : MonoBehaviour
+public class MainMenuUI : MonoBehaviour
 {
     [SerializeField] private Button StartButton;
     [SerializeField] private Button ExitButton;

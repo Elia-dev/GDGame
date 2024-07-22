@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CountryManager : MonoBehaviour
+public class CountryManagerUI : MonoBehaviour
 {
-    public static CountryManager Instance { get; private set; }
-    private StateHandler selectedState;
+    public static CountryManagerUI Instance { get; private set; }
+    private StateHandlerUI selectedState;
 
     private void Awake() {
-        if (Instance == null) {
+        if (Instance is null) {
             Instance = this;
             DontDestroyOnLoad(gameObject);
         } else {
@@ -21,10 +21,10 @@ public class CountryManager : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
 
-            if (hit.collider != null) {
-                StateHandler stateHandler = hit.transform.GetComponent<StateHandler>();
-                if (stateHandler != null) {
-                    SelectState(stateHandler);
+            if (hit.collider is not null) {
+                StateHandlerUI stateHandlerUI = hit.transform.GetComponent<StateHandlerUI>();
+                if (stateHandlerUI is not null) {
+                    SelectState(stateHandlerUI);
                 }
             } else {
                 DeselectState();
@@ -32,8 +32,8 @@ public class CountryManager : MonoBehaviour
         }
     }
 
-    public void SelectState(StateHandler newState) {
-        if (selectedState != null) {
+    public void SelectState(StateHandlerUI newState) {
+        if (selectedState is not null) {
             selectedState.Deselect();
         }
         selectedState = newState;
@@ -41,7 +41,7 @@ public class CountryManager : MonoBehaviour
     }
 
     public void DeselectState() {
-        if (selectedState != null) {
+        if (selectedState is not null) {
             selectedState.Deselect();
             selectedState = null;
         }

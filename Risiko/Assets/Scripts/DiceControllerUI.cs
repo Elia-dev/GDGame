@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
-public class DiceController : MonoBehaviour
+public class DiceControllerUI : MonoBehaviour
 {
     
     [SerializeField] private Button DiceButton;

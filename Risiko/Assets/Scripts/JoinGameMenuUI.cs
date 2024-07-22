@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class JoingameMenu : MonoBehaviour
+public class JoinGameMenuUI : MonoBehaviour
 {
     
     ClientManager_old cm = ClientManager_old.Instance;
@@ -19,8 +19,8 @@ public class JoingameMenu : MonoBehaviour
     
     void Start()
     {
-        //cm.StartClient();
-        //cm.Send(player.Name);
+        cm.StartClient();
+        cm.Send(player.Name);
     }
     
     private void Awake() {
@@ -42,6 +42,9 @@ public class JoingameMenu : MonoBehaviour
                 cm.JoinLobbyAsClient(lobby_id);
                 // Attendere in qualche modo che si colleghi alla lobby
                 // Appena connesso mostrare la lobby di attesa con gli altri player
+                
+                //Cambio scena alla waiting room
+                SceneManager.LoadScene("WaitingRoomClient");
             }
 		});
     }

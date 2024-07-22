@@ -10,7 +10,8 @@ public class GameMenuUI : MonoBehaviour
     [SerializeField] private Button BackButton;
 	[SerializeField] private Button CreateLobbyButton;
     [SerializeField] private Button JoinLobbyButton; 
-    [SerializeField] TMP_InputField usernameInputField;
+    [SerializeField] TMP_InputField UsernameInputField;
+    [SerializeField] private GameObject PopupError;
     
     
     private void Awake() {
@@ -20,7 +21,7 @@ public class GameMenuUI : MonoBehaviour
 		
 		CreateLobbyButton.onClick.AddListener(() =>
         {
-            string username = usernameInputField.text; 
+            string username = UsernameInputField.text; 
             if (Utils.CheckUsername(username))
             {
                 //Debug.Log("Username OK, changing scene from GameMenu to HostMenu");
@@ -32,13 +33,13 @@ public class GameMenuUI : MonoBehaviour
             else
             {
                 //Debug.Log("Invalid username");
-                //Popup
+                PopupError.SetActive(true);
             }
 		});
 
         JoinLobbyButton.onClick.AddListener(() =>
         {
-            string username = usernameInputField.text;
+            string username = UsernameInputField.text;
             if (Utils.CheckUsername(username))
             {
                 //Debug.Log("Username OK, changing scene from GameMenu to JoinLobbyMenu");
@@ -49,7 +50,7 @@ public class GameMenuUI : MonoBehaviour
             else
             {
                 //Debug.Log("Invalid username");
-                //Popup
+                PopupError.SetActive(true);
             }
         });
     }

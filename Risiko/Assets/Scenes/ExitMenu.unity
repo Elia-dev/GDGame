@@ -256,7 +256,6 @@ GameObject:
   - component: {fileID: 146383217}
   - component: {fileID: 146383216}
   - component: {fileID: 146383215}
-  - component: {fileID: 146383218}
   m_Layer: 5
   m_Name: QuitButton
   m_TagString: Untagged
@@ -378,20 +377,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 146383213}
   m_CullTransparentMesh: 1
---- !u!114 &146383218
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 146383213}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb9e86d2b7aee247a9d73c4e82574915, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StartButton: {fileID: 146383215}
-  ExitButton: {fileID: 45898415}
 --- !u!1 &167250971
 GameObject:
   m_ObjectHideFlags: 0
@@ -773,9 +758,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f78095a91124e49fea1fa9227c3e7bfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StaytButton: {fileID: 45898415}
+  StayButton: {fileID: 45898415}
   QuitButton: {fileID: 146383215}
-  UserInput: {fileID: 0}
 --- !u!1 &777184941
 GameObject:
   m_ObjectHideFlags: 0
@@ -1059,8 +1043,8 @@ Canvas:
   m_GameObject: {fileID: 1588996652}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 1891766995}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
