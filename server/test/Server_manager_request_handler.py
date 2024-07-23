@@ -3,9 +3,9 @@ import Game
 import client
 
 class RequestHandler:
-    def __init__(self, games):
+    def __init__(self, game):
         self.queue = asyncio.Queue()
-        self.games = games
+        self.game = game
 
     async def handle_requests(self):
         while True:
