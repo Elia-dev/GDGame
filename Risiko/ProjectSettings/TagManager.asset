@@ -12,7 +12,7 @@ TagManager:
   - Water
   - UI
   - States
-  - 
+  - Army
   - 
   - 
   - 
@@ -43,4 +43,7 @@ TagManager:
     locked: 0
   - name: States
     uniqueID: 1532355869
+    locked: 0
+  - name: Army
+    uniqueID: 4286088597
     locked: 0
