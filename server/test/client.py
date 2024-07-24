@@ -7,14 +7,22 @@ request_handler = RequestHandler()
 
 async def send_messages(websocket):
     while True:
-        message = await asyncio.to_thread(input, "Enter message to send: ")
-        await websocket.send(message)
+        try:
+            message = await asyncio.to_thread(input, "Enter message to send: ")
+            await websocket.send(message)
+        except Exception as e:
+            print(f"Error sending message: {e}")
+            break
 
 async def receive_messages(websocket):
     while True:
-        response = await websocket.recv()
-        print(f"Received from server: {response}")
-        await request_handler.add_request(websocket.remote_address, response)
+        try:
+            response = await websocket.recv()
+            print(f"Received from server: {response}")
+            await request_handler.add_request(websocket.remote_address, response)
+        except Exception as e:
+            print(f"Error receiving message: {e}")
+            break
 
 async def main():
     handler_task = asyncio.create_task(request_handler.handle_requests())
