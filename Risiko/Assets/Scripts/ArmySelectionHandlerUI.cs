@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(PolygonCollider2D))] 
-public class ArmySelectionHandlerUI : MonoBehaviour
+public class ArmySelectionHandlerUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private SpriteRenderer sprite;
     public Color32 oldColor;
@@ -16,7 +17,21 @@ public class ArmySelectionHandlerUI : MonoBehaviour
         sprite.color = startColor;
     }
 
-    void OnMouseEnter()  {
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (!selected) {
+            oldColor = sprite.color;
+            sprite.color = hoverColor;
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (!selected) {
+            sprite.color = oldColor;
+        }
+    }
+    /*void OnMouseEnter()  {
         if (!selected) {
             oldColor = sprite.color;
             sprite.color = hoverColor;
@@ -27,7 +42,7 @@ public class ArmySelectionHandlerUI : MonoBehaviour
         if (!selected) {
             sprite.color = oldColor;
         }
-    }
+    }*/
 
     void OnMouseDown()
     {
