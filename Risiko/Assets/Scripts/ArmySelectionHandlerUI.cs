@@ -5,23 +5,23 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(PolygonCollider2D))] 
-public class ArmySelectionHandlerUI : MonoBehaviour, IPointerClickHandler//, IPointerEnterHandler, IPointerExitHandler
+//[RequireComponent(typeof(PolygonCollider2D))] 
+public class ArmySelectionHandlerUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    private SpriteRenderer sprite;
-    /*public Color32 oldColor;
+    /*private SpriteRenderer sprite;
+    public Color32 oldColor;
     public Color32 hoverColor;
     public Color32 startColor;*/
     [SerializeField] private GameObject frame;
     private bool selected = false;
     
     void Awake() {
-        sprite = GetComponent<SpriteRenderer>();
+        //sprite = GetComponent<SpriteRenderer>();
         //sprite.color = startColor;
     }
     /*
     void OnMouseEnter()  {
-        Debug.Log("Entra?!");
+        Debug.Log("Entra OnMouse?!");
         if (!selected) {
             oldColor = sprite.color;
             sprite.color = hoverColor;
@@ -33,51 +33,54 @@ public class ArmySelectionHandlerUI : MonoBehaviour, IPointerClickHandler//, IPo
         if (!selected) {
             sprite.color = oldColor;
         }
-    }
+    }*/
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("Entra?!");
+        //Debug.Log("Entra OnPoint?!");
         if (!selected) {
-            oldColor = sprite.color;
-            sprite.color = hoverColor;
+            /*oldColor = sprite.color;
+            sprite.color = hoverColor;*/
+            frame.SetActive(true);
         }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("Non può entrare!");
+        //Debug.Log("Non può entrare!");
         if (!selected) {
-            sprite.color = oldColor;
+            //sprite.color = oldColor;
+            frame.SetActive(false);
         }
-    }*/
+    }
 
-    public void OnPointerClick(PointerEventData eventData)
+   public void OnPointerClick(PointerEventData eventData)
     {
-        selected = true;
-        Debug.Log("Select");
+        Select();
+        //selected = true;
+        //Debug.Log("Select");
         /// CARICARE DATI STATO
         //sprite.color = hoverColor;
-        frame.SetActive(true);
+        //frame.SetActive(true);
     }
-    void OnMouseDown()
+    /*void OnMouseDown()
     {
         if (!selected)
         {
             Select();
         }
-    }
+    }*/
     
     public void Select() {
         selected = true;
-        Debug.Log("Select");
+        //Debug.Log("Select");
         /// CARICARE DATI STATO
         //sprite.color = hoverColor;
         frame.SetActive(true);
     }
 
     public void Deselect() {
-        Debug.Log("Deselect");
+        //Debug.Log("Deselect");
         selected = false;
         frame.SetActive(false);
         //sprite.color = startColor;

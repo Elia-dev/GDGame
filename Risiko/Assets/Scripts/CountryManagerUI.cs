@@ -5,7 +5,7 @@ using UnityEngine;
 public class CountryManagerUI : MonoBehaviour
 {
     public static CountryManagerUI Instance { get; private set; }
-    private StateHandlerUI selectedState;
+    private CountryHandlerUI selectedCountry;
 
     private void Awake() {
         if (Instance is null) {
@@ -22,9 +22,9 @@ public class CountryManagerUI : MonoBehaviour
             RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
 
             if (hit.collider is not null) {
-                StateHandlerUI stateHandlerUI = hit.transform.GetComponent<StateHandlerUI>();
-                if (stateHandlerUI is not null) {
-                    SelectState(stateHandlerUI);
+                CountryHandlerUI countryHandlerUI = hit.transform.GetComponent<CountryHandlerUI>();
+                if (countryHandlerUI is not null) {
+                    SelectState(countryHandlerUI);
                 }
             } else {
                 DeselectState();
@@ -32,18 +32,18 @@ public class CountryManagerUI : MonoBehaviour
         }
     }
 
-    public void SelectState(StateHandlerUI newState) {
-        if (selectedState is not null) {
-            selectedState.Deselect();
+    public void SelectState(CountryHandlerUI newCountry) {
+        if (selectedCountry is not null) {
+            selectedCountry.Deselect();
         }
-        selectedState = newState;
-        selectedState.Select();
+        selectedCountry = newCountry;
+        selectedCountry.Select();
     }
 
     public void DeselectState() {
-        if (selectedState is not null) {
-            selectedState.Deselect();
-            selectedState = null;
+        if (selectedCountry is not null) {
+            selectedCountry.Deselect();
+            selectedCountry = null;
         }
     }
 }

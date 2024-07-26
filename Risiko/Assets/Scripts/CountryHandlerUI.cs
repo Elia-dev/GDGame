@@ -5,7 +5,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(PolygonCollider2D))] 
 
-public class StateHandlerUI : MonoBehaviour  {
+public class CountryHandlerUI : MonoBehaviour  {
     private SpriteRenderer sprite;
     public Color32 oldColor;
     public Color32 hoverColor;
