@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ArmySelectionManagerUI : MonoBehaviour, IPointerClickHandler {
+public class ArmySelectionManagerUI : MonoBehaviour {
     public static ArmySelectionManagerUI Instance { get; private set; }
     private ArmySelectionHandlerUI selectedArmy;
 
@@ -59,31 +59,20 @@ public class ArmySelectionManagerUI : MonoBehaviour, IPointerClickHandler {
         // Trova l'EventSystem nella scena
         eventSystem = EventSystem.current;
     }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        Debug.Log("UI Element Clicked");
-
-        // Verifica se il clic è sopra un oggetto con un collider
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
-        {
-            Debug.Log("Hit object: " + hit.transform.name);
-            // Esegui azioni specifiche se necessario
-        }
-        else
-        {
-            Debug.Log("No hit detected.");
-        }
-    }
     
     private void Update() {
-        /*if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0)) {
             pointerEventData = new PointerEventData(eventSystem)
             {
                 position = Input.mousePosition
             };
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
+
+            if (hit.collider is not null) {
+                Debug.Log(hit.transform.name);
+            }
 
             List<RaycastResult> results = new List<RaycastResult>();
             raycaster.Raycast(pointerEventData, results);
@@ -100,7 +89,7 @@ public class ArmySelectionManagerUI : MonoBehaviour, IPointerClickHandler {
             else {
                 DeselectArmy();
             }
-        }*/
+        }
     }
 
     public void SelectArmy(ArmySelectionHandlerUI newArmy) {
