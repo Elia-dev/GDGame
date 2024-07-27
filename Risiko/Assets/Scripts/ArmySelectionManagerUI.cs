@@ -9,8 +9,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ArmySelectionManagerUI : MonoBehaviour {
-    public static ArmySelectionManagerUI Instance { get; private set; }
-    private ArmySelectionHandlerUI oldSelectedArmy;
+    private static ArmySelectionManagerUI Instance { get; set; }
     private ArmySelectionHandlerUI selectedArmy;
 
     private GraphicRaycaster raycaster;
@@ -83,9 +82,6 @@ public class ArmySelectionManagerUI : MonoBehaviour {
                     }
                 }
             }
-            /*else {
-                DeselectArmy();
-            }*/
         }
     }
 
@@ -98,13 +94,6 @@ public class ArmySelectionManagerUI : MonoBehaviour {
         selectedArmy.Select();
         errorMessage.gameObject.SetActive(false);
         title.color = Color.black;
-    }
-
-    public void DeselectArmy() {
-        if (selectedArmy is not null) {
-            selectedArmy.Deselect();
-            selectedArmy = null;
-        }
     }
 
     public void ChooseArmy() {
