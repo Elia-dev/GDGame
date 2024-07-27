@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ArmySelectionManagerUI : MonoBehaviour {
     public static ArmySelectionManagerUI Instance { get; private set; }
+    private ArmySelectionHandlerUI oldSelectedArmy;
     private ArmySelectionHandlerUI selectedArmy;
 
     private GraphicRaycaster raycaster;
@@ -22,6 +25,7 @@ public class ArmySelectionManagerUI : MonoBehaviour {
     [SerializeField] private GameObject purpleArmy;
     [SerializeField] private GameObject blackArmy;
     [SerializeField] private TMP_Text title;
+    [SerializeField] private TMP_Text errorMessage;
 
     private void Awake() {
         if (Instance is null) {
@@ -67,13 +71,6 @@ public class ArmySelectionManagerUI : MonoBehaviour {
                 position = Input.mousePosition
             };
 
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
-
-            if (hit.collider is not null) {
-                Debug.Log(hit.transform.name);
-            }
-
             List<RaycastResult> results = new List<RaycastResult>();
             raycaster.Raycast(pointerEventData, results);
             
@@ -86,19 +83,21 @@ public class ArmySelectionManagerUI : MonoBehaviour {
                     }
                 }
             }
-            else {
+            /*else {
                 DeselectArmy();
-            }
+            }*/
         }
     }
 
     public void SelectArmy(ArmySelectionHandlerUI newArmy) {
-        if (selectedArmy is not null) {
+        if (selectedArmy is not null && newArmy != selectedArmy) {
             selectedArmy.Deselect();
         }
 
         selectedArmy = newArmy;
         selectedArmy.Select();
+        errorMessage.gameObject.SetActive(false);
+        title.color = Color.black;
     }
 
     public void DeselectArmy() {
@@ -113,11 +112,11 @@ public class ArmySelectionManagerUI : MonoBehaviour {
             //COMUNICA AL SERVER L'ARMATA
             //ATTENDE COMUNICAZIONE DAL SERVER PER PASSARE ALLA PROSSIMA FASE
             //LANCIA LA PROSSIMA VISTA
-            Debug.Log("CANE");
-            gameObject.GetComponent<PopUpSettingsUI>().Close();
+            GameObject.Find("PopUpArmySelection").SetActive(false);
         }
         else {
-            title.faceColor = Color.red;
+            title.color = Color.red;
+            errorMessage.gameObject.SetActive(true);
         }
     }
 }
