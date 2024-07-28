@@ -5,35 +5,21 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-//[RequireComponent(typeof(PolygonCollider2D))] 
 public class ArmySelectionHandlerUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    /*private SpriteRenderer sprite;
-    public Color32 oldColor;
-    public Color32 hoverColor;
-    public Color32 startColor;*/
     [SerializeField] private GameObject frame;
+    [SerializeField] private Color32 armyColor;
+
+    public Color32 ArmyColor {
+        get => armyColor;
+    }
+
     private bool selected = false;
     
     void Awake() {
         //sprite = GetComponent<SpriteRenderer>();
         //sprite.color = startColor;
     }
-    /*
-    void OnMouseEnter()  {
-        Debug.Log("Entra OnMouse?!");
-        if (!selected) {
-            oldColor = sprite.color;
-            sprite.color = hoverColor;
-        }
-    }
-
-    void OnMouseExit() {
-        Debug.Log("Non può entrare!");
-        if (!selected) {
-            sprite.color = oldColor;
-        }
-    }*/
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -63,13 +49,6 @@ public class ArmySelectionHandlerUI : MonoBehaviour, IPointerEnterHandler, IPoin
         //sprite.color = hoverColor;
         //frame.SetActive(true);
     }
-    /*void OnMouseDown()
-    {
-        if (!selected)
-        {
-            Select();
-        }
-    }*/
     
     public void Select() {
         selected = true;

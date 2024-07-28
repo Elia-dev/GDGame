@@ -100,7 +100,11 @@ public class ArmySelectionManagerUI : MonoBehaviour {
         if (selectedArmy is not null) {
             //COMUNICA AL SERVER L'ARMATA
             //ATTENDE COMUNICAZIONE DAL SERVER PER PASSARE ALLA PROSSIMA FASE
-            //LANCIA LA PROSSIMA VISTA
+            //LANCIA LA PROSSIMA FASE
+            Color32 color = selectedArmy.ArmyColor;
+            color.a = 100;
+            CountryHandlerUI.userColor = color;
+            CountryHandlerUI.ArmyDistributionPhase();
             GameObject.Find("PopUpArmySelection").SetActive(false);
         }
         else {
