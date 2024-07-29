@@ -47,7 +47,10 @@ class Game:
                 if "cane" in message:
                     print("I love dogs, doesn't everyone?")
                 if "REQUEST_NAME_UPDATE_PLAYER_LIST" in message:
-                    await player.sock.send("REQUEST_NAME_UPDATE_PLAYER_LIST: " + str(self.players))
+                    player_names = []
+                    for player in self.players:
+                        player_names.append(player.name)
+                    await player.sock.send("REQUEST_NAME_UPDATE_PLAYER_LIST: " + str(player_names))
                 # Qui puoi aggiungere la logica per gestire il messaggio
                 # Ad esempio, rispondere al client, fare una richiesta ad un altro servizio, ecc.
                 await asyncio.sleep(5)  # Simula il tempo di gestione della richiesta
