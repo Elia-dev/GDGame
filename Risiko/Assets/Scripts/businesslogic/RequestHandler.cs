@@ -29,6 +29,10 @@ public class RequestHandler
                 ClientManager cm = ClientManager.Instance;
                 cm.setLobbyId(_request);
             }
+            else
+            {
+                Debug.Log("HANDLER: Richiesta non gestibile" + message);
+            }
             await Task.Delay(500);
         }
     }
