@@ -12,6 +12,7 @@ using UnityEngine.UI;
 public class HostMenuUI : MonoBehaviour
 {
     [SerializeField] private Button BackButton;
+    [SerializeField] private Button UpdateButton;
     [SerializeField] private Button RunGameButton;
     [SerializeField] private TMP_Text PlayerList;
     [SerializeField] private TMP_Text LobbyID;
@@ -65,11 +66,12 @@ public class HostMenuUI : MonoBehaviour
         //prima o poi ci sarà qualcosa di settato in quanto il server prima o poi risponderà
         
         // Appena viene premuto il bottone start cambiare scena per far cominciare la partita
-        // DUBBIO: Come aggiorno i giocatori nella lobby di attesa appena si connettono al server?
+        
+        //request update
         
         //Aggiornamento lista giocatori
-        PlayerList.text = "P1 P2 P3 ...";
-        
+        PlayerList.text = cm.name_players_temporaneo;
+
         //Quando i giocatori saranno 3+
         //RunGameButton.interactable = true;
     }
@@ -78,6 +80,11 @@ public class HostMenuUI : MonoBehaviour
         BackButton.onClick.AddListener(() =>
         {
             SceneManager.LoadScene("GameMenu");
+        });
+        
+        UpdateButton.onClick.AddListener(() =>
+        {
+            cm.RequestNameUpdatePlayerList();
         });
     }
 }

@@ -29,6 +29,14 @@ public class RequestHandler
                 ClientManager cm = ClientManager.Instance;
                 cm.setLobbyId(_request);
             }
+
+            if (message.Contains("REQUEST_NAME_UPDATE_PLAYER_LIST:"))
+            {
+                Debug.Log("Ricevuta richiesta: REQUEST_NAME_UPDATE_PLAYER_LIST");
+                ClientManager cm = ClientManager.Instance;
+                cm.name_players_temporaneo = RemoveRequest(message, "REQUEST_NAME_UPDATE_PLAYER_LIST:");
+                Debug.Log("Lista players: " + cm.name_players_temporaneo);
+            }
             else
             {
                 Debug.Log("HANDLER: Richiesta non gestibile" + message);

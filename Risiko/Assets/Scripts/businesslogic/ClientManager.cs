@@ -10,7 +10,7 @@ public class ClientManager
 {
     private static ClientManager _instance;
     private static readonly object Lock = new object();
-    
+    public string name_players_temporaneo = "nessuno";
     private ClientManager() // Private constructor to allow instantiation using singleton only
     {
     }
@@ -110,6 +110,11 @@ public class ClientManager
     public async void JoinLobbyAsClient(string lobbyID)
     {
         await SendMessage(_webSocket, _cancellationToken, "JOIN_GAME: " + lobbyID);
+    }
+    
+    public async void RequestNameUpdatePlayerList()
+    {
+        await SendMessage(_webSocket, _cancellationToken, "REQUEST_NAME_UPDATE_PLAYER_LIST: ");
     }
     /*
     public void JoinLobbyAsClient(string LobbyID)
