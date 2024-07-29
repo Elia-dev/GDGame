@@ -58,9 +58,16 @@ public class ClientManager
         if (_webSocket == null)
         {
             var cancellationTokenSource = new CancellationTokenSource();
-            var handlerTask = RequestHandler.HandleRequests(cancellationTokenSource.Token);
+            
             var uri = new Uri(_server);
-
+            
+            _webSocket = new ClientWebSocket();
+            await _webSocket.ConnectAsync(uri, cancellationTokenSource.Token);
+            var handlerTask = RequestHandler.HandleRequests(cancellationTokenSource.Token);
+            var receiveTask = ReceiveMessage(_webSocket, cancellationTokenSource.Token);
+            await Task.WhenAll(handlerTask, receiveTask);
+            
+            /*
             using ( _webSocket = new ClientWebSocket())
             {
                 await _webSocket.ConnectAsync(uri, cancellationTokenSource.Token);
@@ -69,6 +76,7 @@ public class ClientManager
             }
 
             await handlerTask;
+            */
         }
         
     }
@@ -87,9 +95,10 @@ public class ClientManager
         {
             var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), cancellationToken);
             var response = Encoding.UTF8.GetString(buffer, 0, result.Count);
-            Debug.Log("Received from server: {response}");
-            await RequestHandler.AddRequest(webSocket.Options.ClientCertificates.ToString(), response);
+            Debug.Log("Received from server: " + response);
+            RequestHandler.AddRequest(webSocket.Options.ClientCertificates.ToString(), response);
         }
+        Debug.Log("Uscito dal loop delle richieste");
     }
     
     

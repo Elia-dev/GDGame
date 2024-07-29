@@ -31,6 +31,7 @@ public class HostMenuUI : MonoBehaviour
 
     }
 */
+    /*
     private void Update()
     {
         //cm.getLobbyId(); //Fare lo show di questo a manetta,
@@ -45,16 +46,33 @@ public class HostMenuUI : MonoBehaviour
         //Quando i giocatori saranno 3+
         //RunGameButton.interactable = true;
     }
+    */
     
     void Start()
     {
-        cm.CreateLobbyAsHost(); // DAL SERVER DEVE PRIMA ESSERE ARRIVATO L'ID DEL PLAYER (da implementare)
+        cm.CreateLobbyAsHost(); 
         
         //Visualizzazione copdice lobby
         //LobbyID.text = "1518";
 
     }
-
+    
+    private void Update()
+    {
+        Debug.Log("LOBBY ID LETTA: " + cm.getLobbyId());
+        LobbyID.text = cm.getLobbyId(); //Fare lo show di questo a manetta,
+        
+        //prima o poi ci sarà qualcosa di settato in quanto il server prima o poi risponderà
+        
+        // Appena viene premuto il bottone start cambiare scena per far cominciare la partita
+        // DUBBIO: Come aggiorno i giocatori nella lobby di attesa appena si connettono al server?
+        
+        //Aggiornamento lista giocatori
+        //PlayerList.text = "P1 P2 ...";
+        
+        //Quando i giocatori saranno 3+
+        //RunGameButton.interactable = true;
+    }
     private void Awake()
     {
         BackButton.onClick.AddListener(() =>
