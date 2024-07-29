@@ -44,7 +44,17 @@
         <object id="obj9">
             <image>image9.png</image>
             <function>obj</function>
-            <description>to destroy completely the armies of a certain colour. If it is impossible (i.e. the player has that colour, or no one has that colour, or the player with that colour was already defeated by another one), then the target becomes to conquer 24 territories.</description>
+            <description>to destroy completely the armies of Red player (If another player eliminates Red, that player becomes your new target)</description>
+        </object>
+		<object id="obj10">
+            <image>image9.png</image>
+            <function>obj</function>
+            <description>to destroy completely the armies of Blue player (If another player eliminates Blue, that player becomes your new target)</description>
+        </object>
+		<object id="obj11">
+            <image>image9.png</image>
+            <function>obj</function>
+            <description>to destroy completely the armies of Green player (If another player eliminates Green, that player becomes your new target)</description>
         </object>
     </objects>
     <territories>

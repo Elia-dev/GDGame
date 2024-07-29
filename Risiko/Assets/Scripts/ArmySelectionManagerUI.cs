@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
@@ -25,6 +25,7 @@ public class ArmySelectionManagerUI : MonoBehaviour {
     [SerializeField] private GameObject blackArmy;
     [SerializeField] private TMP_Text title;
     [SerializeField] private TMP_Text errorMessage;
+    [SerializeField] private GameObject cardCanvas;
 
     private void Awake() {
         if (Instance is null) {
@@ -104,8 +105,10 @@ public class ArmySelectionManagerUI : MonoBehaviour {
             Color32 color = selectedArmy.ArmyColor;
             color.a = 100;
             CountryHandlerUI.userColor = color;
-            CountryHandlerUI.ArmyDistributionPhase();
+            //CountryHandlerUI.ArmyDistributionPhase();
             GameObject.Find("PopUpArmySelection").SetActive(false);
+            //RICEZIONE OGGETTO CARTA DA PARTE DEL SERVER
+            cardCanvas.SetActive(true);
         }
         else {
             title.color = Color.red;
