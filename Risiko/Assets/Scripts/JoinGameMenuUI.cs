@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class JoinGameMenuUI : MonoBehaviour
 {
     
-    ClientManager_old cm = ClientManager_old.Instance;
+    ClientManager cm = ClientManager.Instance;
     Player player = Player.Instance;
     
     [SerializeField] private Button BackButton;
@@ -20,7 +20,7 @@ public class JoinGameMenuUI : MonoBehaviour
     void Start()
     {
         cm.StartClient();
-        cm.Send(player.Name);
+        //cm.Send(player.Name);
     }
     
     private void Awake() {
@@ -32,7 +32,7 @@ public class JoinGameMenuUI : MonoBehaviour
         {
             lobby_id = lobbyIdInputField.text;
             player.LobbyId = lobby_id;
-            Debug.Log(lobby_id);
+            Debug.Log("Lobby ID: " + lobby_id);
             if (lobby_id.Equals(""))
             {
                 PopUpIdLobbyError.SetActive(true);

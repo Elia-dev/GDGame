@@ -33,7 +33,7 @@ async def handler(websocket, path):
                 player.player_id = "0"
                 game = Game(game_id)
                 games.append(game)
-                await websocket.send("Game_id" + game_id)
+                await websocket.send("LOBBY_ID: " + game_id)
                 print(f"Game {game_id} created")
                 game_task = asyncio.create_task(game.create_game(player))
 

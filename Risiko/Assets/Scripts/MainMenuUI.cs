@@ -13,10 +13,11 @@ public class MainMenuUI : MonoBehaviour
     private ClientManager cm;
     
     private void Awake() {
-        StartButton.onClick.AddListener(() => {
+        StartButton.onClick.AddListener(async () => {
             cm = ClientManager.Instance;
-            Console.WriteLine("Trying to connect to database...");
-            cm.StartClient();
+            Debug.Log("Trying to connect to database...");
+            await cm.StartClient();
+            Debug.Log("CONNECTED");
             SceneManager.LoadScene("GameMenu");
         });
         

@@ -15,11 +15,12 @@ public class HostMenuUI : MonoBehaviour
     [SerializeField] private Button RunGameButton;
     [SerializeField] private TMP_Text PlayerList;
     [SerializeField] private TMP_Text LobbyID;
-    ClientManager_old cm = ClientManager_old.Instance;
+    ClientManager cm = ClientManager.Instance;
     Player player = Player.Instance;
     
     
     // Start is called before the first frame update
+    /*
     void Start()
     {
         //cm.Send(player.Name);
@@ -29,7 +30,7 @@ public class HostMenuUI : MonoBehaviour
         //LobbyID.text = "1518";
 
     }
-
+*/
     private void Update()
     {
         //cm.getLobbyId(); //Fare lo show di questo a manetta,
@@ -43,6 +44,15 @@ public class HostMenuUI : MonoBehaviour
         
         //Quando i giocatori saranno 3+
         //RunGameButton.interactable = true;
+    }
+    
+    void Start()
+    {
+        cm.CreateLobbyAsHost(); // DAL SERVER DEVE PRIMA ESSERE ARRIVATO L'ID DEL PLAYER (da implementare)
+        
+        //Visualizzazione copdice lobby
+        //LobbyID.text = "1518";
+
     }
 
     private void Awake()

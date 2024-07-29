@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading;
 using System.Net.WebSockets;
 using System.Threading.Tasks;
+using UnityEngine;
 
 
 public class ClientManager
@@ -29,7 +30,7 @@ public class ClientManager
         }
     }
     private static readonly RequestHandler RequestHandler = new RequestHandler();
-    private string _server = "ws://localhost:8766";
+    private string _server = "ws://150.217.51.105:8766";
     private ClientWebSocket _webSocket = null;
     private CancellationToken _cancellationToken;
     private string lobby_id;
@@ -86,15 +87,20 @@ public class ClientManager
         {
             var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), cancellationToken);
             var response = Encoding.UTF8.GetString(buffer, 0, result.Count);
-            Console.WriteLine($"Received from server: {response}");
+            Debug.Log("Received from server: {response}");
             await RequestHandler.AddRequest(webSocket.Options.ClientCertificates.ToString(), response);
         }
     }
     
     
-    public void CreateLobbyAsHost()
+    public async void CreateLobbyAsHost()
     {
-        SendMessage(_webSocket, _cancellationToken, "HOST: " + Player.Instance.PlayerId); // Telling the server that I will be the host
+        await SendMessage(_webSocket, _cancellationToken, "HOST_GAME:"); // Telling the server that I will be the host
+    }
+    
+    public async void JoinLobbyAsClient(string lobbyID)
+    {
+        await SendMessage(_webSocket, _cancellationToken, "JOIN_GAME: " + lobbyID);
     }
     /*
     public void JoinLobbyAsClient(string LobbyID)
