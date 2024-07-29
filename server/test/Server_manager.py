@@ -52,6 +52,7 @@ async def handler(websocket, path):
                         if len(game.players) < 6:
                             print(f"Added player {player} to lobby {game_id}")
                             game.add_player(player)
+                            await Game.broadcast("UPDATED_LOBBY_PLAYERS: " + str(game.players))
                             client_task = asyncio.create_task(game.listen_to_player_request(player))
                             await client_task
                         else:

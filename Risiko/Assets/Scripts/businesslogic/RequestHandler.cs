@@ -7,7 +7,7 @@ using UnityEngine;
 public class RequestHandler
 {
     private readonly Channel<(string, string)> _queue = Channel.CreateUnbounded<(string, string)>();
-    private string request;
+    private string _request;
     public async Task HandleRequests(CancellationToken cancellationToken)
     {
         await foreach (var (clientId, message) in _queue.Reader.ReadAllAsync(cancellationToken))
@@ -23,16 +23,11 @@ public class RequestHandler
             }
             if(message.Contains("LOBBY_ID:")) // Manage lobby_id request
             {
-                Debug.Log("Arrivato messaggio: " + message);
-                request = removeRequest(message, "LOBBY_ID:");
-                Debug.Log("Info estrapolata:" + request);
+                //Debug.Log("ARRIVATO MESSAGGIO LOBBY: " + message);
+                _request = RemoveRequest(message, "LOBBY_ID:");
+                //Debug.Log("INFO ESTRAPOLATA:" + _request);
                 ClientManager cm = ClientManager.Instance;
-                cm.setLobbyId(request);
-                
-                // Setta l'id della lobby nella grafica
-                // e nello stato del giocatore, ma ci serve davvero nello stato del giocatore se già ce l'abbiamo nel client manager?
-                // forse no, si risolve qualche problema di concorrenza
-                //someClass.updateUI()
+                cm.setLobbyId(_request);
             }
             await Task.Delay(500);
         }
@@ -44,15 +39,10 @@ public class RequestHandler
         //_queue.Writer.WriteAsync((clientId, message));
     }
     
-    private static string removeRequest(string source, string input)
+    private string RemoveRequest(string source, string request)
     {
-        string value = null;
-        // Trova la posizione di "input:" e calcola l'inizio del valore
-        int startIndex = input.IndexOf(source) + source.Length;
-
-        // Estrai il valore e rimuovi eventuali spazi
-        value = input.Substring(startIndex).Trim();
-        
+        string value = source.Replace(request, "");
+        //Debug.Log("VALORE CALCOLATO:" + value);
         return value;
     }
 }

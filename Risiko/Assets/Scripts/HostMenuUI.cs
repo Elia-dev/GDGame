@@ -59,7 +59,7 @@ public class HostMenuUI : MonoBehaviour
     
     private void Update()
     {
-        Debug.Log("LOBBY ID LETTA: " + cm.getLobbyId());
+        //Debug.Log("LOBBY ID LETTA: " + cm.getLobbyId());
         LobbyID.text = cm.getLobbyId(); //Fare lo show di questo a manetta,
         
         //prima o poi ci sarà qualcosa di settato in quanto il server prima o poi risponderà
@@ -68,7 +68,7 @@ public class HostMenuUI : MonoBehaviour
         // DUBBIO: Come aggiorno i giocatori nella lobby di attesa appena si connettono al server?
         
         //Aggiornamento lista giocatori
-        //PlayerList.text = "P1 P2 ...";
+        PlayerList.text = "P1 P2 P3 ...";
         
         //Quando i giocatori saranno 3+
         //RunGameButton.interactable = true;

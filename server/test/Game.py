@@ -14,9 +14,11 @@ class Game:
         self.players.append(player)
         print(f"Player {player.player_id} added to game {self.game_id}")
 
+
     def remove_player(self, player):
         self.players.remove(player)
         print(f"Player {player} removed from game {self.game_id}")
+
 
     async def broadcast(self, message):
         for player in self.players:
