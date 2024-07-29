@@ -4,6 +4,7 @@ from server_request_handler import RequestHandler
 import utils
 from Player import Player
 from Game import Game
+
 clients = []
 games = []
 '''
@@ -16,8 +17,8 @@ dentro la classe Game e lo stato del gioco,
 La classe Game a sua volta avrà la lista dei giocatori che fanno parte di quella partita, ogni player avrà salvato la propria websocket
 '''
 
-async def handler(websocket, path):
 
+async def handler(websocket, path):
     client_id = websocket.remote_address
     player = Player(websocket)
     clients.append(player)
@@ -29,39 +30,30 @@ async def handler(websocket, path):
             if "HOST_GAME" in message:
                 game_id = utils._generate_game_id()
                 player.lobby_id = game_id
+                player.player_id = "0"
                 game = Game(game_id)
                 games.append(game)
                 await websocket.send("Game_id" + game_id)
                 print(f"Game {game_id} created")
-                index = games.index(game)
-                #games[index].create_game(1)
-                asyncio.create_task(game.create_game(player))
-                #break
-                #Se non funge togliere await della riga sopra e commentare break
-                #scommentare le due righe sotto:
-                await game.listen_to_request()
-                break
+                game_task = asyncio.create_task(game.create_game(player))
+
+                await game_task
 
 
-                #await games[game_id].add_request(client_id, "create_game")
 
             elif "JOIN_GAME" in message:
 
-                #Join game ancora da fare
                 #Prendo l'id della lobby, se esiste aggiungo il player alla lobby aggiungendolo alla lista contenuta in Game
-                #Se non esiste stampo errore, non creo nuovi thread
 
+                player.player_id = "1"
                 game_id = message.split(": ")[1]
-                #Da scrivere funzione per estrapolare id dalla stringa
                 for game in games:
                     if game.game_id == game_id:
                         if len(game.players) < 6:
                             print(f"Added player {player} to lobby {game_id}")
                             game.add_player(player)
-                            #return
-                        #Se non funge provare a commentare la riga sopra e scommentare le due sotto
-                            await game.listen_to_request()
-                            break
+                            client_task = asyncio.create_task(game.listen_to_player_request(player))
+                            await client_task
                         else:
                             print("Lobby is full")
 
@@ -72,9 +64,11 @@ async def handler(websocket, path):
     except Exception as e:
         print(f"Unexpected error: {e}")
 
+
 async def main():
     async with websockets.serve(handler, "localhost", 8766):
         await asyncio.Future()  # Run forever
+
 
 if __name__ == "__main__":
     asyncio.run(main())

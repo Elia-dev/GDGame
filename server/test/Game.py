@@ -12,7 +12,7 @@ class Game:
 
     def add_player(self, player):
         self.players.append(player)
-        print(f"Player {player.id} added to game {self.game_id}")
+        print(f"Player {player.player_id} added to game {self.game_id}")
 
     def remove_player(self, player):
         self.players.remove(player)
@@ -26,21 +26,22 @@ class Game:
         self.host_player = player
         self.players.append(player)
 
-        asyncio.create_task(self.handle_game())
-        #asyncio.create_task(self.listen_to_request())
-        #Tenere la riga sopra commentata solo se nel server manager sono attive le righe
-        #await game.listen_to_request()
-        #break
-        #Nella scelta dell'host
+        tasks = [
+            asyncio.create_task(self.handle_game()),
+            asyncio.create_task(self.listen_to_player_request(self.host_player))
+        ]
+        await asyncio.gather(*tasks)
 
 
     async def handle_game(self):
         while self.game_running:
             try:
                 player, message = await self.queue.get()
-                print(f"GAME: handling request from {player}: {message}")
+                print(f"GAME: handling request from client id - : {player.player_id}: {message}")
                 if "prova" in message:
                     print("Bella prova compà")
+                    await player.sock.send("HAI MANDATO PROVA")
+                    await player.sock.send("Bravo coglione")
                 if "cane" in message:
                     print("I love dogs, doesn't everyone?")
                 # Qui puoi aggiungere la logica per gestire il messaggio
@@ -50,6 +51,8 @@ class Game:
             except Exception as e:
                 print(f"Error in handle_game: {e}")
 
+
+
     async def listen_to_request(self):
         while self.game_running:
             for player in self.players:
@@ -57,7 +60,7 @@ class Game:
                     async for message in player.sock:
                         await self.queue.put((player, message))
                 except websockets.exceptions.ConnectionClosed:
-                    print(f"Client {player} disconnected")
+                    print(f"Client {player.player_id} disconnected")
                     self.remove_player(player)
 
                 '''try:
@@ -66,6 +69,17 @@ class Game:
                 except websockets.exceptions.ConnectionClosed:
                     print(f"Client {player} disconnected")
                     '''
+
+
+
+    async def listen_to_player_request(self, player):
+        while True: # Da cambiare mettendo finché il giocatore può giocare/è ancora in gioco
+            try:
+                async for message in player.sock:
+                    await self.queue.put((player, message))
+            except websockets.exceptions.ConnectionClosed:
+                print(f"Client {player} disconnected")
+                self.remove_player(player)
 
     def end_game(self):
         self.game_running = False

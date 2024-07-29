@@ -19,7 +19,7 @@ class RequestHandler:
             elif message.startswith("join_game"):
                 game_id = message.split()[1]
                 if game_id in self.games:
-                    self.games[game_id].add_player(client_id, clients[client_id])
+                    self.games[game_id].add_player(client_id)
                     print(f"Client {client_id} joined game {game_id}")
                 else:
                     print(f"Game {game_id} not found")
