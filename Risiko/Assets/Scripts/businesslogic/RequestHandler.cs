@@ -17,11 +17,11 @@ public class RequestHandler
             {
                 Debug.Log("No culi allowed here");
             }
-            if (message.Contains("cane"))
+            else if (message.Contains("cane"))
             {
                 Debug.Log("I love dogs, doesn't everyone?");
             }
-            if(message.Contains("LOBBY_ID:")) // Manage lobby_id request
+            else if(message.Contains("LOBBY_ID:")) // Manage lobby_id request
             {
                 //Debug.Log("ARRIVATO MESSAGGIO LOBBY: " + message);
                 _request = RemoveRequest(message, "LOBBY_ID:");
@@ -29,8 +29,7 @@ public class RequestHandler
                 ClientManager cm = ClientManager.Instance;
                 cm.setLobbyId(_request);
             }
-
-            if (message.Contains("REQUEST_NAME_UPDATE_PLAYER_LIST:"))
+            else if (message.Contains("REQUEST_NAME_UPDATE_PLAYER_LIST:"))
             {
                 Debug.Log("Ricevuta richiesta: REQUEST_NAME_UPDATE_PLAYER_LIST");
                 ClientManager cm = ClientManager.Instance;
