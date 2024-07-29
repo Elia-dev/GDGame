@@ -48,8 +48,8 @@ class Game:
                     print("I love dogs, doesn't everyone?")
                 if "REQUEST_NAME_UPDATE_PLAYER_LIST" in message:
                     player_names = []
-                    for player in self.players:
-                        player_names.append(player.name)
+                    for p in self.players:
+                        player_names.append(p.name)
                     await player.sock.send("REQUEST_NAME_UPDATE_PLAYER_LIST: " + str(player_names))
                 # Qui puoi aggiungere la logica per gestire il messaggio
                 # Ad esempio, rispondere al client, fare una richiesta ad un altro servizio, ecc.
