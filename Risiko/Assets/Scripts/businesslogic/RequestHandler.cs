@@ -33,8 +33,25 @@ public class RequestHandler
             {
                 Debug.Log("Ricevuta richiesta: REQUEST_NAME_UPDATE_PLAYER_LIST");
                 ClientManager cm = ClientManager.Instance;
-                cm.name_players_temporaneo = RemoveRequest(message, "REQUEST_NAME_UPDATE_PLAYER_LIST:");
-                Debug.Log("Lista players: " + cm.name_players_temporaneo);
+                cm.NamePlayersTemporaneo.Clear();
+                _request = RemoveRequest(message, "REQUEST_NAME_UPDATE_PLAYER_LIST:");
+                Debug.Log("RIMOSSA RICHIESTA:" + _request);
+                string[] str= _request.Split(" ");
+                Debug.Log("ESEGUITO SPLIT: ");
+                foreach (var name in str)
+                {
+                    for (int i = 0; i < name.Length; i++)
+                    {
+                        if (name[i] == '[' || name[i] == ']' || name[i] == ',')
+                        {
+                            name.Remove(i);
+                        }
+                    }
+                    
+                    Debug.Log(name);
+                    cm.NamePlayersTemporaneo.Add(name);
+                }
+                Debug.Log("Lista players: " + cm.NamePlayersTemporaneo.ToString());
             }
             else
             {
