@@ -32,9 +32,9 @@ class Game:
         self.players.append(player)
 
         tasks = [
-            asyncio.create_task(self.handle_game()),
             asyncio.create_task(self.listen_to_player_request(self.host_player)),
-            asyncio.create_task(self.handle_requests)
+            asyncio.create_task(self.handle_requests),
+            asyncio.create_task(self.handle_game)
         ]
         await asyncio.gather(*tasks)
 
@@ -93,7 +93,7 @@ class Game:
 
 
     async def listen_to_player_request(self, player):
-        while True: # Da cambiare mettendo finché il giocatore può giocare/è ancora in gioco
+        while True:  # Da cambiare mettendo finché il giocatore può giocare/è ancora in gioco
             try:
                 async for message in player.sock:
                     await self.queue.put((player, message))
