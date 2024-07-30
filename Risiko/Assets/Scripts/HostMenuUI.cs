@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -19,7 +20,10 @@ public class HostMenuUI : MonoBehaviour
     ClientManager cm = ClientManager.Instance;
     Player player = Player.Instance;
     
-    
+    private float delay = 5.0f; // Durata del ritardo in secondi
+    private float timer;
+
+    private string stringa;
     // Start is called before the first frame update
     /*
     void Start()
@@ -51,8 +55,9 @@ public class HostMenuUI : MonoBehaviour
     
     void Start()
     {
+        stringa = null;
         cm.CreateLobbyAsHost(); 
-        
+        timer = delay;
         //Visualizzazione copdice lobby
         //LobbyID.text = "1518";
 
@@ -61,19 +66,34 @@ public class HostMenuUI : MonoBehaviour
     private void Update()
     {
         //Debug.Log("LOBBY ID LETTA: " + cm.getLobbyId());
-        LobbyID.text = cm.getLobbyId(); //Fare lo show di questo a manetta,
-        
-        //prima o poi ci sarà qualcosa di settato in quanto il server prima o poi risponderà
-        
-        // Appena viene premuto il bottone start cambiare scena per far cominciare la partita
-        
-        //request update
+        LobbyID.text = cm.getLobbyId();
+        if (timer > 0)
+        {
+            timer -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
+        }
+        else
+        {
+            cm.RequestNameUpdatePlayerList();
+            // Reset del timer
+            timer = delay;
+        }
         
         //Aggiornamento lista giocatori
-        PlayerList.text = cm.name_players_temporaneo;
+        stringa = string.Join(" ", cm.NamePlayersTemporaneo);
+        PlayerList.text = stringa;
+        Debug.Log("HOSTMENU - playerList:" + stringa);
 
+        
         //Quando i giocatori saranno 3+
-        //RunGameButton.interactable = true;
+        if (cm.NamePlayersTemporaneo.Count > 3)
+        {
+            RunGameButton.interactable = true;
+        }
+        else
+        {
+            RunGameButton.interactable = false;
+        }
+        
     }
     private void Awake()
     {

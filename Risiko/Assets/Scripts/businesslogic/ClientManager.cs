@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Net.WebSockets;
@@ -10,7 +11,8 @@ public class ClientManager
 {
     private static ClientManager _instance;
     private static readonly object Lock = new object();
-    public string name_players_temporaneo = "nessuno";
+    public  List<string> NamePlayersTemporaneo = new List<string>(); 
+    
     private ClientManager() // Private constructor to allow instantiation using singleton only
     {
     }
