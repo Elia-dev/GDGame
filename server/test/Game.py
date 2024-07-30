@@ -31,15 +31,14 @@ class Game:
 
         tasks = [
             asyncio.create_task(self.listen_to_player_request(self.host_player)),
-            asyncio.create_task(self.handle_requests),
-            asyncio.create_task(self.handle_game)
+            asyncio.create_task(self.handle_requests()),
+            asyncio.create_task(self.handle_game())
         ]
         await asyncio.gather(*tasks)
 
     async def handle_game(self):
         while self.game_waiting_to_start is True:
-            #await asyncio.sleep(1)
-            print("")
+            await asyncio.sleep(1)
         await self.__game_order__()
 
     async def handle_requests(self):
