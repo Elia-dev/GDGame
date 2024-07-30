@@ -5,17 +5,13 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MoveCardsUI : MonoBehaviour
+public class MoveObjectiveCardsUI : MoveCardsUI
 {
-    public float moveDuration = 2f; // Durata del movimento in secondi
     public float flipDuration = 0.5f; // Durata del flip
     public GameObject cardFront; // Oggetto fronte della carta
     public GameObject cardBack; // Oggetto retro della carta
     private RectTransform rectTransform;
-    private Vector2 startPosition;
-    private Vector2 targetPosition;
     private bool flipped = false;
-    private Sprite imgSprite;
 
     void Start()
     {
@@ -26,15 +22,16 @@ public class MoveCardsUI : MonoBehaviour
 
         // Imposta la posizione iniziale appena sotto lo schermo
         startPosition = new Vector2(0, -Screen.height / 2 - rectTransform.rect.height / 2 -10);
+        Debug.Log(-Screen.height / 2 - rectTransform.rect.height / 2 -10);
         rectTransform.anchoredPosition = startPosition;
     
         //Carica la sprite della carta missione
         //loadSprite(Player.Instance.ObjectiveCard.CardId);
-        loadSprite("obj3");
+        loadSprite("Objectives/obj3");
         cardFront.GetComponent<Image>().sprite = imgSprite;
         
         // Inizia la coroutine per muovere l'immagine
-        StartCoroutine(MoveAndFlipCard());
+        StartCoroutine(MoveCards());
     }
 
     public void Update() {
@@ -45,11 +42,7 @@ public class MoveCardsUI : MonoBehaviour
         }
     }
 
-    public void loadSprite(string spriteName) {
-        imgSprite = Resources.Load<Sprite>(spriteName);
-    }
-    
-    IEnumerator MoveAndFlipCard() {
+    public override IEnumerator MoveCards() {
         // Movimento della carta
         float elapsedTime = 0f;
         while (elapsedTime < moveDuration) {
