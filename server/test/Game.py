@@ -33,7 +33,7 @@ class Game:
 
         tasks = [
             asyncio.create_task(self.handle_game()),
-            asyncio.create_task(self.listen_to_player_request(self.host_player))
+            asyncio.create_task(self.listen_to_player_request(self.host_player)),
             asyncio.create_task(self.handle_requests)
         ]
         await asyncio.gather(*tasks)
