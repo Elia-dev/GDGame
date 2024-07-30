@@ -39,9 +39,10 @@ class Game:
         await asyncio.gather(*tasks)
 
     async def handle_game(self):
-        while self.game_waiting_to_start:
+        while self.game_waiting_to_start is True:
             await asyncio.sleep(1)
         await self.__game_order__()
+
 
 
 
@@ -61,6 +62,8 @@ class Game:
                     for p in self.players:
                         player_names.append(p.name)
                     await player.sock.send("REQUEST_NAME_UPDATE_PLAYER_LIST: " + str(player_names))
+                if "GAME_STARTED_BY_HOST" in message:
+                    self.game_waiting_to_start = False
                 # Qui puoi aggiungere la logica per gestire il messaggio
                 # Ad esempio, rispondere al client, fare una richiesta ad un altro servizio, ecc.
                 await asyncio.sleep(5)  # Simula il tempo di gestione della richiesta
