@@ -17,11 +17,9 @@ class Game:
         self.players.append(player)
         print(f"Player {player.player_id} added to game {self.game_id}")
 
-
     def remove_player(self, player):
         self.players.remove(player)
         print(f"Player {player} removed from game {self.game_id}")
-
 
     async def broadcast(self, message):
         for player in self.players:
@@ -40,11 +38,9 @@ class Game:
 
     async def handle_game(self):
         while self.game_waiting_to_start is True:
-            await asyncio.sleep(1)
+            #await asyncio.sleep(1)
+            print("")
         await self.__game_order__()
-
-
-
 
     async def handle_requests(self):
         while self.game_running:
@@ -71,8 +67,6 @@ class Game:
             except Exception as e:
                 print(f"Error in handle_game: {e}")
 
-
-
     async def listen_to_request(self):
         while self.game_running:
             for player in self.players:
@@ -89,8 +83,6 @@ class Game:
                 except websockets.exceptions.ConnectionClosed:
                     print(f"Client {player} disconnected")
                     '''
-
-
 
     async def listen_to_player_request(self, player):
         while True:  # Da cambiare mettendo finché il giocatore può giocare/è ancora in gioco
@@ -141,4 +133,3 @@ class Game:
         for i, player in enumerate(sorted_players):
             # player.send(f"You are the {i + 1}° player".encode("utf-8"))
             players.append(Player(player))'''
-
