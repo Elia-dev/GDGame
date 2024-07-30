@@ -28,7 +28,7 @@ class Game:
     async def create_game(self, player):
         self.host_player = player
         self.players.append(player)
-
+        print("Aggiunto nuovo HOST")
         tasks = [
             asyncio.create_task(self.listen_to_player_request(self.host_player)),
             asyncio.create_task(self.handle_requests()),
@@ -37,6 +37,7 @@ class Game:
         await asyncio.gather(*tasks)
 
     async def handle_game(self):
+        print("Aperto HANDLE_GAME")
         while self.game_waiting_to_start is True:
             #await asyncio.sleep(1)
             pass
