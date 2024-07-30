@@ -39,8 +39,8 @@ class Game:
     async def handle_game(self):
         print("Aperto HANDLE_GAME")
         while self.game_waiting_to_start is True:
-            #await asyncio.sleep(1)
-            pass
+            await asyncio.sleep(1)
+            
         await self.__game_order__()
 
     async def handle_requests(self):
