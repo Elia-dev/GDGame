@@ -104,8 +104,8 @@ public class ArmySelectionManagerUI : MonoBehaviour {
             //LANCIA LA PROSSIMA FASE
             Color32 color = selectedArmy.ArmyColor;
             color.a = 100;
-            CountryHandlerUI.userColor = color;
-            //CountryHandlerUI.ArmyDistributionPhase();
+            TerritoryHandlerUI.userColor = color;
+            //TerritoryHandlerUI.ArmyDistributionPhase();
             GameObject.Find("PopUpArmySelection").SetActive(false);
             //RICEZIONE OGGETTO CARTA DA PARTE DEL SERVER
             cardCanvas.SetActive(true);

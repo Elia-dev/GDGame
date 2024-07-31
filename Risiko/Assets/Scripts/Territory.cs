@@ -7,9 +7,12 @@ public class Territory : Card
     public int NumTanks { get; set; }
     public string Continent { get; set; }
 
+    public string cardId { get; set; }
+
     public Territory(string cardId, string image, string function, string description, string playerId, string name, int numTanks, string continent)
-        : base(cardId, image, function, description, playerId)
-    {
+        : base(cardId, image, function, description, playerId) {
+
+        this.cardId = cardId;
         Name = name;
         NumTanks = numTanks;
         Continent = continent;
