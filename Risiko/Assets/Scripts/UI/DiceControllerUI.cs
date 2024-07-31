@@ -16,11 +16,10 @@ public class DiceControllerUI : MonoBehaviour
         DiceButton.onClick.AddListener(() =>
         {
             diceAnimator.SetBool("Roll", true);
-            
         });
     }
 
-    private void update()
+    private void Update()
     {
         if (cm.getExtractedNumber() != 0)
         {
