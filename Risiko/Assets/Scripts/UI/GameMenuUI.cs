@@ -26,6 +26,7 @@ public class GameMenuUI : MonoBehaviour
             {
                 //Debug.Log("Username OK, changing scene from GameMenu to HostMenu");
                 Player player = Player.Instance;
+                player.Initialize();
                 player.Name = username;
                 SceneManager.LoadScene("HostMenu");
                 //Create Lobby

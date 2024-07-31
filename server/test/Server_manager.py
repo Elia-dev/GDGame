@@ -28,24 +28,25 @@ async def handler(websocket, path):
         async for message in websocket:
             print(f"SERVER: Received message from {client_id}: {message}")
             if "HOST_GAME" in message:
-                game_id = utils._generate_game_id()
+                game_id = utils.generate_game_id()
                 player.lobby_id = game_id
-                player.player_id = "0"
+                player.player_id = utils.generate_player_id()
                 game = Game(game_id)
                 games.append(game)
                 await websocket.send("LOBBY_ID: " + game_id)
+                await websocket.send("PLAYER_ID: " + player.player_id)
                 print(f"Game {game_id} created")
                 game_task = asyncio.create_task(game.create_game(player))
 
                 await game_task
 
 
-
             elif "JOIN_GAME" in message:
 
                 #Prendo l'id della lobby, se esiste aggiungo il player alla lobby aggiungendolo alla lista contenuta in Game
 
-                player.player_id = "1"
+                player.player_id = utils.generate_player_id()
+                await websocket.send("PLAYER_ID: " + player.player_id)
                 game_id = message.split(": ")[1]
                 for game in games:
                     if game.game_id == game_id:

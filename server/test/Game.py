@@ -66,6 +66,12 @@ class Game:
                 # Ad esempio, rispondere al client, fare una richiesta ad un altro servizio, ecc.
                 await asyncio.sleep(5)  # Simula il tempo di gestione della richiesta
                 self.queue.task_done()
+                if "UPDATE_NAME:" in message:
+                    message = self._remove_request(message, "UPDATE_NAME: ")
+                    id, name = message.split("-")
+                    for player in self.players:
+                        if player.player_id == id:
+                            player.name = name
             except Exception as e:
                 print(f"Error in handle_game: {e}")
 
@@ -141,3 +147,10 @@ class Game:
         for i, player in enumerate(sorted_players):
             # player.send(f"You are the {i + 1}° player".encode("utf-8"))
             players.append(Player(player))'''
+
+    def _remove_request(self, source, request):
+        value = source.replace(request, "")
+        # print(f"VALORE CALCOLATO: {value}")
+        return value
+
+

@@ -23,27 +23,32 @@ public class HostMenuUI : MonoBehaviour
     
     private float delay = 5.0f; // Durata del ritardo in secondi
     private float timer;
-
+    private Player Player = Player.Instance;
     private string stringa;
     
     void Start()
     {
         stringa = null;
         cm.CreateLobbyAsHost();
+        do
+        {
+            Debug.Log("Waiting for playerID");
+        } while (player.PlayerId == null);
+        
+        cm.SendName();
         timer = delay;
-
     }
     
     private void Update()
     {
         //Debug.Log("LOBBY ID LETTA: " + cm.getLobbyId());
-        LobbyID.text = cm.getLobbyId();
+        LobbyID.text = cm.GetLobbyId();
         if (timer > 0)
         {
             timer -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
         }
         else
-        {
+        { 
             cm.RequestNameUpdatePlayerList();
             // Reset del timer
             timer = delay;

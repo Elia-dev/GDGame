@@ -28,7 +28,7 @@ public class RequestHandler
                 _request = RemoveRequest(message, "LOBBY_ID:");
                 //Debug.Log("INFO ESTRAPOLATA:" + _request);
                 ClientManager cm = ClientManager.Instance;
-                cm.setLobbyId(_request);
+                cm.SetLobbyId(_request);
             }
             else if (message.Contains("REQUEST_NAME_UPDATE_PLAYER_LIST:"))
             {
@@ -67,13 +67,19 @@ public class RequestHandler
                 _request = RemoveRequest(message, "EXTRACTED_NUMBER: ");
                 int numero = int.Parse(_request);
                 
-                cm.setExtractedNumber(numero);
+                cm.SetExtractedNumber(numero);
             }
             else if (message.Contains("GAME_ORDER_EXTRACTED_NUMBERS:"))
             {
                 Debug.Log("Ricevuta richiesta: GAME_ORDER_EXTRACTED_NUMBERS");
                 _request = RemoveRequest(message, "GAME_ORDER_EXTRACTED_NUMBERS: ");
                 cm.SetGameOrderExtractedNumbers(_request);
+            }
+            else if (message.Contains("PLAYER_ID:"))
+            {
+                Debug.Log("Ricevuta richiesta: PLAYER_ID");
+                _request = RemoveRequest(message, "PLAYER_ID: ");
+                Player.Instance.PlayerId = _request;
             }
             else
             {

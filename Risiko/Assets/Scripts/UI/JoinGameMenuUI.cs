@@ -17,12 +17,6 @@ public class JoinGameMenuUI : MonoBehaviour
     [SerializeField] private GameObject PopUpIdLobbyError;
     private string lobby_id;
     
-    void Start()
-    {
-        cm.StartClient();
-        //cm.Send(player.Name);
-    }
-    
     private void Awake() {
         BackButton.onClick.AddListener(() => {
             SceneManager.LoadScene("GameMenu");
@@ -32,6 +26,7 @@ public class JoinGameMenuUI : MonoBehaviour
         {
             lobby_id = lobbyIdInputField.text;
             player.LobbyId = lobby_id;
+            cm.SetLobbyId(lobby_id);
             Debug.Log("Lobby ID: " + lobby_id);
             if (lobby_id.Equals(""))
             {
@@ -40,10 +35,7 @@ public class JoinGameMenuUI : MonoBehaviour
             else
             {
                 cm.JoinLobbyAsClient(lobby_id);
-                // Attendere in qualche modo che si colleghi alla lobby
-                // Appena connesso mostrare la lobby di attesa con gli altri player
                 
-                //Cambio scena alla waiting room
                 SceneManager.LoadScene("WaitingRoomClient");
             }
 		});

@@ -11,7 +11,7 @@ public class ClientManager
 {
     private static ClientManager _instance;
     private static readonly object Lock = new object();
-    public  List<string> NamePlayersTemporaneo = new List<string>(); 
+    public List<string> NamePlayersTemporaneo = new List<string>(); 
     
     private ClientManager() // Private constructor to allow instantiation using singleton only
     {
@@ -35,7 +35,8 @@ public class ClientManager
     private string _server = "ws://150.217.51.105:8766";
     private ClientWebSocket _webSocket = null;
     private CancellationToken _cancellationToken;
-    private string lobby_id;
+    private string _lobbyID;
+    private Player player = Player.Instance;
     
     // Temporaneo, da progettare bene poi in gameManager
     private string game_order = "";
@@ -50,17 +51,17 @@ public class ClientManager
 
         return false;
     }
-    public int getExtractedNumber()
+    public int GetExtractedNumber()
     {
         return extracted_number;
     }
 
-    public void setExtractedNumber(int value)
+    public void SetExtractedNumber(int value)
     {
         extracted_number = value;
     }
 
-    public string getGameOrderExtractedNumbers()
+    public string GetGameOrderExtractedNumbers()
     {
         return game_order_extracted_numbers;
     }
@@ -78,13 +79,13 @@ public class ClientManager
         game_order = value;
     }
     
-    public string getLobbyId()
+    public string GetLobbyId()
     {
-        return lobby_id;
+        return _lobbyID;
     }
-    public void setLobbyId(string lobby_id)
+    public void SetLobbyId(string lobbyID)
     {
-        this.lobby_id = lobby_id;
+        this._lobbyID = lobbyID;
     }
 
     public async Task StartClient()
@@ -151,14 +152,13 @@ public class ClientManager
         await SendMessage(_webSocket, _cancellationToken, "REQUEST_NAME_UPDATE_PLAYER_LIST: ");
     }
 
+    public async void SendName()
+    {
+        await SendMessage(_webSocket, _cancellationToken, "UPDATE_NAME: " + player.PlayerId + "-"+  player.Name);
+    }
+    
     public async void StartHostGame()
     {
         await SendMessage(_webSocket, _cancellationToken, "GAME_STARTED_BY_HOST: ");
     }
-    /*
-    public void JoinLobbyAsClient(string LobbyID)
-    {
-        Send("CLIENT - LOBBY_ID: " + LobbyID);
-    }
-    */
 }

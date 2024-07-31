@@ -2,7 +2,7 @@ import random
 import xml.etree.ElementTree as ET
 from Card import Card
 from Territory import Territory
-
+import secrets
 
 def read_objects_cards():
     tree = ET.parse('assets/config.xml')
@@ -37,5 +37,7 @@ def read_territories_cards():
         cards.append(card)
     return cards
 
-def _generate_game_id():
+def generate_game_id():
     return ' '.join([str(random.randint(0, 999)).zfill(3) for _ in range(2)])
+def generate_player_id():
+    return secrets.token_hex(16)

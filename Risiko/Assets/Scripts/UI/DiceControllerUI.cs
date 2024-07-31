@@ -21,10 +21,10 @@ public class DiceControllerUI : MonoBehaviour
 
     private void Update()
     {
-        if (cm.getExtractedNumber() != 0)
+        if (cm.GetExtractedNumber() != 0)
         {
             diceAnimator.gameObject.SetActive(false);
-            DiceResults.text = cm.getExtractedNumber() + cm.getGame_order() + cm.getGameOrderExtractedNumbers();
+            DiceResults.text = cm.GetExtractedNumber() + cm.getGame_order() + cm.GetGameOrderExtractedNumbers();
             DiceResults.gameObject.SetActive(true);
         }
             

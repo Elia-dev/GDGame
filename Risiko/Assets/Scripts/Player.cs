@@ -8,7 +8,6 @@ public class Player
 	private static Player _instance = null;
     private static readonly object _lock = new object();
 
-
 	private Player() { }
     
     private Player(object socket, string name, string lobbyId, string playerId)
@@ -40,6 +39,11 @@ public class Player
         }
     }
 
+    public void Initialize()
+    {
+        PlayerId = null;
+    }
+    
     public static Player Instance
     {
         get
