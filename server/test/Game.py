@@ -121,11 +121,12 @@ class Game:
 
         # Notify positions
         #Game order e GameOrderExtractedNumbers dovrebbero essere sostituiti da un broadcast
-        print(f"Game order: {str(*game_order)}")
+        print(f"Game order: {''.join(game_order)}")
+        fgameOrder = {''.join(game_order)}
         print(f"GAME_ORDER_EXTRACTED_NUMBERS: {str(game_order_extracted_numbers)}")
         for player in self.players:
             print(f"For player {player.name} extracted number {str(response[player])} ")
-            await player.sock.send("GAME_ORDER: " + str(*game_order))
+            await player.sock.send("GAME_ORDER: " + str(fgameOrder))
             await player.sock.send("GAME_ORDER_EXTRACTED_NUMBERS: " + str(game_order_extracted_numbers))
             await player.sock.send("EXTRACTED_NUMBER: " + str(response[player]))
         print("done")
