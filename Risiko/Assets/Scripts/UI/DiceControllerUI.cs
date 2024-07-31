@@ -16,6 +16,7 @@ public class DiceControllerUI : MonoBehaviour
         DiceButton.onClick.AddListener(() =>
         {
             diceAnimator.SetBool("Roll", true);
+            
         });
     }
 

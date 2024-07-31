@@ -37,8 +37,9 @@ class Game:
         await asyncio.gather(*tasks)
 
     async def handle_game(self):
-        print("Aperto HANDLE_GAME")
+        print("Aperto HANDLE_GAME\n")
         while self.game_waiting_to_start is True:
+            print("ASPETTANDO CHE SI COLLEGHINO TUTTI\n")
             await asyncio.sleep(1)
             
         await self.__game_order__()
@@ -99,6 +100,7 @@ class Game:
         print(f"Game {self.game_id} is ending.")
 
     async def __game_order__(self):
+        print("!!! ENTRATO IN GAME ORDERD !!!")
         response = {}
         for player in self.players:
             gaming_dice = random.randint(1, 6)
