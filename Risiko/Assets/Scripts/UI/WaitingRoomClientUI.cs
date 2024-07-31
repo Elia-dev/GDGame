@@ -22,12 +22,6 @@ public class WaitingRoomClientUI : MonoBehaviour
 
     void Start()
     {
-        do
-        {
-            Debug.Log("Waiting for playerID");
-        } while (_player.PlayerId == null);
-        
-        cm.SendName();
         LobbyID.text = _player.LobbyId;
         timer = delay;
     }
@@ -42,6 +36,7 @@ public class WaitingRoomClientUI : MonoBehaviour
         else
         { 
             cm.RequestNameUpdatePlayerList();
+            cm.SendName(); // Da vedere, se si potesse fare soltanto la prima volta sarebbe meglio
             // Reset del timer
             timer = delay;
         }

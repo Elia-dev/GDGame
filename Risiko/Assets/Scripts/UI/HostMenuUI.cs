@@ -30,12 +30,13 @@ public class HostMenuUI : MonoBehaviour
     {
         stringa = null;
         cm.CreateLobbyAsHost();
+        /*
         do
         {
             Debug.Log("Waiting for playerID");
         } while (player.PlayerId == null);
-        
-        cm.SendName();
+        */
+        //cm.SendName(); // Mossa pericolosa, avrà già ricevuto l'id dal server quando esegue questo comando?
         timer = delay;
     }
     
@@ -43,12 +44,14 @@ public class HostMenuUI : MonoBehaviour
     {
         //Debug.Log("LOBBY ID LETTA: " + cm.getLobbyId());
         LobbyID.text = cm.GetLobbyId();
+        
         if (timer > 0)
         {
             timer -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
         }
         else
         { 
+            cm.SendName(); // Da vedere, se si potesse fare soltanto la prima volta sarebbe meglio
             cm.RequestNameUpdatePlayerList();
             // Reset del timer
             timer = delay;

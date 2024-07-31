@@ -45,6 +45,7 @@ public class GameMenuUI : MonoBehaviour
             {
                 //Debug.Log("Username OK, changing scene from GameMenu to JoinLobbyMenu");
                 Player player = Player.Instance;
+                player.Initialize();
                 player.Name = username;
                 SceneManager.LoadScene("JoinGameMenu");
             }
