@@ -150,6 +150,11 @@ public class ClientManager
     {
         await SendMessage(_webSocket, _cancellationToken, "REQUEST_NAME_UPDATE_PLAYER_LIST: ");
     }
+
+    public async void StartHostGame()
+    {
+        await SendMessage(_webSocket, _cancellationToken, "GAME_STARTED_BY_HOST: ");
+    }
     /*
     public void JoinLobbyAsClient(string LobbyID)
     {

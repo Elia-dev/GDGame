@@ -17,6 +17,7 @@ public class HostMenuUI : MonoBehaviour
     [SerializeField] private Button RunGameButton;
     [SerializeField] private TMP_Text PlayerList;
     [SerializeField] private TMP_Text LobbyID;
+    [SerializeField] private GameObject PopUpDiceHostMenu;
     ClientManager cm = ClientManager.Instance;
     Player player = Player.Instance;
     
@@ -70,6 +71,13 @@ public class HostMenuUI : MonoBehaviour
         BackButton.onClick.AddListener(() =>
         {
             SceneManager.LoadScene("GameMenu");
+        });
+        
+        RunGameButton.onClick.AddListener(() =>
+        {
+            
+            cm.StartHostGame();
+            PopUpDiceHostMenu.SetActive(true);
         });
         
         UpdateButton.onClick.AddListener(() =>

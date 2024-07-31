@@ -105,12 +105,13 @@ class Game:
         for player in self.players:
             gaming_dice = random.randint(1, 6)
             response[player] = gaming_dice
-
+        print("|| LANCIATI DADI||")
         sorted_players = [item[0] for item in sorted(response.items(), key=lambda item: item[1])]
         sorted_players.reverse()
 
         for i in range(len(sorted_players)):
             self.players[i] = sorted_players[i]
+        print("|| SORTATI PLAYERS||")
 
         game_order = []
         game_order_extracted_numbers = []
