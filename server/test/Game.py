@@ -64,7 +64,7 @@ class Game:
                     self.game_waiting_to_start = False
                 # Qui puoi aggiungere la logica per gestire il messaggio
                 # Ad esempio, rispondere al client, fare una richiesta ad un altro servizio, ecc.
-                await asyncio.sleep(5)  # Simula il tempo di gestione della richiesta
+                await asyncio.sleep(1)  # Simula il tempo di gestione della richiesta
                 self.queue.task_done()
                 if "UPDATE_NAME:" in message:
                     message = self._remove_request(message, "UPDATE_NAME: ")
