@@ -19,6 +19,7 @@ public class TerritoriesCardsUI : MoveCardsUI {
         };
         Debug.Log(Screen.width);
         Debug.Log(Screen.height);
+        if((float)Screen.width/(float)Screen.height != )
         transform.GetComponent<GridLayoutGroup>().cellSize = 
             new Vector2((Screen.width - 140) / (territori.Length / 2), 
                 (float)((Screen.width - 140) / (territori.Length / 2)*1.33));
@@ -46,9 +47,13 @@ public class TerritoriesCardsUI : MoveCardsUI {
             targetPosition.y = -targetPosition.y - imagePrefabRect.rect.height / 2;
             targetPosition.x = - targetPosition.x + imagePrefabRect.rect.width / 2;
             //Debug.Log((Screen.height / 2 + imagePrefabRect.rect.height / 2 + 10));
-            startPosition = new Vector2(0, -(Screen.height / 2 + imagePrefabRect.rect.height / 2 + 10));
+            startPosition = new Vector2(Screen.width / 2, -(Screen.height + imagePrefabRect.rect.height / 2 + 10));
             //for (int i = 0; i < territories.Count; i++) {
-            string[] territori = { "SA_ter1", "SA_ter2", "SA_ter3", "SA_ter4" };
+            string[] territori =
+            {
+                "SA_ter1", "SA_ter2", "SA_ter3", "SA_ter4", "SA_ter1", "SA_ter2", "SA_ter3", "SA_ter4",
+                "SA_ter1", "SA_ter2", "SA_ter3", "SA_ter4", "SA_ter1", "SA_ter2"
+            };
             for (int i = 0; i < territori.Length; i++) {
                 GameObject newImage = Instantiate(imagePrefab, transform);
                 RectTransform rectTransform = newImage.GetComponent<RectTransform>();
