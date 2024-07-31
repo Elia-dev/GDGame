@@ -8,6 +8,7 @@ public class RequestHandler
 {
     private readonly Channel<(string, string)> _queue = Channel.CreateUnbounded<(string, string)>();
     private string _request;
+    ClientManager cm = ClientManager.Instance;
     public async Task HandleRequests(CancellationToken cancellationToken)
     {
         await foreach (var (clientId, message) in _queue.Reader.ReadAllAsync(cancellationToken))
@@ -23,7 +24,7 @@ public class RequestHandler
             }
             else if(message.Contains("LOBBY_ID:")) // Manage lobby_id request
             {
-                //Debug.Log("ARRIVATO MESSAGGIO LOBBY: " + message);
+                Debug.Log("Ricevuta richiesta: LOBBY_ID " + message);
                 _request = RemoveRequest(message, "LOBBY_ID:");
                 //Debug.Log("INFO ESTRAPOLATA:" + _request);
                 ClientManager cm = ClientManager.Instance;
@@ -32,7 +33,7 @@ public class RequestHandler
             else if (message.Contains("REQUEST_NAME_UPDATE_PLAYER_LIST:"))
             {
                 Debug.Log("Ricevuta richiesta: REQUEST_NAME_UPDATE_PLAYER_LIST");
-                ClientManager cm = ClientManager.Instance;
+                
                 cm.NamePlayersTemporaneo.Clear();
                 _request = RemoveRequest(message, "REQUEST_NAME_UPDATE_PLAYER_LIST:");
                 Debug.Log("RIMOSSA RICHIESTA:" + _request);
@@ -52,6 +53,27 @@ public class RequestHandler
                     cm.NamePlayersTemporaneo.Add(name);
                 }
                 Debug.Log("Lista players: " + cm.NamePlayersTemporaneo.ToString());
+            }
+            else if (message.Contains("GAME_ORDER:"))
+            {
+                Debug.Log("Ricevuta richiesta: GAME_ORDER");
+                _request = RemoveRequest(message, "GAME_ORDER: ");
+                cm.setGame_order(_request);
+            }
+            else if (message.Contains("EXTRACTED_NUMBER:"))
+            {
+                
+                Debug.Log("Ricevuta richiesta: EXTRACTED_NUMBER");
+                _request = RemoveRequest(message, "EXTRACTED_NUMBER: ");
+                int numero = int.Parse(_request);
+                
+                cm.setExtractedNumber(numero);
+            }
+            else if (message.Contains("GAME_ORDER_EXTRACTED_NUMBERS:"))
+            {
+                Debug.Log("Ricevuta richiesta: GAME_ORDER_EXTRACTED_NUMBERS");
+                _request = RemoveRequest(message, "GAME_ORDER_EXTRACTED_NUMBERS: ");
+                cm.SetGameOrderExtractedNumbers(_request);
             }
             else
             {

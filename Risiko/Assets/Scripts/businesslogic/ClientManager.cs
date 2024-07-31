@@ -36,7 +36,11 @@ public class ClientManager
     private ClientWebSocket _webSocket = null;
     private CancellationToken _cancellationToken;
     private string lobby_id;
-
+    
+    // Temporaneo, da progettare bene poi in gameManager
+    private string game_order = "";
+    private int extracted_number = 0;
+    private string game_order_extracted_numbers = "";
     public bool IsConnected()
     {
         if (_webSocket != null)
@@ -46,6 +50,34 @@ public class ClientManager
 
         return false;
     }
+    public int getExtractedNumber()
+    {
+        return extracted_number;
+    }
+
+    public void setExtractedNumber(int value)
+    {
+        extracted_number = value;
+    }
+
+    public string getGameOrderExtractedNumbers()
+    {
+        return game_order_extracted_numbers;
+    }
+    public void SetGameOrderExtractedNumbers(string value)
+    {
+        game_order_extracted_numbers = value;
+    }
+    
+    public string getGame_order()
+    {
+        return game_order;
+    }
+    public void setGame_order(string value)
+    {
+        game_order = value;
+    }
+    
     public string getLobbyId()
     {
         return lobby_id;
