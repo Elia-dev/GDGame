@@ -7,7 +7,7 @@ public class GameManager
 {
     private static GameManager _instance;
     private static readonly object Lock = new object();
-    private  List<string> NamePlayersTemporaneo = new List<string>(); 
+    public List<string> PlayersName = new List<string>(); 
     private Player _player;
     private string _gameOrder = "";
     private int _extractedNumber = 0;
@@ -79,5 +79,20 @@ public class GameManager
     public void SetLobbyId(string lobbyID)
     {
         this._lobbyID = lobbyID;
+    }
+
+    public void ResetPlayersName()
+    {
+        PlayersName.Clear();
+    }
+
+    public void AddPlayerName(string name)
+    {
+        PlayersName.Add(name);
+    }
+
+    public int GetPlayersNumber()
+    {
+        return PlayersName.Count;
     }
 }

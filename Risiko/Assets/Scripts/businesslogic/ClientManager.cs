@@ -6,7 +6,6 @@ using System.Net.WebSockets;
 using System.Threading.Tasks;
 using UnityEngine;
 
-
 public class ClientManager
 {
     private static ClientManager _instance;
@@ -51,33 +50,6 @@ public class ClientManager
 
         return false;
     }
-    public int GetExtractedNumber()
-    {
-        return extracted_number;
-    }
-
-    public void SetExtractedNumber(int value)
-    {
-        extracted_number = value;
-    }
-
-    public string GetGameOrderExtractedNumbers()
-    {
-        return game_order_extracted_numbers;
-    }
-    public void SetGameOrderExtractedNumbers(string value)
-    {
-        game_order_extracted_numbers = value;
-    }
-    
-    public string getGame_order()
-    {
-        return game_order;
-    }
-    public void setGame_order(string value)
-    {
-        game_order = value;
-    }
     
     public string GetLobbyId()
     {
@@ -85,7 +57,7 @@ public class ClientManager
     }
     public void SetLobbyId(string lobbyID)
     {
-        this._lobbyID = lobbyID;
+        _lobbyID = lobbyID;
     }
 
     public async Task StartClient()
@@ -101,19 +73,7 @@ public class ClientManager
             var handlerTask = RequestHandler.HandleRequests(cancellationTokenSource.Token);
             var receiveTask = ReceiveMessage(_webSocket, cancellationTokenSource.Token);
             await Task.WhenAll(handlerTask, receiveTask);
-            
-            /*
-            using ( _webSocket = new ClientWebSocket())
-            {
-                await _webSocket.ConnectAsync(uri, cancellationTokenSource.Token);
-                var receiveTask = ReceiveMessage(_webSocket, cancellationTokenSource.Token);
-                await Task.WhenAll(receiveTask);
-            }
-
-            await handlerTask;
-            */
         }
-        
     }
     
     private static async Task SendMessage(ClientWebSocket webSocket, CancellationToken cancellationToken, string message)
@@ -121,7 +81,6 @@ public class ClientManager
         var buffer = Encoding.UTF8.GetBytes(message);
         await webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, cancellationToken);
     }
-
     
     private static async Task ReceiveMessage(ClientWebSocket webSocket, CancellationToken cancellationToken)
     {
@@ -135,7 +94,6 @@ public class ClientManager
         }
         Debug.Log("Uscito dal loop delle richieste");
     }
-    
     
     public async void CreateLobbyAsHost()
     {

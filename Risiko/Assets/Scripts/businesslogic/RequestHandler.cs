@@ -9,11 +9,12 @@ public class RequestHandler
     private readonly Channel<(string, string)> _queue = Channel.CreateUnbounded<(string, string)>();
     private string _request;
     ClientManager cm = ClientManager.Instance;
+    private GameManager gm = GameManager.Instance;
     public async Task HandleRequests(CancellationToken cancellationToken)
     {
         await foreach (var (clientId, message) in _queue.Reader.ReadAllAsync(cancellationToken))
         {
-            Debug.Log($"Handling request from {clientId}: {message}");
+            //Debug.Log($"Handling request from {clientId}: {message}");
             if (message.Contains("culo"))
             {
                 Debug.Log("No culi allowed here");
@@ -32,13 +33,13 @@ public class RequestHandler
             }
             else if (message.Contains("REQUEST_NAME_UPDATE_PLAYER_LIST:"))
             {
-                Debug.Log("Ricevuta richiesta: REQUEST_NAME_UPDATE_PLAYER_LIST");
+                Debug.Log("Server_Request: REQUEST_NAME_UPDATE_PLAYER_LIST");
                 
-                cm.NamePlayersTemporaneo.Clear();
+                gm.ResetPlayersName();
                 _request = RemoveRequest(message, "REQUEST_NAME_UPDATE_PLAYER_LIST:");
-                Debug.Log("RIMOSSA RICHIESTA:" + _request);
+                //Debug.Log("RIMOSSA RICHIESTA:" + _request);
                 string[] str= _request.Split(" ");
-                Debug.Log("ESEGUITO SPLIT: ");
+                //Debug.Log("ESEGUITO SPLIT: ");
                 foreach (var name in str)
                 {
                     for (int i = 0; i < name.Length; i++)
@@ -49,35 +50,35 @@ public class RequestHandler
                         }
                     }
                     
-                    Debug.Log(name);
-                    cm.NamePlayersTemporaneo.Add(name);
+                    //Debug.Log(name);
+                    gm.AddPlayerName(name);
                 }
-                Debug.Log("Lista players: " + cm.NamePlayersTemporaneo.ToString());
+                //Debug.Log("Lista players: " + cm.NamePlayersTemporaneo.ToString());
             }
             else if (message.Contains("GAME_ORDER:"))
             {
-                Debug.Log("Ricevuta richiesta: GAME_ORDER");
+                Debug.Log("Server_Request: GAME_ORDER");
                 _request = RemoveRequest(message, "GAME_ORDER: ");
-                cm.setGame_order(_request);
+                gm.setGame_order(_request);
             }
             else if (message.Contains("EXTRACTED_NUMBER:"))
             {
                 
-                Debug.Log("Ricevuta richiesta: EXTRACTED_NUMBER");
+                Debug.Log("Server_Request: EXTRACTED_NUMBER");
                 _request = RemoveRequest(message, "EXTRACTED_NUMBER: ");
                 int numero = int.Parse(_request);
                 
-                cm.SetExtractedNumber(numero);
+                gm.SetExtractedNumber(numero);
             }
             else if (message.Contains("GAME_ORDER_EXTRACTED_NUMBERS:"))
             {
-                Debug.Log("Ricevuta richiesta: GAME_ORDER_EXTRACTED_NUMBERS");
+                Debug.Log("Server_Request: GAME_ORDER_EXTRACTED_NUMBERS");
                 _request = RemoveRequest(message, "GAME_ORDER_EXTRACTED_NUMBERS: ");
-                cm.SetGameOrderExtractedNumbers(_request);
+                gm.SetGameOrderExtractedNumbers(_request);
             }
             else if (message.Contains("PLAYER_ID:"))
             {
-                Debug.Log("Ricevuta richiesta: PLAYER_ID");
+                Debug.Log("Server_Request: PLAYER_ID");
                 _request = RemoveRequest(message, "PLAYER_ID: ");
                 Player.Instance.PlayerId = _request;
             }
