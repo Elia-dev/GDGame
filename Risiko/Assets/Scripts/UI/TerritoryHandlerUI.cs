@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 [RequireComponent(typeof(PolygonCollider2D))]
-public class CountryHandlerUI : MonoBehaviour {
+public class TerritoryHandlerUI : MonoBehaviour {
     private SpriteRenderer sprite;
     public Color32 startColor = new Color32(0, 0, 0, 0);
     private Color32 hoverColor = new Color32(205, 185, 52, 100);
