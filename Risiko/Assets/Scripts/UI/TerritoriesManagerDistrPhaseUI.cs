@@ -13,14 +13,18 @@ public class TerritoriesManagerDistrPhaseUI : MonoBehaviour {
     [SerializeField] public List<GameObject> territories;
     private bool distributionPhase = true;
     [SerializeField] private GameObject popUpAddTank;
+    [SerializeField] private TMP_Text TankNumber;
 
     public void Start() {
         //TUTTA ROBA DI DEBUG
-        TerritoryHandlerUI.userColor = new Color32(0, 0, 255, 100);
+        TerritoryHandlerUI.userColor = new Color32(0, 0, 255, 150);
         List<Territory> terr = new List<Territory>();
-        terr.Add(new Territory("SA_ter1", "SA_ter1.png", "boh", "eh", "lo", "fa", 14, "SA"));
-        terr.Add(new Territory("SA_ter2", "SA_ter2.png", "boh", "eh", "lo", "fa", 14, "SA"));
+        terr.Add(new Territory("SA_ter1", "SA_ter1.png", "boh", "eh", "lo", "fa", 7, "SA"));
+        terr.Add(new Territory("SA_ter2", "SA_ter2.png", "boh", "eh", "lo", "fa", 5, "SA"));
+        terr.Add(new Territory("SA_ter3", "SA_ter3.png", "boh", "eh", "lo", "fa", 6, "SA"));
+        terr.Add(new Territory("SA_ter4", "SA_ter4.png", "boh", "eh", "lo", "fa", 1, "SA"));
         Player.Instance.Territories = terr;
+        TerritoryHandlerUI.ArmyDistributionPhase();
         activateTerritories(Player.Instance.Territories);
     }
     
@@ -32,7 +36,7 @@ public class TerritoriesManagerDistrPhaseUI : MonoBehaviour {
                 terr.GetComponent<PolygonCollider2D>().enabled = true;
         }
     }
-    
+
     private void Awake() {
         if (Instance is null) {
             Instance = this;
@@ -49,6 +53,10 @@ public class TerritoriesManagerDistrPhaseUI : MonoBehaviour {
         } else if (Input.GetMouseButtonDown(0) && !distributionPhase) {
             gamePhaseSelection();
         }
+        /*if (Input.GetMouseButtonDown(1) && distributionPhase) {
+            distributionPhaseDeselection();
+        } else if (Input.GetMouseButtonDown(1) && !distributionPhase) {
+        }*/
     }
 
     public void distributionPhaseSelection() {
@@ -62,6 +70,10 @@ public class TerritoriesManagerDistrPhaseUI : MonoBehaviour {
                 SelectState(selectedTerritory);
             }
         }
+    }
+
+    public void distributionPhaseDeselection() {
+        DeselectState();
     }
 
     public void gamePhaseSelection() {
@@ -82,14 +94,17 @@ public class TerritoriesManagerDistrPhaseUI : MonoBehaviour {
         return Player.Instance.Territories.Find(x => x.cardId.Equals(name));
     }
     public void SelectState(TerritoryHandlerUI newTerritory) {
-        if (distributionPhase) {
-            newTerritory.Select();
+        if (distributionPhase && !selectedTerritory.Selected) {
+            selectedTerritory.Select();
             popUpAddTank.GetComponent<Image>().color = TerritoryHandlerUI.userColor;
             Debug.Log(TerritoryInformations(newTerritory.name).NumTanks.ToString());
-            GameObject.Find("TankNumber").GetComponent<TMP_Text>().text = 
-                TerritoryInformations(newTerritory.name).NumTanks.ToString();
+            TankNumber.text = TerritoryInformations(newTerritory.name).NumTanks.ToString();
             popUpAddTank.transform.position = newTerritory.gameObject.transform.position;
+            popUpAddTank.transform.position = new Vector3(popUpAddTank.transform.position.x,
+                popUpAddTank.transform.position.y + (float)(0.3), popUpAddTank.transform.position.z);
             popUpAddTank.SetActive(true);
+        } else if (distributionPhase && !selectedTerritory.Selected) {
+            
         }
         else {
             if (selectedTerritory is not null) {

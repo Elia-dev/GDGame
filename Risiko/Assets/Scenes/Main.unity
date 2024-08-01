@@ -836,7 +836,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 312, y: -158.84543}
+  m_AnchoredPosition: {x: 312, y: -186.13591}
   m_SizeDelta: {x: 570, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &159764868
@@ -2240,6 +2240,7 @@ GameObject:
   - component: {fileID: 436811673}
   - component: {fileID: 436811676}
   - component: {fileID: 436811675}
+  - component: {fileID: 436811677}
   m_Layer: 6
   m_Name: SA_ter4
   m_TagString: Untagged
@@ -2535,6 +2536,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &436811677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 436811672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 987e964b9129833498d7329012609635, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startColor:
+    serializedVersion: 2
+    rgba: 0
 --- !u!1 &489636770
 GameObject:
   m_ObjectHideFlags: 0
@@ -4298,7 +4314,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 551, y: -353.5}
+  m_AnchoredPosition: {x: 578, y: -378}
   m_SizeDelta: {x: 1060, y: 453}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &774017362
@@ -9153,9 +9169,9 @@ RectTransform:
   - {fileID: 1944667036}
   m_Father: {fileID: 1782277462}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -424, y: 428}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -424, y: -178}
   m_SizeDelta: {x: 35, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1387056307
@@ -10795,7 +10811,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 551, y: -75}
+  m_AnchoredPosition: {x: 578, y: -75}
   m_SizeDelta: {x: 250, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1627480780
@@ -12888,6 +12904,7 @@ GameObject:
   - component: {fileID: 1843659859}
   - component: {fileID: 1843659862}
   - component: {fileID: 1843659861}
+  - component: {fileID: 1843659863}
   m_Layer: 6
   m_Name: SA_ter3
   m_TagString: Untagged
@@ -13149,6 +13166,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1843659863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843659858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 987e964b9129833498d7329012609635, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startColor:
+    serializedVersion: 2
+    rgba: 0
 --- !u!1 &1858006751
 GameObject:
   m_ObjectHideFlags: 0
@@ -15134,6 +15166,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   popUpAddTank: {fileID: 1387056305}
+  TankNumber: {fileID: 1944667037}
 --- !u!1 &2047910116
 GameObject:
   m_ObjectHideFlags: 0
@@ -15171,7 +15204,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 312, y: -252.69089}
+  m_AnchoredPosition: {x: 312, y: -307.27182}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2047910118
