@@ -20,8 +20,8 @@ public class TerritoriesManagerDistrPhaseUI : MonoBehaviour {
         List<Territory> terr = new List<Territory>();
         terr.Add(new Territory("SA_ter1", "SA_ter1.png", "boh", "eh", "lo", "fa", 14, "SA"));
         terr.Add(new Territory("SA_ter2", "SA_ter2.png", "boh", "eh", "lo", "fa", 14, "SA"));
-        activateTerritories(terr);
-        //activateTerritories(Player.Instance.Territories);
+        Player.Instance.Territories = terr;
+        activateTerritories(Player.Instance.Territories);
     }
     
     public void activateTerritories(List<Territory> territories) {
@@ -85,7 +85,9 @@ public class TerritoriesManagerDistrPhaseUI : MonoBehaviour {
         if (distributionPhase) {
             newTerritory.Select();
             popUpAddTank.GetComponent<Image>().color = TerritoryHandlerUI.userColor;
-            GameObject.Find("TankNumber").GetComponent<TMP_Text>().text = TerritoryInformations(newTerritory.name).NumTanks.ToString();
+            Debug.Log(TerritoryInformations(newTerritory.name).NumTanks.ToString());
+            GameObject.Find("TankNumber").GetComponent<TMP_Text>().text = 
+                TerritoryInformations(newTerritory.name).NumTanks.ToString();
             popUpAddTank.transform.position = newTerritory.gameObject.transform.position;
             popUpAddTank.SetActive(true);
         }
