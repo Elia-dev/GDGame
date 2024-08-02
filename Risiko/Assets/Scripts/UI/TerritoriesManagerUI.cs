@@ -3,12 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public abstract class TerritoriesManagerUI : MonoBehaviour
+public class TerritoriesManagerUI : MonoBehaviour
 {
-    [FormerlySerializedAs("selectedCountry")] public TerritoryHandlerUI selectedTerritory;
+    public TerritoryHandlerUI selectedTerritory;
+    [SerializeField] public List<GameObject> territories;
+    public bool distributionPhase = true;
+
+    public static TerritoriesManagerUI Instance { get; private set; }
     
+    public void SelectState(TerritoryHandlerUI newTerritory) {
+        
+    }
 
-    public abstract void SelectState(TerritoryHandlerUI newTerritory);
-
-    public abstract void DeselectState();
+    public void DeselectState() {
+        
+    }
 }

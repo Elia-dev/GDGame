@@ -9172,7 +9172,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -424, y: -178}
-  m_SizeDelta: {x: 35, y: 35}
+  m_SizeDelta: {x: 50, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1387056307
 MonoBehaviour:
@@ -14193,10 +14193,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1387056306}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 17.5, y: -17.5}
-  m_SizeDelta: {x: 35, y: 35}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1944667037
 MonoBehaviour:
@@ -14251,7 +14251,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -15070,6 +15070,7 @@ GameObject:
   - component: {fileID: 2029590055}
   - component: {fileID: 2029590056}
   - component: {fileID: 2029590057}
+  - component: {fileID: 2029590058}
   m_Layer: 5
   m_Name: ClickHandler
   m_TagString: Untagged
@@ -15109,6 +15110,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedTerritory: {fileID: 0}
+  territories: []
+  distributionPhase: 1
 --- !u!114 &2029590057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15165,8 +15168,66 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  distributionPhase: 1
   popUpAddTank: {fileID: 1387056305}
   TankNumber: {fileID: 1944667037}
+--- !u!114 &2029590058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2029590054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cf7d24a58ca5b34284af349b8f3eb05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedTerritory: {fileID: 0}
+  territories:
+  - {fileID: 1788652703}
+  - {fileID: 1746119601}
+  - {fileID: 1843659858}
+  - {fileID: 436811672}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  distributionPhase: 1
 --- !u!1 &2047910116
 GameObject:
   m_ObjectHideFlags: 0
