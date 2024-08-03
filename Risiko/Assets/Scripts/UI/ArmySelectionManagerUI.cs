@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class ArmySelectionManagerUI : MonoBehaviour {
@@ -25,7 +26,7 @@ public class ArmySelectionManagerUI : MonoBehaviour {
     [SerializeField] private GameObject blackArmy;
     [SerializeField] private TMP_Text title;
     [SerializeField] private TMP_Text errorMessage;
-    [SerializeField] private GameObject cardCanvas;
+    [SerializeField] private GameObject objectiveCardCanvas;
 
     private void Awake() {
         if (Instance is null) {
@@ -108,7 +109,7 @@ public class ArmySelectionManagerUI : MonoBehaviour {
             //TerritoryHandlerUI.ArmyDistributionPhase();
             GameObject.Find("PopUpArmySelection").SetActive(false);
             //RICEZIONE OGGETTO CARTA DA PARTE DEL SERVER
-            cardCanvas.SetActive(true);
+            objectiveCardCanvas.SetActive(true);
         }
         else {
             title.color = Color.red;

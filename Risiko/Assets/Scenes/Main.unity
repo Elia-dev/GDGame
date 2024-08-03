@@ -836,7 +836,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 312, y: -186.13591}
+  m_AnchoredPosition: {x: 312, y: -162.81522}
   m_SizeDelta: {x: 570, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &159764868
@@ -923,7 +923,7 @@ MonoBehaviour:
   blackArmy: {fileID: 489636770}
   title: {fileID: 943400849}
   errorMessage: {fileID: 974861468}
-  cardCanvas: {fileID: 1577455925}
+  objectiveCardCanvas: {fileID: 1577455925}
 --- !u!114 &159764872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4312,10 +4312,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1060339971}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 578, y: -378}
-  m_SizeDelta: {x: 1060, y: 453}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 453}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &774017362
 MonoBehaviour:
@@ -4330,7 +4330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
+    m_Left: 10
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
@@ -6108,7 +6108,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &891500869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7264,7 +7264,7 @@ MonoBehaviour:
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
+  m_ChildControlWidth: 1
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
@@ -10809,10 +10809,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1060339971}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 578, y: -75}
-  m_SizeDelta: {x: 250, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1627480780
 MonoBehaviour:
@@ -10868,7 +10868,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -11361,6 +11361,7 @@ MonoBehaviour:
   flipDuration: 0.5
   cardFront: {fileID: 1216257487}
   cardBack: {fileID: 1699224103}
+  territoriesCardCanvas: {fileID: 891500868}
 --- !u!1 &1737077229
 GameObject:
   m_ObjectHideFlags: 0
@@ -15265,7 +15266,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 312, y: -307.27182}
+  m_AnchoredPosition: {x: 312, y: -260.6304}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2047910118
