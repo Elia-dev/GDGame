@@ -3,6 +3,10 @@ import random
 
 import websockets
 
+import Card
+import Territory
+import utils
+
 
 class Game:
     def __init__(self, game_id):
@@ -12,6 +16,15 @@ class Game:
         self.game_waiting_to_start = True
         self.host_player = None
         self.queue = asyncio.Queue()
+        self.army_colors = {
+            'red': None,
+            'blue': None,
+            'green': None,
+            'yellow': None,
+            'purple': None,
+            'black': None
+        }
+        self.event = asyncio.Event()
 
     def add_player(self, player):
         self.players.append(player)
@@ -40,9 +53,16 @@ class Game:
         print("Aperto HANDLE_GAME\n")
         while self.game_waiting_to_start is True:
             print("ASPETTANDO CHE SI COLLEGHINO TUTTI\n")
-            await asyncio.sleep(1)
-            
+            await asyncio.sleep(2)
+
+        #Preparation phase
         await self.__game_order__()
+        await self.broadcast("IS_YOUR_TURN: false") #TOBE Tested
+        await self.army_color_chose() #TOBE Tested
+        await self.broadcast("INITIAL_ARMY_NUMBER: " + str(self.__army_start_num__(len(self.players)))) #TOBE Tested
+        await self._give_objective_cards() # TOBE Tested
+        await self._give_territory_cards() #TOBE Tested
+
 
     async def handle_requests(self):
         while self.game_running:
@@ -62,18 +82,24 @@ class Game:
                     await player.sock.send("REQUEST_NAME_UPDATE_PLAYER_LIST: " + str(player_names))
                 if "GAME_STARTED_BY_HOST" in message:
                     self.game_waiting_to_start = False
-                # Qui puoi aggiungere la logica per gestire il messaggio
-                # Ad esempio, rispondere al client, fare una richiesta ad un altro servizio, ecc.
-                await asyncio.sleep(1)  # Simula il tempo di gestione della richiesta
-                self.queue.task_done()
                 if "UPDATE_NAME:" in message:
                     message = self._remove_request(message, "UPDATE_NAME: ")
                     id, name = message.split("-")
                     for player in self.players:
                         if player.player_id == id:
                             player.name = name
+                if "CHOSEN_ARMY_COLOR:" in message:
+                    message = self._remove_request(message, "CHOSEN_ARMY_COLOR: ")
+                    id, color = message.split("-")
+                    for player in self.players:
+                        if player.player_id == id:
+                            player.army_color = color
+                    self.army_colors[color] = id
+                    self.event.set() #Setting event to True
+                self.queue.task_done()
             except Exception as e:
                 print(f"Error in handle_game: {e}")
+
 
     async def listen_to_request(self):
         while self.game_running:
@@ -153,4 +179,41 @@ class Game:
         # print(f"VALORE CALCOLATO: {value}")
         return value
 
+    async def army_color_chose(self):
+        for player in self.players:
+            available_colors = [color for color, user_id in self.army_colors.items() if user_id is None]
+            await player.sock.send("AVAILABLE_COLORS: " + ", ".join(available_colors))
+            await player.sock.send("IS_YOUR_TURN: true")
+            await self.event.wait() # Waiting for player choice
+            await player.sock.send("IS_YOUR_TURN: false")
+            self.event = asyncio.Event() # Event reset
 
+    def __army_start_num__(self, num_player):
+        switcher = {
+            3: 35,
+            4: 30,
+            5: 25,
+            6: 20
+        }
+        return switcher.get(num_player)
+
+    async def _give_objective_cards(self):
+        cards = utils.read_objects_cards()
+        for player in self.players:
+            card_drawn = cards[random.randint(0, len(cards) - 1)]
+            card_drawn.player_id = player.player_id
+            player.objective_card = card_drawn
+            cards.remove(card_drawn)
+            await player.sock.send("OBJECTIVE_CARD_ASSIGNED: " + Card.Card.to_dict(player.objective_card))
+
+    async def _give_territory_cards(self):
+        cards = utils.read_territories_cards()
+        while cards:
+            for player in self.players:
+                if cards:
+                    card_drawn = cards[random.randint(0, len(cards) - 1)]
+                    card_drawn.player_id = player.player_id
+                    player.addTerritory(card_drawn)
+                    cards.remove(card_drawn)
+        for player in self.players:
+            await player.sock.send("TERRITORIES_CARDS_ASSIGNED: " + Territory.Territory.to_dict(player.territories))
