@@ -1,4 +1,5 @@
 import asyncio
+import json
 import random
 
 import websockets
@@ -57,11 +58,12 @@ class Game:
 
         #Preparation phase
         await self.__game_order__()
-        await self.broadcast("IS_YOUR_TURN: false") #TOBE Tested
+        await self.broadcast("IS_YOUR_TURN: FALSE") #TOBE Tested
         await self.army_color_chose() #TOBE Tested
         await self.broadcast("INITIAL_ARMY_NUMBER: " + str(self.__army_start_num__(len(self.players)))) #TOBE Tested
         await self._give_objective_cards() # TOBE Tested
         await self._give_territory_cards() #TOBE Tested
+        await self._assignDefaultArmiesOnTerritories()
 
 
     async def handle_requests(self):
@@ -69,12 +71,6 @@ class Game:
             try:
                 player, message = await self.queue.get()
                 print(f"GAME: handling request from client id - : {player.player_id}: {message}")
-                if "prova" in message:
-                    print("Bella prova compà")
-                    await player.sock.send("HAI MANDATO PROVA")
-                    await player.sock.send("Bravo coglione")
-                if "cane" in message:
-                    print("I love dogs, doesn't everyone?")
                 if "REQUEST_NAME_UPDATE_PLAYER_LIST" in message:
                     player_names = []
                     for p in self.players:
@@ -96,6 +92,19 @@ class Game:
                             player.army_color = color
                     self.army_colors[color] = id
                     self.event.set() #Setting event to True
+                if "UPDATE_TERRITORIES_STATE:" in message:
+                    message = self._remove_request(message, "UPDATE_TERRITORIES_STATE: ")
+                    id = message.split(",")[0]
+                    message = self._remove_request(message, id + ", ")
+                    territories_list_dict = json.loads(message)
+                    territories = [Territory.Territory.from_dict(data) for data in territories_list_dict]
+                    for player in self.players:
+                        if player.player_id == id:
+                            player.territories = territories
+
+                    #Dovrei fare un broadcast per notificare a tutti il cambio di stato dei territori di questo player? Da ragionarci su
+                    self.event.set()
+
                 self.queue.task_done()
             except Exception as e:
                 print(f"Error in handle_game: {e}")
@@ -110,13 +119,6 @@ class Game:
                 except websockets.exceptions.ConnectionClosed:
                     print(f"Client {player.player_id} disconnected")
                     self.remove_player(player)
-
-                '''try:
-                    async for message in player.sock:
-                        await self.queue.put((player, message))
-                except websockets.exceptions.ConnectionClosed:
-                    print(f"Client {player} disconnected")
-                    '''
 
     async def listen_to_player_request(self, player):
         while True:  # Da cambiare mettendo finché il giocatore può giocare/è ancora in gioco
@@ -163,17 +165,6 @@ class Game:
             await player.sock.send("EXTRACTED_NUMBER: " + str(response[player]))
         print("done")
 
-        '''
-        Struttura messaggi:
-        GAME_ORDER: idPlayer-position, idPlayer-position
-        EXTRACTED_NUMBER: number
-        GAME_ORDER_EXTRACTED_NUMBERS: idPlayer-extracted_number, idPlayer-extracted_number
-        
-        players = []
-        for i, player in enumerate(sorted_players):
-            # player.send(f"You are the {i + 1}° player".encode("utf-8"))
-            players.append(Player(player))'''
-
     def _remove_request(self, source, request):
         value = source.replace(request, "")
         # print(f"VALORE CALCOLATO: {value}")
@@ -204,7 +195,11 @@ class Game:
             card_drawn.player_id = player.player_id
             player.objective_card = card_drawn
             cards.remove(card_drawn)
-            await player.sock.send("OBJECTIVE_CARD_ASSIGNED: " + Card.Card.to_dict(player.objective_card))
+            await player.sock.send("OBJECTIVE_CARD_ASSIGNED: " + json.dumps(Card.Card.to_dict(player.objective_card)))
+            #Per ricevere dalla socket e trasformarlo in oggetto:
+            #received_dict = json.loads(received_data)
+            #received_card = Card.from_dict(received_dict)
+
 
     async def _give_territory_cards(self):
         cards = utils.read_territories_cards()
@@ -216,4 +211,14 @@ class Game:
                     player.addTerritory(card_drawn)
                     cards.remove(card_drawn)
         for player in self.players:
-            await player.sock.send("TERRITORIES_CARDS_ASSIGNED: " + Territory.Territory.to_dict(player.territories))
+            await player.sock.send("TERRITORIES_CARDS_ASSIGNED: " + json.dumps(Territory.Territory.to_dict(player.territories)))
+
+    async def _assignDefaultArmiesOnTerritories(self):
+        num_army_to_place = self.__army_start_num__(len(self.players))
+        while num_army_to_place > 0:
+            for player in self.players:
+                await player.sock.send("IS_YOUR_TURN: TRUE")
+                await self.event.wait() # Waiting for player choice
+                await player.sock.send("IS_YOUR_TURN: FALSE")
+                self.event = asyncio.Event() # Event reset
+                num_army_to_place -= 3

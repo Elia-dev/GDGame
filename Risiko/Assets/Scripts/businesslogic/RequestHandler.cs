@@ -1,9 +1,9 @@
-using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 public class RequestHandler
 {
@@ -121,6 +121,20 @@ public class RequestHandler
                 Debug.Log("Server_Request: OBJECTIVE_CARD_ASSIGNED");
                 _request = RemoveRequest(message, "OBJECTIVE_CARD_ASSIGNED: ");
                 Player.Instance.ObjectiveCard = Objective.FromJson(_request);
+            }
+            else if (message.Contains("TERRITORIES_CARDS_ASSIGNED:"))
+            {
+                Debug.Log("Server_Request: TERRITORIES_CARDS_ASSIGNED");
+                _request = RemoveRequest(message, "TERRITORIES_CARDS_ASSIGNED: ");
+               Player.Instance.Territories = JsonConvert.DeserializeObject<List<Territory>>(_request);
+            }
+            else if (message.Contains("NUMBER_OF_ARMY_TO_ASSIGN_IN_THIS_TURN:"))
+            {
+                Debug.Log("Server_Request: NUMBER_OF_ARMY_TO_ASSIGN_IN_THIS_TURN");
+                _request = RemoveRequest(message, "NUMBER_OF_ARMY_TO_ASSIGN_IN_THIS_TURN: ");
+                int armyNumber = int.Parse(_request);
+                Player.Instance.TanksAvailable = armyNumber;
+                Player.Instance.TanksNum += armyNumber;
             }
             else
             {

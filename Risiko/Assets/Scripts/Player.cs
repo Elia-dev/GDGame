@@ -1,4 +1,4 @@
-using System;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -75,27 +75,21 @@ public class Player
     public Objective ObjectiveCard { get; set; }
     public List<Territory> Territories { get; set; } = new List<Territory>();
 
-    public Dictionary<string, object> ToDict()
-    {
-        return new Dictionary<string, object>
-        {
-            { "name", Name },
-            { "sock", "sock" }, // Come rappresentare il socket?
-            { "lobby_id", LobbyId },
-            { "player_id", PlayerId },
-            { "tanks_num", TanksNum },
-            { "tanks_available", TanksAvailable },
-            { "tanks_placed", TanksPlaced },
-            { "objective_card", ObjectiveCard?.ToDict() },
-            { "territories", Territories.Select(t => t.ToDict()).ToList() }
-        };
-    }
-
     public override string ToString()
     {
         return $"Player(name={Name}, socket={Sock}, lobby_id={LobbyId}, player_id={PlayerId}, tanks_num={TanksNum}, tanks_available={TanksAvailable}, tanks_placed={TanksPlaced}, objective_card={ObjectiveCard}, territories={Territories})";
     }
 
+    public new string ToJson()
+    {
+        return JsonConvert.SerializeObject(this);
+    }
+    
+    public new static Player FromJson(string json)
+    {
+        return JsonConvert.DeserializeObject<Player>(json);
+    }
+    
     public void SetObjectiveCard(Objective goalCard)
     {
         ObjectiveCard = goalCard;
@@ -120,21 +114,10 @@ public class Player
     {
         TanksAvailable -= 1;
         TanksPlaced += 1;
-        var territory = Territories.FirstOrDefault(t => t.Id == territoryId);
+        var territory = Territories.FirstOrDefault(t => t.CardId == territoryId);
         if (territory != null)
         {
             territory.NumTanks += 1;
         }
-    }
-
-    public static Player FromDict(Dictionary<string, object> data)
-    {
-        var player = new Player(data["sock"], (string)data["name"], (string)data["lobby_id"], (string)data["player_id"]);
-        player.TanksNum = (int)data["tanks_num"];
-        player.TanksAvailable = (int)data["tanks_available"];
-        player.TanksPlaced = (int)data["tanks_placed"];
-        player.ObjectiveCard = Objective.FromDict((Dictionary<string, object>)data["objective_card"]);
-        player.Territories = ((List<object>)data["territories"]).Select(t => Territory.FromDict((Dictionary<string, object>)t)).ToList();
-        return player;
     }
 }

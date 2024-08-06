@@ -5,6 +5,7 @@ using System.Threading;
 using System.Net.WebSockets;
 using System.Threading.Tasks;
 using UnityEngine;
+using Newtonsoft.Json;
 
 public class ClientManager
 {
@@ -121,5 +122,10 @@ public class ClientManager
     public async void SendChosenArmyColor()
     {
         await SendMessage(_webSocket, _cancellationToken, "CHOSEN_ARMY_COLOR: " + player.PlayerId + "-" + player.ArmyColor);
+    }
+
+    public async void UpdateTerritoriesState()
+    {
+        await SendMessage(_webSocket, _cancellationToken, "UPDATE_TERRITORIES_STATE: " + player.PlayerId + ", " + JsonConvert.SerializeObject(player.Territories));
     }
 }
