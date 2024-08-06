@@ -61,9 +61,9 @@ class Game:
         await self.broadcast("IS_YOUR_TURN: FALSE") #TOBE Tested
         await self.army_color_chose() #TOBE Tested
         await self.broadcast("INITIAL_ARMY_NUMBER: " + str(self.__army_start_num__(len(self.players)))) #TOBE Tested
-        await self._give_objective_cards() # TOBE Tested
+        await self._give_objective_cards() #TOBE Tested
         await self._give_territory_cards() #TOBE Tested
-        await self._assignDefaultArmiesOnTerritories()
+        await self._assignDefaultArmiesOnTerritories() #TOBE Tested
 
 
     async def handle_requests(self):
