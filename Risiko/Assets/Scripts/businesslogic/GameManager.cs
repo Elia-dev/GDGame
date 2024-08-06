@@ -8,6 +8,7 @@ public class GameManager
     private static GameManager _instance;
     private static readonly object Lock = new object();
     public List<string> PlayersName = new List<string>(); 
+    public List<string> AvailableColors = new List<string>(); 
     private Player _player;
     private string _gameOrder = "";
     private int _extractedNumber = 0;
@@ -94,5 +95,15 @@ public class GameManager
     public int GetPlayersNumber()
     {
         return PlayersName.Count;
+    }
+
+    public void AddAvailableColor(string color)
+    {
+        AvailableColors.Add(color);
+    }
+
+    public string GetAvailableColors()
+    {
+        return AvailableColors.ToString();
     }
 }

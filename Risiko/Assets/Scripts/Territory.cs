@@ -7,12 +7,12 @@ public class Territory : Card
     public int NumTanks { get; set; }
     public string Continent { get; set; }
 
-    public string cardId { get; set; }
+    public string CardId { get; set; }
 
     public Territory(string cardId, string image, string function, string description, string playerId, string name, int numTanks, string continent)
         : base(cardId, image, function, description, playerId) {
 
-        this.cardId = cardId;
+        this.CardId = cardId;
         Name = name;
         NumTanks = numTanks;
         Continent = continent;
@@ -27,7 +27,7 @@ public class Territory : Card
         return data;
     }
 
-    public static new Territory FromDict(Dictionary<string, object> data)
+    public new static Territory FromDict(Dictionary<string, object> data)
     {
         return new Territory(
             (string)data["id"],

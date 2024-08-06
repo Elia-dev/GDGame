@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 public class RequestHandler
 {
@@ -63,12 +64,11 @@ public class RequestHandler
             }
             else if (message.Contains("EXTRACTED_NUMBER:"))
             {
-                
                 Debug.Log("Server_Request: EXTRACTED_NUMBER");
                 _request = RemoveRequest(message, "EXTRACTED_NUMBER: ");
-                int numero = int.Parse(_request);
+                int extractedNumber = int.Parse(_request);
                 
-                gm.SetExtractedNumber(numero);
+                gm.SetExtractedNumber(extractedNumber);
             }
             else if (message.Contains("GAME_ORDER_EXTRACTED_NUMBERS:"))
             {
@@ -81,6 +81,46 @@ public class RequestHandler
                 Debug.Log("Server_Request: PLAYER_ID");
                 _request = RemoveRequest(message, "PLAYER_ID: ");
                 Player.Instance.PlayerId = _request;
+            }
+            else if (message.Contains("IS_YOUR_TURN:"))
+            {
+                Debug.Log("Server_Request: IS_YOUR_TURN");
+                _request = RemoveRequest(message, "IS_YOUR_TURN: ");
+                Player.Instance.IsMyTurn = _request.Equals("TRUE");
+            }
+            else if (message.Contains("AVAILABLE_COLORS:"))
+            {
+                Debug.Log("Server_Request: AVAILABLE_COLORS");
+                _request = RemoveRequest(message, "AVAILABLE_COLORS: ");
+                string[] str= _request.Split(" ");
+                foreach (string color in str)
+                {
+                    for (int i = 0; i < color.Length; i++)
+                    {
+                        if (color[i] == ',')
+                        {
+                            color.Remove(i);
+                        }
+                    }
+                    
+                    //Debug.Log(name);
+                    gm.AddAvailableColor(color);
+                }
+            }
+            else if (message.Contains("INITIAL_ARMY_NUMBER:"))
+            {
+                Debug.Log("Server_Request: INITIAL_ARMY_NUMBER");
+                _request = RemoveRequest(message, "INITIAL_ARMY_NUMBER: ");
+                int armyNumber = int.Parse(_request);
+                Player.Instance.TanksNum = armyNumber;
+                Player.Instance.TanksAvailable = armyNumber;
+                Player.Instance.TanksPlaced = 0;
+            }
+            else if (message.Contains("OBJECTIVE_CARD_ASSIGNED:"))
+            {
+                Debug.Log("Server_Request: OBJECTIVE_CARD_ASSIGNED");
+                _request = RemoveRequest(message, "OBJECTIVE_CARD_ASSIGNED: ");
+                Player.Instance.ObjectiveCard = Objective.FromJson(_request);
             }
             else
             {

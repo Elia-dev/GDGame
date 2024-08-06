@@ -183,9 +183,9 @@ class Game:
         for player in self.players:
             available_colors = [color for color, user_id in self.army_colors.items() if user_id is None]
             await player.sock.send("AVAILABLE_COLORS: " + ", ".join(available_colors))
-            await player.sock.send("IS_YOUR_TURN: true")
+            await player.sock.send("IS_YOUR_TURN: TRUE")
             await self.event.wait() # Waiting for player choice
-            await player.sock.send("IS_YOUR_TURN: false")
+            await player.sock.send("IS_YOUR_TURN: FALSE")
             self.event = asyncio.Event() # Event reset
 
     def __army_start_num__(self, num_player):

@@ -21,7 +21,11 @@ public class Player
             TanksPlaced = 0;
             ObjectiveCard = null;
             Territories = new List<Territory>();
+            IsMyTurn = false;
+            ArmyColor = null;
     }
+
+    public string ArmyColor { get; set; }
 
     public void Initialize(object socket, string name, string lobbyId, string playerId)
     {
@@ -60,7 +64,7 @@ public class Player
     }
 
 
-
+    public bool IsMyTurn { get; set; }
     public string Name { get; set; }
     public object Sock { get; set; } // Assumendo che il tipo di socket sia object per semplicità
     public string LobbyId { get; set; }

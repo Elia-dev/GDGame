@@ -38,7 +38,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
 
     public void activateTerritories(List<Territory> territories) {
         foreach (var territory in territories) {
-            GameObject terr = this.territories.Find(x => x.name.Equals(territory.cardId));
+            GameObject terr = this.territories.Find(x => x.name.Equals(territory.CardId));
             if (terr is not null)
                 terr.GetComponent<PolygonCollider2D>().enabled = true;
         }
@@ -113,7 +113,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     }*/
 
     Territory TerritoryInformations(string name) {
-        return Player.Instance.Territories.Find(x => x.cardId.Equals(name));
+        return Player.Instance.Territories.Find(x => x.CardId.Equals(name));
     }
 
     private int selectTerritory(TerritoryHandlerUI territory) {

@@ -117,4 +117,9 @@ public class ClientManager
     {
         await SendMessage(_webSocket, _cancellationToken, "GAME_STARTED_BY_HOST: ");
     }
+    
+    public async void SendChosenArmyColor()
+    {
+        await SendMessage(_webSocket, _cancellationToken, "CHOSEN_ARMY_COLOR: " + player.PlayerId + "-" + player.ArmyColor);
+    }
 }
