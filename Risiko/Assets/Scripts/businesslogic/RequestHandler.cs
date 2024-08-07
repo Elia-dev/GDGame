@@ -138,7 +138,7 @@ public class RequestHandler
             }
             else
             {
-                Debug.Log("HANDLER: Richiesta non gestibile" + message);
+                Debug.Log("HANDLER: request not manageable: " + message);
             }
             await Task.Delay(500);
         }

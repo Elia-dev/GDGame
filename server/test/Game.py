@@ -64,6 +64,29 @@ class Game:
         await self._give_objective_cards() #TOBE Tested
         await self._give_territory_cards() #TOBE Tested
         await self._assignDefaultArmiesOnTerritories() #TOBE Tested
+        #Preparation phase terminated
+
+        #Game loop
+        while self.game_running:
+            for player in self.players:
+                # Reinforce phase
+                # CheckContinents
+                # CheckArmy
+                numArmyToSend = self.calculateArmyForThisTurn(player)
+                # SendArmy
+                await player.sock.send("NUMBER_OF_ARMY_TO_ASSIGN_IN_THIS_TURN: " + str(numArmyToSend))
+                # UnlockTurn
+                await player.sock.send("IS_YOUR_TURN: TRUE")
+                # Waiting for player to finish the turn and send updated territories
+                await self.event.wait()
+                self.event = asyncio.Event()  # Event reset
+
+
+
+            #Fight phase
+            #Strategic movement
+                #Calculate army to assign in this turn
+            pass
 
 
     async def handle_requests(self):
@@ -222,3 +245,44 @@ class Game:
                 await player.sock.send("IS_YOUR_TURN: FALSE")
                 self.event = asyncio.Event() # Event reset
                 num_army_to_place -= 3
+
+    def calculateArmyForThisTurn(self, player):
+        #Continent name: NA SA EU AF AS OC
+        armyForContinent = 0
+        NA_count = 0;
+        SA_count = 0;
+        EU_count = 0
+        AF_count = 0
+        AS_count = 0
+        OC_count = 0
+        armyForTerritories = len(player.territories) // 3
+        for territory in player.territories:
+            if territory.continent == "NA":
+                NA_count += 1
+            elif territory.continent == "SA":
+                SA_count += 1
+            elif territory.continent == "EU":
+                EU_count += 1
+            elif territory.continent == "AF":
+                AF_count += 1
+            elif territory.continent == "AS":
+                AS_count += 1
+            elif territory.continent == "OC":
+                OC_count += 1
+
+        if NA_count == 9:
+            armyForContinent += 5
+        if SA_count == 4:
+            armyForContinent += 2
+        if EU_count == 7:
+            armyForContinent += 5
+        if AF_count == 6:
+            armyForContinent += 3
+        if AS_count == 12:
+            armyForContinent += 7
+        if OC_count == 4:
+            armyForContinent += 2
+
+        totalArmyToAssing = armyForTerritories + armyForContinent
+        return totalArmyToAssing
+
