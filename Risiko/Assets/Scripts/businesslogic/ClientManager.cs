@@ -128,4 +128,10 @@ public class ClientManager
     {
         await SendMessage(_webSocket, _cancellationToken, "UPDATE_TERRITORIES_STATE: " + player.PlayerId + ", " + JsonConvert.SerializeObject(player.Territories));
     }
+
+    public async void RequestTerritoryInfo(string id)
+    {
+        await SendMessage(_webSocket, _cancellationToken, "REQUEST_TERRITORY_INFO: " + player.PlayerId + "-" + id);
+    
+    }
 }

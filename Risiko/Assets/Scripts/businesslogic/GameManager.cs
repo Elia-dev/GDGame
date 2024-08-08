@@ -7,12 +7,15 @@ public class GameManager
 {
     private static GameManager _instance;
     private static readonly object Lock = new object();
+    public Territory puppetState;
     public List<string> PlayersName = new List<string>(); 
     public List<string> AvailableColors = new List<string>(); 
     private Player _player;
     private string _gameOrder = "";
     private int _extractedNumber = 0;
     private string _gameOrderExtractedNumbers = "";
+    private bool _gameWaitingToStart = true;
+    private bool _gameRunning = true;
 
     private string _lobbyID;
     /*
@@ -102,8 +105,28 @@ public class GameManager
         AvailableColors.Add(color);
     }
 
-    public string GetAvailableColors()
+    public List<string> GetAvailableColors()
     {
-        return AvailableColors.ToString();
+        return AvailableColors;
+    }
+    
+    public bool GetGameWaitingToStart()
+    {
+        return _gameWaitingToStart;
+    }
+
+    public void SetGameWaitingToStart(bool value)
+    {
+        _gameWaitingToStart = value;
+    }
+    
+    public bool GetGameRunning()
+    {
+        return _gameRunning;
+    }
+
+    public void SetGameRunning(bool value)
+    {
+        _gameRunning = value;
     }
 }

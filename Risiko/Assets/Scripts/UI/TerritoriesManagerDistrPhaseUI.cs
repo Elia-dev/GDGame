@@ -55,11 +55,11 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     }
 
     private void Update() {
-        //ATTESA DEL TURNO
+        //ATTESA DEL TURNO -> Player.Instance.IsMyTurn()
         //if(ricezione messaggio server)
         //StartTurn();
         //RICEZIONE NUMERO ARMATE DA POSIZIONE
-        //int armyNumber = ...
+        //int armyNumber = Player.Instance.TanksAvailable
         int armyNumber = 3;
         selectedTerritories.territories = new List<Territory>(armyNumber);
         selectedTerritories.count = new int[armyNumber];

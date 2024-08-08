@@ -20,24 +20,15 @@ public class HostMenuUI : MonoBehaviour
     [SerializeField] private GameObject PopUpDiceHostMenu;
     ClientManager cm = ClientManager.Instance;
     GameManager gm = GameManager.Instance;
-    Player player = Player.Instance;
     
     private float delay = 5.0f; // Durata del ritardo in secondi
     private float timer;
-    private Player Player = Player.Instance;
     private string stringa;
     
     void Start()
     {
         stringa = null;
         cm.CreateLobbyAsHost();
-        /*
-        do
-        {
-            Debug.Log("Waiting for playerID");
-        } while (player.PlayerId == null);
-        */
-        //cm.SendName(); // Mossa pericolosa, avrà già ricevuto l'id dal server quando esegue questo comando?
         timer = delay;
     }
     

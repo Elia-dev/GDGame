@@ -32,6 +32,10 @@ public class RequestHandler
                 ClientManager cm = ClientManager.Instance;
                 cm.SetLobbyId(_request);
             }
+            else if (message.Contains("GAME_STARTED_BY_HOST"))
+            {
+                GameManager.Instance.SetGameWaitingToStart(false);
+            }
             else if (message.Contains("REQUEST_NAME_UPDATE_PLAYER_LIST:"))
             {
                 Debug.Log("Server_Request: REQUEST_NAME_UPDATE_PLAYER_LIST");
@@ -135,6 +139,12 @@ public class RequestHandler
                 int armyNumber = int.Parse(_request);
                 Player.Instance.TanksAvailable = armyNumber;
                 Player.Instance.TanksNum += armyNumber;
+            }
+            else if (message.Contains("RECEIVED_REQUEST_TERRITORY_INFO:"))
+            {
+                Debug.Log("Server_Request: RECEIVED_REQUEST_TERRITORY_INFO");
+                _request = RemoveRequest(message, "RECEIVED_REQUEST_TERRITORY_INFO: ");
+                GameManager.Instance.puppetState = JsonConvert.DeserializeObject<Territory>(_request);
             }
             else
             {

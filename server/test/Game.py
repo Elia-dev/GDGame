@@ -66,10 +66,10 @@ class Game:
         await self._assignDefaultArmiesOnTerritories() #TOBE Tested
         #Preparation phase terminated
 
-        #Game loop
+        #Game loop TOBE TESTED
         while self.game_running:
             for player in self.players:
-                # Reinforce phase
+                # REINFORCE PHASE
                 # CheckContinents
                 # CheckArmy
                 numArmyToSend = self.calculateArmyForThisTurn(player)
@@ -80,13 +80,15 @@ class Game:
                 # Waiting for player to finish the turn and send updated territories
                 await self.event.wait()
                 self.event = asyncio.Event()  # Event reset
+                # REINFORCE PHASE TERMINATED
 
+                # FIGHT PHASE
 
+                # FIGHT PHASE TERMINATED
 
-            #Fight phase
-            #Strategic movement
-                #Calculate army to assign in this turn
-            pass
+                # STRATEGIC MOVEMENT
+                await self.event.wait()
+                # STRATEGIC MOVEMENT TERMINATED
 
 
     async def handle_requests(self):
@@ -100,6 +102,7 @@ class Game:
                         player_names.append(p.name)
                     await player.sock.send("REQUEST_NAME_UPDATE_PLAYER_LIST: " + str(player_names))
                 if "GAME_STARTED_BY_HOST" in message:
+                    await self.broadcast("GAME_STARTED_BY_HOST")
                     self.game_waiting_to_start = False
                 if "UPDATE_NAME:" in message:
                     message = self._remove_request(message, "UPDATE_NAME: ")
@@ -126,7 +129,20 @@ class Game:
                             player.territories = territories
 
                     #Dovrei fare un broadcast per notificare a tutti il cambio di stato dei territori di questo player? Da ragionarci su
+
                     self.event.set()
+                if "REQUEST_TERRITORY_INFO:" in message: #TOBE TESTED
+                    message = self._remove_request(message, "REQUEST_TERRITORY_INFO: ")
+                    playerId, territoryId = message.split("-")
+                    tempPlayer = None
+                    for player in self.players:
+                        if player.player_id == playerId:
+                            tempPlayer = player
+
+                    for player in self.players:
+                        for territory in player.territories:
+                            if territory.id == territoryId:
+                                await tempPlayer.sock.send("RECEIVED_REQUEST_TERRITORY_INFO: " + json.dumps(territory.to_dict()))
 
                 self.queue.task_done()
             except Exception as e:
@@ -176,21 +192,18 @@ class Game:
             game_order.append(self.players[i].player_id + "-" + str(i) + ", ")
             game_order_extracted_numbers.append(self.players[i].player_id + "-" + str(response[self.players[i]]) + ", ")
 
-        # Notify positions
-        #Game order e GameOrderExtractedNumbers dovrebbero essere sostituiti da un broadcast
         print(f"Game order: {''.join(game_order)}")
-        fgameOrder = {''.join(game_order)}
+        fgame_order = {''.join(game_order)}
         print(f"GAME_ORDER_EXTRACTED_NUMBERS: {str(game_order_extracted_numbers)}")
         for player in self.players:
             print(f"For player {player.name} extracted number {str(response[player])} ")
-            await player.sock.send("GAME_ORDER: " + str(fgameOrder))
-            await player.sock.send("GAME_ORDER_EXTRACTED_NUMBERS: " + str(game_order_extracted_numbers))
             await player.sock.send("EXTRACTED_NUMBER: " + str(response[player]))
+        await self.broadcast("GAME_ORDER: " + str(fgame_order))
+        await self.broadcast("GAME_ORDER_EXTRACTED_NUMBERS: " + str(game_order_extracted_numbers))
         print("done")
 
     def _remove_request(self, source, request):
         value = source.replace(request, "")
-        # print(f"VALORE CALCOLATO: {value}")
         return value
 
     async def army_color_chose(self):

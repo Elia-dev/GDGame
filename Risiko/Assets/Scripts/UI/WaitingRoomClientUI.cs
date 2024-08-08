@@ -49,7 +49,12 @@ public class WaitingRoomClientUI : MonoBehaviour
         
         
         //Quando l'HOST avvia il gioco
-        //PopUpDice.SetActive(true);
+        if (!GameManager.Instance.GetGameWaitingToStart())
+        {
+            Debug.Log("L'HOST HA FATTO COMINCIARE LA PARTITA");
+            PopUpDice.SetActive(true);
+        }
+
     }
 
     private void Awake()
