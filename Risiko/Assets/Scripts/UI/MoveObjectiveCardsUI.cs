@@ -24,8 +24,8 @@ public class MoveObjectiveCardsUI : MoveCardsUI {
         rectTransform.anchoredPosition = startPosition;
 
         //Carica la sprite della carta missione
-        //loadSprite(Player.Instance.ObjectiveCard.CardId);
-        loadSprite("Objectives/obj3");
+        loadSprite(Player.Instance.ObjectiveCard.CardId);
+        //loadSprite("Objectives/obj3");
         cardFront.GetComponent<Image>().sprite = imgSprite;
         
         // Inizia la coroutine per muovere l'immagine
