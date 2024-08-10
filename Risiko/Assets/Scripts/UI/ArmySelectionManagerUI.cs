@@ -16,8 +16,8 @@ public class ArmySelectionManagerUI : MonoBehaviour {
     private GraphicRaycaster raycaster;
     private PointerEventData pointerEventData;
     private EventSystem eventSystem;
+    private bool turn = false;
 
-    public int playerNumber = 4;
     [SerializeField] private GameObject redArmy;
     [SerializeField] private GameObject greenArmy;
     [SerializeField] private GameObject blueArmy;
@@ -27,6 +27,7 @@ public class ArmySelectionManagerUI : MonoBehaviour {
     [SerializeField] private TMP_Text title;
     [SerializeField] private TMP_Text errorMessage;
     [SerializeField] private GameObject objectiveCardCanvas;
+    [SerializeField] private TMP_Text waitingLabel;
 
     private void Awake() {
         if (Instance is null) {
@@ -53,20 +54,48 @@ public class ArmySelectionManagerUI : MonoBehaviour {
                 blackArmy.GameObject().SetActive(true);
                 break;
         }
-        
-        //SCORRERE LA LISTA DELLE ARMATE GIà PRESE DAGLI ALTRI GIOCATORI E DISATTIVARE I raycastTarget ALLE CORRISPONDENTI ARMATE
-        //GameManager.Instance.GetAvailableColors(); Per prendere la lista dei colori disponibili
-        //greenArmy.GetComponent<Image>().raycastTarget = false;
-        
+
         // Trova il GraphicRaycaster sul Canvas
         raycaster = GetComponent<GraphicRaycaster>();
 
         // Trova l'EventSystem nella scena
         eventSystem = EventSystem.current;
     }
-    
+
+    private void ActivateRaycastTargetArmy() {
+        List<string>
+            AvailableColors = GameManager.Instance.GetAvailableColors(); // Per prendere la lista dei colori disponibili
+        foreach (var color in AvailableColors) {
+            switch (color) {
+                case "red":
+                    redArmy.GetComponent<Image>().raycastTarget = true;
+                    break;
+                case "green":
+                    greenArmy.GetComponent<Image>().raycastTarget = true;
+                    break;
+                case "blue":
+                    blueArmy.GetComponent<Image>().raycastTarget = true;
+                    break;
+                case "yellow":
+                    yellowArmy.GetComponent<Image>().raycastTarget = true;
+                    break;
+                case "purple":
+                    purpleArmy.GetComponent<Image>().raycastTarget = true;
+                    break;
+                case "black":
+                    blackArmy.GetComponent<Image>().raycastTarget = true;
+                    break;
+            }
+        }
+    }
+
     private void Update() {
-        if (Input.GetMouseButtonDown(0)) {
+        if (Player.Instance.IsMyTurn && !turn) {
+            turn = true;
+            ActivateRaycastTargetArmy();
+        }
+
+        if (Input.GetMouseButtonDown(0) && turn) {
             pointerEventData = new PointerEventData(eventSystem)
             {
                 position = Input.mousePosition
@@ -74,7 +103,7 @@ public class ArmySelectionManagerUI : MonoBehaviour {
 
             List<RaycastResult> results = new List<RaycastResult>();
             raycaster.Raycast(pointerEventData, results);
-            
+
             if (results.Count > 0) {
                 foreach (RaycastResult result in results) {
                     ArmySelectionHandlerUI armyHandlerUI = result.gameObject.GetComponent<ArmySelectionHandlerUI>();
@@ -84,6 +113,14 @@ public class ArmySelectionManagerUI : MonoBehaviour {
                     }
                 }
             }
+        }
+
+        if (Player.Instance.ObjectiveCard is not null) {
+            TerritoryHandlerUI.ArmyDistributionPhase();
+            GameObject.Find("PopUpArmySelection").SetActive(false);
+            //RICEZIONE OGGETTO CARTA DA PARTE DEL SERVER
+            // La carta objective è memorizzata qui Player.Instance.ObjectiveCard
+            objectiveCardCanvas.SetActive(true);
         }
     }
 
@@ -100,22 +137,28 @@ public class ArmySelectionManagerUI : MonoBehaviour {
 
     public void ChooseArmy() {
         if (selectedArmy is not null) {
+            Player.Instance.ArmyColor = selectedArmy.gameObject.name.Substring(6);
+            ClientManager.Instance.SendChosenArmyColor();
+            turn = false;
             //COMUNICA AL SERVER L'ARMATA
-            
+
             // Per mandare l'armata settare prima il colore in string usando player.ArmyColor="colore scelto"
             // Poi utilizzare questo comando ClientManager.Instance.SendChosenArmyColor();
             //ATTENDE COMUNICAZIONE DAL SERVER PER PASSARE ALLA PROSSIMA FASE
             // Per vedere se è il tuo turno puoi usare Player.Instance.IsMyTurn();
-            
+
             //LANCIA LA PROSSIMA FASE
             Color32 color = selectedArmy.ArmyColor;
             color.a = 100;
             TerritoryHandlerUI.userColor = color;
-            //TerritoryHandlerUI.ArmyDistributionPhase();
+            waitingLabel.gameObject.SetActive(true);
+            gameObject.GetComponent<Renderer>().enabled = false;
+                
+            /*//TerritoryHandlerUI.ArmyDistributionPhase();
             GameObject.Find("PopUpArmySelection").SetActive(false);
             //RICEZIONE OGGETTO CARTA DA PARTE DEL SERVER
             // La carta objective è memorizzata qui Player.Instance.ObjectiveCard
-            objectiveCardCanvas.SetActive(true);
+            objectiveCardCanvas.SetActive(true);*/
         }
         else {
             title.color = Color.red;
