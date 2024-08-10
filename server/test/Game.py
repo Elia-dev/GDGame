@@ -90,6 +90,9 @@ class Game:
                 await self.event.wait()
                 # STRATEGIC MOVEMENT TERMINATED
 
+                # CHECK (card objective, number of tanks ecc...)
+
+
 
     async def handle_requests(self):
         while self.game_running:
@@ -189,8 +192,10 @@ class Game:
         game_order = []
         game_order_extracted_numbers = []
         for i in range(len(self.players)):
-            game_order.append(self.players[i].player_id + "-" + str(i) + ", ")
-            game_order_extracted_numbers.append(self.players[i].player_id + "-" + str(response[self.players[i]]) + ", ")
+            if self.players[i].name == None:
+                self.players[i].name = "None" + str(i)  # Solo per debug
+            game_order.append(self.players[i].name + "-" + str(i) + ", ")
+            game_order_extracted_numbers.append(self.players[i].name + "-" + str(response[self.players[i]]) + ", ")
 
         print(f"Game order: {''.join(game_order)}")
         fgame_order = {''.join(game_order)}
