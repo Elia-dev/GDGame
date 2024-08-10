@@ -28,7 +28,6 @@ public class ArmySelectionManagerUI : MonoBehaviour {
     [SerializeField] private TMP_Text errorMessage;
     [SerializeField] private GameObject objectiveCardCanvas;
     [SerializeField] private TMP_Text waitingLabel;
-    [SerializeField] private GameObject armySelectionCanvas;
 
     private void Awake() {
         if (Instance is null) {
@@ -152,8 +151,8 @@ public class ArmySelectionManagerUI : MonoBehaviour {
             Color32 color = selectedArmy.ArmyColor;
             color.a = 100;
             TerritoryHandlerUI.userColor = color;
-            armySelectionCanvas.SetActive(false);
             waitingLabel.gameObject.SetActive(true);
+            gameObject.GetComponent<Renderer>().enabled = false;
                 
             /*//TerritoryHandlerUI.ArmyDistributionPhase();
             GameObject.Find("PopUpArmySelection").SetActive(false);
