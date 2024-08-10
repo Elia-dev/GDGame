@@ -55,6 +55,11 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     }
 
     private void Update() {
+        if (Player.Instance.IsMyTurn && !isTurnActive) {
+            StartTurn(Player.Instance.TanksAvailable);
+            isTurnActive = true;
+        }
+
         //ATTESA DEL TURNO -> Player.Instance.IsMyTurn()
         //if(ricezione messaggio server)
         //StartTurn();

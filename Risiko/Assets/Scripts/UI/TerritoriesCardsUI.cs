@@ -11,7 +11,7 @@ public class TerritoriesCardsUI : MoveCardsUI {
     public int numberOfImages = 4; // Numero di immagini da creare
 
     private bool animationDone = false;
-    private List<Territory> territories = new List<Territory>();
+    private List<Territory> territories;
 
     void Start() {
         //territories = Player.Instance.Territories;
