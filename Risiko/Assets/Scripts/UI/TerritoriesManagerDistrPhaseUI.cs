@@ -116,6 +116,9 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         return Player.Instance.Territories.Find(x => x.CardId.Equals(name));
     }
 
+    ///funzione per chiedere info sullo stato selezionato: ClientManager.Instance.RequestTerritoryInfo("idStato");
+    /// Il risultato va dentro GameManager.Instance.PuppetTerritory
+    
     private int selectTerritory(TerritoryHandlerUI territory) {
         for (int i = 0; i < selectedTerritories.count.Length; i++) {
             Debug.Log(selectedTerritories.count[i]);

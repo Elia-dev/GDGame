@@ -23,8 +23,11 @@ public class DiceControllerUI : MonoBehaviour
         if (gm.GetExtractedNumber() != 0)
         {
             diceAnimator.gameObject.SetActive(false);
+            diceAnimator.SetBool("Roll", false);
             DiceResults.text = gm.GetExtractedNumber() + gm.getGame_order() + gm.GetGameOrderExtractedNumbers();
             DiceResults.gameObject.SetActive(true);
+            //Delay di qualcosa o un tasto per passare di scena
+            // GameManager.LoadScene("Main") -> scena della mappa
         }
             
     }

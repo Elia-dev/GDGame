@@ -46,6 +46,7 @@ public class ArmySelectionHandlerUI : MonoBehaviour, IPointerEnterHandler, IPoin
         //selected = true;
         //Debug.Log("Select");
         /// CARICARE DATI STATO
+        
         //sprite.color = hoverColor;
         //frame.SetActive(true);
     }
