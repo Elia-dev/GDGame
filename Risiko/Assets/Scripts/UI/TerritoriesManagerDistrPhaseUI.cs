@@ -19,17 +19,18 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     SelectedTerritories selectedTerritories;
     private bool isTurnActive = false; // Variabile per tracciare il turno attivo
     private bool isTurnInitialized = false; // Variabile per tracciare se il turno è stato inizializzato
+    private int armyNumber;
 
     public void Start() {
         //TUTTA ROBA DI DEBUG
-        TerritoryHandlerUI.userColor = new Color32(0, 0, 255, 150);
+        /*TerritoryHandlerUI.userColor = new Color32(0, 0, 255, 150);
         List<Territory> terr = new List<Territory>();
         terr.Add(new Territory("SA_ter1", "SA_ter1.png", "boh", "eh", "lo", "fa", 7, "SA"));
         terr.Add(new Territory("SA_ter2", "SA_ter2.png", "boh", "eh", "lo", "fa", 5, "SA"));
         terr.Add(new Territory("SA_ter3", "SA_ter3.png", "boh", "eh", "lo", "fa", 6, "SA"));
         terr.Add(new Territory("SA_ter4", "SA_ter4.png", "boh", "eh", "lo", "fa", 1, "SA"));
         Player.Instance.Territories = terr;
-        TerritoryHandlerUI.ArmyDistributionPhase();
+        TerritoryHandlerUI.ArmyDistributionPhase();*/
 
         //FUORI DEBUG
         popUpAddTank.GetComponent<Image>().color = TerritoryHandlerUI.userColor;
@@ -56,8 +57,8 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
 
     private void Update() {
         if (Player.Instance.IsMyTurn && !isTurnActive) {
-            StartTurn(Player.Instance.TanksAvailable);
-            isTurnActive = true;
+            armyNumber = Player.Instance.TanksAvailable;
+            StartTurn(armyNumber);
         }
 
         //ATTESA DEL TURNO -> Player.Instance.IsMyTurn()
@@ -65,11 +66,11 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         //StartTurn();
         //RICEZIONE NUMERO ARMATE DA POSIZIONE
         //int armyNumber = Player.Instance.TanksAvailable
-        int armyNumber = 3;
-        selectedTerritories.territories = new List<Territory>(armyNumber);
-        selectedTerritories.count = new int[armyNumber];
+        //int armyNumber = 3;
+        //selectedTerritories.territories = new List<Territory>(armyNumber);
+        //selectedTerritories.count = new int[armyNumber];
 
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0) && Player.Instance.IsMyTurn) {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
 
@@ -94,7 +95,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         selectedTerritories.territories = new List<Territory>(armyNumber);
         selectedTerritories.count = new int[armyNumber];
         isTurnActive = true; // Attiva il turno
-        isTurnInitialized = false; // Imposta a false per inizializzare nel prossimo Update
+        //isTurnInitialized = false; // Imposta a false per inizializzare nel prossimo Update
         //Debug.Log("Turno iniziato con " + armyNumber + " armate da posizionare.");
     }
 
@@ -125,13 +126,12 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     /// Il risultato va dentro GameManager.Instance.PuppetTerritory
     
     private int selectTerritory(TerritoryHandlerUI territory) {
-        for (int i = 0; i < selectedTerritories.count.Length; i++) {
+        /*for (int i = 0; i < selectedTerritories.count.Length; i++) {
             Debug.Log(selectedTerritories.count[i]);
-        }
+        }*/
 
         if (selectedTerritories.count[0] +
-            selectedTerritories.count[1] +
-            selectedTerritories.count[2] < selectedTerritories.count.Length) {
+            selectedTerritories.count[1] + selectedTerritories.count[2] < selectedTerritories.count.Length) {
             int result = selectedTerritories.territories.FindIndex(x => x.Name.Equals(territory.name));
             Debug.Log(result);
             if (result == -1) {
@@ -163,6 +163,13 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             popUpAddTank.transform.position = new Vector3(popUpAddTank.transform.position.x,
                 popUpAddTank.transform.position.y + (float)(0.3), popUpAddTank.transform.position.z);
             popUpAddTank.SetActive(true);
+            if(selectedTerritories.count[0] +
+               selectedTerritories.count[1] + selectedTerritories.count[2] == armyNumber) {
+                //INVIO ARMATE DA POSIZIONARE AL SERVER
+                //nella struct selectedTerritories ci sono gli stati ed il numero di armate
+                armyNumber = 0;
+                isTurnActive = false;
+            }
         }
         /*else {
             if (selectedTerritory is not null) {
