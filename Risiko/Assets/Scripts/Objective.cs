@@ -1,37 +1,19 @@
-using System;
-using System.Collections.Generic;
+using Newtonsoft.Json;
 
 public class Objective : Card {
-    private string cardId;
-
-    public string CardId {
-        get => cardId;
-        set => cardId = value;
-    }
-
-    private string image { get; set; }
-    private string function { get; set; }
-    private string description { get; set; }
-    private string playerId { get; set; }
-    public Objective(string cardId, string image, string function, string description, string playerId)
-        : base(cardId, image, function, description, playerId)
+    public Objective(string cardCardId, string image, string function, string description, string playerId)
+        : base(cardCardId, image, function, description, playerId)
     {
     }
-
-    public new Dictionary<string, object> ToDict()
+    
+    public new string ToJson()
     {
-        var data = base.ToDict();
-        return data;
+        return JsonConvert.SerializeObject(this);
     }
-
-    public static new Objective FromDict(Dictionary<string, object> data)
+    
+    public new static Objective FromJson(string json)
     {
-        return new Objective(
-            (string)data["id"],
-            (string)data["image"],
-            (string)data["function"],
-            (string)data["description"],
-            (string)data["player_id"]
-        );
+        return JsonConvert.DeserializeObject<Objective>(json);
     }
+    
 }

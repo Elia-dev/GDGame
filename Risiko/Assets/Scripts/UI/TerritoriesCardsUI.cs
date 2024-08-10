@@ -10,7 +10,7 @@ public class TerritoriesCardsUI : MoveCardsUI {
 
     public int numberOfImages = 4; // Numero di immagini da creare
 
-    //public float speed = 2f; // Velocità di movimento delle immagini
+    private bool animationDone = false;
     private List<Territory> territories = new List<Territory>();
 
     void Start() {
@@ -22,14 +22,15 @@ public class TerritoriesCardsUI : MoveCardsUI {
         };
         Debug.Log(Screen.width);
         Debug.Log(Screen.height);
-        if ((float)Screen.width / (float)Screen.height < 1.6)
+        Debug.Log(Screen.width / Screen.height);
+        if ((double)Screen.width / (double)Screen.height < (double)1.6)
             transform.GetComponent<GridLayoutGroup>().cellSize =
-                new Vector2((Screen.width - 100) / (territori.Length/3),
-                    (float)((Screen.width - 100) / (territori.Length / 3) * 1.33));
+                new Vector2((Screen.width -10 - (territori.Length / 3)*10) / (territori.Length/3),
+                    (float)((Screen.width - 80) / (territori.Length / 3) * 1.33));
         else
             transform.GetComponent<GridLayoutGroup>().cellSize =
-                new Vector2((Screen.width - 140) / (territori.Length / 2),
-                    (float)((Screen.width - 140) / (territori.Length / 2) * 1.33));
+                new Vector2((Screen.width -10 - (territori.Length / 2)*10) / (territori.Length / 2),
+                    (float)((Screen.width - 120) / (territori.Length / 2) * 1.33));
         
         GameObject[] images = new GameObject[territori.Length];
         for (int i = 0; i < territori.Length; i++) {
@@ -45,6 +46,12 @@ public class TerritoriesCardsUI : MoveCardsUI {
         //images[i].GetComponent<Transform>().position.y);
 
         //StartCoroutine(MoveCards());
+    }
+
+    private void Update() {
+        if (animationDone && Input.GetMouseButtonDown(0)) {
+            GameObject.Find("TerritoryCardsCanvas").SetActive(false);
+        }
     }
 
     public override IEnumerator MoveCards() {
@@ -79,6 +86,8 @@ public class TerritoriesCardsUI : MoveCardsUI {
                 targetPosition.x += imagePrefabRect.rect.width +
                                     gridTransform.GetComponent<GridLayoutGroup>().spacing.x;
             }
+
+            animationDone = true;
         }
 
         IEnumerator MoveImage(GameObject image, RectTransform rectTransform) {

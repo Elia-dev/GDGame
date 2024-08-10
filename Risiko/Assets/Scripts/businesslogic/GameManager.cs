@@ -7,11 +7,15 @@ public class GameManager
 {
     private static GameManager _instance;
     private static readonly object Lock = new object();
-    private  List<string> NamePlayersTemporaneo = new List<string>(); 
+    public Territory puppetState;
+    public List<string> PlayersName = new List<string>(); 
+    public List<string> AvailableColors = new List<string>(); 
     private Player _player;
     private string _gameOrder = "";
     private int _extractedNumber = 0;
     private string _gameOrderExtractedNumbers = "";
+    private bool _gameWaitingToStart = true;
+    private bool _gameRunning = true;
 
     private string _lobbyID;
     /*
@@ -79,5 +83,50 @@ public class GameManager
     public void SetLobbyId(string lobbyID)
     {
         this._lobbyID = lobbyID;
+    }
+
+    public void ResetPlayersName()
+    {
+        PlayersName.Clear();
+    }
+
+    public void AddPlayerName(string name)
+    {
+        PlayersName.Add(name);
+    }
+
+    public int GetPlayersNumber()
+    {
+        return PlayersName.Count;
+    }
+
+    public void AddAvailableColor(string color)
+    {
+        AvailableColors.Add(color);
+    }
+
+    public List<string> GetAvailableColors()
+    {
+        return AvailableColors;
+    }
+    
+    public bool GetGameWaitingToStart()
+    {
+        return _gameWaitingToStart;
+    }
+
+    public void SetGameWaitingToStart(bool value)
+    {
+        _gameWaitingToStart = value;
+    }
+    
+    public bool GetGameRunning()
+    {
+        return _gameRunning;
+    }
+
+    public void SetGameRunning(bool value)
+    {
+        _gameRunning = value;
     }
 }

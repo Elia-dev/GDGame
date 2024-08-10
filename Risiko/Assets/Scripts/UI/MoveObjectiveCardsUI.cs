@@ -5,26 +5,24 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MoveObjectiveCardsUI : MoveCardsUI
-{
+public class MoveObjectiveCardsUI : MoveCardsUI {
     public float flipDuration = 0.5f; // Durata del flip
     public GameObject cardFront; // Oggetto fronte della carta
     public GameObject cardBack; // Oggetto retro della carta
     private RectTransform rectTransform;
     private bool flipped = false;
+    [SerializeField] private GameObject territoriesCardCanvas;
 
-    void Start()
-    {
+    void Start() {
         rectTransform = GetComponent<RectTransform>();
 
         // Imposta la posizione di destinazione al centro dello schermo
         targetPosition = new Vector2(0, 0);
 
         // Imposta la posizione iniziale appena sotto lo schermo
-        startPosition = new Vector2(0, -Screen.height / 2 - rectTransform.rect.height / 2 -10);
-        Debug.Log(-Screen.height / 2 - rectTransform.rect.height / 2 -10);
+        startPosition = new Vector2(0, -Screen.height / 2 - rectTransform.rect.height / 2 - 10);
         rectTransform.anchoredPosition = startPosition;
-    
+
         //Carica la sprite della carta missione
         //loadSprite(Player.Instance.ObjectiveCard.CardId);
         loadSprite("Objectives/obj3");
@@ -35,11 +33,14 @@ public class MoveObjectiveCardsUI : MoveCardsUI
     }
 
     public void Update() {
-        if (flipped) {
-            if (Input.GetMouseButtonDown(0)) {
-                //CHIAMA ESTRAZIONE TERRITORI
+        if (Input.GetMouseButtonDown(0)) {
+            if (flipped) {
+                GameObject.Find("ObjectiveCardCanvas").SetActive(false);
+                territoriesCardCanvas.SetActive(true);
+                cardBack.SetActive(false);
             }
         }
+        
     }
 
     public override IEnumerator MoveCards() {
@@ -68,7 +69,7 @@ public class MoveObjectiveCardsUI : MoveCardsUI
         cardFront.SetActive(true);
         rectTransform.anchoredPosition = startPosition;
         rectTransform = cardFront.GetComponent<RectTransform>();
-        
+
         // Flip completo della carta
         elapsedTime = 0f;
         while (elapsedTime < flipDuration) {
@@ -77,8 +78,9 @@ public class MoveObjectiveCardsUI : MoveCardsUI
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-
+        
+        flipped = true;
         rectTransform.localRotation = Quaternion.Euler(0, 0, 0);
-        cardBack.SetActive(false);
+        cardBack.GetComponent<Image>().enabled = false;
     }
 }

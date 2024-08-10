@@ -1,48 +1,35 @@
-using System.Collections.Generic;
+using Newtonsoft.Json;
 
 public class Card
 {
     
-    public string Id { get; set; }
+    public string CardId { get; set; }
     public string Image { get; set; }
     public string Function { get; set; }
     public string Description { get; set; }
     public string PlayerId { get; set; }
 
-    public Card(string cardId, string image, string function, string description, string playerId)
+    public Card(string cardCardId, string image, string function, string description, string playerId)
     {
-        Id = cardId;
+        CardId = cardCardId;
         Image = image;
         Function = function;
         Description = description;
         PlayerId = playerId;
     }
 
-    public Dictionary<string, object> ToDict()
+    public string ToJson()
     {
-        return new Dictionary<string, object>
-        {
-            { "id", Id },
-            { "image", Image },
-            { "function", Function },
-            { "description", Description },
-            { "player_id", PlayerId }
-        };
+        return JsonConvert.SerializeObject(this);
     }
-
-    public static Card FromDict(Dictionary<string, object> data)
+    
+    public static Card FromJson(string json)
     {
-        return new Card(
-            (string)data["id"],
-            (string)data["image"],
-            (string)data["function"],
-            (string)data["description"],
-            (string)data["player_id"]
-        );
+        return JsonConvert.DeserializeObject<Card>(json);
     }
-
+    
     public override string ToString()
     {
-        return $"Card(id={Id}, image={Image}, function={Function}, description={Description}, player_id={PlayerId})";
+        return $"Card(id={CardId}, image={Image}, function={Function}, description={Description}, player_id={PlayerId})";
     }
 }

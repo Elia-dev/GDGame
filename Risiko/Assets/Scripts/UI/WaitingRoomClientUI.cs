@@ -13,7 +13,8 @@ public class WaitingRoomClientUI : MonoBehaviour
     [SerializeField] private TMP_Text PlayerList;
     [SerializeField] private TMP_Text LobbyID;
     [SerializeField] private GameObject PopUpDice;
-
+    
+    GameManager gm = GameManager.Instance;
     private Player _player = Player.Instance;
     private ClientManager cm = ClientManager.Instance;
     
@@ -39,15 +40,21 @@ public class WaitingRoomClientUI : MonoBehaviour
             cm.SendName(); // Da vedere, se si potesse fare soltanto la prima volta sarebbe meglio
             // Reset del timer
             timer = delay;
+            Debug.Log("WAITING_ROOM - playerList:" + PlayerList.text);
         }
         
-        string stringa = string.Join(" ", cm.NamePlayersTemporaneo);
+        string stringa = string.Join(" ", gm.PlayersName);
         PlayerList.text = stringa;
-        Debug.Log("WAITING_ROOM - playerList:" + stringa);
+       
         
         
         //Quando l'HOST avvia il gioco
-        //PopUpDice.SetActive(true);
+        if (!GameManager.Instance.GetGameWaitingToStart())
+        {
+            Debug.Log("L'HOST HA FATTO COMINCIARE LA PARTITA");
+            PopUpDice.SetActive(true);
+        }
+
     }
 
     private void Awake()

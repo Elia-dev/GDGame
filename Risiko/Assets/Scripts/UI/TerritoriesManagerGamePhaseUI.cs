@@ -31,7 +31,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
         }
     }
 
-    public override void SelectState(TerritoryHandlerUI newTerritory) {
+    public void SelectState(TerritoryHandlerUI newTerritory) {
         if (selectedTerritory is not null) {
             selectedTerritory.Deselect();
         }
@@ -39,7 +39,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
         selectedTerritory.Select();
     }
 
-    public override void DeselectState() {
+    public void DeselectState() {
         if (selectedTerritory is not null) {
             selectedTerritory.Deselect();
             selectedTerritory = null;

@@ -16,6 +16,7 @@ public class TerritoryHandlerUI : MonoBehaviour {
 
     public bool Selected {
         get => selected;
+        set => selected = value;
     }
 
     public Color32 UserColor {

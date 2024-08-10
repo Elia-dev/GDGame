@@ -19,24 +19,16 @@ public class HostMenuUI : MonoBehaviour
     [SerializeField] private TMP_Text LobbyID;
     [SerializeField] private GameObject PopUpDiceHostMenu;
     ClientManager cm = ClientManager.Instance;
-    Player player = Player.Instance;
+    GameManager gm = GameManager.Instance;
     
     private float delay = 5.0f; // Durata del ritardo in secondi
     private float timer;
-    private Player Player = Player.Instance;
     private string stringa;
     
     void Start()
     {
         stringa = null;
         cm.CreateLobbyAsHost();
-        /*
-        do
-        {
-            Debug.Log("Waiting for playerID");
-        } while (player.PlayerId == null);
-        */
-        //cm.SendName(); // Mossa pericolosa, avrà già ricevuto l'id dal server quando esegue questo comando?
         timer = delay;
     }
     
@@ -55,16 +47,17 @@ public class HostMenuUI : MonoBehaviour
             cm.RequestNameUpdatePlayerList();
             // Reset del timer
             timer = delay;
+            Debug.Log("HOSTMENU - playerList:" + PlayerList.text);
         }
         
         //Aggiornamento lista giocatori
-        stringa = string.Join(" ", cm.NamePlayersTemporaneo);
+        stringa = string.Join(" ", gm.PlayersName);
         PlayerList.text = stringa;
-        Debug.Log("HOSTMENU - playerList:" + stringa);
+       
 
         
         //Quando i giocatori saranno 3+
-        if (cm.NamePlayersTemporaneo.Count > 3)
+        if (gm.GetPlayersNumber() > 3)
         {
             RunGameButton.interactable = true;
         }

@@ -1,5 +1,4 @@
-using System;
-using System.Collections.Generic;
+using Newtonsoft.Json;
 
 public class Territory : Card
 {
@@ -7,42 +6,27 @@ public class Territory : Card
     public int NumTanks { get; set; }
     public string Continent { get; set; }
 
-    public string cardId { get; set; }
+    public Territory(string cardCardId, string image, string function, string description, string playerId, string name, int numTanks, string continent)
+        : base(cardCardId, image, function, description, playerId) {
 
-    public Territory(string cardId, string image, string function, string description, string playerId, string name, int numTanks, string continent)
-        : base(cardId, image, function, description, playerId) {
-
-        this.cardId = cardId;
+        CardId = cardCardId;
         Name = name;
         NumTanks = numTanks;
         Continent = continent;
     }
-
-    public new Dictionary<string, object> ToDict()
+    
+    public new string ToJson()
     {
-        var data = base.ToDict();
-        data.Add("name", Name);
-        data.Add("num_tanks", NumTanks);
-        data.Add("continent", Continent);
-        return data;
+        return JsonConvert.SerializeObject(this);
     }
-
-    public static new Territory FromDict(Dictionary<string, object> data)
+    
+    public new static Territory FromJson(string json)
     {
-        return new Territory(
-            (string)data["id"],
-            (string)data["image"],
-            (string)data["function"],
-            (string)data["description"],
-            (string)data["player_id"],
-            (string)data["name"],
-            (int)data["num_tanks"],
-            (string)data["continent"]
-        );
+        return JsonConvert.DeserializeObject<Territory>(json);
     }
 
     public override string ToString()
     {
-        return $"Territory(id={Id}, image={Image}, function={Function}, description={Description}, player_id={PlayerId}, name={Name}, num_tanks={NumTanks}, continent={Continent})";
+        return $"Territory(id={CardId}, image={Image}, function={Function}, description={Description}, player_id={PlayerId}, name={Name}, num_tanks={NumTanks}, continent={Continent})";
     }
 }

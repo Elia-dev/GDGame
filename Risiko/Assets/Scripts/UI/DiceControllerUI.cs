@@ -9,8 +9,7 @@ public class DiceControllerUI : MonoBehaviour
     [SerializeField] private Button DiceButton;
     [SerializeField] private Animator diceAnimator; // Riferimento all'Animator
     [SerializeField] private TMP_Text DiceResults;
-    ClientManager cm = ClientManager.Instance;
-
+    GameManager gm = GameManager.Instance;
     private void Awake()
     {
         DiceButton.onClick.AddListener(() =>
@@ -21,10 +20,10 @@ public class DiceControllerUI : MonoBehaviour
 
     private void Update()
     {
-        if (cm.GetExtractedNumber() != 0)
+        if (gm.GetExtractedNumber() != 0)
         {
             diceAnimator.gameObject.SetActive(false);
-            DiceResults.text = cm.GetExtractedNumber() + cm.getGame_order() + cm.GetGameOrderExtractedNumbers();
+            DiceResults.text = gm.GetExtractedNumber() + gm.getGame_order() + gm.GetGameOrderExtractedNumbers();
             DiceResults.gameObject.SetActive(true);
         }
             

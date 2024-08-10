@@ -1,7 +1,12 @@
 import asyncio
+import json
 import random
 
 import websockets
+
+import Card
+import Territory
+import utils
 
 
 class Game:
@@ -12,6 +17,15 @@ class Game:
         self.game_waiting_to_start = True
         self.host_player = None
         self.queue = asyncio.Queue()
+        self.army_colors = {
+            'red': None,
+            'blue': None,
+            'green': None,
+            'yellow': None,
+            'purple': None,
+            'black': None
+        }
+        self.event = asyncio.Event()
 
     def add_player(self, player):
         self.players.append(player)
@@ -40,40 +54,100 @@ class Game:
         print("Aperto HANDLE_GAME\n")
         while self.game_waiting_to_start is True:
             print("ASPETTANDO CHE SI COLLEGHINO TUTTI\n")
-            await asyncio.sleep(1)
-            
+            await asyncio.sleep(2)
+
+        #Preparation phase
         await self.__game_order__()
+        await self.broadcast("IS_YOUR_TURN: FALSE") #TOBE Tested
+        await self.army_color_chose() #TOBE Tested
+        await self.broadcast("INITIAL_ARMY_NUMBER: " + str(self.__army_start_num__(len(self.players)))) #TOBE Tested
+        await self._give_objective_cards() #TOBE Tested
+        await self._give_territory_cards() #TOBE Tested
+        await self._assignDefaultArmiesOnTerritories() #TOBE Tested
+        #Preparation phase terminated
+
+        #Game loop TOBE TESTED
+        while self.game_running:
+            for player in self.players:
+                # REINFORCE PHASE
+                # CheckContinents
+                # CheckArmy
+                numArmyToSend = self.calculateArmyForThisTurn(player)
+                # SendArmy
+                await player.sock.send("NUMBER_OF_ARMY_TO_ASSIGN_IN_THIS_TURN: " + str(numArmyToSend))
+                # UnlockTurn
+                await player.sock.send("IS_YOUR_TURN: TRUE")
+                # Waiting for player to finish the turn and send updated territories
+                await self.event.wait()
+                self.event = asyncio.Event()  # Event reset
+                # REINFORCE PHASE TERMINATED
+
+                # FIGHT PHASE
+
+                # FIGHT PHASE TERMINATED
+
+                # STRATEGIC MOVEMENT
+                await self.event.wait()
+                # STRATEGIC MOVEMENT TERMINATED
+
 
     async def handle_requests(self):
         while self.game_running:
             try:
                 player, message = await self.queue.get()
                 print(f"GAME: handling request from client id - : {player.player_id}: {message}")
-                if "prova" in message:
-                    print("Bella prova compà")
-                    await player.sock.send("HAI MANDATO PROVA")
-                    await player.sock.send("Bravo coglione")
-                if "cane" in message:
-                    print("I love dogs, doesn't everyone?")
                 if "REQUEST_NAME_UPDATE_PLAYER_LIST" in message:
                     player_names = []
                     for p in self.players:
                         player_names.append(p.name)
                     await player.sock.send("REQUEST_NAME_UPDATE_PLAYER_LIST: " + str(player_names))
                 if "GAME_STARTED_BY_HOST" in message:
+                    await self.broadcast("GAME_STARTED_BY_HOST")
                     self.game_waiting_to_start = False
-                # Qui puoi aggiungere la logica per gestire il messaggio
-                # Ad esempio, rispondere al client, fare una richiesta ad un altro servizio, ecc.
-                await asyncio.sleep(1)  # Simula il tempo di gestione della richiesta
-                self.queue.task_done()
                 if "UPDATE_NAME:" in message:
                     message = self._remove_request(message, "UPDATE_NAME: ")
                     id, name = message.split("-")
                     for player in self.players:
                         if player.player_id == id:
                             player.name = name
+                if "CHOSEN_ARMY_COLOR:" in message:
+                    message = self._remove_request(message, "CHOSEN_ARMY_COLOR: ")
+                    id, color = message.split("-")
+                    for player in self.players:
+                        if player.player_id == id:
+                            player.army_color = color
+                    self.army_colors[color] = id
+                    self.event.set() #Setting event to True
+                if "UPDATE_TERRITORIES_STATE:" in message:
+                    message = self._remove_request(message, "UPDATE_TERRITORIES_STATE: ")
+                    id = message.split(",")[0]
+                    message = self._remove_request(message, id + ", ")
+                    territories_list_dict = json.loads(message)
+                    territories = [Territory.Territory.from_dict(data) for data in territories_list_dict]
+                    for player in self.players:
+                        if player.player_id == id:
+                            player.territories = territories
+
+                    #Dovrei fare un broadcast per notificare a tutti il cambio di stato dei territori di questo player? Da ragionarci su
+
+                    self.event.set()
+                if "REQUEST_TERRITORY_INFO:" in message: #TOBE TESTED
+                    message = self._remove_request(message, "REQUEST_TERRITORY_INFO: ")
+                    playerId, territoryId = message.split("-")
+                    tempPlayer = None
+                    for player in self.players:
+                        if player.player_id == playerId:
+                            tempPlayer = player
+
+                    for player in self.players:
+                        for territory in player.territories:
+                            if territory.id == territoryId:
+                                await tempPlayer.sock.send("RECEIVED_REQUEST_TERRITORY_INFO: " + json.dumps(territory.to_dict()))
+
+                self.queue.task_done()
             except Exception as e:
                 print(f"Error in handle_game: {e}")
+
 
     async def listen_to_request(self):
         while self.game_running:
@@ -84,13 +158,6 @@ class Game:
                 except websockets.exceptions.ConnectionClosed:
                     print(f"Client {player.player_id} disconnected")
                     self.remove_player(player)
-
-                '''try:
-                    async for message in player.sock:
-                        await self.queue.put((player, message))
-                except websockets.exceptions.ConnectionClosed:
-                    print(f"Client {player} disconnected")
-                    '''
 
     async def listen_to_player_request(self, player):
         while True:  # Da cambiare mettendo finché il giocatore può giocare/è ancora in gioco
@@ -125,32 +192,110 @@ class Game:
             game_order.append(self.players[i].player_id + "-" + str(i) + ", ")
             game_order_extracted_numbers.append(self.players[i].player_id + "-" + str(response[self.players[i]]) + ", ")
 
-        # Notify positions
-        #Game order e GameOrderExtractedNumbers dovrebbero essere sostituiti da un broadcast
         print(f"Game order: {''.join(game_order)}")
-        fgameOrder = {''.join(game_order)}
+        fgame_order = {''.join(game_order)}
         print(f"GAME_ORDER_EXTRACTED_NUMBERS: {str(game_order_extracted_numbers)}")
         for player in self.players:
             print(f"For player {player.name} extracted number {str(response[player])} ")
-            await player.sock.send("GAME_ORDER: " + str(fgameOrder))
-            await player.sock.send("GAME_ORDER_EXTRACTED_NUMBERS: " + str(game_order_extracted_numbers))
             await player.sock.send("EXTRACTED_NUMBER: " + str(response[player]))
+        await self.broadcast("GAME_ORDER: " + str(fgame_order))
+        await self.broadcast("GAME_ORDER_EXTRACTED_NUMBERS: " + str(game_order_extracted_numbers))
         print("done")
-
-        '''
-        Struttura messaggi:
-        GAME_ORDER: idPlayer-position, idPlayer-position
-        EXTRACTED_NUMBER: number
-        GAME_ORDER_EXTRACTED_NUMBERS: idPlayer-extracted_number, idPlayer-extracted_number
-        
-        players = []
-        for i, player in enumerate(sorted_players):
-            # player.send(f"You are the {i + 1}° player".encode("utf-8"))
-            players.append(Player(player))'''
 
     def _remove_request(self, source, request):
         value = source.replace(request, "")
-        # print(f"VALORE CALCOLATO: {value}")
         return value
 
+    async def army_color_chose(self):
+        for player in self.players:
+            available_colors = [color for color, user_id in self.army_colors.items() if user_id is None]
+            await player.sock.send("AVAILABLE_COLORS: " + ", ".join(available_colors))
+            await player.sock.send("IS_YOUR_TURN: TRUE")
+            await self.event.wait() # Waiting for player choice
+            await player.sock.send("IS_YOUR_TURN: FALSE")
+            self.event = asyncio.Event() # Event reset
+
+    def __army_start_num__(self, num_player):
+        switcher = {
+            3: 35,
+            4: 30,
+            5: 25,
+            6: 20
+        }
+        return switcher.get(num_player)
+
+    async def _give_objective_cards(self):
+        cards = utils.read_objects_cards()
+        for player in self.players:
+            card_drawn = cards[random.randint(0, len(cards) - 1)]
+            card_drawn.player_id = player.player_id
+            player.objective_card = card_drawn
+            cards.remove(card_drawn)
+            await player.sock.send("OBJECTIVE_CARD_ASSIGNED: " + json.dumps(Card.Card.to_dict(player.objective_card)))
+            #Per ricevere dalla socket e trasformarlo in oggetto:
+            #received_dict = json.loads(received_data)
+            #received_card = Card.from_dict(received_dict)
+
+
+    async def _give_territory_cards(self):
+        cards = utils.read_territories_cards()
+        while cards:
+            for player in self.players:
+                if cards:
+                    card_drawn = cards[random.randint(0, len(cards) - 1)]
+                    card_drawn.player_id = player.player_id
+                    player.addTerritory(card_drawn)
+                    cards.remove(card_drawn)
+        for player in self.players:
+            await player.sock.send("TERRITORIES_CARDS_ASSIGNED: " + json.dumps(Territory.Territory.to_dict(player.territories)))
+
+    async def _assignDefaultArmiesOnTerritories(self):
+        num_army_to_place = self.__army_start_num__(len(self.players))
+        while num_army_to_place > 0:
+            for player in self.players:
+                await player.sock.send("IS_YOUR_TURN: TRUE")
+                await self.event.wait() # Waiting for player choice
+                await player.sock.send("IS_YOUR_TURN: FALSE")
+                self.event = asyncio.Event() # Event reset
+                num_army_to_place -= 3
+
+    def calculateArmyForThisTurn(self, player):
+        #Continent name: NA SA EU AF AS OC
+        armyForContinent = 0
+        NA_count = 0;
+        SA_count = 0;
+        EU_count = 0
+        AF_count = 0
+        AS_count = 0
+        OC_count = 0
+        armyForTerritories = len(player.territories) // 3
+        for territory in player.territories:
+            if territory.continent == "NA":
+                NA_count += 1
+            elif territory.continent == "SA":
+                SA_count += 1
+            elif territory.continent == "EU":
+                EU_count += 1
+            elif territory.continent == "AF":
+                AF_count += 1
+            elif territory.continent == "AS":
+                AS_count += 1
+            elif territory.continent == "OC":
+                OC_count += 1
+
+        if NA_count == 9:
+            armyForContinent += 5
+        if SA_count == 4:
+            armyForContinent += 2
+        if EU_count == 7:
+            armyForContinent += 5
+        if AF_count == 6:
+            armyForContinent += 3
+        if AS_count == 12:
+            armyForContinent += 7
+        if OC_count == 4:
+            armyForContinent += 2
+
+        totalArmyToAssing = armyForTerritories + armyForContinent
+        return totalArmyToAssing
 

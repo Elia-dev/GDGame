@@ -5,7 +5,7 @@ using System.Threading;
 using System.Net.WebSockets;
 using System.Threading.Tasks;
 using UnityEngine;
-
+using Newtonsoft.Json;
 
 public class ClientManager
 {
@@ -32,16 +32,14 @@ public class ClientManager
         }
     }
     private static readonly RequestHandler RequestHandler = new RequestHandler();
-    private string _server = "ws://150.217.51.105:8766";
+    //private string _server = "ws://150.217.51.105:8766";
+    private string _server = "ws://localhost:8766";
     private ClientWebSocket _webSocket = null;
     private CancellationToken _cancellationToken;
     private string _lobbyID;
     private Player player = Player.Instance;
     
-    // Temporaneo, da progettare bene poi in gameManager
-    private string game_order = "";
-    private int extracted_number = 0;
-    private string game_order_extracted_numbers = "";
+
     public bool IsConnected()
     {
         if (_webSocket != null)
@@ -51,33 +49,6 @@ public class ClientManager
 
         return false;
     }
-    public int GetExtractedNumber()
-    {
-        return extracted_number;
-    }
-
-    public void SetExtractedNumber(int value)
-    {
-        extracted_number = value;
-    }
-
-    public string GetGameOrderExtractedNumbers()
-    {
-        return game_order_extracted_numbers;
-    }
-    public void SetGameOrderExtractedNumbers(string value)
-    {
-        game_order_extracted_numbers = value;
-    }
-    
-    public string getGame_order()
-    {
-        return game_order;
-    }
-    public void setGame_order(string value)
-    {
-        game_order = value;
-    }
     
     public string GetLobbyId()
     {
@@ -85,7 +56,7 @@ public class ClientManager
     }
     public void SetLobbyId(string lobbyID)
     {
-        this._lobbyID = lobbyID;
+        _lobbyID = lobbyID;
     }
 
     public async Task StartClient()
@@ -101,19 +72,7 @@ public class ClientManager
             var handlerTask = RequestHandler.HandleRequests(cancellationTokenSource.Token);
             var receiveTask = ReceiveMessage(_webSocket, cancellationTokenSource.Token);
             await Task.WhenAll(handlerTask, receiveTask);
-            
-            /*
-            using ( _webSocket = new ClientWebSocket())
-            {
-                await _webSocket.ConnectAsync(uri, cancellationTokenSource.Token);
-                var receiveTask = ReceiveMessage(_webSocket, cancellationTokenSource.Token);
-                await Task.WhenAll(receiveTask);
-            }
-
-            await handlerTask;
-            */
         }
-        
     }
     
     private static async Task SendMessage(ClientWebSocket webSocket, CancellationToken cancellationToken, string message)
@@ -121,7 +80,6 @@ public class ClientManager
         var buffer = Encoding.UTF8.GetBytes(message);
         await webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, cancellationToken);
     }
-
     
     private static async Task ReceiveMessage(ClientWebSocket webSocket, CancellationToken cancellationToken)
     {
@@ -135,7 +93,6 @@ public class ClientManager
         }
         Debug.Log("Uscito dal loop delle richieste");
     }
-    
     
     public async void CreateLobbyAsHost()
     {
@@ -160,5 +117,21 @@ public class ClientManager
     public async void StartHostGame()
     {
         await SendMessage(_webSocket, _cancellationToken, "GAME_STARTED_BY_HOST: ");
+    }
+    
+    public async void SendChosenArmyColor()
+    {
+        await SendMessage(_webSocket, _cancellationToken, "CHOSEN_ARMY_COLOR: " + player.PlayerId + "-" + player.ArmyColor);
+    }
+
+    public async void UpdateTerritoriesState()
+    {
+        await SendMessage(_webSocket, _cancellationToken, "UPDATE_TERRITORIES_STATE: " + player.PlayerId + ", " + JsonConvert.SerializeObject(player.Territories));
+    }
+
+    public async void RequestTerritoryInfo(string id)
+    {
+        await SendMessage(_webSocket, _cancellationToken, "REQUEST_TERRITORY_INFO: " + player.PlayerId + "-" + id);
+    
     }
 }
