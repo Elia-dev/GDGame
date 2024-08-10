@@ -17,7 +17,7 @@ public class MainMenuUI : MonoBehaviour
             cm = ClientManager.Instance;
             Debug.Log("Trying to connect to database...");
             cm.StartClient();
-            Debug.Log("CONNECTED");
+            //Debug.Log("CONNECTED");
             SceneManager.LoadScene("GameMenu");
         });
         

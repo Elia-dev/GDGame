@@ -58,7 +58,7 @@ class Game:
 
         #Preparation phase
         await self.__game_order__()
-        await self.broadcast("IS_YOUR_TURN: FALSE") #TOBE Tested
+        await self.broadcast("IS_YOUR_TURN: FALSE")
         await self.army_color_chose() #TOBE Tested
         await self.broadcast("INITIAL_ARMY_NUMBER: " + str(self.__army_start_num__(len(self.players)))) #TOBE Tested
         await self._give_objective_cards() #TOBE Tested
@@ -214,11 +214,13 @@ class Game:
     async def army_color_chose(self):
         for player in self.players:
             available_colors = [color for color, user_id in self.army_colors.items() if user_id is None]
+            print("Available color in this turn: " + available_colors.__str__())
             await player.sock.send("AVAILABLE_COLORS: " + ", ".join(available_colors))
             await player.sock.send("IS_YOUR_TURN: TRUE")
             await self.event.wait() # Waiting for player choice
             await player.sock.send("IS_YOUR_TURN: FALSE")
             self.event = asyncio.Event() # Event reset
+            print("Turn over for player " + player.name + "chosen color: " + player.army_color)
 
     def __army_start_num__(self, num_player):
         switcher = {
@@ -231,12 +233,15 @@ class Game:
 
     async def _give_objective_cards(self):
         cards = utils.read_objects_cards()
+        print("read all the objectives card from xml")
         for player in self.players:
             card_drawn = cards[random.randint(0, len(cards) - 1)]
             card_drawn.player_id = player.player_id
             player.objective_card = card_drawn
             cards.remove(card_drawn)
+            print("Extracted OBJECTIVE " + card_drawn.id + " for player " + player.name)
             await player.sock.send("OBJECTIVE_CARD_ASSIGNED: " + json.dumps(Card.Card.to_dict(player.objective_card)))
+            print("sent")
             #Per ricevere dalla socket e trasformarlo in oggetto:
             #received_dict = json.loads(received_data)
             #received_card = Card.from_dict(received_dict)
@@ -244,6 +249,7 @@ class Game:
 
     async def _give_territory_cards(self):
         cards = utils.read_territories_cards()
+        print("read all the territory card from xml")
         while cards:
             for player in self.players:
                 if cards:
@@ -251,8 +257,11 @@ class Game:
                     card_drawn.player_id = player.player_id
                     player.addTerritory(card_drawn)
                     cards.remove(card_drawn)
+                    print("Extracted TERRITORY card " + card_drawn.id + " for player " + player.name)
         for player in self.players:
-            await player.sock.send("TERRITORIES_CARDS_ASSIGNED: " + json.dumps(Territory.Territory.to_dict(player.territories)))
+            territories_list = [terr.to_dict() for terr in player.territories]
+            await player.sock.send("TERRITORIES_CARDS_ASSIGNED: " + json.dumps(territories_list, indent=4)) # Indent only for better readable
+        print("sent")
 
     async def _assignDefaultArmiesOnTerritories(self):
         num_army_to_place = self.__army_start_num__(len(self.players))

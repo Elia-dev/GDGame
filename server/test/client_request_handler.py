@@ -13,7 +13,7 @@ class RequestHandler:
             if "cane" in message:
                 print("I love dogs, doesn't everyone?")
 
-            await asyncio.sleep(5)  # Per ora simula il tempo di gestione della richiesta
+            await asyncio.sleep(2)  # Per ora simula il tempo di gestione della richiesta
             self.queue.task_done()
 
     async def add_request(self, client_id, message):
