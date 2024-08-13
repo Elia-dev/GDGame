@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Threading;
@@ -100,6 +101,8 @@ public class RequestHandler
                 string[] str= _request.Split(" ");
                 foreach (var color in str)
                 {
+                    color.Replace(",", String.Empty);
+                    /*
                     for (int i = 0; i < color.Length; i++)
                     {
                         if (color[i] == ',')
@@ -107,7 +110,7 @@ public class RequestHandler
                             color.Remove(i);
                         }
                     }
-                    
+                    */
                     //Debug.Log(name);
                     gm.AddAvailableColor(color);
                 }
