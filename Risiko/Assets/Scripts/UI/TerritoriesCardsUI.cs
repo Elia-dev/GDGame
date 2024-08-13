@@ -14,28 +14,28 @@ public class TerritoriesCardsUI : MoveCardsUI {
     private List<Territory> territories;
 
     void Start() {
-        //territories = Player.Instance.Territories;
-        string[] territori =
+        territories = Player.Instance.Territories;
+        /*string[] territori =
         {
             "SA_ter1", "SA_ter2", "SA_ter3", "SA_ter4", "SA_ter1", "SA_ter2", "SA_ter3", "SA_ter4",
             "SA_ter1", "SA_ter2", "SA_ter3", "SA_ter4", "SA_ter1", "SA_ter2"
         };
         Debug.Log(Screen.width);
         Debug.Log(Screen.height);
-        Debug.Log(Screen.width / Screen.height);
+        Debug.Log(Screen.width / Screen.height);*/
         if ((double)Screen.width / (double)Screen.height < (double)1.6)
             transform.GetComponent<GridLayoutGroup>().cellSize =
-                new Vector2((Screen.width -10 - (territori.Length / 3)*10) / (territori.Length/3),
-                    (float)((Screen.width - 80) / (territori.Length / 3) * 1.33));
+                new Vector2((Screen.width -10 - (territories.Count / 3)*10) / (territories.Count/3),
+                    (float)((Screen.width - 80) / (territories.Count / 3) * 1.33));
         else
             transform.GetComponent<GridLayoutGroup>().cellSize =
-                new Vector2((Screen.width -10 - (territori.Length / 2)*10) / (territori.Length / 2),
-                    (float)((Screen.width - 120) / (territori.Length / 2) * 1.33));
+                new Vector2((Screen.width -10 - (territories.Count / 2)*10) / (territories.Count / 2),
+                    (float)((Screen.width - 120) / (territories.Count / 2) * 1.33));
         
-        GameObject[] images = new GameObject[territori.Length];
-        for (int i = 0; i < territori.Length; i++) {
+        GameObject[] images = new GameObject[territories.Count];
+        for (int i = 0; i < territories.Count; i++) {
             images[i] = Instantiate(imagePrefab, transform);
-            loadSprite("Territories/" + territori[i]);
+            loadSprite("Territories/" + territories[i]);
             images[i].GetComponent<Image>().sprite = imgSprite;
             images[i].transform.SetParent(gridTransform);
             //Debug.Log(images[i].GetComponent<Transform>().position.x + ", " +
