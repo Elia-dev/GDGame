@@ -21,7 +21,7 @@ public class HostMenuUI : MonoBehaviour
     ClientManager cm = ClientManager.Instance;
     GameManager gm = GameManager.Instance;
     
-    private float delay = 5.0f; // Durata del ritardo in secondi
+    private float delay = 1.0f; // Durata del ritardo in secondi
     private float timer;
     private string stringa;
     
