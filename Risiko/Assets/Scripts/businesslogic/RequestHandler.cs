@@ -41,7 +41,7 @@ public class RequestHandler
                 Debug.Log("Server_Request: REQUEST_NAME_UPDATE_PLAYER_LIST");
                 
                 gm.ResetPlayersName();
-                _request = RemoveRequest(message, "REQUEST_NAME_UPDATE_PLAYER_LIST:");
+                _request = RemoveRequest(message, "REQUEST_NAME_UPDATE_PLAYER_LIST: ");
                 //Debug.Log("RIMOSSA RICHIESTA:" + _request);
                 string[] str= _request.Split(" ");
                 //Debug.Log("ESEGUITO SPLIT: ");
