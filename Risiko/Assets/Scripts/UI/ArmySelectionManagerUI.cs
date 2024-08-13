@@ -71,19 +71,19 @@ public class ArmySelectionManagerUI : MonoBehaviour {
 
         foreach (var color in AvailableColors) {
             switch (color) {
-                case "red":
+                case "red,":
                     redArmy.GetComponent<Image>().raycastTarget = true;
                     break;
-                case "green":
+                case "green,":
                     greenArmy.GetComponent<Image>().raycastTarget = true;
                     break;
-                case "blue":
+                case "blue,":
                     blueArmy.GetComponent<Image>().raycastTarget = true;
                     break;
-                case "yellow":
+                case "yellow,":
                     yellowArmy.GetComponent<Image>().raycastTarget = true;
                     break;
-                case "purple":
+                case "purple,":
                     purpleArmy.GetComponent<Image>().raycastTarget = true;
                     break;
                 case "black":
