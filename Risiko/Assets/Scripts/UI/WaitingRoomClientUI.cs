@@ -18,7 +18,7 @@ public class WaitingRoomClientUI : MonoBehaviour
     private Player _player = Player.Instance;
     private ClientManager cm = ClientManager.Instance;
     
-    private float delay = 5.0f; // Durata del ritardo in secondi
+    private float delay = 1.0f; // Durata del ritardo in secondi
     private float timer;
 
     void Start()
