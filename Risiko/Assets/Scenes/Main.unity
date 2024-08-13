@@ -193,7 +193,7 @@ GameObject:
   - component: {fileID: 64526171}
   - component: {fileID: 64526170}
   m_Layer: 7
-  m_Name: OneArmyYellow
+  m_Name: OneArmyyellow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1203,7 +1203,7 @@ GameObject:
   - component: {fileID: 188550192}
   - component: {fileID: 188550190}
   m_Layer: 7
-  m_Name: OneArmyRed
+  m_Name: OneArmyred
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1945,7 +1945,7 @@ GameObject:
   - component: {fileID: 339564791}
   - component: {fileID: 339564789}
   m_Layer: 7
-  m_Name: OneArmyPurple
+  m_Name: OneArmypurple
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2820,7 +2820,7 @@ GameObject:
   - component: {fileID: 489636774}
   - component: {fileID: 489636772}
   m_Layer: 7
-  m_Name: OneArmyBlack
+  m_Name: OneArmyblack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3173,8 +3173,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4741,7 +4741,7 @@ GameObject:
   - component: {fileID: 729931771}
   - component: {fileID: 729931769}
   m_Layer: 7
-  m_Name: OneArmyGreen
+  m_Name: OneArmygreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9579,7 +9579,7 @@ GameObject:
   - component: {fileID: 1330066230}
   - component: {fileID: 1330066228}
   m_Layer: 7
-  m_Name: OneArmyBlue
+  m_Name: OneArmyblue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

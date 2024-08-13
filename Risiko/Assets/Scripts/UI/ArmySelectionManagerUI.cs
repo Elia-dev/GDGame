@@ -143,6 +143,7 @@ public class ArmySelectionManagerUI : MonoBehaviour {
     public void ChooseArmy() {
         if (selectedArmy is not null) {
             Player.Instance.ArmyColor = selectedArmy.gameObject.name.Substring(6);
+            Debug.Log(selectedArmy.gameObject.name.Substring(6));
             ClientManager.Instance.SendChosenArmyColor();
             turn = false;
             //COMUNICA AL SERVER L'ARMATA
