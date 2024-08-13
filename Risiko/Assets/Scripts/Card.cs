@@ -11,7 +11,7 @@ public class Card
 
     public Card(string cardId, string image, string function, string description, string playerId)
     {
-        this.card_id = cardId;
+        card_id = cardId;
         Image = image;
         Function = function;
         Description = description;
@@ -30,6 +30,6 @@ public class Card
     
     public override string ToString()
     {
-        return $"Card(id={card_id}, image={Image}, function={Function}, description={Description}, player_id={player_id})";
+        return $"Card(card_id={card_id}, image={Image}, function={Function}, description={Description}, player_id={player_id})";
     }
 }
