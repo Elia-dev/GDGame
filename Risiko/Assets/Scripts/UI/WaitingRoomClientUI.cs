@@ -44,6 +44,7 @@ public class WaitingRoomClientUI : MonoBehaviour
         }
         
         string stringa = string.Join(" ", gm.PlayersName);
+        Debug.Log("Players number: " + gm.PlayersName.Count + " Names: " + stringa);
         PlayerList.text = stringa;
        
         

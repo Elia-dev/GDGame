@@ -45,6 +45,7 @@ public class HostMenuUI : MonoBehaviour
         { 
             cm.SendName(); // Da vedere, se si potesse fare soltanto la prima volta sarebbe meglio
             cm.RequestNameUpdatePlayerList();
+            
             // Reset del timer
             timer = delay;
             Debug.Log("HOSTMENU - playerList:" + PlayerList.text);
@@ -52,6 +53,7 @@ public class HostMenuUI : MonoBehaviour
         
         //Aggiornamento lista giocatori
         stringa = string.Join(" ", gm.PlayersName);
+        Debug.Log("Players number: " + gm.PlayersName.Count + " Names: " + stringa);
         PlayerList.text = stringa;
        
 
