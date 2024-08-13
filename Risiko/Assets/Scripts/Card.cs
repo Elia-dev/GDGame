@@ -3,19 +3,19 @@ using Newtonsoft.Json;
 public class Card
 {
     
-    public string CardId { get; set; }
+    public string card_id { get; set; }
     public string Image { get; set; }
     public string Function { get; set; }
     public string Description { get; set; }
-    public string PlayerId { get; set; }
+    public string player_id { get; set; }
 
-    public Card(string cardCardId, string image, string function, string description, string playerId)
+    public Card(string cardId, string image, string function, string description, string playerId)
     {
-        CardId = cardCardId;
+        this.card_id = cardId;
         Image = image;
         Function = function;
         Description = description;
-        PlayerId = playerId;
+        player_id = playerId;
     }
 
     public string ToJson()
@@ -30,6 +30,6 @@ public class Card
     
     public override string ToString()
     {
-        return $"Card(id={CardId}, image={Image}, function={Function}, description={Description}, player_id={PlayerId})";
+        return $"Card(id={card_id}, image={Image}, function={Function}, description={Description}, player_id={player_id})";
     }
 }

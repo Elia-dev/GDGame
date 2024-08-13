@@ -6,10 +6,10 @@ public class Territory : Card
     public int NumTanks { get; set; }
     public string Continent { get; set; }
 
-    public Territory(string cardCardId, string image, string function, string description, string playerId, string name, int numTanks, string continent)
-        : base(cardCardId, image, function, description, playerId) {
+    public Territory(string cardId, string image, string function, string description, string playerId, string name, int numTanks, string continent)
+        : base(cardId, image, function, description, playerId) {
 
-        CardId = cardCardId;
+        base.card_id = cardId;
         Name = name;
         NumTanks = numTanks;
         Continent = continent;
@@ -27,6 +27,6 @@ public class Territory : Card
 
     public override string ToString()
     {
-        return $"Territory(id={CardId}, image={Image}, function={Function}, description={Description}, player_id={PlayerId}, name={Name}, num_tanks={NumTanks}, continent={Continent})";
+        return $"Territory(id={card_id}, image={Image}, function={Function}, description={Description}, player_id={player_id}, name={Name}, num_tanks={NumTanks}, continent={Continent})";
     }
 }

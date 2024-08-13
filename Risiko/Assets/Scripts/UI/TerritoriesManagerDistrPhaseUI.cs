@@ -44,7 +44,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
 
     public void activateTerritories(List<Territory> territories) {
         foreach (var territory in territories) {
-            GameObject terr = this.territories.Find(x => x.name.Equals(territory.CardId));
+            GameObject terr = this.territories.Find(x => x.name.Equals(territory.card_id));
             if (terr is not null)
                 terr.GetComponent<PolygonCollider2D>().enabled = true;
         }
@@ -124,7 +124,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     }*/
 
     Territory TerritoryInformations(string name) {
-        return Player.Instance.Territories.Find(x => x.CardId.Equals(name));
+        return Player.Instance.Territories.Find(x => x.card_id.Equals(name));
     }
 
     ///funzione per chiedere info sullo stato selezionato: ClientManager.Instance.RequestTerritoryInfo("idStato");
