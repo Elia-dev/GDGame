@@ -15,7 +15,11 @@ public struct SelectedTerritories {
 public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     public static TerritoriesManagerDistrPhaseUI Instance { get; private set; }
     [SerializeField] private GameObject popUpAddTank;
-    [SerializeField] private TMP_Text TankNumber;
+    [SerializeField] private TMP_Text stateNameAddTank;
+    [SerializeField] private TMP_Text tankNumber;
+    [SerializeField] private TMP_Text tankToAdd;
+    [SerializeField] private Button plusButton;
+    [SerializeField] private Button minusButton;
     SelectedTerritories selectedTerritories;
     private bool isTurnActive = false; // Variabile per tracciare il turno attivo
     private bool isTurnInitialized = false; // Variabile per tracciare se il turno è stato inizializzato
@@ -23,14 +27,15 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
 
     public void Start() {
         //TUTTA ROBA DI DEBUG
-        /*TerritoryHandlerUI.userColor = new Color32(0, 0, 255, 150);
+        TerritoryHandlerUI.userColor = new Color32(0, 0, 255, 150);
         List<Territory> terr = new List<Territory>();
         terr.Add(new Territory("SA_ter1", "SA_ter1.png", "boh", "eh", "lo", "fa", 7, "SA"));
         terr.Add(new Territory("SA_ter2", "SA_ter2.png", "boh", "eh", "lo", "fa", 5, "SA"));
         terr.Add(new Territory("SA_ter3", "SA_ter3.png", "boh", "eh", "lo", "fa", 6, "SA"));
         terr.Add(new Territory("SA_ter4", "SA_ter4.png", "boh", "eh", "lo", "fa", 1, "SA"));
         Player.Instance.Territories = terr;
-        TerritoryHandlerUI.ArmyDistributionPhase();*/
+        TerritoryHandlerUI.ArmyDistributionPhase();
+        Player.Instance.IsMyTurn = true;
 
         //FUORI DEBUG
         popUpAddTank.GetComponent<Image>().color = TerritoryHandlerUI.userColor;
@@ -153,12 +158,22 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         return -1;
     }
 
+    //Mostra il popup per aggiungere o togliere armate
     public void SelectState(TerritoryHandlerUI newTerritory) {
+        stateNameAddTank.text = TerritoryInformations(newTerritory.name).Name;
+        tankNumber.text = TerritoryInformations(newTerritory.name).NumTanks + "";
+        popUpAddTank.transform.position = newTerritory.gameObject.transform.position;
+        popUpAddTank.transform.position = new Vector3(popUpAddTank.transform.position.x,
+            popUpAddTank.transform.position.y + (float)(0.3), popUpAddTank.transform.position.z);
+        popUpAddTank.SetActive(true);
+    }
+
+    /*public void SelectState(TerritoryHandlerUI newTerritory) {
         int result = selectTerritory(newTerritory);
         if (result != -1 && !newTerritory.Selected) {
             newTerritory.Select();
-            TankNumber.text = TerritoryInformations(newTerritory.name).NumTanks + "+" +
-                              selectedTerritories.count[result];
+            tankNumber.text = TerritoryInformations(newTerritory.name).NumTanks + "";
+            //tankToAdd.text = selectedTerritories.count[result] + "";
             popUpAddTank.transform.position = newTerritory.gameObject.transform.position;
             popUpAddTank.transform.position = new Vector3(popUpAddTank.transform.position.x,
                 popUpAddTank.transform.position.y + (float)(0.3), popUpAddTank.transform.position.z);
@@ -177,8 +192,8 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             }
             selectedTerritory = newTerritory;
             selectedTerritory.Select();
-        }*/
-    }
+        }
+    }*/
 
     public void DeselectState() {
         if (distributionPhase)

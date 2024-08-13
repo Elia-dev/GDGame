@@ -72,3 +72,4 @@ crashlytics-build.properties
 *.pyc
 *.pyc
 ~$ME DEVELOPMENT.docx
+*.cache
