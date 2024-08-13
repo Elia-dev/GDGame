@@ -53,7 +53,11 @@ public class HostMenuUI : MonoBehaviour
         
         //Aggiornamento lista giocatori
         stringa = string.Join(" ", gm.PlayersName);
-        Debug.Log("Players number: " + gm.PlayersName.Count + " Names: " + stringa);
+        Debug.Log("Players number: " + gm.PlayersName.Count + " Names: ");
+        for (int i = 0; i < gm.PlayersName.Count; i++)
+        {
+            Debug.Log("Name" + i + "= " + gm.PlayersName[i]);
+        }
         PlayerList.text = stringa;
        
 
