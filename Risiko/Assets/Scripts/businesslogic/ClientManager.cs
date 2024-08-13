@@ -33,8 +33,8 @@ public class ClientManager
     }
     private static readonly RequestHandler RequestHandler = new RequestHandler();
     //private string _server = "ws://150.217.51.105:8766";
-    //private string _server = "ws://91.80.76.119:12345";
-    private string _server = "ws://localhost:8766";
+    private string _server = "ws://101.58.64.113:12345";
+    //private string _server = "ws://localhost:8766";
     private ClientWebSocket _webSocket = null;
     private CancellationToken _cancellationToken;
     private string _lobbyID;
