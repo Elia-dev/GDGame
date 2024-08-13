@@ -114,7 +114,7 @@ public class Player
     {
         TanksAvailable -= 1;
         TanksPlaced += 1;
-        var territory = Territories.FirstOrDefault(t => t.card_id == territoryId);
+        var territory = Territories.FirstOrDefault(t => t.id == territoryId);
         if (territory != null)
         {
             territory.NumTanks += 1;

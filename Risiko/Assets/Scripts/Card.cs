@@ -3,15 +3,15 @@ using Newtonsoft.Json;
 public class Card
 {
     
-    public string card_id { get; set; }
+    public string id { get; set; }
     public string Image { get; set; }
     public string Function { get; set; }
     public string Description { get; set; }
     public string player_id { get; set; }
 
-    public Card(string cardId, string image, string function, string description, string playerId)
+    public Card(string card_id, string image, string function, string description, string playerId)
     {
-        card_id = cardId;
+        id = card_id;
         Image = image;
         Function = function;
         Description = description;
@@ -30,6 +30,6 @@ public class Card
     
     public override string ToString()
     {
-        return $"Card(card_id={card_id}, image={Image}, function={Function}, description={Description}, player_id={player_id})";
+        return $"Card(id={id}, image={Image}, function={Function}, description={Description}, player_id={player_id})";
     }
 }
