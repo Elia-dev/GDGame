@@ -89,6 +89,7 @@ public class RequestHandler
             else if (message.Contains("IS_YOUR_TURN:"))
             {
                 Debug.Log("Server_Request: IS_YOUR_TURN");
+                Debug.Log(message);
                 _request = RemoveRequest(message, "IS_YOUR_TURN: ");
                 Player.Instance.IsMyTurn = _request.Equals("TRUE");
             }

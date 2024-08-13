@@ -217,6 +217,7 @@ class Game:
             print("Available color in this turn: " + available_colors.__str__())
             await player.sock.send("AVAILABLE_COLORS: " + ", ".join(available_colors))
             await player.sock.send("IS_YOUR_TURN: TRUE")
+            print("TURNO DI " + player.name)
             await self.event.wait() # Waiting for player choice
             await player.sock.send("IS_YOUR_TURN: FALSE")
             self.event = asyncio.Event() # Event reset
