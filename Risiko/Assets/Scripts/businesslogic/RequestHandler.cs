@@ -130,8 +130,12 @@ public class RequestHandler
             else if (message.Contains("OBJECTIVE_CARD_ASSIGNED:"))
             {
                 Debug.Log("Server_Request: OBJECTIVE_CARD_ASSIGNED");
+                Debug.Log("Message + JSON: " + message);
                 _request = RemoveRequest(message, "OBJECTIVE_CARD_ASSIGNED: ");
+                Debug.Log("JSON ONLY: " + _request);
+                
                 Player.Instance.ObjectiveCard = Objective.FromJson(_request);
+                Debug.Log("Json unpacked TOSTRING: " + Player.Instance.ObjectiveCard.ToString());
             }
             else if (message.Contains("TERRITORIES_CARDS_ASSIGNED:"))
             {
