@@ -161,7 +161,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     //Mostra il popup per aggiungere o togliere armate
     public void SelectState(TerritoryHandlerUI newTerritory) {
         stateNameAddTank.text = TerritoryInformations(newTerritory.name).Name;
-        tankNumber.text = TerritoryInformations(newTerritory.name).NumTanks + "";
+        tankNumber.text = TerritoryInformations(newTerritory.name).num_tanks + "";
         popUpAddTank.transform.position = newTerritory.gameObject.transform.position;
         popUpAddTank.transform.position = new Vector3(popUpAddTank.transform.position.x,
             popUpAddTank.transform.position.y + (float)(0.3), popUpAddTank.transform.position.z);
@@ -172,7 +172,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         int result = selectTerritory(newTerritory);
         if (result != -1 && !newTerritory.Selected) {
             newTerritory.Select();
-            tankNumber.text = TerritoryInformations(newTerritory.name).NumTanks + "";
+            tankNumber.text = TerritoryInformations(newTerritory.name).num_tanks + "";
             //tankToAdd.text = selectedTerritories.count[result] + "";
             popUpAddTank.transform.position = newTerritory.gameObject.transform.position;
             popUpAddTank.transform.position = new Vector3(popUpAddTank.transform.position.x,

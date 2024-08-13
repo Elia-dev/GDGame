@@ -3,15 +3,15 @@ using Newtonsoft.Json;
 public class Territory : Card
 {
     public string Name { get; set; }
-    public int NumTanks { get; set; }
+    public int num_tanks { get; set; }
     public string Continent { get; set; }
 
-    public Territory(string id, string image, string function, string description, string playerId, string name, int numTanks, string continent)
-        : base(id, image, function, description, playerId) {
+    public Territory(string ter_id, string image, string function, string description, string playerId, string name, int numTanks, string continent)
+        : base(ter_id, image, function, description, playerId) {
 
-        base.id = id;
+        id = ter_id;
         Name = name;
-        NumTanks = numTanks;
+        num_tanks = numTanks;
         Continent = continent;
     }
     
@@ -27,6 +27,6 @@ public class Territory : Card
 
     public override string ToString()
     {
-        return $"Territory(id={id}, image={Image}, function={Function}, description={Description}, player_id={player_id}, name={Name}, num_tanks={NumTanks}, continent={Continent})";
+        return $"Territory(id={id}, image={Image}, function={Function}, description={Description}, player_id={player_id}, name={Name}, num_tanks={num_tanks}, continent={Continent})";
     }
 }
