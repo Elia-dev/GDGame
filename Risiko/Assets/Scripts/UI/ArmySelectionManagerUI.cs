@@ -40,6 +40,7 @@ public class ArmySelectionManagerUI : MonoBehaviour {
     }
 
     private void Start() {
+        Debug.Log("Numero giocatori: " + GameManager.Instance.PlayersName.Count);
         switch (GameManager.Instance.PlayersName.Count) {
             case 4:
                 yellowArmy.GameObject().SetActive(true);
