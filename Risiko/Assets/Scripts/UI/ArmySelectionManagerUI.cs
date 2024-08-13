@@ -100,6 +100,10 @@ public class ArmySelectionManagerUI : MonoBehaviour {
             ActivateRaycastTargetArmy();
         }
 
+        if (!Player.Instance.IsMyTurn) {
+            waitingLabel.gameObject.SetActive(true);
+        }
+        
         if (Input.GetMouseButtonDown(0) && turn) {
             pointerEventData = new PointerEventData(eventSystem)
             {
