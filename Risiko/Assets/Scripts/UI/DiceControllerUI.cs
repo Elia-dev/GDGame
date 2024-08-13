@@ -36,11 +36,11 @@ public class DiceControllerUI : MonoBehaviour
 
     public void TrowDice() {
         StartCoroutine(Wait(4f));
-        pressedButton = true;
     }
 
     IEnumerator Wait(float delay) {
         yield return new WaitForSeconds(delay);
+        pressedButton = true;
     }
     
     IEnumerator WaitAndLoadScene(float delay)
