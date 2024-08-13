@@ -10,6 +10,7 @@ public class DiceControllerUI : MonoBehaviour
     [SerializeField] private Button DiceButton;
     [SerializeField] private Animator diceAnimator; // Riferimento all'Animator
     [SerializeField] private TMP_Text DiceResults;
+    private bool pressedButton = false;
     GameManager gm = GameManager.Instance;
     private void Awake()
     {
@@ -21,7 +22,7 @@ public class DiceControllerUI : MonoBehaviour
 
     private void Update()
     {
-        if (gm.GetExtractedNumber() != 0)
+        if (gm.GetExtractedNumber() != 0 && pressedButton)
         {
             diceAnimator.gameObject.SetActive(false);
             diceAnimator.SetBool("Roll", false);
@@ -31,6 +32,15 @@ public class DiceControllerUI : MonoBehaviour
             // GameManager.LoadScene("Main") -> scena della mappa
         }
             
+    }
+
+    public void TrowDice() {
+        StartCoroutine(Wait(4f));
+        pressedButton = true;
+    }
+
+    IEnumerator Wait(float delay) {
+        yield return new WaitForSeconds(delay);
     }
     
     IEnumerator WaitAndLoadScene(float delay)

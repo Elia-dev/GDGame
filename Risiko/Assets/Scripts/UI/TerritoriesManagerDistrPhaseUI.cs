@@ -27,7 +27,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
 
     public void Start() {
         //TUTTA ROBA DI DEBUG
-        TerritoryHandlerUI.userColor = new Color32(0, 0, 255, 150);
+        /*TerritoryHandlerUI.userColor = new Color32(0, 0, 255, 150);
         List<Territory> terr = new List<Territory>();
         terr.Add(new Territory("SA_ter1", "SA_ter1.png", "boh", "eh", "lo", "fa", 7, "SA"));
         terr.Add(new Territory("SA_ter2", "SA_ter2.png", "boh", "eh", "lo", "fa", 5, "SA"));
@@ -35,7 +35,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         terr.Add(new Territory("SA_ter4", "SA_ter4.png", "boh", "eh", "lo", "fa", 1, "SA"));
         Player.Instance.Territories = terr;
         TerritoryHandlerUI.ArmyDistributionPhase();
-        Player.Instance.IsMyTurn = true;
+        Player.Instance.IsMyTurn = true;*/
 
         //FUORI DEBUG
         popUpAddTank.GetComponent<Image>().color = TerritoryHandlerUI.userColor;
