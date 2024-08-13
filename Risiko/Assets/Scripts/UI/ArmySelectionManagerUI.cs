@@ -102,7 +102,7 @@ public class ArmySelectionManagerUI : MonoBehaviour {
         if (Player.Instance.IsMyTurn)
             waitingLabel.gameObject.SetActive(false);
         else 
-            waitingLabel.gameObject.SetActive(false);
+            waitingLabel.gameObject.SetActive(true);
         
         if (Input.GetMouseButtonDown(0) && turn) {
             pointerEventData = new PointerEventData(eventSystem)
@@ -146,8 +146,7 @@ public class ArmySelectionManagerUI : MonoBehaviour {
 
     public void ChooseArmy() {
         if (selectedArmy is not null) {
-            Player.Instance.ArmyColor = selectedArmy.gameObject.name.Substring(6);
-            Debug.Log("Army color: " + selectedArmy.gameObject.name.Substring(6));
+            Player.Instance.ArmyColor = selectedArmy.gameObject.name.Substring(7);
             ClientManager.Instance.SendChosenArmyColor();
             turn = false;
             //COMUNICA AL SERVER L'ARMATA
