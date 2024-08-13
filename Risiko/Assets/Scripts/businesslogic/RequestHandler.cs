@@ -101,6 +101,10 @@ public class RequestHandler
                 Debug.Log("RIMOSSA RICHIESTA:" + _request);
                 string[] str= _request.Split(" ");
                 Debug.Log("ESEGUITO SPLIT: ");
+                foreach (var stringa in str)
+                {
+                    Debug.Log(stringa);
+                }
                 foreach (var color in str)
                 {
                     for (int i = 0; i < color.Length; i++)
