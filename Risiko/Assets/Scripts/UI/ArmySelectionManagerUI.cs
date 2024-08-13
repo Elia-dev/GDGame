@@ -66,6 +66,10 @@ public class ArmySelectionManagerUI : MonoBehaviour {
         List<string>
             AvailableColors = GameManager.Instance.GetAvailableColors(); // Per prendere la lista dei colori disponibili
         foreach (var color in AvailableColors) {
+            Debug.Log(color);
+        }
+
+        foreach (var color in AvailableColors) {
             switch (color) {
                 case "red":
                     redArmy.GetComponent<Image>().raycastTarget = true;
