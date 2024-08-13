@@ -117,7 +117,7 @@ public class Player
         var territory = Territories.FirstOrDefault(t => t.id == territoryId);
         if (territory != null)
         {
-            territory.NumTanks += 1;
+            territory.num_tanks += 1;
         }
     }
 }
