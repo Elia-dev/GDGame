@@ -25,6 +25,7 @@ public class MoveObjectiveCardsUI : MoveCardsUI {
 
         //Carica la sprite della carta missione
         loadSprite("Objectives/" + Player.Instance.ObjectiveCard.CardId);
+        Debug.Log("Objective card: " + Player.Instance.ObjectiveCard.CardId);
         //loadSprite("Objectives/obj3");
         cardFront.GetComponent<Image>().sprite = imgSprite;
         
