@@ -98,7 +98,7 @@ public class RequestHandler
                 Debug.Log("Server_Request: AVAILABLE_COLORS");
                 _request = RemoveRequest(message, "AVAILABLE_COLORS: ");
                 string[] str= _request.Split(" ");
-                foreach (string color in str)
+                foreach (var color in str)
                 {
                     for (int i = 0; i < color.Length; i++)
                     {
