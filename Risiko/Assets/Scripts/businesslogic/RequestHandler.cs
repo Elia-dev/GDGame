@@ -98,20 +98,19 @@ public class RequestHandler
             {
                 Debug.Log("Server_Request: AVAILABLE_COLORS");
                 _request = RemoveRequest(message, "AVAILABLE_COLORS: ");
+                Debug.Log("RIMOSSA RICHIESTA:" + _request);
                 string[] str= _request.Split(" ");
+                Debug.Log("ESEGUITO SPLIT: ");
                 foreach (var color in str)
                 {
-                    color.Replace(",", String.Empty);
-                    /*
                     for (int i = 0; i < color.Length; i++)
                     {
-                        if (color[i] == ',')
+                        if (color[i] == '[' || color[i] == ']' || color[i] == ',')
                         {
                             color.Remove(i);
                         }
                     }
-                    */
-                    //Debug.Log(name);
+                    Debug.Log("COLORE PULITO: " + color);
                     gm.AddAvailableColor(color);
                 }
             }
