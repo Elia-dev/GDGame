@@ -8,7 +8,8 @@ public class TerritoriesCardsUI : MoveCardsUI {
     public GameObject imagePrefab; // Prefab dell'immagine da muovere
     public Transform gridTransform; // Transform del Grid Layout Group
 
-    public int numberOfImages = 4; // Numero di immagini da creare
+    //[SerializeField] private GameObject clickHandler;
+    //public int numberOfImages = 4; // Numero di immagini da creare
 
     private bool animationDone = false;
     private List<Territory> territories;
@@ -53,6 +54,8 @@ public class TerritoriesCardsUI : MoveCardsUI {
     private void Update() {
         if (animationDone && Input.GetMouseButtonDown(0)) {
             GameObject.Find("TerritoryCardsCanvas").SetActive(false);
+            GameObject.Find("ClickHandler").GetComponent<TerritoriesManagerDistrPhaseUI>()
+                .activateTerritories(Player.Instance.Territories);
         }
     }
 

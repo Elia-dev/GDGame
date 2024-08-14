@@ -36,19 +36,21 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         Player.Instance.Territories = terr;
         TerritoryHandlerUI.ArmyDistributionPhase();
         Player.Instance.IsMyTurn = true;*/
+        
+        //FUORI DEBUG
+        //TerritoryHandlerUI.ArmyDistributionPhase();
+        //popUpAddTank.GetComponent<Image>().color = TerritoryHandlerUI.userColor;
+        activateTerritories(Player.Instance.Territories);
+    }
+
+    public void activateTerritories(List<Territory> territories) {
         int i = 0;
         foreach (var terri in Player.Instance.Territories) {
             Debug.Log("Territorio " + i + ": " + terri.id);
             i++;
         }
-        
-        //FUORI DEBUG
         TerritoryHandlerUI.ArmyDistributionPhase();
         popUpAddTank.GetComponent<Image>().color = TerritoryHandlerUI.userColor;
-        activateTerritories(Player.Instance.Territories);
-    }
-
-    public void activateTerritories(List<Territory> territories) {
         foreach (var territory in territories) {
             GameObject terr = this.territories.Find(x => x.name.Equals(territory.id));
             if (terr is not null)
@@ -67,7 +69,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     }
 
     private void Update() {
-        Debug.Log("IsMyTurn: " + Player.Instance.IsMyTurn);
+        //Debug.Log("IsMyTurn: " + Player.Instance.IsMyTurn);
         if (Player.Instance.IsMyTurn && !isTurnInitialized) {
             armyNumber = Player.Instance.TanksAvailable;
             StartTurn(armyNumber);
