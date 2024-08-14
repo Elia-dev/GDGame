@@ -180,6 +180,7 @@ class Game:
     async def __game_order__(self):
         print("!!! ENTRATO IN GAME ORDERD !!!")
         response = {}
+        random.seed(time.time())
         for player in self.players:
             gaming_dice = random.randint(1, 6)
             response[player] = gaming_dice
