@@ -54,8 +54,8 @@ public class TerritoriesCardsUI : MoveCardsUI {
     private void Update() {
         if (animationDone && Input.GetMouseButtonDown(0)) {
             GameObject.Find("TerritoryCardsCanvas").SetActive(false);
-            GameObject.Find("ClickHandler").GetComponent<TerritoriesManagerDistrPhaseUI>()
-                .activateTerritories();
+            //GameObject.Find("ClickHandler").GetComponent<TerritoriesManagerDistrPhaseUI>()
+                //.activateTerritories();
         }
     }
 

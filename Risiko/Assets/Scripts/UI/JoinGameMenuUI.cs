@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -24,20 +25,29 @@ public class JoinGameMenuUI : MonoBehaviour
 		
         JoinLobbyButton.onClick.AddListener(() =>
         {
-            lobby_id = lobbyIdInputField.text;
-            player.LobbyId = lobby_id;
-            cm.SetLobbyId(lobby_id);
-            Debug.Log("Lobby ID: " + lobby_id);
-            if (lobby_id.Equals(""))
-            {
-                PopUpIdLobbyError.SetActive(true);
-            }
-            else
-            {
-                cm.JoinLobbyAsClient(lobby_id);
-                
-                SceneManager.LoadScene("WaitingRoomClient");
-            }
+            JoinLobby();
 		});
+    }
+
+    private void JoinLobby() {
+        lobby_id = lobbyIdInputField.text;
+        player.LobbyId = lobby_id;
+        cm.SetLobbyId(lobby_id);
+        Debug.Log("Lobby ID: " + lobby_id);
+        if (lobby_id.Equals(""))
+        {
+            PopUpIdLobbyError.SetActive(true);
+        }
+        else
+        {
+            cm.JoinLobbyAsClient(lobby_id);
+            
+            SceneManager.LoadScene("WaitingRoomClient");
+        }
+    }
+    
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.Return))
+            JoinLobby();
     }
 }

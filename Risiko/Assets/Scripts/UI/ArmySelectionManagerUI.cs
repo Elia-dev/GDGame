@@ -65,9 +65,6 @@ public class ArmySelectionManagerUI : MonoBehaviour {
     private void ActivateRaycastTargetArmy() {
         List<string>
             AvailableColors = GameManager.Instance.GetAvailableColors(); // Per prendere la lista dei colori disponibili
-        foreach (var color in AvailableColors) {
-            Debug.Log(color);
-        }
 
         foreach (var color in AvailableColors) {
             switch (color) {
@@ -158,7 +155,7 @@ public class ArmySelectionManagerUI : MonoBehaviour {
 
             //LANCIA LA PROSSIMA FASE
             Color32 color = selectedArmy.ArmyColor;
-            color.a = 100;
+            color.a = 200;
             TerritoryHandlerUI.userColor = color;
             waitingLabel.gameObject.SetActive(true);
             gameObject.GetComponent<Renderer>().enabled = false;
