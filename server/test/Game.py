@@ -1,7 +1,7 @@
 import asyncio
 import json
 import random
-
+import time
 import websockets
 
 import Card
@@ -180,15 +180,9 @@ class Game:
     async def __game_order__(self):
         print("!!! ENTRATO IN GAME ORDERD !!!")
         response = {}
-
-        # Crea una lista con i numeri da 1 a 6
-        dice_numbers = list(range(1, 7))
-
-        # Mescola la lista per ottenere una sequenza casuale
-        random.shuffle(dice_numbers)
-
-        for i in range(1, len(self.players)):
-            gaming_dice = dice_numbers[i]
+        random.seed(time.time())
+        for player in self.players:
+            gaming_dice = random.randint(1, 6)
             response[player] = gaming_dice
         print("|| LANCIATI DADI||")
         sorted_players = [item[0] for item in sorted(response.items(), key=lambda item: item[1])]
