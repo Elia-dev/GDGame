@@ -44,11 +44,6 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     }
 
     public void activateTerritories() {
-        int i = 0;
-        foreach (var terri in Player.Instance.Territories) {
-            Debug.Log("Territorio " + i + ": " + terri.id);
-            i++;
-        }
         TerritoryHandlerUI.ArmyDistributionPhase();
         popUpAddTank.GetComponent<Image>().color = TerritoryHandlerUI.userColor;
         foreach (var territory in Player.Instance.Territories) {
@@ -106,7 +101,6 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     
     //Metodo che inizializza la struct per la selezione dei territori e attiva il turno
     public void StartTurn(int armyNumber) {
-        Debug.Log("StartTurn");
         isTurnInitialized = true; // Attiva il turno
         selectedTerritories.territories = new List<Territory>(armyNumber);
         selectedTerritories.count = new int[armyNumber];
@@ -170,7 +164,6 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
 
     //Mostra il popup per aggiungere o togliere armate
     public void SelectState(TerritoryHandlerUI newTerritory) {
-        Debug.Log("State Name: " + TerritoryInformations(newTerritory.name).Name);
         stateNameAddTank.text = TerritoryInformations(newTerritory.name).Name;
         tankNumber.text = TerritoryInformations(newTerritory.name).num_tanks + "";
         popUpAddTank.transform.position = newTerritory.gameObject.transform.position;
