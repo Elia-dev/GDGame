@@ -5144,7 +5144,6 @@ MonoBehaviour:
   moveDuration: 2
   imagePrefab: {fileID: 978968071}
   gridTransform: {fileID: 774017361}
-  numberOfImages: 5
 --- !u!1 &778965737
 GameObject:
   m_ObjectHideFlags: 0
@@ -16746,44 +16745,44 @@ MonoBehaviour:
   - {fileID: 1746119601}
   - {fileID: 1843659858}
   - {fileID: 436811672}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1116868330}
+  - {fileID: 1747635359}
+  - {fileID: 1497292455}
+  - {fileID: 1966116628}
+  - {fileID: 1819863889}
+  - {fileID: 563473746}
+  - {fileID: 1737077229}
+  - {fileID: 848572241}
+  - {fileID: 1933323692}
+  - {fileID: 1207713883}
+  - {fileID: 946571554}
+  - {fileID: 1134626929}
+  - {fileID: 664997490}
+  - {fileID: 710587986}
+  - {fileID: 659301589}
+  - {fileID: 1974583327}
+  - {fileID: 1937964179}
+  - {fileID: 1194936754}
+  - {fileID: 1888871463}
+  - {fileID: 1951293307}
+  - {fileID: 1880658676}
+  - {fileID: 1637535791}
+  - {fileID: 1422525103}
+  - {fileID: 1446486511}
+  - {fileID: 155067742}
+  - {fileID: 879028382}
+  - {fileID: 902877080}
+  - {fileID: 2004223730}
+  - {fileID: 316391515}
+  - {fileID: 829309162}
+  - {fileID: 867920211}
+  - {fileID: 778965737}
+  - {fileID: 1160510648}
+  - {fileID: 579133816}
+  - {fileID: 364945279}
+  - {fileID: 784834178}
+  - {fileID: 1608895993}
+  - {fileID: 1341229216}
   distributionPhase: 1
   popUpAddTank: {fileID: 1387056305}
   stateNameAddTank: {fileID: 727133672}
@@ -16831,12 +16830,6 @@ MonoBehaviour:
   - {fileID: 1951293307}
   - {fileID: 1880658676}
   - {fileID: 1637535791}
-  - {fileID: 364945279}
-  - {fileID: 784834178}
-  - {fileID: 1608895993}
-  - {fileID: 1341229216}
-  - {fileID: 1160510648}
-  - {fileID: 579133816}
   - {fileID: 1422525103}
   - {fileID: 1446486511}
   - {fileID: 155067742}
@@ -16847,6 +16840,12 @@ MonoBehaviour:
   - {fileID: 829309162}
   - {fileID: 867920211}
   - {fileID: 778965737}
+  - {fileID: 1160510648}
+  - {fileID: 579133816}
+  - {fileID: 364945279}
+  - {fileID: 784834178}
+  - {fileID: 1608895993}
+  - {fileID: 1341229216}
   distributionPhase: 1
 --- !u!1 &2047910116
 GameObject:
