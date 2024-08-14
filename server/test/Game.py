@@ -31,11 +31,11 @@ class Game:
         if player.name == None:
             player.name = "Console"
         self.players.append(player)
-        print(f"Player {player.player_id} added to game {self.game_id}")
+        print(f"Player {player.player_id} with name {player.name} added to game {self.game_id}")
 
     def remove_player(self, player):
         self.players.remove(player)
-        print(f"Player {player} removed from game {self.game_id}")
+        print(f"Player {player} with name {player.name} removed from game {self.game_id}")
 
     async def broadcast(self, message):
         for player in self.players:
@@ -100,7 +100,7 @@ class Game:
         while self.game_running:
             try:
                 player, message = await self.queue.get()
-                print(f"GAME: handling request from client id - : {player.player_id}: {message}")
+                print(f"GAME: handling request from client id - : {player.player_id} with name {player.name}: {message}")
                 if "REQUEST_NAME_UPDATE_PLAYER_LIST" in message:
                     player_names = []
                     for p in self.players:
@@ -195,7 +195,7 @@ class Game:
         game_order_extracted_numbers = []
         for i in range(len(self.players)):
             if self.players[i].name == "Console":
-                self.players[i].name = "None" + str(i)  # Solo per debug
+                self.players[i].name = "Console" + str(i)  # Solo per debug
             game_order.append(self.players[i].name + "-" + str(i) + ", ")
             game_order_extracted_numbers.append(self.players[i].name + "-" + str(response[self.players[i]]) + ", ")
 
