@@ -38,6 +38,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         Player.Instance.IsMyTurn = true;*/
 
         //FUORI DEBUG
+        TerritoryHandlerUI.ArmyDistributionPhase();
         popUpAddTank.GetComponent<Image>().color = TerritoryHandlerUI.userColor;
         activateTerritories(Player.Instance.Territories);
     }
