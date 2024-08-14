@@ -140,8 +140,11 @@ public class RequestHandler
             else if (message.Contains("TERRITORIES_CARDS_ASSIGNED:"))
             {
                 Debug.Log("Server_Request: TERRITORIES_CARDS_ASSIGNED");
+                Debug.Log("Message + JSON: " + message);
                 _request = RemoveRequest(message, "TERRITORIES_CARDS_ASSIGNED: ");
+                Debug.Log("JSON ONLY: " + _request);
                Player.Instance.Territories = JsonConvert.DeserializeObject<List<Territory>>(_request);
+               Debug.Log("Json unpacked TOSTRING: " + Player.Instance.Territories.ToString());
             }
             else if (message.Contains("NUMBER_OF_ARMY_TO_ASSIGN_IN_THIS_TURN:"))
             {
