@@ -48,16 +48,18 @@ public class RequestHandler
                 //Debug.Log("ESEGUITO SPLIT: ");
                 foreach (var name in str)
                 {
+                    string cleanedName = name.Replace("[", "").Replace("]", "").Replace(",", "");
+                    /*
                     for (int i = 0; i < name.Length; i++)
                     {
                         if (name[i] == '[' || name[i] == ']' || name[i] == ',')
                         {
                             name.Remove(i);
                         }
-                    }
+                    }*/
                     
                     //Debug.Log(name);
-                    gm.AddPlayerName(name);
+                    gm.AddPlayerName(cleanedName);
                 }
                 //Debug.Log("Lista players: " + cm.NamePlayersTemporaneo.ToString());
             }
@@ -105,17 +107,12 @@ public class RequestHandler
                 {
                     Debug.Log(stringa);
                 }
+                
                 foreach (var color in str)
                 {
-                    for (int i = 0; i < color.Length; i++)
-                    {
-                        if (color[i] == '[' || color[i] == ']' || color[i] == ',')
-                        {
-                            color.Remove(i);
-                        }
-                    }
-                    Debug.Log("COLORE PULITO: " + color);
-                    gm.AddAvailableColor(color);
+                    string cleanedColor = color.Replace("[", "").Replace("]", "").Replace(",", "");
+                    Debug.Log("COLORE PULITO: " + cleanedColor);
+                    gm.AddAvailableColor(cleanedColor);
                 }
             }
             else if (message.Contains("INITIAL_ARMY_NUMBER:"))
