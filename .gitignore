@@ -75,3 +75,4 @@ crashlytics-build.properties
 *.cache
 *.cache
 *.info
+server/test/.idea/.name
