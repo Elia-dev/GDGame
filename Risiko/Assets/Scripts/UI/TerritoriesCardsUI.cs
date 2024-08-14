@@ -32,12 +32,12 @@ public class TerritoriesCardsUI : MoveCardsUI {
                 new Vector2((Screen.width -10 - (territories.Count / 2)*10) / (territories.Count / 2),
                     (float)((Screen.width - 120) / (territories.Count / 2) * 1.33));
         
-        GameObject[] images = new GameObject[territories.Count];
+        GameObject[] territoriesCards = new GameObject[territories.Count];
         for (int i = 0; i < territories.Count; i++) {
-            images[i] = Instantiate(imagePrefab, transform);
-            loadSprite("Territories/" + territories[i]);
-            images[i].GetComponent<Image>().sprite = imgSprite;
-            images[i].transform.SetParent(gridTransform);
+            territoriesCards[i] = Instantiate(imagePrefab, transform);
+            loadSprite("Territories/" + territories[i].id);
+            territoriesCards[i].GetComponent<Image>().sprite = imgSprite;
+            territoriesCards[i].transform.SetParent(gridTransform);
             //Debug.Log(images[i].GetComponent<Transform>().position.x + ", " +
             //images[i].GetComponent<Transform>().position.y);
         }
