@@ -40,10 +40,10 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         //FUORI DEBUG
         //TerritoryHandlerUI.ArmyDistributionPhase();
         //popUpAddTank.GetComponent<Image>().color = TerritoryHandlerUI.userColor;
-        activateTerritories(Player.Instance.Territories);
+        //activateTerritories(Player.Instance.Territories);
     }
 
-    public void activateTerritories(List<Territory> territories) {
+    public void activateTerritories() {
         int i = 0;
         foreach (var terri in Player.Instance.Territories) {
             Debug.Log("Territorio " + i + ": " + terri.id);
@@ -51,8 +51,8 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         }
         TerritoryHandlerUI.ArmyDistributionPhase();
         popUpAddTank.GetComponent<Image>().color = TerritoryHandlerUI.userColor;
-        foreach (var territory in territories) {
-            GameObject terr = this.territories.Find(x => x.name.Equals(territory.id));
+        foreach (var territory in Player.Instance.Territories) {
+            GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
             if (terr is not null)
                 terr.GetComponent<PolygonCollider2D>().enabled = true;
         }
