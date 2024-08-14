@@ -6,7 +6,7 @@ public class Territory : Card
     public int num_tanks { get; set; }
     public string Continent { get; set; }
 
-    public Territory(string ter_id, string image, string function, string description, string playerId, string name, int numTanks, string continent)
+    public Territory(string ter_id, string image, string function, string description, string playerId, string name, string continent, int numTanks=1)
         : base(ter_id, image, function, description, playerId) {
 
         id = ter_id;

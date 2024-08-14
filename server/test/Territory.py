@@ -2,7 +2,7 @@ from Card import Card
 
 
 class Territory(Card):
-    def __init__(self, card_id, image, function, description, name, continent, player_id=None, num_tanks=0):
+    def __init__(self, card_id, image, function, description, name, continent, player_id=None, num_tanks=1):
         super().__init__(card_id, image, function, description, player_id)
         self.name = name
         self.num_tanks = num_tanks
