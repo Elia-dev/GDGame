@@ -160,6 +160,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
 
     //Mostra il popup per aggiungere o togliere armate
     public void SelectState(TerritoryHandlerUI newTerritory) {
+        Debug.Log("State Name: " + TerritoryInformations(newTerritory.name).Name);
         stateNameAddTank.text = TerritoryInformations(newTerritory.name).Name;
         tankNumber.text = TerritoryInformations(newTerritory.name).num_tanks + "";
         popUpAddTank.transform.position = newTerritory.gameObject.transform.position;

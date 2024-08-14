@@ -41,6 +41,8 @@ public class TerritoriesCardsUI : MoveCardsUI {
             //Debug.Log(images[i].GetComponent<Transform>().position.x + ", " +
             //images[i].GetComponent<Transform>().position.y);
         }
+        
+        animationDone = true;
         //for (int i = 0; i < territori.Length; i++) 
         //Debug.Log(images[i].GetComponent<Transform>().position.x + ", " +
         //images[i].GetComponent<Transform>().position.y);
