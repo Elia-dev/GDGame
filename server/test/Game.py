@@ -28,6 +28,8 @@ class Game:
         self.event = asyncio.Event()
 
     def add_player(self, player):
+        if player.name == None:
+            player.name = "Console"
         self.players.append(player)
         print(f"Player {player.player_id} added to game {self.game_id}")
 
@@ -192,7 +194,7 @@ class Game:
         game_order = []
         game_order_extracted_numbers = []
         for i in range(len(self.players)):
-            if self.players[i].name == None:
+            if self.players[i].name == "Console":
                 self.players[i].name = "None" + str(i)  # Solo per debug
             game_order.append(self.players[i].name + "-" + str(i) + ", ")
             game_order_extracted_numbers.append(self.players[i].name + "-" + str(response[self.players[i]]) + ", ")
