@@ -61,7 +61,8 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     }
 
     private void Update() {
-        if (Player.Instance.IsMyTurn && !isTurnActive) {
+        Debug.Log("IsMyTurn: " + Player.Instance.IsMyTurn);
+        if (Player.Instance.IsMyTurn && !isTurnInitialized) {
             armyNumber = Player.Instance.TanksAvailable;
             StartTurn(armyNumber);
         }
@@ -97,9 +98,10 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     
     //Metodo che inizializza la struct per la selezione dei territori e attiva il turno
     public void StartTurn(int armyNumber) {
+        Debug.Log("StartTurn");
+        isTurnInitialized = true; // Attiva il turno
         selectedTerritories.territories = new List<Territory>(armyNumber);
         selectedTerritories.count = new int[armyNumber];
-        isTurnActive = true; // Attiva il turno
         //isTurnInitialized = false; // Imposta a false per inizializzare nel prossimo Update
         //Debug.Log("Turno iniziato con " + armyNumber + " armate da posizionare.");
     }
