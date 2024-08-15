@@ -274,10 +274,10 @@ class Game:
         while num_army_to_place > 0:
             for player in self.players:
                 await player.sock.send("IS_YOUR_TURN: TRUE")
-                print(f"Turno del player id: {player.id} con nome {player.name}")
+                print(f"Turno del player id: {player.player_id} con nome {player.name}")
                 await self.event.wait() # Waiting for player choice
                 await player.sock.send("IS_YOUR_TURN: FALSE")
-                print(f"Turno del player id: {player.id} con nome {player.name} TERMINATO")
+                print(f"Turno del player id: {player.player_id} con nome {player.name} TERMINATO")
                 self.event = asyncio.Event() # Event reset
                 num_army_to_place -= 3
 
