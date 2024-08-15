@@ -282,8 +282,8 @@ class Game:
     def calculateArmyForThisTurn(self, player):
         #Continent name: NA SA EU AF AS OC
         armyForContinent = 0
-        NA_count = 0;
-        SA_count = 0;
+        NA_count = 0
+        SA_count = 0
         EU_count = 0
         AF_count = 0
         AS_count = 0
