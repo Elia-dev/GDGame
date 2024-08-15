@@ -97,10 +97,32 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             CheckTotalArmy();
         }
     }
+    
+    public void RemoveArmy() {
+        if (int.Parse(tankToAdd.text) > 0) {
+            int result = FindTerritory(selectedTerritory.name);
+            /*int result = -1;
+            for (int i = 0; i < armyNumber; i++) {
+                if (selectedTerritories.territories[i] is not null && 
+                    selectedTerritories.territories[i].id.Equals(selectedTerritory.name))
+                    result = i;
+            }*/
+            selectedTerritories.count[result]--;
+            tankToAdd.text = selectedTerritories.count[result] + "";
+            if (selectedTerritories.count[result] == 0) {
+                selectedTerritories.territories[result] = null;
+                selectedTerritory.Deselect();
+            }
 
+            CheckTotalArmy();
+        }
+    }
+    
     private void CheckTotalArmy() {
         if (selectedTerritories.count.Sum() == armyNumber)
             endTurn.interactable = true;
+        else 
+            endTurn.interactable = false;
     }
 
     private void SendArmy() {
@@ -120,24 +142,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         }
         Player.Instance.TanksAvailable -= selectedTerritories.count.Sum();
         ClientManager.Instance.UpdateTerritoriesState();
-    }
-    
-    public void RemoveArmy() {
-        if (int.Parse(tankToAdd.text) > 0) {
-            int result = FindTerritory(selectedTerritory.name);
-            /*int result = -1;
-            for (int i = 0; i < armyNumber; i++) {
-                if (selectedTerritories.territories[i] is not null && 
-                    selectedTerritories.territories[i].id.Equals(selectedTerritory.name))
-                    result = i;
-            }*/
-            selectedTerritories.count[result]--;
-            tankToAdd.text = selectedTerritories.count[result] + "";
-            if (selectedTerritories.count[result] == 0) {
-                selectedTerritories.territories[result] = null;
-                selectedTerritory.Deselect();
-            }
-        }
+        endTurn.interactable = false;
     }
 
     private int FindTerritory(string TerritoryName) {
