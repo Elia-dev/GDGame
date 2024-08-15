@@ -110,6 +110,12 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
                     terr.num_tanks = selectedTerritories.territories[i].num_tanks;
             });
         }
+        for(int i = 0; i < armyNumber; i++) {
+            Player.Instance.Territories.ForEach( terr => {
+                if (terr.id.Equals(selectedTerritories.territories[i].id))
+                    Debug.Log("Territory: " + terr.Name + " Army: " + terr.num_tanks);
+            });
+        }
         Player.Instance.TanksAvailable -= selectedTerritories.count.Sum();
         ClientManager.Instance.UpdateTerritoriesState();
     }
