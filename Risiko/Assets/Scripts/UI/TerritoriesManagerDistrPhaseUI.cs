@@ -22,6 +22,8 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     [SerializeField] private Button minusButton;
     [SerializeField] private Button endTurn;
     SelectedTerritories selectedTerritories;
+    //private Dictionary<string, int> selectedTerritories;
+    
     private bool isTurnActive = false; // Variabile per tracciare il turno attivo
     private bool isTurnInitialized = false; // Variabile per tracciare se il turno è stato inizializzato
     private int armyNumber;
@@ -128,16 +130,9 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     private void SendArmy() {
         for(int i = 0; i < armyNumber; i++) {
             Player.Instance.Territories.ForEach( terr => {
-                Debug.Log("Id territorio Server: " + terr.id);
-                Debug.Log(" Id Territorio locale: "  + selectedTerritories.territories[i].id);
-                if (terr.id.Equals(selectedTerritories.territories[i].id))
+                if (selectedTerritories.territories[i] is not null && 
+                    terr.id.Equals(selectedTerritories.territories[i].id))
                     terr.num_tanks += selectedTerritories.count[i];
-            });
-        }
-        for(int i = 0; i < armyNumber; i++) {
-            Player.Instance.Territories.ForEach( terr => {
-                if (terr.id.Equals(selectedTerritories.territories[i].id))
-                    Debug.Log("Territory: " + terr.Name + " Army: " + terr.num_tanks);
             });
         }
         Player.Instance.TanksAvailable -= selectedTerritories.count.Sum();
