@@ -16,16 +16,8 @@ public class RequestHandler
     {
         await foreach (var (clientId, message) in _queue.Reader.ReadAllAsync(cancellationToken))
         {
-            //Debug.Log($"Handling request from {clientId}: {message}");
-            if (message.Contains("culo"))
-            {
-                Debug.Log("No culi allowed here");
-            }
-            else if (message.Contains("cane"))
-            {
-                Debug.Log("I love dogs, doesn't everyone?");
-            }
-            else if(message.Contains("LOBBY_ID:")) // Manage lobby_id request
+            
+            if(message.Contains("LOBBY_ID:")) // Manage lobby_id request
             {
                 Debug.Log("Ricevuta richiesta: LOBBY_ID " + message);
                 _request = RemoveRequest(message, "LOBBY_ID:");
@@ -122,8 +114,9 @@ public class RequestHandler
                 int armyNumber = int.Parse(_request);
                 Debug.Log("ArmyNumber parsed: " + armyNumber);
                 Player.Instance.TanksNum = armyNumber;
-                Player.Instance.TanksAvailable = armyNumber; // piazzati - totale
-                Player.Instance.TanksPlaced = 0; // numero di carri totale - numero di stati
+                Player.Instance.TanksPlaced = armyNumber - Player.Instance.Territories.Count;
+                Player.Instance.TanksAvailable = Player.Instance.TanksPlaced - armyNumber;
+                
             }
             else if (message.Contains("OBJECTIVE_CARD_ASSIGNED:"))
             {

@@ -61,12 +61,12 @@ class Game:
 
         #Preparation phase
         await self.__game_order__()
+        await self._give_territory_cards()
         print("Initial army number: " + str(self.__army_start_num__(len(self.players))))
         await self.broadcast("INITIAL_ARMY_NUMBER: " + str(self.__army_start_num__(len(self.players))))  # TOBE Tested
         await self.broadcast("IS_YOUR_TURN: FALSE")
         await self.army_color_chose()
         await self._give_objective_cards()
-        await self._give_territory_cards()
         await self._assignDefaultArmiesOnTerritories() #TOBE Tested
         #Preparation phase terminated
 
