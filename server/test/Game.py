@@ -38,6 +38,7 @@ class Game:
         print(f"Player {player} with name {player.name} removed from game {self.game_id}")
 
     async def broadcast(self, message):
+        print(f"sending broadcast message: {message}")
         for player in self.players:
             await player.sock.send(message)
 
@@ -60,9 +61,10 @@ class Game:
 
         #Preparation phase
         await self.__game_order__()
+        print("Initial army number: " + str(self.__army_start_num__(len(self.players))))
+        await self.broadcast("INITIAL_ARMY_NUMBER: " + str(self.__army_start_num__(len(self.players))))  # TOBE Tested
         await self.broadcast("IS_YOUR_TURN: FALSE")
         await self.army_color_chose()
-        await self.broadcast("INITIAL_ARMY_NUMBER: " + str(self.__army_start_num__(len(self.players)))) #TOBE Tested
         await self._give_objective_cards()
         await self._give_territory_cards()
         await self._assignDefaultArmiesOnTerritories() #TOBE Tested

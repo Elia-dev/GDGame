@@ -120,9 +120,10 @@ public class RequestHandler
                 Debug.Log("Server_Request: INITIAL_ARMY_NUMBER");
                 _request = RemoveRequest(message, "INITIAL_ARMY_NUMBER: ");
                 int armyNumber = int.Parse(_request);
+                Debug.Log("ArmyNumber parsed: " + armyNumber);
                 Player.Instance.TanksNum = armyNumber;
-                Player.Instance.TanksAvailable = armyNumber;
-                Player.Instance.TanksPlaced = 0;
+                Player.Instance.TanksAvailable = armyNumber; // piazzati - totale
+                Player.Instance.TanksPlaced = 0; // numero di carri totale - numero di stati
             }
             else if (message.Contains("OBJECTIVE_CARD_ASSIGNED:"))
             {
