@@ -107,7 +107,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         for(int i = 0; i < armyNumber; i++) {
             Player.Instance.Territories.ForEach( terr => {
                 if (terr.id.Equals(selectedTerritories.territories[i].id))
-                    terr.num_tanks = selectedTerritories.territories[i].num_tanks;
+                    terr.num_tanks += selectedTerritories.count[i];
             });
         }
         for(int i = 0; i < armyNumber; i++) {
