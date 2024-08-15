@@ -20,6 +20,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     [SerializeField] private TMP_Text tankToAdd;
     [SerializeField] private Button plusButton;
     [SerializeField] private Button minusButton;
+    [SerializeField] private Button endTurn;
     SelectedTerritories selectedTerritories;
     private bool isTurnActive = false; // Variabile per tracciare il turno attivo
     private bool isTurnInitialized = false; // Variabile per tracciare se il turno è stato inizializzato
@@ -65,6 +66,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         
         plusButton.onClick.AddListener(() => AddArmy());
         minusButton.onClick.AddListener(() => RemoveArmy());
+        endTurn.onClick.AddListener( () => SendArmy());
     }
 
     public void AddArmy() {
@@ -94,9 +96,26 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
                 tankToAdd.text = selectedTerritories.count[result] + "";
             }
             selectedTerritory.Select();
+            CheckTotalArmy();
         }
     }
 
+    private void CheckTotalArmy() {
+        if (selectedTerritories.count.Sum() == armyNumber)
+            endTurn.interactable = true;
+    }
+
+    private void SendArmy() {
+        for(int i = 0; i < armyNumber; i++) {
+            Player.Instance.Territories.ForEach( terr => {
+                if (terr.id.Equals(selectedTerritories.territories[i].id))
+                    terr.num_tanks = selectedTerritories.territories[i].num_tanks;
+            });
+        }
+        Player.Instance.TanksAvailable -= selectedTerritories.count.Sum();
+        ClientManager.Instance.UpdateTerritoriesState();
+    }
+    
     public void RemoveArmy() {
         if (int.Parse(tankToAdd.text) > 0) {
             int result = FindTerritory(selectedTerritory.name);
@@ -128,7 +147,6 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     private void Update() {
         //Debug.Log("IsMyTurn: " + Player.Instance.IsMyTurn);
         if (Player.Instance.IsMyTurn && !isTurnInitialized) {
-            armyNumber = Player.Instance.TanksAvailable;
             StartTurn(armyNumber);
         }
 
@@ -164,6 +182,10 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     //Metodo che inizializza la struct per la selezione dei territori e attiva il turno
     public void StartTurn(int armyNumber) {
         isTurnInitialized = true; // Attiva il turno
+        armyNumber = Player.Instance.TanksAvailable;
+        if (armyNumber > 3) {
+            armyNumber = 3;
+        }
         selectedTerritories.territories = new Territory[armyNumber];
         selectedTerritories.count = new int[armyNumber];
         //isTurnInitialized = false; // Imposta a false per inizializzare nel prossimo Update
