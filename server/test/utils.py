@@ -34,6 +34,7 @@ def read_territories_cards():
         description = card.find('description').text
         continent = card.find('continent').text
 
+
         card = Territory(card_id, image, function, description, name, continent, None, 1)
         cards.append(card)
     return cards
