@@ -128,8 +128,8 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     private void SendArmy() {
         for(int i = 0; i < armyNumber; i++) {
             Player.Instance.Territories.ForEach( terr => {
-                Debug.Log("Id territorio Server: " + terr.id + " Id Territorio locale: " 
-                          + selectedTerritories.territories[i].id);
+                Debug.Log("Id territorio Server: " + terr.id);
+                Debug.Log(" Id Territorio locale: "  + selectedTerritories.territories[i].id);
                 if (terr.id.Equals(selectedTerritories.territories[i].id))
                     terr.num_tanks += selectedTerritories.count[i];
             });
