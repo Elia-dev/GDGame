@@ -128,13 +128,18 @@ class Game:
                 if "UPDATE_TERRITORIES_STATE:" in message:
                     message = self._remove_request(message, "UPDATE_TERRITORIES_STATE: ")
                     id = message.split(", ")[0]
+                    print(f"ID del player che ha mandato l'update: {id}")
                     message = self._remove_request(message, (id + ", "))
+                    print(f"Messaggio pulito da richiesta e ID: {message}")
                     territories_list_dict = json.loads(message)
+                    print("Eseguito json.load sul messaggio")
                     territories = [Territory.Territory.from_dict(data) for data in territories_list_dict]
+                    print("Eseguito from dict sulla lista dei dizionari sul messaggio")
                     for player in self.players:
                         if player.player_id == id:
                             player.territories = territories
-
+                            print(f"Aggiornato lista stati del player con ID {player.player_id} con nome {player.name}")
+                    print("Fine aggiornamento territori")
                     #Dovrei fare un broadcast per notificare a tutti il cambio di stato dei territori di questo player? Da ragionarci su
 
                     self.event.set()
