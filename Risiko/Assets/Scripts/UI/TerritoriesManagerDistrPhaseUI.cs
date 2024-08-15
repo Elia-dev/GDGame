@@ -85,8 +85,6 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
                     if (selectedTerritories.count[i] == 0) {
                         selectedTerritories.territories[i] = TerritoryInformations(selectedTerritory.name);
                         selectedTerritories.count[i]++;
-                        Debug.Log(selectedTerritories.territories[i] + " " +
-                                  selectedTerritories.count[i]);
                         tankToAdd.text = selectedTerritories.count[i] + "";
                         i = selectedTerritories.count.Length;
                     }
@@ -232,7 +230,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
                 if (selectedTerritories.territories[i].Equals(selectedTerritory.name))
                     result = i;
             }
-            Debug.Log(result);
+            
             if (result == -1) {
                 for (int i = 0; i < selectedTerritories.count.Length; i++)
                     if (selectedTerritories.count[i] == 0) {
