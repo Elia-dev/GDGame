@@ -114,8 +114,8 @@ public class RequestHandler
                 int armyNumber = int.Parse(_request);
                 Debug.Log("ArmyNumber parsed: " + armyNumber);
                 Player.Instance.TanksNum = armyNumber;
-                Player.Instance.TanksPlaced = armyNumber - Player.Instance.Territories.Count;
-                Player.Instance.TanksAvailable = Player.Instance.TanksPlaced - armyNumber;
+                Player.Instance.TanksPlaced = Player.Instance.Territories.Count;
+                Player.Instance.TanksAvailable = armyNumber - Player.Instance.TanksPlaced;
                 
             }
             else if (message.Contains("OBJECTIVE_CARD_ASSIGNED:"))
