@@ -127,8 +127,8 @@ class Game:
                     self.event.set() #Setting event to True
                 if "UPDATE_TERRITORIES_STATE:" in message:
                     message = self._remove_request(message, "UPDATE_TERRITORIES_STATE: ")
-                    id = message.split(",")[0]
-                    message = self._remove_request(message, id + ", ")
+                    id = message.split(", ")[0]
+                    message = self._remove_request(message, (id + ", "))
                     territories_list_dict = json.loads(message)
                     territories = [Territory.Territory.from_dict(data) for data in territories_list_dict]
                     for player in self.players:
