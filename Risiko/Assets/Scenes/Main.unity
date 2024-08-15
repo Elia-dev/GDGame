@@ -17046,7 +17046,7 @@ MonoBehaviour:
   tankToAdd: {fileID: 1492332386}
   plusButton: {fileID: 134849052}
   minusButton: {fileID: 801302892}
-  endTurn: {fileID: 0}
+  endTurn: {fileID: 886352705}
 --- !u!114 &2029590058
 MonoBehaviour:
   m_ObjectHideFlags: 0
