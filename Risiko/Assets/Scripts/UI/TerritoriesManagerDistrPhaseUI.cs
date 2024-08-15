@@ -138,6 +138,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         Player.Instance.TanksAvailable -= selectedTerritories.count.Sum();
         ClientManager.Instance.UpdateTerritoriesState();
         endTurn.interactable = false;
+        isTurnInitialized = false;
     }
 
     private int FindTerritory(string TerritoryName) {
@@ -195,7 +196,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         }
         Debug.Log("ArmyNumber after: " + armyNumber);
         selectedTerritories.territories = new Territory[armyNumber];
-        selectedTerritories.count = new int[armyNumber];
+                                                                selectedTerritories.count = new int[armyNumber];
         //isTurnInitialized = false; // Imposta a false per inizializzare nel prossimo Update
         //Debug.Log("Turno iniziato con " + armyNumber + " armate da posizionare.");
     }
