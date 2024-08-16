@@ -12,7 +12,7 @@ public class ClientManager
     private static ClientManager _instance;
     private static readonly object Lock = new object();
     public List<string> NamePlayersTemporaneo = new List<string>(); 
-    
+    private bool _connected = false;
     private ClientManager() // Private constructor to allow instantiation using singleton only
     {
     }
@@ -43,12 +43,12 @@ public class ClientManager
 
     public bool IsConnected()
     {
-        if (_webSocket != null)
-        {
-            return true;
-        }
+            return _connected;
+    }
 
-        return false;
+    public void SetConnected(bool value)
+    {
+        _connected = value;
     }
     
     public string GetLobbyId()
@@ -64,7 +64,7 @@ public class ClientManager
     {
         if (_webSocket == null)
         {
-            //var cancellationTokenSource = new CancellationTokenSource();
+            var cancellationTokenSourceFirstConnection = new CancellationTokenSource(TimeSpan.FromSeconds(10));
             var cancellationTokenSource = new CancellationTokenSource();
             var uri = new Uri(_server);
             
@@ -72,11 +72,13 @@ public class ClientManager
             
             try
             {
-                await _webSocket.ConnectAsync(uri, cancellationTokenSource.Token);
+                //await _webSocket.ConnectAsync(uri, cancellationTokenSource.Token);
+                await _webSocket.ConnectAsync(uri, cancellationTokenSourceFirstConnection.Token);
             
                 if (_webSocket.State == WebSocketState.Open)
                 {
                     Console.WriteLine("WebSocket connected successfully.");
+                    SetConnected(true);
                     var handlerTask = RequestHandler.HandleRequests(cancellationTokenSource.Token);
                     var receiveTask = ReceiveMessage(_webSocket, cancellationTokenSource.Token);
                     await Task.WhenAll(handlerTask, receiveTask);
@@ -84,15 +86,27 @@ public class ClientManager
                 else
                 {
                     Debug.Log("[ClientManager] WebSocket connection could not be established.");
+                    _webSocket = null;
+                    SetConnected(false);
                 }
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log("WebSocket connection was canceled due to timeout.");
+                _webSocket = null;
+                SetConnected(false);
             }
             catch (WebSocketException ex)
             {
-                Console.WriteLine($"WebSocketException: {ex.Message}");
+                Debug.Log($"WebSocketException: {ex.Message}");
+                _webSocket = null;
+                SetConnected(false);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Exception: {ex.Message}");
+                Debug.Log($"Exception: {ex.Message}");
+                _webSocket = null;
+                SetConnected(false);
             }
         }
     }
