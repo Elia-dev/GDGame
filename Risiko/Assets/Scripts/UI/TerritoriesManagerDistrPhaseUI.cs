@@ -188,8 +188,12 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             distributionPhaseDeselection();
         } else if (Input.GetMouseButtonDown(1) && !distributionPhase) {
         }*/
-        
-        //MESSAGGIO PASSAGGIO FASE GIOCO
+
+        if (GameManager.Instance.getGamePhase()) {
+            this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = false;
+            this.GetComponent<TerritoriesManagerGamePhaseUI>().enabled = true;
+            Debug.Log("Game Phase");
+        }
     }
     
     //Metodo che inizializza la struct per la selezione dei territori e attiva il turno
