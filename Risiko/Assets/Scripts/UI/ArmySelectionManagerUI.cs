@@ -186,15 +186,15 @@ public class ArmySelectionManagerUI : MonoBehaviour {
             Player.Instance.ArmyColor = selectedArmy.gameObject.name.Substring(7);
             //COMUNICA AL SERVER L'ARMATA
             ClientManager.Instance.SendChosenArmyColor();
+            //Disattivo i raycast dei carriarmati
             DeactivateRaycastTargetArmy();
-            turn = false;
+            //turn = false;
 
             //Preparazione prossima fase
             Color32 color = selectedArmy.ArmyColor;
             color.a = 200;
             TerritoryHandlerUI.userColor = color;
             waitingLabel.gameObject.SetActive(true);
-            //Disattivo i raycast dei carriarmati
             //gameObject.GetComponent<Renderer>().enabled = false;
         }
         else {
