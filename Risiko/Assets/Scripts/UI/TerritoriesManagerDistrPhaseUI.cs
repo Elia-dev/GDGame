@@ -53,8 +53,12 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         popUpAddTank.GetComponent<Image>().color = TerritoryHandlerUI.userColor;
         foreach (var territory in Player.Instance.Territories) {
             GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
-            if (terr is not null)
+            if (terr is not null) {
                 terr.GetComponent<PolygonCollider2D>().enabled = true;
+                Color32 color = TerritoryHandlerUI.userColor;
+                color.a = 50;
+                terr.GetComponent<SpriteRenderer>().color = color;
+            }
         }
     }
 
