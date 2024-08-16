@@ -40,7 +40,7 @@ public class ArmySelectionManagerUI : MonoBehaviour {
     }
 
     private void Start() {
-        List<string>
+        /*List<string>
             AvailableColors = GameManager.Instance.GetAvailableColors(); // Per prendere la lista dei colori disponibili
 
         foreach (var color in AvailableColors) {
@@ -64,7 +64,7 @@ public class ArmySelectionManagerUI : MonoBehaviour {
                     blackArmy.GameObject().SetActive(true);
                     break;
             }
-        }
+        }*/
         /*switch (GameManager.Instance.PlayersName.Count) {
             case 4:
                 yellowArmy.GameObject().SetActive(true);
