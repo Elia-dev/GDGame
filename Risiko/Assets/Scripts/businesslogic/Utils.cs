@@ -16,9 +16,6 @@ public class Utils
         }
         
         if (username.Length > 16) {
-            // POPUP errore nome troppo lungo
-            GameObject.Find("PopUpContainer").GetComponent<PopUpBadNameUI>()
-                .SetErrorText("MAX characters number: 16");
             return "MAX characters number: 16";
         }
         

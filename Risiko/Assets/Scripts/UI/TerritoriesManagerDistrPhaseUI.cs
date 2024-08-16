@@ -31,7 +31,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
 
     public void Start() {
         //TUTTA ROBA DI DEBUG
-        /*TerritoryHandlerUI.userColor = new Color32(0, 0, 255, 200);
+        TerritoryHandlerUI.userColor = new Color32(0, 0, 255, 200);
         List<Territory> terr = new List<Territory>();
         terr.Add(new Territory("SA_ter1", "SA_ter1.png", "boh", "eh", "lo", "fa", "SA", 7));
         terr.Add(new Territory("SA_ter2", "SA_ter2.png", "boh", "eh", "lo", "fa", "SA", 5));
@@ -45,7 +45,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         //FUORI DEBUG
         //TerritoryHandlerUI.ArmyDistributionPhase();
         popUpAddTank.GetComponent<Image>().color = TerritoryHandlerUI.userColor;
-        activateTerritories();*/
+        activateTerritories();
     }
 
     public void activateTerritories() {
@@ -173,7 +173,8 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         if (Input.GetMouseButtonDown(0) && Player.Instance.IsMyTurn) {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
-
+            Debug.Log("BOXCOLLIDER: " + hit.collider.GetType() is BoxCollider2D);
+            Debug.Log("POLYGON COLLIDER: " + hit.collider.GetType() is PolygonCollider2D);
             if (hit.collider is not null) {
                 TerritoryHandlerUI territoryHandlerUI = hit.transform.GetComponent<TerritoryHandlerUI>();
                 if (territoryHandlerUI is not null) {
