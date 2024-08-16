@@ -22,7 +22,7 @@ public class GameMenuUI : MonoBehaviour
 		CreateLobbyButton.onClick.AddListener(() =>
         {
             string username = UsernameInputField.text; 
-            if (Utils.CheckNickname(username))
+            if (Utils.CheckNickname(username).Equals("OK"))
             {
                 //Debug.Log("Username OK, changing scene from GameMenu to HostMenu");
                 Player player = Player.Instance;
@@ -41,7 +41,7 @@ public class GameMenuUI : MonoBehaviour
         JoinLobbyButton.onClick.AddListener(() =>
         {
             string username = UsernameInputField.text;
-            if (Utils.CheckNickname(username))
+            if (Utils.CheckNickname(username).Equals("OK"))
             {
                 //Debug.Log("Username OK, changing scene from GameMenu to JoinLobbyMenu");
                 Player player = Player.Instance;

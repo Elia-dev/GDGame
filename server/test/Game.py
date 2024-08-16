@@ -72,18 +72,21 @@ class Game:
         await self.broadcast("IS_YOUR_TURN: FALSE")
         await self.army_color_chose()
         await self._give_objective_cards()
-        await self._assignDefaultArmiesOnTerritories() #TOBE Tested
+        await self._assignDefaultArmiesOnTerritories()
         await self.broadcast("PREPARATION_PHASE_TERMINATED")
+        print("PREPARATION_PHASE_TERMINATED")
         #Preparation phase terminated
 
         #Game loop TOBE TESTED
         print("Inizio fase di gioco")
         while self.game_running:
             for player in self.players:
+                print(f"Turno del player id: {player.player_id} con nome {player.name}")
                 # REINFORCE PHASE
                 # CheckContinents
                 # CheckArmy
                 num_army_to_send = self.calculateArmyForThisTurn(player)
+                print(f"Numero di armate ricevute nella fase di rinforzo: {num_army_to_send}")
                 player.tanks_num += num_army_to_send
                 player.tanks_available += num_army_to_send
                 # SendArmy
@@ -95,18 +98,21 @@ class Game:
                 self.event = asyncio.Event()  # Event reset
                 player.tanks_available = 0
                 player.tanks_placed += num_army_to_send
+                print("Reinforced phase terminated")
                 # REINFORCE PHASE TERMINATED
 
                 # FIGHT PHASE
 
+                print("[fake] Fight phase terminated")
                 # FIGHT PHASE TERMINATED
 
                 # STRATEGIC MOVEMENT
                 await self.event.wait()
+                print("[fake] Strategic movement terminated")
                 # STRATEGIC MOVEMENT TERMINATED
 
                 # CHECK (card objective, number of tanks ecc...)
-
+                print("[fake] Check objective card terminated")
 
 
     async def handle_requests(self):

@@ -5,25 +5,23 @@ using UnityEngine;
 
 public class Utils 
 {
-    public static bool CheckNickname(string username)
+    public static string CheckNickname(string username)
     {
         if (username.Contains("-") || username.Contains(":") ||
             username.Contains(";") ||username.Contains("'") ||
             username.Contains("[") || username.Contains("]") || 
             username.Contains(",") || username.Contains("{") || 
-            username.Contains("}")) {
-            // POPUP errore caratteri non consentiti:  :;'-[],{}
-            GameObject.Find("PopUpContainer").GetComponent<PopUpBadNameUI>()
-                .SetErrorText("Not allowed characters :;'-[],{}");
-            return false;
+            username.Contains("}") || username.Contains("_")) {
+            return "Not allowed characters :;'-[],{}_";
         }
+        
         if (username.Length > 16) {
             // POPUP errore nome troppo lungo
             GameObject.Find("PopUpContainer").GetComponent<PopUpBadNameUI>()
                 .SetErrorText("MAX characters number: 16");
-            return false;
+            return "MAX characters number: 16";
         }
-        // TODO - Exception
-        return true;
+        
+        return "OK";
     }
 }
