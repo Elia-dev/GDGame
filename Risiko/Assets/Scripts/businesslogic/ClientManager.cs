@@ -83,7 +83,7 @@ public class ClientManager
             
                 if (_webSocket.State == WebSocketState.Open)
                 {
-                    Console.WriteLine("WebSocket connected successfully.");
+                    Debug.Log("Connected");
                     SetConnected(true);
                     var handlerTask = RequestHandler.HandleRequests(cancellationTokenSource.Token);
                     var receiveTask = ReceiveMessage(_webSocket, cancellationTokenSource.Token);

@@ -17,7 +17,7 @@ public class RequestHandler
         {
             if (!ClientManager.Instance.IsConnected())
             {
-                break;
+                return;
             }
             
             if(message.Contains("LOBBY_ID:")) // Manage lobby_id request
