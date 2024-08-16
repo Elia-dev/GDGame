@@ -87,6 +87,15 @@ public class ArmySelectionManagerUI : MonoBehaviour {
         eventSystem = EventSystem.current;
     }
 
+    private void DeactivateRaycastTargetArmy() {
+        redArmy.GetComponent<Image>().raycastTarget = false;
+        greenArmy.GetComponent<Image>().raycastTarget = false;
+        blueArmy.GetComponent<Image>().raycastTarget = false;
+        yellowArmy.GetComponent<Image>().raycastTarget = false;
+        purpleArmy.GetComponent<Image>().raycastTarget = false;
+        blackArmy.GetComponent<Image>().raycastTarget = false;
+    }
+    
     private void ActivateRaycastTargetArmy() {
         List<string>
             AvailableColors = GameManager.Instance.GetAvailableColors(); // Per prendere la lista dei colori disponibili
@@ -117,6 +126,7 @@ public class ArmySelectionManagerUI : MonoBehaviour {
     }
 
     private void Update() {
+        //Start del turno
         if (Player.Instance.IsMyTurn && !turn) {
             turn = true;
             ActivateRaycastTargetArmy();
@@ -146,12 +156,11 @@ public class ArmySelectionManagerUI : MonoBehaviour {
                 }
             }
         }
-
+        //Lancio fase successiva quando vengono rivenute le carte obiettivo
         if (Player.Instance.ObjectiveCard is not null) {
             TerritoryHandlerUI.ArmyDistributionPhase();
             GameObject.Find("PopUpArmySelection").SetActive(false);
-            //RICEZIONE OGGETTO CARTA DA PARTE DEL SERVER
-            // La carta objective è memorizzata qui Player.Instance.ObjectiveCard
+            //Popup carte obiettivo
             objectiveCardCanvas.SetActive(true);
         }
     }
@@ -170,27 +179,18 @@ public class ArmySelectionManagerUI : MonoBehaviour {
     public void ChooseArmy() {
         if (selectedArmy is not null) {
             Player.Instance.ArmyColor = selectedArmy.gameObject.name.Substring(7);
+            //COMUNICA AL SERVER L'ARMATA
             ClientManager.Instance.SendChosenArmyColor();
             turn = false;
-            //COMUNICA AL SERVER L'ARMATA
 
-            // Per mandare l'armata settare prima il colore in string usando player.ArmyColor="colore scelto"
-            // Poi utilizzare questo comando ClientManager.Instance.SendChosenArmyColor();
-            //ATTENDE COMUNICAZIONE DAL SERVER PER PASSARE ALLA PROSSIMA FASE
-            // Per vedere se è il tuo turno puoi usare Player.Instance.IsMyTurn();
-
-            //LANCIA LA PROSSIMA FASE
+            //Preparazione prossima fase
             Color32 color = selectedArmy.ArmyColor;
             color.a = 200;
             TerritoryHandlerUI.userColor = color;
             waitingLabel.gameObject.SetActive(true);
-            gameObject.GetComponent<Renderer>().enabled = false;
-                
-            /*//TerritoryHandlerUI.ArmyDistributionPhase();
-            GameObject.Find("PopUpArmySelection").SetActive(false);
-            //RICEZIONE OGGETTO CARTA DA PARTE DEL SERVER
-            // La carta objective è memorizzata qui Player.Instance.ObjectiveCard
-            objectiveCardCanvas.SetActive(true);*/
+            //Disattivo i raycast dei carriarmati
+            DeactivateRaycastTargetArmy();
+            //gameObject.GetComponent<Renderer>().enabled = false;
         }
         else {
             title.color = Color.red;
