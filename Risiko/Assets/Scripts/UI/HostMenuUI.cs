@@ -52,8 +52,8 @@ public class HostMenuUI : MonoBehaviour
         }
         
         //Aggiornamento lista giocatori
-        stringa = string.Join(" ", gm.PlayersName);
-        PlayerList.text = stringa;
+        stringa = string.Join(", ", gm.PlayersName);
+        PlayerList.text = "Players: " + stringa;
        
 
         

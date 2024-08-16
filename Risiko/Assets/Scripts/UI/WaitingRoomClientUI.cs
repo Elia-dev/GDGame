@@ -43,10 +43,8 @@ public class WaitingRoomClientUI : MonoBehaviour
             Debug.Log("WAITING_ROOM - playerList:" + PlayerList.text);
         }
         
-        string stringa = string.Join(" ", gm.PlayersName);
-        PlayerList.text = stringa;
-       
-        
+        string stringa = string.Join(", ", gm.PlayersName);
+        PlayerList.text = "Players: " + stringa;
         
         //Quando l'HOST avvia il gioco
         if (!GameManager.Instance.GetGameWaitingToStart())
