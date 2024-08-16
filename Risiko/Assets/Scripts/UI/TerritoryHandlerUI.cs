@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -21,6 +22,10 @@ public class TerritoryHandlerUI : MonoBehaviour {
 
     public Color32 UserColor {
         set => userColor = value;
+    }
+    
+    public Color32 StartColor {
+        set => startColor = value;
     }
 
     public static void ArmyDistributionPhase() {

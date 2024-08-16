@@ -44,53 +44,13 @@ public class ArmySelectionManagerUI : MonoBehaviour {
     }
 
     private void Start() {
-        /*List<string>
-            AvailableColors = GameManager.Instance.GetAvailableColors(); // Per prendere la lista dei colori disponibili
-
-        foreach (var color in AvailableColors) {
-            switch (color) {
-                case "red":
-                    redArmy.GameObject().SetActive(true);
-                    break;
-                case "green":
-                    greenArmy.GameObject().SetActive(true);
-                    break;
-                case "blue":
-                    blueArmy.GameObject().SetActive(true);
-                    break;
-                case "yellow":
-                    yellowArmy.GameObject().SetActive(true);
-                    break;
-                case "purple":
-                    purpleArmy.GameObject().SetActive(true);
-                    break;
-                case "black":
-                    blackArmy.GameObject().SetActive(true);
-                    break;
-            }
-        }*/
-        /*switch (GameManager.Instance.PlayersName.Count) {
-            case 4:
-                yellowArmy.GameObject().SetActive(true);
-                break;
-            case 5:
-                yellowArmy.GameObject().SetActive(true);
-                purpleArmy.GameObject().SetActive(true);
-                break;
-            case 6:
-                yellowArmy.GameObject().SetActive(true);
-                purpleArmy.GameObject().SetActive(true);
-                blackArmy.GameObject().SetActive(true);
-                break;
-        }*/
-
         // Trova il GraphicRaycaster sul Canvas
         raycaster = GetComponent<GraphicRaycaster>();
 
         // Trova l'EventSystem nella scena
         eventSystem = EventSystem.current;
     }
-
+    //Disattivazione di tutti i raycast
     private void DeactivateRaycastTargetArmy() {
         redArmy.GetComponent<Image>().raycastTarget = false;
         greenArmy.GetComponent<Image>().raycastTarget = false;
@@ -99,7 +59,7 @@ public class ArmySelectionManagerUI : MonoBehaviour {
         purpleArmy.GetComponent<Image>().raycastTarget = false;
         blackArmy.GetComponent<Image>().raycastTarget = false;
     }
-    
+    //Metodo che attiva solo i reaycast delle armate disponibili
     private void ActivateRaycastTargetArmy() {
         List<string>
             AvailableColors = GameManager.Instance.GetAvailableColors(); // Per prendere la lista dei colori disponibili
@@ -182,13 +142,13 @@ public class ArmySelectionManagerUI : MonoBehaviour {
 
     public void ChooseArmy() {
         if (selectedArmy is not null) {
+            //Tasto non più interagibile
             chooseButton.interactable = false;
             Player.Instance.ArmyColor = selectedArmy.gameObject.name.Substring(7);
             //COMUNICA AL SERVER L'ARMATA
             ClientManager.Instance.SendChosenArmyColor();
             //Disattivo i raycast dei carriarmati
             DeactivateRaycastTargetArmy();
-            //turn = false;
 
             //Preparazione prossima fase
             Color32 color = selectedArmy.ArmyColor;
@@ -197,7 +157,7 @@ public class ArmySelectionManagerUI : MonoBehaviour {
             waitingLabel.gameObject.SetActive(true);
             //gameObject.GetComponent<Renderer>().enabled = false;
         }
-        else {
+        else {//Se non è stata selezionata un'armata mostra errore
             title.color = Color.red;
             errorMessage.gameObject.SetActive(true);
         }

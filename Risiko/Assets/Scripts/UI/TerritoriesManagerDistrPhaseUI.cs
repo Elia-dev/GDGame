@@ -58,6 +58,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
                 Color32 color = TerritoryHandlerUI.userColor;
                 color.a = 50;
                 terr.GetComponent<SpriteRenderer>().color = color;
+                terr.GetComponent<TerritoryHandlerUI>().StartColor = color;
             }
         }
     }
