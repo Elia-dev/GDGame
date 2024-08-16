@@ -62,28 +62,39 @@ class Game:
         #Preparation phase
         await self.__game_order__()
         await self._give_territory_cards()
-        print("Initial army number: " + str(self.__army_start_num__(len(self.players))))
-        await self.broadcast("INITIAL_ARMY_NUMBER: " + str(self.__army_start_num__(len(self.players))))  # TOBE Tested
+        initial_army_number = self.__army_start_num__(len(self.players))
+        print("Initial army number: " + str(initial_army_number))
+        for player in self.players:
+            player.tanks_num = initial_army_number
+            player.tanks_placed = len(player.territories)
+            player.tanks_available = player.tanks_num - player.tanks_placed
+        await self.broadcast("INITIAL_ARMY_NUMBER: " + str(initial_army_number))
         await self.broadcast("IS_YOUR_TURN: FALSE")
         await self.army_color_chose()
         await self._give_objective_cards()
         await self._assignDefaultArmiesOnTerritories() #TOBE Tested
+        await self.broadcast("PREPARATION_PHASE_TERMINATED")
         #Preparation phase terminated
 
         #Game loop TOBE TESTED
+        print("Inizio fase di gioco")
         while self.game_running:
             for player in self.players:
                 # REINFORCE PHASE
                 # CheckContinents
                 # CheckArmy
-                numArmyToSend = self.calculateArmyForThisTurn(player)
+                num_army_to_send = self.calculateArmyForThisTurn(player)
+                player.tanks_num += num_army_to_send
+                player.tanks_available += num_army_to_send
                 # SendArmy
-                await player.sock.send("NUMBER_OF_ARMY_TO_ASSIGN_IN_THIS_TURN: " + str(numArmyToSend))
+                await player.sock.send("NUMBER_OF_ARMY_TO_ASSIGN_IN_THIS_TURN: " + str(num_army_to_send))
                 # UnlockTurn
                 await player.sock.send("IS_YOUR_TURN: TRUE")
                 # Waiting for player to finish the turn and send updated territories
                 await self.event.wait()
                 self.event = asyncio.Event()  # Event reset
+                player.tanks_available = 0
+                player.tanks_placed += num_army_to_send
                 # REINFORCE PHASE TERMINATED
 
                 # FIGHT PHASE
@@ -275,16 +286,29 @@ class Game:
         print("sent")
 
     async def _assignDefaultArmiesOnTerritories(self):
-        num_army_to_place = self.__army_start_num__(len(self.players))
-        while num_army_to_place > 0:
+        print("Fase iniziale assegnazione armate default")
+        control = 0
+        while control < len(self.players):
             for player in self.players:
-                await player.sock.send("IS_YOUR_TURN: TRUE")
-                print(f"Turno del player id: {player.player_id} con nome {player.name}")
-                await self.event.wait() # Waiting for player choice
-                await player.sock.send("IS_YOUR_TURN: FALSE")
-                print(f"Turno del player id: {player.player_id} con nome {player.name} TERMINATO")
-                self.event = asyncio.Event() # Event reset
-                num_army_to_place -= 3
+                if player.tanks_available > 0:
+                    await player.sock.send("IS_YOUR_TURN: TRUE")
+                    print(f"Turno del player id: {player.player_id} con nome {player.name}")
+                    print(f"Armate totali: {player.tanks_num}")
+                    print(f"Armate piazzate: {player.tanks_placed}")
+                    print(f"Armate ancora da piazzare: {player.tanks_available}")
+                    await self.event.wait() # Waiting for player choice
+                    await player.sock.send("IS_YOUR_TURN: FALSE")
+                    if player.tanks_available >= 3:
+                        player.tanks_available -= 3
+                        player.tanks_placed += 3
+                    else:
+                        player.tanks_placed += player.tanks_available
+                        player.tanks_available = 0
+                    print(f"Turno del player id: {player.player_id} con nome {player.name} TERMINATO")
+                    self.event = asyncio.Event() # Event reset
+                else:
+                    control += 1
+
 
     def calculateArmyForThisTurn(self, player):
         #Continent name: NA SA EU AF AS OC

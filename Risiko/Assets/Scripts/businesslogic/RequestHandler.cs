@@ -151,6 +151,11 @@ public class RequestHandler
                 _request = RemoveRequest(message, "RECEIVED_REQUEST_TERRITORY_INFO: ");
                 GameManager.Instance.puppetState = JsonConvert.DeserializeObject<Territory>(_request);
             }
+            else if (message.Contains("PREPARATION_PHASE_TERMINATED"))
+            {
+                GameManager.Instance.setGamePhase(true); 
+                GameManager.Instance.setPreparationPhase(false);
+            }
             else
             {
                 Debug.Log("HANDLER: request not manageable: " + message);

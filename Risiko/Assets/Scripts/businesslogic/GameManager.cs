@@ -16,6 +16,8 @@ public class GameManager
     private string _gameOrderExtractedNumbers = "";
     private bool _gameWaitingToStart = true;
     private bool _gameRunning = true;
+    private bool _preparationPhase = true;
+    private bool _gamePhase = false;
 
     private string _lobbyID;
     /*
@@ -47,7 +49,26 @@ public class GameManager
             }
         }
     }
-    
+
+    public bool getPreparationPhase()
+    {
+        return _preparationPhase;
+    }
+
+    public void setPreparationPhase(bool value)
+    {
+        _preparationPhase = value;
+    }
+
+    public bool getGamePhase()
+    {
+        return _gamePhase;
+    }
+
+    public void setGamePhase(bool value)
+    {
+        _gamePhase = value;
+    }
     public int GetExtractedNumber()
     {
         return _extractedNumber;
