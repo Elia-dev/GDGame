@@ -182,12 +182,12 @@ public class ArmySelectionManagerUI : MonoBehaviour {
 
     public void ChooseArmy() {
         if (selectedArmy is not null) {
-            turn = false;
-            DeactivateRaycastTargetArmy();
             chooseButton.interactable = false;
             Player.Instance.ArmyColor = selectedArmy.gameObject.name.Substring(7);
             //COMUNICA AL SERVER L'ARMATA
             ClientManager.Instance.SendChosenArmyColor();
+            DeactivateRaycastTargetArmy();
+            turn = false;
 
             //Preparazione prossima fase
             Color32 color = selectedArmy.ArmyColor;
