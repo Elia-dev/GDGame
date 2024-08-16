@@ -11,7 +11,6 @@ public class ClientManager
 {
     private static ClientManager _instance;
     private static readonly object Lock = new object();
-    public List<string> NamePlayersTemporaneo = new List<string>(); 
     private bool _connected = false;
     private ClientManager() // Private constructor to allow instantiation using singleton only
     {
@@ -49,6 +48,13 @@ public class ClientManager
     public void SetConnected(bool value)
     {
         _connected = value;
+    }
+
+    public async void ResetConnection()
+    {
+        await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
+        _connected = false;
+        _webSocket = null;
     }
     
     public string GetLobbyId()

@@ -61,6 +61,8 @@ class Game:
 
         #Preparation phase
         await self.__game_order__()
+        available_colors = [color for color, user_id in self.army_colors.items() if user_id is None]
+        await self.broadcast("AVAILABLE_COLORS: " + ", ".join(available_colors))
         await self._give_territory_cards()
         initial_army_number = self.__army_start_num__(len(self.players))
         print("Initial army number: " + str(initial_army_number))
