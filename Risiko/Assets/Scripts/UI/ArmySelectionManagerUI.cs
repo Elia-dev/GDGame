@@ -122,7 +122,7 @@ public class ArmySelectionManagerUI : MonoBehaviour {
         }
         //Lancio fase successiva quando vengono rivenute le carte obiettivo
         if (Player.Instance.ObjectiveCard is not null) {
-            TerritoryHandlerUI.ArmyDistributionPhase();
+            //TerritoryHandlerUI.ArmyDistributionPhase();
             GameObject.Find("PopUpArmySelection").SetActive(false);
             //Popup carte obiettivo
             objectiveCardCanvas.SetActive(true);

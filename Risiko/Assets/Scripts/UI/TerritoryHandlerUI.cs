@@ -10,9 +10,9 @@ public class TerritoryHandlerUI : MonoBehaviour {
     private SpriteRenderer sprite;
     public Color32 startColor = new Color32(0, 0, 0, 0);
     private Color32 hoverColor = new Color32(205, 185, 52, 100);
-    private static Color32 selectionColor;
+    private static Color32 selectionColor = new Color32(205, 185, 52, 100);
     public static Color32 userColor;
-    private static Color32 distributionPhaseColor = new Color32(205, 185, 52, 100);
+    //private static Color32 distributionPhaseColor = new Color32(205, 185, 52, 100);
     private bool selected = false;
 
     public bool Selected {
@@ -28,9 +28,9 @@ public class TerritoryHandlerUI : MonoBehaviour {
         set => startColor = value;
     }
 
-    public static void ArmyDistributionPhase() {
+    /*public static void ArmyDistributionPhase() {
         selectionColor = distributionPhaseColor;
-    }
+    }*/
 
     public static void gamePhase() {
         selectionColor = userColor;
