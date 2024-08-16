@@ -57,6 +57,8 @@ class Game:
         print("Aperto HANDLE_GAME\n")
         while self.game_waiting_to_start is True:
             print("ASPETTANDO CHE SI COLLEGHINO TUTTI\n")
+            if self.game_id is None:
+                return
             await asyncio.sleep(2)
 
         #Preparation phase
@@ -122,6 +124,12 @@ class Game:
             try:
                 player, message = await self.queue.get()
                 print(f"GAME: handling request from client id - : {player.player_id} with name {player.name}: {message}")
+                if "LOBBY_KILLED_BY_HOST" in message:
+                    self.game_id = None
+                    for player in self.players:
+                        self.remove_player(player)
+                    return
+
                 if "REQUEST_NAME_UPDATE_PLAYER_LIST" in message:
                     player_names = []
                     for p in self.players:
@@ -186,6 +194,8 @@ class Game:
                 try:
                     async for message in player.sock:
                         await self.queue.put((player, message))
+                        if "LOBBY_KILLED_BY_HOST" in message:
+                            return
                 except websockets.exceptions.ConnectionClosed:
                     print(f"Client {player.player_id} disconnected")
                     self.remove_player(player)
@@ -195,6 +205,8 @@ class Game:
             try:
                 async for message in player.sock:
                     await self.queue.put((player, message))
+                    if "LOBBY_KILLED_BY_HOST" in message:
+                        return
             except websockets.exceptions.ConnectionClosed:
                 print(f"Client {player} disconnected")
                 self.remove_player(player)
