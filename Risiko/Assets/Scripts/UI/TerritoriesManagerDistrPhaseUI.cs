@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -73,7 +74,6 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
 
     public void AddArmy() {
         int totalArmy = selectedTerritories.count.Sum();
-        Debug.Log("TotalArmy: " + totalArmy + " ArmyNumber: " + armyNumber);
         if (totalArmy < armyNumber) {
             int result = FindTerritory(selectedTerritory.name);
             /*int result = -1;
@@ -188,17 +188,17 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             distributionPhaseDeselection();
         } else if (Input.GetMouseButtonDown(1) && !distributionPhase) {
         }*/
+        
+        //MESSAGGIO PASSAGGIO FASE GIOCO
     }
     
     //Metodo che inizializza la struct per la selezione dei territori e attiva il turno
     public void StartTurn() {
         isTurnInitialized = true; // Attiva il turno
         armyNumber = Player.Instance.TanksAvailable;
-        Debug.Log("ArmyNumber before: " + armyNumber);
         if (armyNumber > 3) {
             armyNumber = 3;
         }
-        Debug.Log("ArmyNumber after: " + armyNumber);
         selectedTerritories.territories = new Territory[armyNumber];
                                                                 selectedTerritories.count = new int[armyNumber];
         //isTurnInitialized = false; // Imposta a false per inizializzare nel prossimo Update
