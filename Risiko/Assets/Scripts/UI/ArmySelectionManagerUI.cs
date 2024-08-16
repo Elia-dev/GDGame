@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -28,6 +29,7 @@ public class ArmySelectionManagerUI : MonoBehaviour {
     [SerializeField] private TMP_Text errorMessage;
     [SerializeField] private GameObject objectiveCardCanvas;
     [SerializeField] private TMP_Text waitingLabel;
+    [SerializeField] private Button chooseButton;
 
     private void Awake() {
         if (Instance is null) {
@@ -37,6 +39,8 @@ public class ArmySelectionManagerUI : MonoBehaviour {
         else {
             Destroy(gameObject);
         }
+        
+        chooseButton.onClick.AddListener( () => ChooseArmy());
     }
 
     private void Start() {
@@ -178,11 +182,12 @@ public class ArmySelectionManagerUI : MonoBehaviour {
 
     public void ChooseArmy() {
         if (selectedArmy is not null) {
+            turn = false;
+            DeactivateRaycastTargetArmy();
+            chooseButton.interactable = false;
             Player.Instance.ArmyColor = selectedArmy.gameObject.name.Substring(7);
             //COMUNICA AL SERVER L'ARMATA
             ClientManager.Instance.SendChosenArmyColor();
-            DeactivateRaycastTargetArmy();
-            turn = false;
 
             //Preparazione prossima fase
             Color32 color = selectedArmy.ArmyColor;
