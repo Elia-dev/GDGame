@@ -40,7 +40,32 @@ public class ArmySelectionManagerUI : MonoBehaviour {
     }
 
     private void Start() {
-        switch (GameManager.Instance.PlayersName.Count) {
+        List<string>
+            AvailableColors = GameManager.Instance.GetAvailableColors(); // Per prendere la lista dei colori disponibili
+
+        foreach (var color in AvailableColors) {
+            switch (color) {
+                case "red":
+                    redArmy.GameObject().SetActive(true);
+                    break;
+                case "green":
+                    greenArmy.GameObject().SetActive(true);
+                    break;
+                case "blue":
+                    blueArmy.GameObject().SetActive(true);
+                    break;
+                case "yellow":
+                    yellowArmy.GameObject().SetActive(true);
+                    break;
+                case "purple":
+                    purpleArmy.GameObject().SetActive(true);
+                    break;
+                case "black":
+                    blackArmy.GameObject().SetActive(true);
+                    break;
+            }
+        }
+        /*switch (GameManager.Instance.PlayersName.Count) {
             case 4:
                 yellowArmy.GameObject().SetActive(true);
                 break;
@@ -53,7 +78,7 @@ public class ArmySelectionManagerUI : MonoBehaviour {
                 purpleArmy.GameObject().SetActive(true);
                 blackArmy.GameObject().SetActive(true);
                 break;
-        }
+        }*/
 
         // Trova il GraphicRaycaster sul Canvas
         raycaster = GetComponent<GraphicRaycaster>();

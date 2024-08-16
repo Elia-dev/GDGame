@@ -24,7 +24,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     [SerializeField] private Button endTurn;
     SelectedTerritories selectedTerritories;
     //private Dictionary<string, int> selectedTerritories;
-    
+
     private bool isTurnActive = false; // Variabile per tracciare il turno attivo
     private bool isTurnInitialized = false; // Variabile per tracciare se il turno è stato inizializzato
     private int armyNumber;
@@ -41,7 +41,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         TerritoryHandlerUI.ArmyDistributionPhase();
         Player.Instance.IsMyTurn = true;
         Player.Instance.TanksAvailable = 3;
-        
+
         //FUORI DEBUG
         //TerritoryHandlerUI.ArmyDistributionPhase();
         popUpAddTank.GetComponent<Image>().color = TerritoryHandlerUI.userColor;
@@ -70,22 +70,17 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         else {
             Destroy(gameObject);
         }
-        
+
         plusButton.onClick.AddListener(() => AddArmy());
         minusButton.onClick.AddListener(() => RemoveArmy());
-        endTurn.onClick.AddListener( () => SendArmy());
+        endTurn.onClick.AddListener(() => SendArmy());
     }
 
     public void AddArmy() {
         int totalArmy = selectedTerritories.count.Sum();
         if (totalArmy < armyNumber) {
             int result = FindTerritory(selectedTerritory.name);
-            /*int result = -1;
-             for (int i = 0; i < armyNumber; i++) {
-                if (selectedTerritories.territories[i] is not null && 
-                    selectedTerritories.territories[i].id.Equals(selectedTerritory.name))
-                    result = i;
-            }*/
+
             if (result == -1) {
                 for (int i = 0; i < selectedTerritories.count.Length; i++)
                     if (selectedTerritories.count[i] == 0) {
@@ -99,20 +94,16 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
                 selectedTerritories.count[result]++;
                 tankToAdd.text = selectedTerritories.count[result] + "";
             }
+
             selectedTerritory.Select();
             CheckTotalArmy();
         }
     }
-    
+
     public void RemoveArmy() {
         if (int.Parse(tankToAdd.text) > 0) {
             int result = FindTerritory(selectedTerritory.name);
-            /*int result = -1;
-            for (int i = 0; i < armyNumber; i++) {
-                if (selectedTerritories.territories[i] is not null && 
-                    selectedTerritories.territories[i].id.Equals(selectedTerritory.name))
-                    result = i;
-            }*/
+
             selectedTerritories.count[result]--;
             tankToAdd.text = selectedTerritories.count[result] + "";
             if (selectedTerritories.count[result] == 0) {
@@ -123,25 +114,26 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             CheckTotalArmy();
         }
     }
-    
+
     private void CheckTotalArmy() {
         if (selectedTerritories.count.Sum() == armyNumber)
             endTurn.interactable = true;
-        else 
+        else
             endTurn.interactable = false;
     }
 
     private void SendArmy() {
-        for(int i = 0; i < armyNumber; i++) {
-            Player.Instance.Territories.ForEach( terr => {
-                if (selectedTerritories.territories[i] is not null && 
+        for (int i = 0; i < armyNumber; i++) {
+            Player.Instance.Territories.ForEach(terr => {
+                if (selectedTerritories.territories[i] is not null &&
                     terr.id.Equals(selectedTerritories.territories[i].id)) {
                     terr.num_tanks += selectedTerritories.count[i];
-                    base.territories.Find(obj => obj.name.Equals(terr.id)).
-                        GetComponent<TerritoryHandlerUI>().Deselect();
+                    base.territories.Find(obj => obj.name.Equals(terr.id)).GetComponent<TerritoryHandlerUI>()
+                        .Deselect();
                 }
             });
         }
+
         popUpAddTank.SetActive(false);
         Player.Instance.TanksAvailable -= selectedTerritories.count.Sum();
         ClientManager.Instance.UpdateTerritoriesState();
@@ -151,28 +143,19 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
 
     private int FindTerritory(string TerritoryName) {
         for (int i = 0; i < armyNumber; i++) {
-            if (selectedTerritories.territories[i] is not null && 
+            if (selectedTerritories.territories[i] is not null &&
                 selectedTerritories.territories[i].id.Equals(TerritoryName))
                 return i;
         }
 
         return -1;
     }
-    
+
     private void Update() {
         //Debug.Log("IsMyTurn: " + Player.Instance.IsMyTurn);
         if (Player.Instance.IsMyTurn && !isTurnInitialized) {
             StartTurn();
         }
-
-        //ATTESA DEL TURNO -> Player.Instance.IsMyTurn()
-        //if(ricezione messaggio server)
-        //StartTurn();
-        //RICEZIONE NUMERO ARMATE DA POSIZIONE
-        //int armyNumber = Player.Instance.TanksAvailable
-        //int armyNumber = 3;
-        //selectedTerritories.territories = new List<Territory>(armyNumber);
-        //selectedTerritories.count = new int[armyNumber];
 
         if (Input.GetMouseButtonDown(0) && Player.Instance.IsMyTurn) {
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -180,7 +163,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             RaycastHit2D hit = new RaycastHit2D();
             foreach (RaycastHit2D hitted in hits) {
                 Collider2D collider = hitted.collider;
-                
+
                 if (collider is BoxCollider2D) {
                     hit = new RaycastHit2D();
                     break;
@@ -189,7 +172,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
                 if (collider is PolygonCollider2D)
                     hit = hitted;
             }
-            
+
             if (hit.collider is not null) {
                 TerritoryHandlerUI territoryHandlerUI = hit.transform.GetComponent<TerritoryHandlerUI>();
                 if (territoryHandlerUI is not null) {
@@ -197,13 +180,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
                     SelectState(selectedTerritory);
                 }
             }
-        } /*else if (Input.GetMouseButtonDown(0) && !distributionPhase) {
-            gamePhaseSelection();
         }
-        /*if (Input.GetMouseButtonDown(1) && distributionPhase) {
-            distributionPhaseDeselection();
-        } else if (Input.GetMouseButtonDown(1) && !distributionPhase) {
-        }*/
 
         if (GameManager.Instance.getGamePhase()) {
             this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = false;
@@ -211,7 +188,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             Debug.Log("Game Phase");
         }
     }
-    
+
     //Metodo che inizializza la struct per la selezione dei territori e attiva il turno
     public void StartTurn() {
         isTurnInitialized = true; // Attiva il turno
@@ -219,68 +196,13 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         if (armyNumber > 3) {
             armyNumber = 3;
         }
+
         selectedTerritories.territories = new Territory[armyNumber];
-                                                                selectedTerritories.count = new int[armyNumber];
-        //isTurnInitialized = false; // Imposta a false per inizializzare nel prossimo Update
-        //Debug.Log("Turno iniziato con " + armyNumber + " armate da posizionare.");
+        selectedTerritories.count = new int[armyNumber];
     }
-
-    /*IEnumerator distributionPhaseSelection() {
-        yield return null;
-    }
-
-    public void gamePhaseSelection() {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
-
-        if (hit.collider is not null) {
-            TerritoryHandlerUI territoryHandlerUI = hit.transform.GetComponent<TerritoryHandlerUI>();
-            if (territoryHandlerUI is not null) {
-                SelectState(territoryHandlerUI);
-            }
-        }
-        else {
-            DeselectState();
-        }
-    }*/
 
     Territory TerritoryInformations(string name) {
         return Player.Instance.Territories.Find(x => x.id.Equals(name));
-    }
-
-    ///funzione per chiedere info sullo stato selezionato: ClientManager.Instance.RequestTerritoryInfo("idStato");
-    /// Il risultato va dentro GameManager.Instance.PuppetTerritory
-    
-    private int selectTerritory(TerritoryHandlerUI territory) {
-        /*for (int i = 0; i < selectedTerritories.count.Length; i++) {
-            Debug.Log(selectedTerritories.count[i]);
-        }*/
-
-        if (selectedTerritories.count[0] +
-            selectedTerritories.count[1] + selectedTerritories.count[2] < selectedTerritories.count.Length) {
-            int result = -1;
-            for (int i = 0; i < armyNumber; i++) {
-                if (selectedTerritories.territories[i].Equals(selectedTerritory.name))
-                    result = i;
-            }
-            
-            if (result == -1) {
-                for (int i = 0; i < selectedTerritories.count.Length; i++)
-                    if (selectedTerritories.count[i] == 0) {
-                        selectedTerritories.territories[i] = TerritoryInformations(territory.name);
-                        selectedTerritories.count[i]++;
-                        Debug.Log(selectedTerritories.territories[i] + " " +
-                                  selectedTerritories.count[i]);
-                        return i;
-                    }
-            }
-            else {
-                selectedTerritories.count[result]++;
-                return result;
-            }
-        }
-
-        return -1;
     }
 
     //Mostra il popup per aggiungere o togliere armate
@@ -288,42 +210,17 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         stateNameAddTank.text = TerritoryInformations(newTerritory.name).Name;
         tankNumber.text = TerritoryInformations(newTerritory.name).num_tanks + "";
         int result = FindTerritory(selectedTerritory.name);
+        //Controlla se sono già stati aggiuntu altre armate in questa fase e rispristina tale numero
         if (result == -1)
             tankToAdd.text = 0 + "";
         else
             tankToAdd.text = selectedTerritories.count[result] + "";
+        
         popUpAddTank.transform.position = newTerritory.gameObject.transform.position;
         popUpAddTank.transform.position = new Vector3(popUpAddTank.transform.position.x,
             popUpAddTank.transform.position.y + (float)(0.3), popUpAddTank.transform.position.z);
         popUpAddTank.SetActive(true);
     }
-
-    /*public void SelectState(TerritoryHandlerUI newTerritory) {
-        int result = selectTerritory(newTerritory);
-        if (result != -1 && !newTerritory.Selected) {
-            newTerritory.Select();
-            tankNumber.text = TerritoryInformations(newTerritory.name).num_tanks + "";
-            //tankToAdd.text = selectedTerritories.count[result] + "";
-            popUpAddTank.transform.position = newTerritory.gameObject.transform.position;
-            popUpAddTank.transform.position = new Vector3(popUpAddTank.transform.position.x,
-                popUpAddTank.transform.position.y + (float)(0.3), popUpAddTank.transform.position.z);
-            popUpAddTank.SetActive(true);
-            if(selectedTerritories.count[0] +
-               selectedTerritories.count[1] + selectedTerritories.count[2] == armyNumber) {
-                //INVIO ARMATE DA POSIZIONARE AL SERVER
-                //nella struct selectedTerritories ci sono gli stati ed il numero di armate
-                armyNumber = 0;
-                isTurnActive = false;
-            }
-        }
-        /*else {
-            if (selectedTerritory is not null) {
-                selectedTerritory.Deselect();
-            }
-            selectedTerritory = newTerritory;
-            selectedTerritory.Select();
-        }
-    }*/
 
     public void DeselectState() {
         if (distributionPhase)
