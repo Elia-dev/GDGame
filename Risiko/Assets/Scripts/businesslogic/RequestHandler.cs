@@ -15,6 +15,10 @@ public class RequestHandler
     {
         await foreach (var (clientId, message) in _queue.Reader.ReadAllAsync(cancellationToken))
         {
+            if (!ClientManager.Instance.IsConnected())
+            {
+                break;
+            }
             
             if(message.Contains("LOBBY_ID:")) // Manage lobby_id request
             {

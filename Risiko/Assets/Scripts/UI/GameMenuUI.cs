@@ -17,6 +17,7 @@ public class GameMenuUI : MonoBehaviour
     private void Awake() {
         BackButton.onClick.AddListener(() => {
             SceneManager.LoadScene("MainMenu");
+            ClientManager.Instance.ResetConnection();
             // resettare connesione
         });
 		
