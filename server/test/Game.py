@@ -29,7 +29,7 @@ class Game:
 
     def add_player(self, player):
         if player.name == None:
-            player.name = "Console"
+            player.name = "Computer"
         self.players.append(player)
         print(f"Player {player.player_id} with name {player.name} added to game {self.game_id}")
 
@@ -202,25 +202,22 @@ class Game:
         print(f"Game {self.game_id} is ending.")
 
     async def __game_order__(self):
-        print("!!! ENTRATO IN GAME ORDERD !!!")
         response = {}
         random.seed(time.time())
         for player in self.players:
             gaming_dice = random.randint(1, 6)
             response[player] = gaming_dice
-        print("|| LANCIATI DADI||")
         sorted_players = [item[0] for item in sorted(response.items(), key=lambda item: item[1])]
         sorted_players.reverse()
 
         for i in range(len(sorted_players)):
             self.players[i] = sorted_players[i]
-        print("|| SORTATI PLAYERS||")
 
         game_order = []
         game_order_extracted_numbers = []
         for i in range(len(self.players)):
-            if self.players[i].name == "Console":
-                self.players[i].name = "Console" + str(i)  # Solo per debug
+            if self.players[i].name == "Computer":
+                self.players[i].name = "Computer" + str(i)  # Solo per debug
             game_order.append(self.players[i].name + "-" + str(i) + ", ")
             game_order_extracted_numbers.append(self.players[i].name + "-" + str(response[self.players[i]]) + ", ")
 
