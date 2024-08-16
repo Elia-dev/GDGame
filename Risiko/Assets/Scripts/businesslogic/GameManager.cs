@@ -50,6 +50,11 @@ public class GameManager
         }
     }
 
+    public void resetGameManager()
+    {
+        _instance = null;
+    }
+    
     public bool getPreparationPhase()
     {
         return _preparationPhase;

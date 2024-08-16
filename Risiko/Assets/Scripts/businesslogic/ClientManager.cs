@@ -140,6 +140,11 @@ public class ClientManager
     {
         await SendMessage(_webSocket, _cancellationToken, "HOST_GAME:"); // Telling the server that I will be the host
     }
+
+    public async void KillLobby()
+    {
+        await SendMessage(_webSocket, _cancellationToken, "LOBBY_KILLED_BY_HOST: " + Player.Instance.PlayerId + "-" + GameManager.Instance.GetLobbyId());
+    }
     
     public async void JoinLobbyAsClient(string lobbyID)
     {

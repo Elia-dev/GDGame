@@ -14,7 +14,7 @@ public class Player
     {
             Sock = socket;
             Name = name;
-            LobbyId = lobbyId; // Forse questo lo possiamo togliere, sul player non serve perché è già salvato in ClientManager
+            LobbyId = lobbyId; // Forse questo lo possiamo togliere, sul player non serve perché è già salvato in ClientManager e in GameManager
             PlayerId = playerId;
             TanksNum = 0;
             TanksAvailable = 0;
@@ -63,7 +63,11 @@ public class Player
         }
     }
 
-
+    public void resetPlayer()
+    {
+        _instance = null;
+    }
+    
     public bool IsMyTurn { get; set; }
     public string Name { get; set; }
     public object Sock { get; set; } // Assumendo che il tipo di socket sia object per semplicità

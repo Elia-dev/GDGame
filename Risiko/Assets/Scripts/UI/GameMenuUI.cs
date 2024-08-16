@@ -18,7 +18,7 @@ public class GameMenuUI : MonoBehaviour
         BackButton.onClick.AddListener(() => {
             SceneManager.LoadScene("MainMenu");
             ClientManager.Instance.ResetConnection();
-            // resettare connesione
+            Debug.Log("Back to Main Menu, connection reseted");
         });
 		
 		CreateLobbyButton.onClick.AddListener(() =>
@@ -26,16 +26,16 @@ public class GameMenuUI : MonoBehaviour
             string username = UsernameInputField.text; 
             if (Utils.CheckNickname(username).Equals("OK"))
             {
-                //Debug.Log("Username OK, changing scene from GameMenu to HostMenu");
+                Debug.Log("Username OK, changing scene from GameMenu to HostMenu");
                 Player player = Player.Instance;
                 player.Initialize();
                 player.Name = username;
                 SceneManager.LoadScene("HostMenu");
-                //Create Lobby
+                
             }
             else
             {
-                //Debug.Log("Invalid username");
+                Debug.Log("Invalid username");
                 PopupError.SetActive(true);
                 GameObject.Find("PopUpContainer").GetComponent<PopUpBadNameUI>()
                     .SetErrorText(Utils.CheckNickname(username));

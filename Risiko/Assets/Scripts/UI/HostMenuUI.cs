@@ -72,6 +72,14 @@ public class HostMenuUI : MonoBehaviour
     {
         BackButton.onClick.AddListener(() =>
         {
+            //Tell the server that lobby and player are dead
+            ClientManager.Instance.KillLobby();
+            //resetPlayer
+            Player.Instance.resetPlayer();
+            //resetGameManager(lobby)
+            GameManager.Instance.resetGameManager();
+            
+            
             SceneManager.LoadScene("GameMenu");
         });
         

@@ -11,8 +11,10 @@ public class Utils
             username.Contains(";") ||username.Contains("'") ||
             username.Contains("[") || username.Contains("]") || 
             username.Contains(",") || username.Contains("{") || 
-            username.Contains("}") || username.Contains("_")) {
-            return "Not allowed characters :;'-[],{}_";
+            username.Contains("}") || username.Contains("_") || 
+            username.Contains(" "))
+        {
+            return "Not allowed characters :;' -[],{}_";
         }
         
         if (username.Length > 16) {
