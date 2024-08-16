@@ -10,7 +10,6 @@ public class RequestHandler
 {
     private readonly Channel<(string, string)> _queue = Channel.CreateUnbounded<(string, string)>();
     private string _request;
-    ClientManager cm = ClientManager.Instance;
     private GameManager gm = GameManager.Instance;
     public async Task HandleRequests(CancellationToken cancellationToken)
     {
@@ -40,7 +39,7 @@ public class RequestHandler
                 //Debug.Log("ESEGUITO SPLIT: ");
                 foreach (var name in str)
                 {
-                    string cleanedName = name.Replace("[", "").Replace("]", "").Replace(",", "");
+                    string cleanedName = name.Replace("[", "").Replace("]", "").Replace(",", "").Replace("'", "");
                     /*
                     for (int i = 0; i < name.Length; i++)
                     {
@@ -160,7 +159,6 @@ public class RequestHandler
             {
                 Debug.Log("HANDLER: request not manageable: " + message);
             }
-            await Task.Delay(500);
         }
     }
 

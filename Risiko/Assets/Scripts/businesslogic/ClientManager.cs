@@ -38,7 +38,7 @@ public class ClientManager
     private ClientWebSocket _webSocket = null;
     private CancellationToken _cancellationToken;
     private string _lobbyID;
-    private Player player = Player.Instance;
+    private Player _player = Player.Instance;
     
 
     public bool IsConnected()
@@ -64,15 +64,36 @@ public class ClientManager
     {
         if (_webSocket == null)
         {
+            //var cancellationTokenSource = new CancellationTokenSource();
             var cancellationTokenSource = new CancellationTokenSource();
-            
             var uri = new Uri(_server);
             
             _webSocket = new ClientWebSocket();
-            await _webSocket.ConnectAsync(uri, cancellationTokenSource.Token);
-            var handlerTask = RequestHandler.HandleRequests(cancellationTokenSource.Token);
-            var receiveTask = ReceiveMessage(_webSocket, cancellationTokenSource.Token);
-            await Task.WhenAll(handlerTask, receiveTask);
+            
+            try
+            {
+                await _webSocket.ConnectAsync(uri, cancellationTokenSource.Token);
+            
+                if (_webSocket.State == WebSocketState.Open)
+                {
+                    Console.WriteLine("WebSocket connected successfully.");
+                    var handlerTask = RequestHandler.HandleRequests(cancellationTokenSource.Token);
+                    var receiveTask = ReceiveMessage(_webSocket, cancellationTokenSource.Token);
+                    await Task.WhenAll(handlerTask, receiveTask);
+                }
+                else
+                {
+                    Debug.Log("[ClientManager] WebSocket connection could not be established.");
+                }
+            }
+            catch (WebSocketException ex)
+            {
+                Console.WriteLine($"WebSocketException: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception: {ex.Message}");
+            }
         }
     }
     
@@ -112,7 +133,7 @@ public class ClientManager
 
     public async void SendName()
     {
-        await SendMessage(_webSocket, _cancellationToken, "UPDATE_NAME: " + player.PlayerId + "-"+  player.Name);
+        await SendMessage(_webSocket, _cancellationToken, "UPDATE_NAME: " + _player.PlayerId + "-"+  _player.Name);
     }
     
     public async void StartHostGame()
@@ -122,17 +143,17 @@ public class ClientManager
     
     public async void SendChosenArmyColor()
     {
-        await SendMessage(_webSocket, _cancellationToken, "CHOSEN_ARMY_COLOR: " + player.PlayerId + "-" + player.ArmyColor);
+        await SendMessage(_webSocket, _cancellationToken, "CHOSEN_ARMY_COLOR: " + _player.PlayerId + "-" + _player.ArmyColor);
     }
 
     public async void UpdateTerritoriesState()
     {
-        await SendMessage(_webSocket, _cancellationToken, "UPDATE_TERRITORIES_STATE: " + player.PlayerId + ", " + JsonConvert.SerializeObject(player.Territories));
+        await SendMessage(_webSocket, _cancellationToken, "UPDATE_TERRITORIES_STATE: " + _player.PlayerId + ", " + JsonConvert.SerializeObject(_player.Territories));
     }
 
     public async void RequestTerritoryInfo(string id)
     {
-        await SendMessage(_webSocket, _cancellationToken, "REQUEST_TERRITORY_INFO: " + player.PlayerId + "-" + id);
+        await SendMessage(_webSocket, _cancellationToken, "REQUEST_TERRITORY_INFO: " + _player.PlayerId + "-" + id);
     
     }
 }

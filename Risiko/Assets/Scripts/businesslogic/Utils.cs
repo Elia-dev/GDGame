@@ -19,6 +19,6 @@ public class Utils
             return "MAX characters number: 16";
         }
         
-        return "OK";
+        return string.IsNullOrWhiteSpace(username) ? "Username can not be empty" : "OK";
     }
 }
