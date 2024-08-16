@@ -1061,6 +1061,7 @@ MonoBehaviour:
   errorMessage: {fileID: 974861468}
   objectiveCardCanvas: {fileID: 1577455925}
   waitingLabel: {fileID: 556323007}
+  chooseButton: {fileID: 2047910118}
 --- !u!114 &159764872
 MonoBehaviour:
   m_ObjectHideFlags: 0
