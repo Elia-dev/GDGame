@@ -40,7 +40,9 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
         if (reinforcePhase && !isTurnGoing) {
             isTurnGoing = true;
             this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = true;
-            /*FORSE VALIDO PER L'ATTACK PHASE
+        } else if (attackphase) {
+            endTurnButton.enabled = true;
+            ActivateOtherPlayersTerritories();
              if (Input.GetMouseButtonDown(0)) {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
@@ -48,22 +50,25 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
                 if (hit.collider is not null) {
                     TerritoryHandlerUI territoryHandlerUI = hit.transform.GetComponent<TerritoryHandlerUI>();
                     if (territoryHandlerUI is not null) {
+                        selectedTerritory = territoryHandlerUI;
                         SelectState(territoryHandlerUI);
                     }
                 }
                 else {
                     DeselectState();
                 }
-            }*/
-        } else if (attackphase) {
-            endTurnButton.enabled = true;
+            }
         }
         else {
-            
+            endTurnButton.GetComponentInChildren<TMP_Text>().text = "End Turn!";
             
         }
     }
 
+    private void ActivateOtherPlayersTerritories() {
+        
+    }
+    
     private void StartTurn() {
         isTurnInitialized = true;
         endTurnButton.GetComponentInChildren<TMP_Text>().text = "Next Phase!";

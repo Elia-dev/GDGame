@@ -151,9 +151,10 @@ public class ArmySelectionManagerUI : MonoBehaviour {
             DeactivateRaycastTargetArmy();
 
             //Preparazione prossima fase
-            Color32 color = selectedArmy.ArmyColor;
-            color.a = 200;
-            TerritoryHandlerUI.userColor = color;
+            //Color32 color = selectedArmy.ArmyColor;
+            //color.a = 200;
+            //TerritoryHandlerUI.userColor = color;
+            TerritoryHandlerUI.UserColor = Utils.ColorCode(Player.Instance.ArmyColor, 200);
             waitingLabel.gameObject.SetActive(true);
             //gameObject.GetComponent<Renderer>().enabled = false;
         }

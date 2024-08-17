@@ -60,120 +60,136 @@
     <territories>
         <north_America id="NA">
             <territory id="NA_ter1">
-                <name>Alaska</name>
+                <name>Alaska</name>                 //0
                 <image>image7.png</image>
                 <function>ter</function>
                 <description>state of Alaska</description>
                 <continent>NA</continent>
+                <node>0</node>
             </territory>
             <territory id="NA_ter2">
-                <name>Northwest Territories</name>
+                <name>Northwest Territories</name>  // 1
                 <image>image7.png</image>
                 <function>ter</function>
                 <description>state of Northwest Territories</description>
                 <continent>NA</continent>
+                <node>1</node>
             </territory>
             <territory id="NA_ter3">
-                <name>Greenland</name>
+                <name>Greenland</name>              // 2
                 <image>image7.png</image>
                 <function>ter</function>
                 <description>state of Greenland</description>
                 <continent>NA</continent>
+                <node>2</node>
             </territory>
             <territory id="NA_ter4">
-                <name>Alberta</name>
+                <name>Alberta</name>                // 3
                 <image>image7.png</image>
                 <function>ter</function>
                 <description>state of Alberta</description>
                 <continent>NA</continent>
+                <node>3</node>
             </territory>
             <territory id="NA_ter5">
-                <name>Ontario</name>
+                <name>Ontario</name>                // 4
                 <image>image7.png</image>
                 <function>ter</function>
                 <description>state of Ontario</description>
                 <continent>NA</continent>
+                <node>4</node>
             </territory>
             <territory id="NA_ter6">
-                <name>Quebec</name>
+                <name>Quebec</name>                 // 5
                 <image>image7.png</image>
                 <function>ter</function>
                 <description>state of Quebec</description>
                 <continent>NA</continent>
+                <node>5</node>
             </territory>
             <territory id="NA_ter7">
-                <name>Western United States</name>
+                <name>Western United States</name>  // 6
                 <image>image7.png</image>
                 <function>ter</function>
                 <description>state of Western United States</description>
                 <continent>NA</continent>
+                <node>6</node>
             </territory>
             <territory id="NA_ter8">
-                <name>Estern United States</name>
+                <name>Eastern United States</name>   // 7
                 <image>image7.png</image>
                 <function>ter</function>
-                <description>state of Estern United States</description>
+                <description>state of Eastern United States</description>
                 <continent>NA</continent>
+                <node>7</node>
             </territory>
             <territory id="NA_ter9">
-                <name>Central America</name>
+                <name>Central America</name>        // 8
                 <image>image7.png</image>
                 <function>ter</function>
                 <description>state of Central America</description>
                 <continent>NA</continent>
+                <node>8</node>
             </territory>
         </north_America>
         <south_America id="SA">
             <territory id="SA_ter1">
-                <name>Venezuela</name>
+                <name>Venezuela</name>              // 9
                 <image>image7.png</image>
                 <function>ter</function>
                 <description>state of Venezuela</description>
                 <continent>SA</continent>
+                <node>9</node>
             </territory>
             <territory id="SA_ter2">
-                <name>Peru</name>
+                <name>Peru</name>                   // 10
                 <image>image7.png</image>
                 <function>ter</function>
                 <description>state of Peru</description>
                 <continent>SA</continent>
+                <node>10</node>
             </territory>
             <territory id="SA_ter3">
-                <name>Brazil</name>
+                <name>Brazil</name>                 // 11
                 <image>image7.png</image>
                 <function>ter</function>
                 <description>state of Brazil</description>
                 <continent>SA</continent>
+                <node>11</node>
             </territory>
             <territory id="SA_ter4">
-                <name>Argentina</name>
+                <name>Argentina</name>              // 12
                 <image>image7.png</image>
                 <function>ter</function>
                 <description>state of Argentina</description>
                 <continent>SA</continent>
+                <node>12</node>
             </territory>
         </south_America>
         <europe id="EU">
             <territory id="EU_ter1">
-                <name>Iceland</name>
+                <name>Iceland</name>                // 13
                 <image>image7.png</image>
                 <function>ter</function>
                 <description>state of Iceland</description>
                 <continent>EU</continent>
+                <node>13</node>
             </territory>
             <territory id="EU_ter2">
-                <name>Scandinavia</name>
+                <name>Scandinavia</name>            // 14
                 <image>image7.png</image>
                 <function>ter</function>
                 <description>state of Scandinavia</description>
                 <continent>EU</continent>
+                <node>14</node>
             </territory>
             <territory id="EU_ter3">
-                <name>Great Britain</name>
+                <name>Great Britain</name>          // 15
                 <image>image7.png</image>
                 <function>ter</function>
                 <description>state of great Britain</description>
                 <continent>EU</continent>
+                <node>15</node>
             </territory>
             <territory id="EU_ter4">
                 <name>Northern Europe</name>
@@ -181,6 +197,7 @@
                 <function>ter</function>
                 <description>state of Northern Europe</description>
                 <continent>EU</continent>
+                <node>16</node>
             </territory>
             <territory id="EU_ter5">
                 <name>Western Europe</name>
@@ -188,6 +205,7 @@
                 <function>ter</function>
                 <description>state of Western Europe</description>
                 <continent>EU</continent>
+                <node>17</node>
             </territory>
             <territory id="EU_ter6">
                 <name>Southern Europe</name>
@@ -195,6 +213,7 @@
                 <function>ter</function>
                 <description>state of Southern Europe</description>
                 <continent>EU</continent>
+                <node>18</node>
             </territory>
             <territory id="EU_ter7">
                 <name>Ukraine</name>
@@ -202,6 +221,7 @@
                 <function>ter</function>
                 <description>state of Ukraine</description>
                 <continent>EU</continent>
+                <node>19</node>
             </territory>
         </europe>
         <africa id="AF">
@@ -211,6 +231,7 @@
                 <function>ter</function>
                 <description>state of Northern Africa</description>
                 <continent>AF</continent>
+                <node>20</node>
             </territory>
             <territory id="AF_ter2">
                 <name>Egypt</name>
@@ -218,6 +239,7 @@
                 <function>ter</function>
                 <description>state of Egypt</description>
                 <continent>AF</continent>
+                <node>21</node>
             </territory>
             <territory id="AF_ter3">
                 <name>Congo</name>
@@ -225,6 +247,7 @@
                 <function>ter</function>
                 <description>state of Congo</description>
                 <continent>AF</continent>
+                <node>22</node>
             </territory>
             <territory id="AF_ter4">
                 <name>Eastern Africa</name>
@@ -232,6 +255,7 @@
                 <function>ter</function>
                 <description>state of Eastern Africa</description>
                 <continent>AF</continent>
+                <node>23</node>
             </territory>
             <territory id="AF_ter5">
                 <name>Southern Africa</name>
@@ -239,6 +263,7 @@
                 <function>ter</function>
                 <description>state of Southern Africa</description>
                 <continent>AF</continent>
+                <node>24</node>
             </territory>
             <territory id="AF_ter6">
                 <name>Madagascar</name>
@@ -246,6 +271,7 @@
                 <function>ter</function>
                 <description>state of Madagascar</description>
                 <continent>AF</continent>
+                <node>25</node>
             </territory>
         </africa>
         <asia id="AS">
@@ -255,6 +281,7 @@
                 <function>ter</function>
                 <description>state of Urals</description>
                 <continent>AS</continent>
+                <node>26</node>
             </territory>
             <territory id="AS_ter2">
                 <name>Siberia</name>
@@ -262,6 +289,7 @@
                 <function>ter</function>
                 <description>state of Siberia</description>
                 <continent>AS</continent>
+                <node>27</node>
             </territory>
             <territory id="AS_ter3">
                 <name>Yakutsk</name>
@@ -269,6 +297,7 @@
                 <function>ter</function>
                 <description>state of Yakutsk</description>
                 <continent>AS</continent>
+                <node>28</node>
             </territory>
             <territory id="AS_ter4">
                 <name>Irkutsk</name>
@@ -276,6 +305,7 @@
                 <function>ter</function>
                 <description>state of Irkutsk</description>
                 <continent>AS</continent>
+                <node>29</node>
             </territory>
             <territory id="AS_ter5">
                 <name>Kamchatka</name>
@@ -283,6 +313,7 @@
                 <function>ter</function>
                 <description>state of Kamchatka</description>
                 <continent>AS</continent>
+                <node>30</node>
             </territory>
             <territory id="AS_ter6">
                 <name>Japan</name>
@@ -290,6 +321,7 @@
                 <function>ter</function>
                 <description>state of Japan</description>
                 <continent>AS</continent>
+                <node>31</node>
             </territory>
             <territory id="AS_ter7">
                 <name>Mongolia</name>
@@ -297,6 +329,7 @@
                 <function>ter</function>
                 <description>state of Mongolia</description>
                 <continent>AS</continent>
+                <node>32</node>
             </territory>
             <territory id="AS_ter8">
                 <name>Afghanistan</name>
@@ -304,6 +337,7 @@
                 <function>ter</function>
                 <description>state of Afghanistan</description>
                 <continent>AS</continent>
+                <node>33</node>
             </territory>
             <territory id="AS_ter9">
                 <name>Middle East</name>
@@ -311,6 +345,7 @@
                 <function>ter</function>
                 <description>state of Middle East</description>
                 <continent>AS</continent>
+                <node>34</node>
             </territory>
             <territory id="AS_ter10">
                 <name>India</name>
@@ -318,6 +353,7 @@
                 <function>ter</function>
                 <description>state of India</description>
                 <continent>AS</continent>
+                <node>35</node>
             </territory>
             <territory id="AS_ter11">
                 <name>China</name>
@@ -325,6 +361,7 @@
                 <function>ter</function>
                 <description>state of China</description>
                 <continent>AS</continent>
+                <node>36</node>
             </territory>
             <territory id="AS_ter12">
                 <name>Siam</name>
@@ -332,6 +369,7 @@
                 <function>ter</function>
                 <description>state of Siam</description>
                 <continent>AS</continent>
+                <node>37</node>
             </territory>
         </asia>
          <oceania id="OC">
@@ -341,6 +379,7 @@
                 <function>ter</function>
                 <description>state of Indonesia</description>
                 <continent>OC</continent>
+                <node>38</node>
             </territory>
             <territory id="OC_ter2">
                 <name>New Guinea</name>
@@ -348,6 +387,7 @@
                 <function>ter</function>
                 <description>state of New Guinea</description>
                 <continent>OC</continent>
+                <node>39</node>
             </territory>
             <territory id="OC_ter3">
                 <name>Eastern Australia</name>
@@ -355,6 +395,7 @@
                 <function>ter</function>
                 <description>state of Eastern Australia</description>
                 <continent>OC</continent>
+                <node>40</node>
             </territory>
             <territory id="OC_ter4">
                 <name>Western Australia</name>
@@ -362,6 +403,7 @@
                 <function>ter</function>
                 <description>state of Western Australia</description>
                 <continent>OC</continent>
+                <node>41</node>
             </territory>
         </oceania>
     </territories>
