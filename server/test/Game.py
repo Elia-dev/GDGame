@@ -82,10 +82,11 @@ class Game:
         #Preparation phase terminated
 
         #Game loop TOBE TESTED
-        print("Inizio fase di gioco")
+        print("---INIZIO FASE DI GIOCO---")
         while self.game_running:
             for player in self.players:
                 print(f"Turno del player id: {player.player_id} con nome {player.name}")
+                print("REINFORCE PHASE")
                 # REINFORCE PHASE
                 # CheckContinents
                 # CheckArmy
@@ -98,6 +99,7 @@ class Game:
                 # UnlockTurn
                 await player.sock.send("IS_YOUR_TURN: TRUE")
                 # Waiting for player to finish the turn and send updated territories
+                print("Waiting for player to end the reinforce phase")
                 await self.event.wait()
                 self.event = asyncio.Event()  # Event reset
                 player.tanks_available = 0
@@ -111,7 +113,7 @@ class Game:
                 # FIGHT PHASE TERMINATED
 
                 # STRATEGIC MOVEMENT
-                await self.event.wait()
+                #await self.event.wait()
                 print("[fake] Strategic movement terminated")
                 # STRATEGIC MOVEMENT TERMINATED
 
