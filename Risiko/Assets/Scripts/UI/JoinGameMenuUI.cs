@@ -9,9 +9,6 @@ using UnityEngine.UI;
 public class JoinGameMenuUI : MonoBehaviour
 {
     
-    ClientManager cm = ClientManager.Instance;
-    Player player = Player.Instance;
-    
     [SerializeField] private Button BackButton;
     [SerializeField] private Button JoinLobbyButton; 
     [SerializeField] TMP_InputField lobbyIdInputField;
@@ -31,8 +28,8 @@ public class JoinGameMenuUI : MonoBehaviour
 
     private void JoinLobby() {
         lobby_id = lobbyIdInputField.text;
-        player.LobbyId = lobby_id;
-        cm.SetLobbyId(lobby_id);
+        Player.Instance.LobbyId = lobby_id;
+        GameManager.Instance.SetLobbyId(lobby_id);
         Debug.Log("Lobby ID: " + lobby_id);
         if (lobby_id.Equals(""))
         {
@@ -40,7 +37,7 @@ public class JoinGameMenuUI : MonoBehaviour
         }
         else
         {
-            cm.JoinLobbyAsClient(lobby_id);
+            ClientManager.Instance.JoinLobbyAsClient(lobby_id);
             
             SceneManager.LoadScene("WaitingRoomClient");
         }

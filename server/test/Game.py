@@ -37,6 +37,10 @@ class Game:
         self.players.remove(player)
         print(f"Player {player} with name {player.name} removed from game {self.game_id}")
 
+    def remove_all_players(self):
+        for player in self.players:
+            self.remove_player(player)
+
     async def broadcast(self, message):
         print(f"sending broadcast message: {message}")
         for player in self.players:
@@ -127,9 +131,12 @@ class Game:
                 player, message = await self.queue.get()
                 print(f"GAME: handling request from client id - : {player.player_id} with name {player.name}: {message}")
                 if "LOBBY_KILLED_BY_HOST" in message:
-                    self.game_id = None
+                    id = self._remove_request(message, "LOBBY_KILLED_BY_HOST: ")
                     for player in self.players:
-                        self.remove_player(player)
+                        if player.player_id != id:
+                            await player.sock.send("LOBBY_KILLED_BY_HOST")
+                    self.game_id = None
+                    self.remove_all_players()
                     return
 
                 if "REQUEST_NAME_UPDATE_PLAYER_LIST" in message:

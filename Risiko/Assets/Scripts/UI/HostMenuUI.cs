@@ -35,7 +35,7 @@ public class HostMenuUI : MonoBehaviour
     private void Update()
     {
         //Debug.Log("LOBBY ID LETTA: " + cm.getLobbyId());
-        LobbyID.text = cm.GetLobbyId();
+        LobbyID.text = GameManager.Instance.GetLobbyId();
         
         if (timer > 0)
         {
@@ -72,15 +72,9 @@ public class HostMenuUI : MonoBehaviour
     {
         BackButton.onClick.AddListener(() =>
         {
-            //Tell the server that lobby and player are dead
             ClientManager.Instance.KillLobby();
-            //resetPlayer
             Player.Instance.resetPlayer();
-            Debug.Log("After player_reset: Nome player -> " + Player.Instance.Name);
-            
-            //resetGameManager(lobby)
             GameManager.Instance.ResetGameManager();
-            Debug.Log("After gameManagerReset: lobby_id: " + GameManager.Instance.GetLobbyId());
             
             SceneManager.LoadScene("GameMenu");
         });

@@ -32,12 +32,10 @@ public class ClientManager
     }
     private static readonly RequestHandler RequestHandler = new RequestHandler();
     //private string _server = "ws://150.217.51.105:8766";
-    private string _server = "ws://93.38.41.62:12345";
-    //private string _server = "ws://localhost:8766";
+    //private string _server = "ws://93.38.41.62:12345";
+    private string _server = "ws://localhost:12345";
     private ClientWebSocket _webSocket = null;
     private CancellationToken _cancellationToken;
-    private string _lobbyID;
-    private Player _player = Player.Instance;
     
 
     public bool IsConnected()
@@ -55,15 +53,6 @@ public class ClientManager
         await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
         _connected = false;
         _webSocket = null;
-    }
-    
-    public string GetLobbyId()
-    {
-        return _lobbyID;
-    }
-    public void SetLobbyId(string lobbyID)
-    {
-        _lobbyID = lobbyID;
     }
 
     public async Task StartClient()
@@ -143,7 +132,7 @@ public class ClientManager
 
     public async void KillLobby()
     {
-        await SendMessage(_webSocket, _cancellationToken, "LOBBY_KILLED_BY_HOST: " + Player.Instance.PlayerId + "-" + GameManager.Instance.GetLobbyId());
+        await SendMessage(_webSocket, _cancellationToken, "LOBBY_KILLED_BY_HOST: " + Player.Instance.PlayerId);
     }
     
     public async void JoinLobbyAsClient(string lobbyID)
@@ -158,7 +147,7 @@ public class ClientManager
 
     public async void SendName()
     {
-        await SendMessage(_webSocket, _cancellationToken, "UPDATE_NAME: " + _player.PlayerId + "-"+  _player.Name);
+        await SendMessage(_webSocket, _cancellationToken, "UPDATE_NAME: " + Player.Instance.PlayerId + "-"+  Player.Instance.Name);
     }
     
     public async void StartHostGame()
@@ -168,17 +157,17 @@ public class ClientManager
     
     public async void SendChosenArmyColor()
     {
-        await SendMessage(_webSocket, _cancellationToken, "CHOSEN_ARMY_COLOR: " + _player.PlayerId + "-" + _player.ArmyColor);
+        await SendMessage(_webSocket, _cancellationToken, "CHOSEN_ARMY_COLOR: " + Player.Instance.PlayerId + "-" + Player.Instance.ArmyColor);
     }
 
     public async void UpdateTerritoriesState()
     {
-        await SendMessage(_webSocket, _cancellationToken, "UPDATE_TERRITORIES_STATE: " + _player.PlayerId + ", " + JsonConvert.SerializeObject(_player.Territories));
+        await SendMessage(_webSocket, _cancellationToken, "UPDATE_TERRITORIES_STATE: " + Player.Instance.PlayerId + ", " + JsonConvert.SerializeObject(Player.Instance.Territories));
     }
 
     public async void RequestTerritoryInfo(string id)
     {
-        await SendMessage(_webSocket, _cancellationToken, "REQUEST_TERRITORY_INFO: " + _player.PlayerId + "-" + id);
+        await SendMessage(_webSocket, _cancellationToken, "REQUEST_TERRITORY_INFO: " + Player.Instance.PlayerId + "-" + id);
     
     }
 }
