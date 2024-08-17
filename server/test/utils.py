@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 from Card import Card
 from Territory import Territory
 import secrets
+import numpy as np
 
 
 def read_objects_cards():
@@ -34,7 +35,6 @@ def read_territories_cards():
         description = card.find('description').text
         continent = card.find('continent').text
 
-
         card = Territory(card_id, image, function, description, name, continent, None, 1)
         cards.append(card)
     return cards
@@ -46,3 +46,17 @@ def generate_game_id():
 
 def generate_player_id():
     return secrets.token_hex(16)
+
+
+def get_adj_matrix():
+    return np.load('assets/adj_matrix.npy')
+
+
+def get_neighbors_of(territory_node):
+    adj_matrix = get_adj_matrix()
+    neighbors = []
+    row = adj_matrix[territory_node]
+    for i, node in enumerate(row):
+        if node == 1:
+            neighbors.append(i)
+    return neighbors
