@@ -138,7 +138,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
 
         popUpAddTank.SetActive(false); //Toglie il popup dei tank
         Player.Instance.TanksAvailable -= selectedTerritories.count.Sum();//Decrementa le armate disponinbili
-        ClientManager.Instance.UpdateTerritoriesState(); 
+        ClientManager.Instance.UpdateTerritoriesState();
         endTurnButton.interactable = false; //Disattiva il tasto per il passaggio del turno
         isTurnInitialized = false;
 
