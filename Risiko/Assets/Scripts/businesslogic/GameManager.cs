@@ -7,7 +7,7 @@ public class GameManager
 {
     private static GameManager _instance;
     private static readonly object Lock = new object();
-    public Territory puppetState;
+    public Territory PuppetState;
     public List<string> PlayersName = new List<string>(); 
     public List<string> AvailableColors = new List<string>(); 
     private Player _player;
@@ -50,27 +50,27 @@ public class GameManager
         }
     }
 
-    public void resetGameManager()
+    public void ResetGameManager()
     {
         _instance = null;
     }
     
-    public bool getPreparationPhase()
+    public bool GetPreparationPhase()
     {
         return _preparationPhase;
     }
 
-    public void setPreparationPhase(bool value)
+    public void SetPreparationPhase(bool value)
     {
         _preparationPhase = value;
     }
 
-    public bool getGamePhase()
+    public bool GetGamePhase()
     {
         return _gamePhase;
     }
 
-    public void setGamePhase(bool value)
+    public void SetGamePhase(bool value)
     {
         _gamePhase = value;
     }

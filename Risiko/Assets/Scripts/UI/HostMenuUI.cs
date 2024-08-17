@@ -76,9 +76,11 @@ public class HostMenuUI : MonoBehaviour
             ClientManager.Instance.KillLobby();
             //resetPlayer
             Player.Instance.resetPlayer();
-            //resetGameManager(lobby)
-            GameManager.Instance.resetGameManager();
+            Debug.Log("After player_reset: Nome player -> " + Player.Instance.Name);
             
+            //resetGameManager(lobby)
+            GameManager.Instance.ResetGameManager();
+            Debug.Log("After gameManagerReset: lobby_id: " + GameManager.Instance.GetLobbyId());
             
             SceneManager.LoadScene("GameMenu");
         });

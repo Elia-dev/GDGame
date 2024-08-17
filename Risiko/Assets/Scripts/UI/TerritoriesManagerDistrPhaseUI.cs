@@ -190,7 +190,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             }
         }
         
-        if (GameManager.Instance.getGamePhase()) {
+        if (GameManager.Instance.GetGamePhase()) {
             distributionPhase = false;
             this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = false;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().enabled = true;
