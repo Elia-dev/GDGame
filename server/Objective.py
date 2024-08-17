@@ -2,7 +2,7 @@ from Card import Card
 
 
 class Objective(Card):
-    def __init__(self, card_id, image, function, description, player_id):
+    def __init__(self, card_id, image, function, description, player_id=None):
         super().__init__(card_id, image, function, description, player_id)
 
     def to_dict(self):

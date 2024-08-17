@@ -4,9 +4,9 @@ from Territory import Territory
 
 
 class Player:
-    def __init__(self, socket, name, lobby_id, player_id):
+    def __init__(self, websocket, name=None, lobby_id=None, player_id=None):
         self.name = name
-        self.sock = socket
+        self.sock = websocket
         self.lobby_id = lobby_id
         self.player_id = player_id  # Unique id for player, to internal manage
         self.tanks_num = 0
@@ -14,6 +14,7 @@ class Player:
         self.tanks_placed = 0
         self.objective_card = None
         self.territories = []
+        self.army_color = None
 
     def to_dict(self):
         return {

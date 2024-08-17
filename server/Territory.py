@@ -2,7 +2,7 @@ from Card import Card
 
 
 class Territory(Card):
-    def __init__(self, card_id, image, function, description, player_id, name, num_tanks, continent):
+    def __init__(self, card_id, image, function, description, name, continent, player_id=None, num_tanks=1):
         super().__init__(card_id, image, function, description, player_id)
         self.name = name
         self.num_tanks = num_tanks
@@ -19,8 +19,8 @@ class Territory(Card):
 
     @classmethod
     def from_dict(cls, data):
-        return cls(data["id"], data["image"], data["function"], data["description"], data["player_id"],
-                   data["name"], data["num_tanks"], data["continent"])
+        return cls(data["id"], data["Image"], data["Function"], data["Description"], data["player_id"],
+                   data["Name"], data["num_tanks"], data["Continent"])
 
     def __repr__(self):
         return (

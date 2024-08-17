@@ -65,6 +65,14 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(cards[40].id, "OC_ter3")
         self.assertEqual(cards[41].id, "OC_ter4")
 
+    def test_adj_matrix(self):
+        adj_matrix = utils.get_adj_matrix()
+        self.assertEqual(adj_matrix[0][1], 1)
+
+    def test_retrieve_neighbors(self):
+        neighbors = utils.get_neighbors_of(0)
+        self.assertEqual(neighbors, [1, 3, 30])
+
 
 if __name__ == '__main__':
     unittest.main()

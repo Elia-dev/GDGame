@@ -1,6 +1,5 @@
 import asyncio
 import websockets
-from server_request_handler import RequestHandler
 import utils
 from Player import Player
 from Game import Game

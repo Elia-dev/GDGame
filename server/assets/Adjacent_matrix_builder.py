@@ -4,6 +4,8 @@ n = 42
 
 adj_matrix = np.zeros((n, n), dtype=int)
 
+# (nodoOggetto, nodoVicino), (nodoOggetto, nodoVicino)
+
 edges = [
     (0, 1), (0, 3), (0, 30),                                    # Alaska neighbors
     (1, 0), (1, 3), (1, 4), (1, 2),                             # Northwest neighbors
