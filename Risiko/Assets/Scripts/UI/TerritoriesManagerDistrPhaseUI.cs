@@ -11,7 +11,7 @@ public struct SelectedTerritories {
 }
 
 public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
-    public static TerritoriesManagerDistrPhaseUI Instance { get; private set; }
+    //public static TerritoriesManagerDistrPhaseUI Instance { get; private set; }
     [SerializeField] private GameObject popUpAddTank;
     [SerializeField] private TMP_Text stateNameAddTank;
     [SerializeField] private TMP_Text tankNumber;
@@ -62,13 +62,13 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     }
 
     private void Awake() {
-        if (Instance is null) {
+        /*if (Instance is null) {
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else {
             Destroy(gameObject);
-        }
+        }*/
 
         plusButton.onClick.AddListener(() => AddArmy());
         minusButton.onClick.AddListener(() => RemoveArmy());
@@ -146,6 +146,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = false;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().ReinforcePhase = false;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().Attackphase = true;
+            this.GetComponent<TerritoriesManagerGamePhaseUI>().IsPhaseGoing = false;
         }
     }
     //restituisce l'indice del territorio all'interno del vettore dei territori su cui posizionare le armate
@@ -190,13 +191,13 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             }
         }
         
-        if (GameManager.Instance.GetGamePhase()) {
+        if (GameManager.Instance.GetGamePhase() && distributionPhase) {
             distributionPhase = false;
             this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = false;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().enabled = true;
         }
     }
-
+    
     //Metodo che inizializza la struct per la selezione dei territori e attiva il turno
     public void StartTurn() {
         isTurnInitialized = true; // Attiva il turno

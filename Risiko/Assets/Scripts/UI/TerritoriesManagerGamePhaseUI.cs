@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,10 +8,17 @@ using UnityEngine.UI;
 public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
 {
     public static TerritoriesManagerGamePhaseUI Instance { get; private set; }
+    private List<GameObject> neighborhoodGameObj;
+    private List<Territory> neighborhoodTeeritories;
     private bool reinforcePhase = true;
     private bool attackphase = false;
     private bool isTurnInitialized = false;
-    private bool isTurnGoing = false;
+    private bool isPhaseGoing = false;
+
+    public bool IsPhaseGoing {
+        get => isPhaseGoing;
+        set => isPhaseGoing = value;
+    }
 
     public bool ReinforcePhase {
         set => reinforcePhase = value;
@@ -37,10 +46,10 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
             StartTurn();
         }
         
-        if (reinforcePhase && !isTurnGoing) {
-            isTurnGoing = true;
+        if (reinforcePhase && !isPhaseGoing) {
+            isPhaseGoing = true;
             this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = true;
-        } else if (attackphase) {
+        } else if (attackphase && !isPhaseGoing) {
             endTurnButton.enabled = true;
             ActivateOtherPlayersTerritories();
              if (Input.GetMouseButtonDown(0)) {
@@ -81,11 +90,32 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
         }
         selectedTerritory = newTerritory;
         selectedTerritory.Select();
+        //Interrogazione server per ricevere la lista dei territori vicini
+        //neighborhoodTeeritories = GameManager.Instance.SOMETHING;
+        foreach (var territory in neighborhoodTeeritories) {
+            GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
+            neighborhoodGameObj.Add(terr);
+            if (terr is not null) {
+                Color32 tempColor = terr.GetComponent<SpriteRenderer>().color;
+                tempColor.a = 120;
+                terr.GetComponent<SpriteRenderer>().color = tempColor;
+            }
+        }
+        
     }
 
+    Territory TerritoryInformations(string id) {
+        return Player.Instance.Territories.Find(x => x.id.Equals(id));
+    }
+    
     public void DeselectState() {
         if (selectedTerritory is not null) {
             selectedTerritory.Deselect();
+            foreach (var terr in neighborhoodGameObj) {
+                Color32 tempColor = terr.GetComponent<SpriteRenderer>().color;
+                tempColor.a = 50;
+                terr.GetComponent<SpriteRenderer>().color = tempColor;
+            }
             selectedTerritory = null;
         }
     }
