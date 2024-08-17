@@ -11,7 +11,7 @@ public class TerritoryHandlerUI : MonoBehaviour {
     public Color32 startColor = new Color32(0, 0, 0, 0);
     private Color32 hoverColor = new Color32(205, 185, 52, 100);
     private static Color32 selectionColor = new Color32(205, 185, 52, 100);
-    public static Color32 userColor;
+    private static Color32 userColor;
     //private static Color32 distributionPhaseColor = new Color32(205, 185, 52, 100);
     private bool selected = false;
 
@@ -20,7 +20,8 @@ public class TerritoryHandlerUI : MonoBehaviour {
         set => selected = value;
     }
 
-    public Color32 UserColor {
+    public static Color32 UserColor {
+        get => userColor;
         set => userColor = value;
     }
     

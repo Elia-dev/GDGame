@@ -48,15 +48,15 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     //  imposta il colore dello stato come quello dell'armata scelta
     public void activateTerritories() {
         //TerritoryHandlerUI.ArmyDistributionPhase();
-        popUpAddTank.GetComponent<Image>().color = TerritoryHandlerUI.userColor;
+        popUpAddTank.GetComponent<Image>().color = Utils.ColorCode(Player.Instance.ArmyColor, 255);//TerritoryHandlerUI.UserColor;
         foreach (var territory in Player.Instance.Territories) {
             GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
             if (terr is not null) {
                 terr.GetComponent<PolygonCollider2D>().enabled = true;
-                Color32 color = TerritoryHandlerUI.userColor;
-                color.a = 50;
-                terr.GetComponent<SpriteRenderer>().color = color;
-                terr.GetComponent<TerritoryHandlerUI>().StartColor = color;
+                //Color32 color = TerritoryHandlerUI.userColor;
+                //color.a = 50;
+                terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(Player.Instance.ArmyColor, 50);
+                terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(Player.Instance.ArmyColor, 50);
             }
         }
     }
