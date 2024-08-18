@@ -58,4 +58,21 @@ public class Utils
         }
         return adjMatrix;
     }
+    
+    static List<int> GetNeighborsOf(int territoryNode)
+    {
+    	int[,] adjMatrix = LoadAdjMatrix("adj_matrix.bin", n);
+        List<int> neighbors = new List<int>();
+        int n = adjMatrix.GetLength(0);  // Get the number of rows (or columns) in the matrix
+
+        for (int i = 0; i < n; i++)
+        {
+            if (adjMatrix[territoryNode, i] == 1)
+            {
+                neighbors.Add(i);
+            }
+        }
+
+        return neighbors;
+    }
 }
