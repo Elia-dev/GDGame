@@ -53,6 +53,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
                     _timer = _delay;
                     IsPhaseGoing = true;
                     this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = true;
+                    GetComponent<TerritoriesManagerDistrPhaseUI>().StartTurn();
                 }
             }
             else {
