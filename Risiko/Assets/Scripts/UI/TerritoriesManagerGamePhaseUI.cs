@@ -72,11 +72,6 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
                     if (territoryHandlerUI is not null) {
                         selectedTerritory = territoryHandlerUI;
                         SelectState(territoryHandlerUI);
-
-                        //List<Territory> neighbors = Utils.GetNeighborsOf(Territory ter);  -> 
-                        //Ritorna la lista dei territori vicini ad un territorio ter
-
-
                     }
                 }
                 else {
@@ -91,7 +86,16 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
     }
 
     private void ActivateOtherPlayersTerritories() {
-        
+        foreach (var territory in GameManager.Instance.AllTerritories) {
+            GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
+            if (terr is not null) {
+                terr.GetComponent<PolygonCollider2D>().enabled = true;
+                string color = "red"; //DA ELIMINARE
+                //string color = GameManager.Instance.AllPLayers.Find( player => player.PlayerId.Equals(territory.playerId)).ArmyColor;
+                terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 50); //DA CAMBIARE
+                terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 50); //DA CAMBIARE
+            }
+        }
     }
     
     private void StartTurn() {
@@ -107,11 +111,14 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
         }
         selectedTerritory = newTerritory;
         selectedTerritory.Select();
+        Debug.Log("Selezionato lo stato " + selectedTerritory.gameObject.name);
         //Faccio apparire informazioni stato
         if(TerritoryInformationsPlayer(selectedTerritory.name) is not null)
+            Debug.Log("I suoi vicini sono:");
             //Interrogazione server per ricevere la lista dei territori vicini
-            //neighborhoodTeeritories = GameManager.Instance.SOMETHING;
+            _neighborhoodTeeritories = Utils.GetNeighborsOf(TerritoryInformationsPlayer(selectedTerritory.gameObject.name));
             foreach (var territory in _neighborhoodTeeritories) {
+                Debug.Log(territory.name + " del player: " + territory.player_id);
                 GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
                 _neighborhoodGameObj.Add(terr);
                 if (terr is not null) {
