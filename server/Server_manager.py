@@ -34,7 +34,12 @@ async def handler(websocket):
                         games.remove(game)
 
             if "HOST_GAME" in message:
-                game_id = utils.generate_game_id()
+                game_id = None
+                while game_id is None: #Evita duplicati
+                    game_id = utils.generate_game_id()
+                    for game in games:
+                        if game.game_id == game_id:
+                            game_id = None
                 player.lobby_id = game_id
                 player.player_id = utils.generate_player_id()
                 game = Game(game_id)
