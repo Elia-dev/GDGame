@@ -8,18 +8,17 @@ using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class HostMenuUI : MonoBehaviour
 {
-    [SerializeField] private Button BackButton;
-    [SerializeField] private Button UpdateButton;
-    [SerializeField] private Button RunGameButton;
-    [SerializeField] private TMP_Text PlayerList;
-    [SerializeField] private TMP_Text LobbyID;
-    [SerializeField] private GameObject PopUpDiceHostMenu;
-    ClientManager cm = ClientManager.Instance;
-    GameManager gm = GameManager.Instance;
+    [SerializeField] private Button backButton;
+    [SerializeField] private Button updateButton;
+    [SerializeField] private Button runGameButton;
+    [SerializeField] private TMP_Text playerList;
+    [SerializeField] private TMP_Text lobbyID;
+    [SerializeField] private GameObject popUpDiceHostMenu;
     
     private float delay = 1.0f; // Durata del ritardo in secondi
     private float timer;
@@ -28,14 +27,14 @@ public class HostMenuUI : MonoBehaviour
     void Start()
     {
         stringa = null;
-        cm.CreateLobbyAsHost();
+        ClientManager.Instance.CreateLobbyAsHost();
         timer = delay;
     }
     
     private void Update()
     {
         //Debug.Log("LOBBY ID LETTA: " + cm.getLobbyId());
-        LobbyID.text = GameManager.Instance.GetLobbyId();
+        lobbyID.text = GameManager.Instance.GetLobbyId();
         
         if (timer > 0)
         {
@@ -43,34 +42,34 @@ public class HostMenuUI : MonoBehaviour
         }
         else
         { 
-            cm.SendName(); // Da vedere, se si potesse fare soltanto la prima volta sarebbe meglio
-            cm.RequestNameUpdatePlayerList();
+            ClientManager.Instance.SendName(); // Da vedere, se si potesse fare soltanto la prima volta sarebbe meglio
+            ClientManager.Instance.RequestNameUpdatePlayerList();
             
             // Reset del timer
             timer = delay;
-            Debug.Log("HOSTMENU - playerList:" + PlayerList.text);
+            Debug.Log("HOSTMENU - playerList:" + playerList.text);
         }
         
         //Aggiornamento lista giocatori
-        stringa = string.Join(", ", gm.PlayersName);
-        PlayerList.text = "Players: " + stringa;
+        stringa = string.Join(", ", GameManager.Instance.PlayersName);
+        playerList.text = "Players: " + stringa;
        
 
         
         //Quando i giocatori saranno 3+
-        if (gm.GetPlayersNumber() >= 3)
+        if (GameManager.Instance.GetPlayersNumber() >= 3)
         {
-            RunGameButton.interactable = true;
+            runGameButton.interactable = true;
         }
         else
         {
-            RunGameButton.interactable = false;
+            runGameButton.interactable = false;
         }
         
     }
     private void Awake()
     {
-        BackButton.onClick.AddListener(() =>
+        backButton.onClick.AddListener(() =>
         {
             ClientManager.Instance.KillLobby();
             Player.Instance.resetPlayer();
@@ -79,16 +78,16 @@ public class HostMenuUI : MonoBehaviour
             SceneManager.LoadScene("GameMenu");
         });
         
-        RunGameButton.onClick.AddListener(() =>
+        runGameButton.onClick.AddListener(() =>
         {
             
-            cm.StartHostGame();
-            PopUpDiceHostMenu.SetActive(true);
+            ClientManager.Instance.StartHostGame();
+            popUpDiceHostMenu.SetActive(true);
         });
         
-        UpdateButton.onClick.AddListener(() =>
+        updateButton.onClick.AddListener(() =>
         {
-            cm.RequestNameUpdatePlayerList();
+            ClientManager.Instance.RequestNameUpdatePlayerList();
         });
     }
 }
