@@ -5,7 +5,6 @@ public class Territory : Card
     public string name { get; set; }
     public int num_tanks { get; set; }
     public string continent { get; set; }
-    
     public int node { get; set; }
 
     public Territory(string ter_id, string image, string function, string description, string playerId, string name, string continent, int node, int numTanks=1)

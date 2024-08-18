@@ -60,7 +60,7 @@ public class Utils
         return adjMatrix;
     }
     
-    static List<int> GetNeighborsOf(int territoryNode)
+    public static List<int> GetNeighborsNodeOf(int territoryNode)
     {
     	int[,] adjMatrix = LoadAdjMatrix("adj_matrix.bin", 42);
         List<int> neighbors = new List<int>();
@@ -75,5 +75,23 @@ public class Utils
         }
 
         return neighbors;
+    }
+    
+    public static List<Territory> GetNeighborsOf(Territory territory)
+    {
+        List<Territory> territories = new List<Territory>();
+        int[,] adjMatrix = LoadAdjMatrix("adj_matrix.bin", 42);
+        List<int> nodes = GetNeighborsNodeOf(territory.node);
+        foreach (var node in nodes)
+        {
+            territories.Add(GetTerritoryFromNode(node));
+        }
+
+        return territories;
+    }
+    
+    public static Territory GetTerritoryFromNode(int node)
+    {
+        return GameManager.Instance.AllTerritories.Find(x => x.node == node);
     }
 }

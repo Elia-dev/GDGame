@@ -144,8 +144,15 @@ public class RequestHandler
             }
             else if (message.Contains("PREPARATION_PHASE_TERMINATED"))
             {
+                Debug.Log("Server_Request: PREPARATION_PHASE_TERMINATED");
                 GameManager.Instance.SetGamePhase(true); 
                 GameManager.Instance.SetPreparationPhase(false);
+            }
+            else if (message.Contains("SEND_TERRITORIES_TO_ALL"))
+            {
+                Debug.Log("Server_Request: SEND_TERRITORIES_TO_ALL");
+                _request = RemoveRequest(message, "SEND_TERRITORIES_TO_ALL: ");
+                GameManager.Instance.AllTerritories = JsonConvert.DeserializeObject<List<Territory>>(_request);
             }
             else
             {

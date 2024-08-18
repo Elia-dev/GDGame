@@ -72,6 +72,11 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
                     if (territoryHandlerUI is not null) {
                         selectedTerritory = territoryHandlerUI;
                         SelectState(territoryHandlerUI);
+
+                        //List<Territory> neighbors = Utils.GetNeighborsOf(Territory ter);  -> 
+                        //Ritorna la lista dei territori vicini ad un territorio ter
+
+
                     }
                 }
                 else {
