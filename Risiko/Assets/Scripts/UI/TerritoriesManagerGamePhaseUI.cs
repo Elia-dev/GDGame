@@ -14,7 +14,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
     private bool _attackphase = false;
     private bool _isTurnInitialized = false;
     public bool IsPhaseGoing { get; set; } = false;
-    private float _delay = 10.0f; // Durata del ritardo in secondi
+    private float _delay = 5.0f; // Durata del ritardo in secondi
     private float _timer;
 
     public bool ReinforcePhase {
@@ -46,11 +46,11 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
         if (_reinforcePhase && !IsPhaseGoing && Player.Instance.TanksAvailable > 0) {
             if (Player.Instance.Territories.Count >= 3) {
                 Debug.Log("Reinforce phase");
-                IsPhaseGoing = true;
                 if (_timer > 0) 
                     _timer -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
                 else {
                     _timer = _delay;
+                    IsPhaseGoing = true;
                     this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = true;
                 }
             }

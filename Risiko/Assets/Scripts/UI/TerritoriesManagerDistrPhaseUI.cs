@@ -139,6 +139,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
 
         popUpAddTank.SetActive(false); //Toglie il popup dei tank
         Player.Instance.TanksAvailable -= selectedTerritories.count.Sum();//Decrementa le armate disponinbili
+        Player.Instance.TanksPlaced += selectedTerritories.count.Sum(); //Incrementa i carri posizionati
         ClientManager.Instance.UpdateTerritoriesState();
         endTurnButton.interactable = false; //Disattiva il tasto per il passaggio del turno
         isTurnInitialized = false;
@@ -203,6 +204,9 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     public void StartTurn() {
         isTurnInitialized = true; // Attiva il turno
         // Cattura le armate da posizionare
+        Debug.Log("Tanks Avalable: " + Player.Instance.TanksAvailable);
+        Debug.Log("Tanks Num: " + Player.Instance.TanksNum);
+        Debug.Log("Tanks Placed: " + Player.Instance.TanksPlaced);
         armyNumber = Player.Instance.TanksAvailable;
         if (armyNumber > 3 && distributionPhase) {
             armyNumber = 3;
