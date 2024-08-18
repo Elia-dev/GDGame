@@ -223,7 +223,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             tankNumber.color = Color.white;
             tankToAdd.color = Color.white;
         }
-        stateNameAddTank.text = TerritoryInformations(newTerritory.name).Name;
+        stateNameAddTank.text = TerritoryInformations(newTerritory.name).name;
         tankNumber.text = TerritoryInformations(newTerritory.name).num_tanks + "";
         int result = FindTerritory(selectedTerritory.name);
         //Controlla se sono già stati aggiuntu altre armate in questa fase e rispristina tale numero nell'UI
