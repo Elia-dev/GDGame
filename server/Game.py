@@ -222,6 +222,8 @@ class Game:
                     await self.queue.put((player, message))
                     if "LOBBY_KILLED_BY_HOST" in message:
                         return
+                    if "PLAYER_HAS_LEFT_THE_LOBBY" in message:
+                        return
             except websockets.exceptions.ConnectionClosed:
                 print(f"Client {player} disconnected")
                 self.remove_player(player)

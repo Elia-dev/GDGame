@@ -58,7 +58,7 @@ public class WaitingRoomClientUI : MonoBehaviour
         {
             ClientManager.Instance.LeaveLobby();
             GameManager.Instance.ResetGameManager();
-            SceneManager.LoadScene("GameMenu");
+            SceneManager.LoadScene("JoinGameMenu");
         });
     }
 }
