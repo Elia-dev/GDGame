@@ -193,6 +193,8 @@ class Game:
                         for territory in player.territories:
                             territories_list.append(territory.to_dict())
 
+                    #Invece del broadcast potrei mandare la lista a tutti i player eccetto il player che ha appena effettuato il turno
+
                     await self.broadcast("SEND_TERRITORIES_TO_ALL: " + json.dumps(territories_list, indent=4))
                     print("Fine aggiornamento territori")
                     self.event.set()

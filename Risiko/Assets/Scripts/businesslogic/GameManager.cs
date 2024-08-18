@@ -8,6 +8,7 @@ public class GameManager
     private static GameManager _instance;
     private static readonly object Lock = new object();
     public Territory PuppetState;
+    public List<Territory> AllTerritories = new List<Territory>(); // Lista di tutti i territori della partita
     public List<string> PlayersName = new List<string>(); 
     public List<string> AvailableColors = new List<string>(); 
     private Player _player;
