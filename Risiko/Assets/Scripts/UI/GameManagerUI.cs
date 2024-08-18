@@ -8,11 +8,11 @@ public class GameManagerUI : MonoBehaviour {
     [SerializeField] private TMP_Text turn;
     [SerializeField] private GameObject clickHandler;
     [SerializeField] private TMP_Text turnInfo;
-    [SerializeField] private GameObject UIcontainer;
+    [SerializeField] private GameObject uiContainer;
     // Start is called before the first frame update
     void Start() {
         playerName.text = Player.Instance.Name;
-        
+        //uiContainer.
     }
 
     // Update is called once per frame
