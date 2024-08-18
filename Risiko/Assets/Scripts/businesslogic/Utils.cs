@@ -31,11 +31,11 @@ public class Utils
             case "green":
                 return new Color32(0, 190, 0, alpha);
             case "blue":
-                return new Color32(0, 0, 255, alpha);                break;
+                return new Color32(0, 0, 255, alpha);
             case "yellow":
-                return new Color32(226, 230, 30, alpha);                break;
+                return new Color32(226, 230, 30, alpha);
             case "purple":
-                return new Color32(124, 33, 239, alpha);                break;
+                return new Color32(124, 33, 239, alpha);
             case "black":
                 return new Color32(0, 0, 0, alpha);      
             default:
