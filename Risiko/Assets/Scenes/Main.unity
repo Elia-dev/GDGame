@@ -383,10 +383,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: {fileID: 1255446961}
-  turn: {fileID: 0}
-  clickHandler: {fileID: 0}
-  turnInfo: {fileID: 0}
-  uiContainer: {fileID: 0}
+  turn: {fileID: 1504136692}
+  clickHandler: {fileID: 2029590054}
+  turnInfo: {fileID: 4835228}
+  uiContainer: {fileID: 561743766}
 --- !u!1 &64526168
 GameObject:
   m_ObjectHideFlags: 0
@@ -14444,7 +14444,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1788778491
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16259,7 +16259,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 75, y: -85}
+  m_AnchoredPosition: {x: 75, y: -65}
   m_SizeDelta: {x: 150, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1944667037
