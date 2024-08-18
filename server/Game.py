@@ -65,11 +65,18 @@ class Game:
                 return
             await asyncio.sleep(2)
 
-        #Preparation phase
+        # Preparation phase
         await self.__game_order__()
         available_colors = [color for color, user_id in self.army_colors.items() if user_id is None]
         await self.players[0].sock.send("AVAILABLE_COLORS: " + ", ".join(available_colors))
         await self._give_territory_cards()
+
+        territories_list = []
+        for player in self.players:
+            for territory in player.territories:
+                territories_list.append(territory.to_dict())
+        await self.broadcast("SEND_TERRITORIES_TO_ALL: " + json.dumps(territories_list, indent=4))
+
         initial_army_number = self.__army_start_num__(len(self.players))
         print("Initial army number: " + str(initial_army_number))
         for player in self.players:
@@ -83,9 +90,9 @@ class Game:
         await self._assignDefaultArmiesOnTerritories()
         await self.broadcast("PREPARATION_PHASE_TERMINATED")
         print("PREPARATION_PHASE_TERMINATED")
-        #Preparation phase terminated
+        # Preparation phase terminated
 
-        #Game loop TOBE TESTED
+        # Game loop TOBE TESTED
         print("---INIZIO FASE DI GIOCO---")
         while self.game_running:
             for player in self.players:
@@ -94,7 +101,7 @@ class Game:
                 # REINFORCE PHASE
                 # CheckContinents
                 # CheckArmy
-                num_army_to_send = self.calculateArmyForThisTurn(player)
+                num_army_to_send = self.calculateArmyForThisTurn(player) #
                 print(f"Numero di armate ricevute nella fase di rinforzo: {num_army_to_send}")
                 player.tanks_num += num_army_to_send
                 player.tanks_available += num_army_to_send
@@ -104,7 +111,7 @@ class Game:
                 await player.sock.send("IS_YOUR_TURN: TRUE")
                 # Waiting for player to finish the turn and send updated territories
                 print("Waiting for player to end the reinforce phase")
-                await self.event.wait()
+                await self.event.wait() #Aggiorna lo stato di tutti i territori ai client
                 self.event = asyncio.Event()  # Event reset
                 player.tanks_available = 0
                 player.tanks_placed += num_army_to_send
@@ -112,24 +119,33 @@ class Game:
                 # REINFORCE PHASE TERMINATED
 
                 # FIGHT PHASE
+                #Ripete finché non termina il turno o finché non fa uno spostamento strategico
+                    # (parte animazione su clientAttaccante con messaggio C->S) TERRITORY_ATTACK: idPlayerAttaccante-idPlayerDifensore, idTerrAttaccante-idTerrDifensore, numArmateAttaccante-numArmateDifensore
+                    # prendere id difensore e mandargli un messaggio UNDER_ATTACK  (parte animazione su clientDifensore)
+                    # genera n numeri casuali, con n numero di armate
+                    # Confronto, in ordine, del più grande dell'attaccante con il più piccolo dell'attaccante
+                    # Rimuove i carri in funzione del risultato precedente
+                    # Capisce se il territorio attaccato è stato conquistato oppure no
+                    # updateAllTerritories in broadcast e controllo lato client della vittoria/sconfitta
 
                 print("[fake] Fight phase terminated")
+
                 # FIGHT PHASE TERMINATED
 
                 # STRATEGIC MOVEMENT
-                #await self.event.wait()
+                # await self.event.wait()
                 print("[fake] Strategic movement terminated")
                 # STRATEGIC MOVEMENT TERMINATED
 
                 # CHECK (card objective, number of tanks ecc...)
                 print("[fake] Check objective card terminated")
 
-
     async def handle_requests(self):
         while self.game_running:
             try:
                 player, message = await self.queue.get()
-                print(f"GAME: handling request from client id - : {player.player_id} with name {player.name}: {message}")
+                print(
+                    f"GAME: handling request from client id - : {player.player_id} with name {player.name}: {message}")
 
                 if "LOBBY_KILLED_BY_HOST" in message:
                     id = self._remove_request(message, "LOBBY_KILLED_BY_HOST: ")
@@ -170,7 +186,7 @@ class Game:
                         if player.player_id == id:
                             player.army_color = color
                     self.army_colors[color] = id
-                    self.event.set() #Setting event to True
+                    self.event.set()  # Setting event to True
 
                 if "UPDATE_TERRITORIES_STATE:" in message:
                     message = self._remove_request(message, "UPDATE_TERRITORIES_STATE: ")
@@ -193,13 +209,13 @@ class Game:
                         for territory in player.territories:
                             territories_list.append(territory.to_dict())
 
-                    #Invece del broadcast potrei mandare la lista a tutti i player eccetto il player che ha appena effettuato il turno
+                    # Invece del broadcast potrei mandare la lista a tutti i player eccetto il player che ha appena effettuato il turno
 
                     await self.broadcast("SEND_TERRITORIES_TO_ALL: " + json.dumps(territories_list, indent=4))
-                    print("Fine aggiornamento territori")
+                    print("Fine aggiornamento territori, mandati al client")
                     self.event.set()
 
-                if "REQUEST_TERRITORY_INFO:" in message: #TOBE TESTED
+                if "REQUEST_TERRITORY_INFO:" in message:  # TOBE TESTED
                     message = self._remove_request(message, "REQUEST_TERRITORY_INFO: ")
                     playerId, territoryId = message.split("-")
                     tempPlayer = None
@@ -210,12 +226,12 @@ class Game:
                     for player in self.players:
                         for territory in player.territories:
                             if territory.id == territoryId:
-                                await tempPlayer.sock.send("RECEIVED_REQUEST_TERRITORY_INFO: " + json.dumps(territory.to_dict()))
+                                await tempPlayer.sock.send(
+                                    "RECEIVED_REQUEST_TERRITORY_INFO: " + json.dumps(territory.to_dict()))
 
                 self.queue.task_done()
             except Exception as e:
                 print(f"Error in handle_game: {e}")
-
 
     async def listen_to_request(self):
         while self.game_running:
@@ -287,9 +303,9 @@ class Game:
             await player.sock.send("AVAILABLE_COLORS: " + ", ".join(available_colors))
             await player.sock.send("IS_YOUR_TURN: TRUE")
             print("TURNO DI " + player.name)
-            await self.event.wait() # Waiting for player choice
+            await self.event.wait()  # Waiting for player choice
             await player.sock.send("IS_YOUR_TURN: FALSE")
-            self.event = asyncio.Event() # Event reset
+            self.event = asyncio.Event()  # Event reset
             print("Turn over for player " + player.name + "chosen color: " + player.army_color)
 
     def __army_start_num__(self, num_player):
@@ -312,10 +328,9 @@ class Game:
             print("Extracted OBJECTIVE " + card_drawn.id + " for player " + player.name)
             await player.sock.send("OBJECTIVE_CARD_ASSIGNED: " + json.dumps(Card.Card.to_dict(player.objective_card)))
             print("sent")
-            #Per ricevere dalla socket e trasformarlo in oggetto:
-            #received_dict = json.loads(received_data)
-            #received_card = Card.from_dict(received_dict)
-
+            # Per ricevere dalla socket e trasformarlo in oggetto:
+            # received_dict = json.loads(received_data)
+            # received_card = Card.from_dict(received_dict)
 
     async def _give_territory_cards(self):
         cards = utils.read_territories_cards()
@@ -330,7 +345,8 @@ class Game:
                     print("Extracted TERRITORY card " + card_drawn.id + " for player " + player.name)
         for player in self.players:
             territories_list = [terr.to_dict() for terr in player.territories]
-            await player.sock.send("TERRITORIES_CARDS_ASSIGNED: " + json.dumps(territories_list, indent=4)) # Indent only for better readable
+            await player.sock.send("TERRITORIES_CARDS_ASSIGNED: " + json.dumps(territories_list,
+                                                                               indent=4))  # Indent only for better readable
         print("sent")
 
     async def _assignDefaultArmiesOnTerritories(self):
@@ -344,7 +360,7 @@ class Game:
                     print(f"Armate totali: {player.tanks_num}")
                     print(f"Armate piazzate: {player.tanks_placed}")
                     print(f"Armate ancora da piazzare: {player.tanks_available}")
-                    await self.event.wait() # Waiting for player choice
+                    await self.event.wait()  # Waiting for player choice
                     await player.sock.send("IS_YOUR_TURN: FALSE")
                     if player.tanks_available >= 3:
                         player.tanks_available -= 3
@@ -353,13 +369,12 @@ class Game:
                         player.tanks_placed += player.tanks_available
                         player.tanks_available = 0
                     print(f"Turno del player id: {player.player_id} con nome {player.name} TERMINATO")
-                    self.event = asyncio.Event() # Event reset
+                    self.event = asyncio.Event()  # Event reset
                 else:
                     control += 1
 
-
     def calculateArmyForThisTurn(self, player):
-        #Continent name: NA SA EU AF AS OC
+        # Continent name: NA SA EU AF AS OC
         armyForContinent = 0
         NA_count = 0
         SA_count = 0
