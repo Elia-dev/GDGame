@@ -5,25 +5,13 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class TerritoriesCardsUI : MoveCardsUI {
-    public GameObject imagePrefab; // Prefab dell'immagine da muovere
-    public Transform gridTransform; // Transform del Grid Layout Group
-
-    //[SerializeField] private GameObject clickHandler;
-    //public int numberOfImages = 4; // Numero di immagini da creare
-
+    [SerializeField] public GameObject imagePrefab; // Prefab dell'immagine da muovere
+    [SerializeField] public Transform gridTransform; // Transform del Grid Layout Group
     private bool animationDone = false;
     private List<Territory> territories;
 
     void Start() {
         territories = Player.Instance.Territories;
-        /*string[] territori =
-        {
-            "SA_ter1", "SA_ter2", "SA_ter3", "SA_ter4", "SA_ter1", "SA_ter2", "SA_ter3", "SA_ter4",
-            "SA_ter1", "SA_ter2", "SA_ter3", "SA_ter4", "SA_ter1", "SA_ter2"
-        };
-        Debug.Log(Screen.width);
-        Debug.Log(Screen.height);
-        Debug.Log(Screen.width / Screen.height);*/
         if ((double)Screen.width / (double)Screen.height < (double)1.6)
             transform.GetComponent<GridLayoutGroup>().cellSize =
                 new Vector2((Screen.width -10 - (territories.Count / 3)*10) / (territories.Count/3),
@@ -44,11 +32,6 @@ public class TerritoriesCardsUI : MoveCardsUI {
         }
         
         animationDone = true;
-        //for (int i = 0; i < territori.Length; i++) 
-        //Debug.Log(images[i].GetComponent<Transform>().position.x + ", " +
-        //images[i].GetComponent<Transform>().position.y);
-
-        //StartCoroutine(MoveCards());
     }
 
     private void Update() {
@@ -59,6 +42,7 @@ public class TerritoriesCardsUI : MoveCardsUI {
         }
     }
 
+    //METODI NON USATI MoveCards e MoveImage
     public override IEnumerator MoveCards() {
         {
             targetPosition = gridTransform.GetComponent<RectTransform>().anchoredPosition;

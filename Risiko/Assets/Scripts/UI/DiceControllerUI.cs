@@ -9,7 +9,7 @@ public class DiceControllerUI : MonoBehaviour {
     [SerializeField] private Button diceButton;
     [SerializeField] private Animator diceAnimator; // Riferimento all'Animator
     [SerializeField] private TMP_Text diceResults;
-    private bool pressedButton = false;
+    private bool _pressedButton = false;
 
     private void Awake() {
         diceButton.onClick.AddListener(() => {
@@ -19,7 +19,7 @@ public class DiceControllerUI : MonoBehaviour {
     }
 
     private void Update() {
-        if (GameManager.Instance.GetExtractedNumber() != 0 && pressedButton) {
+        if (GameManager.Instance.GetExtractedNumber() != 0 && _pressedButton) {
             diceAnimator.gameObject.SetActive(false);
             diceAnimator.SetBool("Roll", false);
             diceResults.text = "Extracted number: " + GameManager.Instance.GetExtractedNumber() + "\n Game order: " 
@@ -37,7 +37,7 @@ public class DiceControllerUI : MonoBehaviour {
 
     IEnumerator Wait(float delay) {
         yield return new WaitForSeconds(delay);
-        pressedButton = true;
+        _pressedButton = true;
     }
 
     IEnumerator WaitAndLoadScene(float delay) {

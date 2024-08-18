@@ -4,41 +4,42 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class JoinGameMenuUI : MonoBehaviour
 {
     
-    [SerializeField] private Button BackButton;
-    [SerializeField] private Button JoinLobbyButton; 
-    [SerializeField] TMP_InputField lobbyIdInputField;
-    [SerializeField] private GameObject PopUpIdLobbyError;
-    private string lobby_id;
+    [SerializeField] private Button backButton;
+    [SerializeField] private Button joinLobbyButton; 
+    [SerializeField] private TMP_InputField lobbyIdInputField;
+    [SerializeField] private GameObject popUpIdLobbyError;
+    private string _lobbyID;
     
     private void Awake() {
-        BackButton.onClick.AddListener(() => {
+        backButton.onClick.AddListener(() => {
             GameManager.Instance.ResetGameManager();
             Player.Instance.resetPlayer();
             SceneManager.LoadScene("GameMenu");
         });
 		
-        JoinLobbyButton.onClick.AddListener(() =>
+        joinLobbyButton.onClick.AddListener(() =>
         {
             JoinLobby();
 		});
     }
 
     private void JoinLobby() {
-        lobby_id = lobbyIdInputField.text;
-        GameManager.Instance.SetLobbyId(lobby_id);
-        Debug.Log("Lobby ID: " + lobby_id);
-        if (lobby_id.Equals(""))
+        _lobbyID = lobbyIdInputField.text;
+        GameManager.Instance.SetLobbyId(_lobbyID);
+        Debug.Log("Lobby ID: " + _lobbyID);
+        if (_lobbyID.Equals(""))
         {
-            PopUpIdLobbyError.SetActive(true);
+            popUpIdLobbyError.SetActive(true);
         }
         else
         {
-            ClientManager.Instance.JoinLobbyAsClient(lobby_id);
+            ClientManager.Instance.JoinLobbyAsClient(_lobbyID);
             SceneManager.LoadScene("WaitingRoomClient");
         }
     }

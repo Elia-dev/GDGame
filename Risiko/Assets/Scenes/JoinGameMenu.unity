@@ -308,10 +308,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6a90388ec0d8cc8c9b523e705ffe32b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BackButton: {fileID: 2018687022}
-  JoinLobbyButton: {fileID: 1296863858}
+  backButton: {fileID: 2018687022}
+  joinLobbyButton: {fileID: 1296863858}
   lobbyIdInputField: {fileID: 298910885}
-  PopUpIdLobbyError: {fileID: 1161172401}
+  popUpIdLobbyError: {fileID: 1161172401}
 --- !u!1 &298910883
 GameObject:
   m_ObjectHideFlags: 0

@@ -442,11 +442,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5f513bbff2960af68ce96e83f4e286d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BackButton: {fileID: 2018687022}
-  CreateLobbyButton: {fileID: 2101592996}
-  JoinLobbyButton: {fileID: 1296863858}
-  UsernameInputField: {fileID: 298910885}
-  PopupError: {fileID: 1591220497}
+  backButton: {fileID: 2018687022}
+  createLobbyButton: {fileID: 2101592996}
+  joinLobbyButton: {fileID: 1296863858}
+  usernameInputField: {fileID: 298910885}
+  popupError: {fileID: 1591220497}
 --- !u!1 &298910883
 GameObject:
   m_ObjectHideFlags: 0

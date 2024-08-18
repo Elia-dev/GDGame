@@ -42,6 +42,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         popUpAddTank.GetComponent<Image>().color = TerritoryHandlerUI.userColor;
         activateTerritories();*/
     }
+    
     //Scorre la lista dei territori territori assegnati al giocatori per ognuno di questi:
     // Trova il corrispondente territorio sulla mappa ed:
     //  attiva il collider così che sia interagibile
