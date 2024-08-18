@@ -130,6 +130,7 @@ class Game:
             try:
                 player, message = await self.queue.get()
                 print(f"GAME: handling request from client id - : {player.player_id} with name {player.name}: {message}")
+
                 if "LOBBY_KILLED_BY_HOST" in message:
                     id = self._remove_request(message, "LOBBY_KILLED_BY_HOST: ")
                     for player in self.players:
@@ -150,15 +151,18 @@ class Game:
                     for p in self.players:
                         player_names.append(p.name)
                     await player.sock.send("REQUEST_NAME_UPDATE_PLAYER_LIST: " + str(player_names))
+
                 if "GAME_STARTED_BY_HOST" in message:
                     await self.broadcast("GAME_STARTED_BY_HOST")
                     self.game_waiting_to_start = False
+
                 if "UPDATE_NAME:" in message:
                     message = self._remove_request(message, "UPDATE_NAME: ")
                     id, name = message.split("-")
                     for player in self.players:
                         if player.player_id == id:
                             player.name = name
+
                 if "CHOSEN_ARMY_COLOR:" in message:
                     message = self._remove_request(message, "CHOSEN_ARMY_COLOR: ")
                     id, color = message.split("-")
@@ -167,6 +171,7 @@ class Game:
                             player.army_color = color
                     self.army_colors[color] = id
                     self.event.set() #Setting event to True
+
                 if "UPDATE_TERRITORIES_STATE:" in message:
                     message = self._remove_request(message, "UPDATE_TERRITORIES_STATE: ")
                     id = message.split(", ")[0]
@@ -181,10 +186,17 @@ class Game:
                         if player.player_id == id:
                             player.territories = territories
                             print(f"Aggiornato lista stati del player con ID {player.player_id} con nome {player.name}")
-                    print("Fine aggiornamento territori")
-                    #Dovrei fare un broadcast per notificare a tutti il cambio di stato dei territori di questo player? Da ragionarci su
+                    print("Fine aggiornamento territori su server")
 
+                    territories_list = []
+                    for player in self.players:
+                        for territory in player.territories:
+                            territories_list.append(territory.to_dict())
+
+                    await self.broadcast("SEND_TERRITORIES_TO_ALL: " + json.dumps(territories_list, indent=4))
+                    print("Fine aggiornamento territori")
                     self.event.set()
+
                 if "REQUEST_TERRITORY_INFO:" in message: #TOBE TESTED
                     message = self._remove_request(message, "REQUEST_TERRITORY_INFO: ")
                     playerId, territoryId = message.split("-")
