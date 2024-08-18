@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -61,7 +62,7 @@ public class Utils
     
     static List<int> GetNeighborsOf(int territoryNode)
     {
-    	int[,] adjMatrix = LoadAdjMatrix("adj_matrix.bin", n);
+    	int[,] adjMatrix = LoadAdjMatrix("adj_matrix.bin", 42);
         List<int> neighbors = new List<int>();
         int n = adjMatrix.GetLength(0);  // Get the number of rows (or columns) in the matrix
 
