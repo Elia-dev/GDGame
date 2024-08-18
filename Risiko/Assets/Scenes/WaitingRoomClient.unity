@@ -453,10 +453,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e260ce131f287274a9a3b8627f45a6f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BackButton: {fileID: 419645301}
-  PlayerList: {fileID: 783281681}
-  LobbyID: {fileID: 2101039179}
-  PopUpDice: {fileID: 30407417}
+  backButton: {fileID: 419645301}
+  playerList: {fileID: 783281681}
+  lobbyID: {fileID: 2101039179}
+  popUpDice: {fileID: 30407417}
 --- !u!1 &419645298
 GameObject:
   m_ObjectHideFlags: 0

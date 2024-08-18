@@ -5,56 +5,55 @@ using TMPro;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class WaitingRoomClientUI : MonoBehaviour
 {
-    [SerializeField] private Button BackButton;
-    [SerializeField] private TMP_Text PlayerList;
-    [SerializeField] private TMP_Text LobbyID;
-    [SerializeField] private GameObject PopUpDice;
-    
-    
-    private float delay = 1.0f; // Durata del ritardo in secondi
-    private float timer;
+    [SerializeField] private Button backButton;
+    [SerializeField] private TMP_Text playerList;
+    [SerializeField] private TMP_Text lobbyID;
+    [SerializeField] private GameObject popUpDice;
+    private float _delay = 1.0f; // Durata del ritardo in secondi
+    private float _timer;
 
     void Start()
     {
-        LobbyID.text = GameManager.Instance.GetLobbyId();
-        timer = delay;
+        lobbyID.text = GameManager.Instance.GetLobbyId();
+        _timer = _delay;
     }
     
     void Update()
     {
         
-        if (timer > 0)
+        if (_timer > 0)
         {
-            timer -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
+            _timer -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
         }
         else
         { 
             ClientManager.Instance.RequestNameUpdatePlayerList();
             ClientManager.Instance.SendName(); // Da vedere, se si potesse fare soltanto la prima volta sarebbe meglio
             // Reset del timer
-            timer = delay;
-            Debug.Log("WAITING_ROOM - playerList:" + PlayerList.text);
+            _timer = _delay;
+            Debug.Log("WAITING_ROOM - playerList:" + playerList.text);
         }
         
         string stringa = string.Join(", ", GameManager.Instance.PlayersName);
-        PlayerList.text = "Players: " + stringa;
+        playerList.text = "Players: " + stringa;
         
         //Quando l'HOST avvia il gioco
         if (!GameManager.Instance.GetGameWaitingToStart())
         {
             Debug.Log("L'HOST HA FATTO COMINCIARE LA PARTITA");
-            PopUpDice.SetActive(true);
+            popUpDice.SetActive(true);
         }
 
     }
 
     private void Awake()
     {
-        BackButton.onClick.AddListener(() =>
+        backButton.onClick.AddListener(() =>
         {
             ClientManager.Instance.LeaveLobby();
             GameManager.Instance.ResetGameManager();

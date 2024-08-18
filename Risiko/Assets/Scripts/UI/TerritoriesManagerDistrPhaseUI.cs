@@ -218,6 +218,11 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
 
     //Mostra il popup per aggiungere o togliere armate
     public void SelectState(TerritoryHandlerUI newTerritory) {
+        if (Player.Instance.ArmyColor.Equals("black") || Player.Instance.ArmyColor.Equals("blue")) {
+            stateNameAddTank.color = Color.white;
+            tankNumber.color = Color.white;
+            tankToAdd.color = Color.white;
+        }
         stateNameAddTank.text = TerritoryInformations(newTerritory.name).Name;
         tankNumber.text = TerritoryInformations(newTerritory.name).num_tanks + "";
         int result = FindTerritory(selectedTerritory.name);
