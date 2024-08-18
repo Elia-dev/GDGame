@@ -32,6 +32,8 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
         } else {
             Destroy(gameObject);
         }
+        
+        endTurnButton.onClick.AddListener( () => ClientManager.Instance.UpdateTerritoriesState());
     }
 
     private void Start() {
