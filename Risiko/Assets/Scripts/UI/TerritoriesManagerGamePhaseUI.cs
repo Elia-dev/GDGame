@@ -44,6 +44,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
         }
         
         if (_reinforcePhase && !IsPhaseGoing && Player.Instance.TanksAvailable > 0) {
+            Debug.Log("Game Phase Tanks Available: " + Player.Instance.TanksAvailable);
             if (Player.Instance.Territories.Count >= 3) {
                 Debug.Log("Reinforce phase");
                 if (_timer > 0) 
