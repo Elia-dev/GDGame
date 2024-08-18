@@ -14,7 +14,7 @@ public class DiceControllerUI : MonoBehaviour {
     private void Awake() {
         diceButton.onClick.AddListener(() => {
             diceAnimator.SetBool("Roll", true);
-            TrowDice();
+            ThrowDice();
         });
     }
 
@@ -30,7 +30,7 @@ public class DiceControllerUI : MonoBehaviour {
         }
     }
 
-    public void TrowDice() {
+    public void ThrowDice() {
         diceButton.interactable = false;
         StartCoroutine(Wait(4f));
     }

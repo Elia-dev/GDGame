@@ -2088,7 +2088,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Lancia!
+  m_text: Throw!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 445085064385b3047b4cba8f073d1bd7, type: 2}
   m_sharedMaterial: {fileID: -2955462123379817806, guid: 445085064385b3047b4cba8f073d1bd7, type: 2}
@@ -2477,7 +2477,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Lancio dei dadi
+  m_text: Throw dice
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 445085064385b3047b4cba8f073d1bd7, type: 2}
   m_sharedMaterial: {fileID: -2955462123379817806, guid: 445085064385b3047b4cba8f073d1bd7, type: 2}
