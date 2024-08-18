@@ -134,6 +134,7 @@ public class RequestHandler
                 int armyNumber = int.Parse(_request);
                 Player.Instance.TanksAvailable = armyNumber;
                 Player.Instance.TanksNum += armyNumber;
+                Debug.Log("Tanks Available server: " + Player.Instance.TanksAvailable);
             }
             else if (message.Contains("RECEIVED_REQUEST_TERRITORY_INFO:"))
             {
