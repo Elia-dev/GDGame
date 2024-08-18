@@ -927,9 +927,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13875b8e5810e0d4daf932df6aa9cb88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DiceButton: {fileID: 1918402372}
+  diceButton: {fileID: 1918402372}
   diceAnimator: {fileID: 1779410940}
-  DiceResults: {fileID: 532245292}
+  diceResults: {fileID: 532245292}
 --- !u!1 &611260370
 GameObject:
   m_ObjectHideFlags: 0
@@ -2494,7 +2494,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Lancia!
+  m_text: Throw!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 445085064385b3047b4cba8f073d1bd7, type: 2}
   m_sharedMaterial: {fileID: -2955462123379817806, guid: 445085064385b3047b4cba8f073d1bd7, type: 2}
@@ -2774,19 +2774,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1918402373}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 601001543}
-        m_TargetAssemblyTypeName: DiceControllerUI, Assembly-CSharp
-        m_MethodName: TrowDice
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1918402373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3016,7 +3004,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Lancio dei dadi
+  m_text: Throw dice
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 445085064385b3047b4cba8f073d1bd7, type: 2}
   m_sharedMaterial: {fileID: -2955462123379817806, guid: 445085064385b3047b4cba8f073d1bd7, type: 2}
