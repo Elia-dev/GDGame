@@ -62,7 +62,7 @@ public class Utils
     
     public static List<int> GetNeighborsNodeOf(int territoryNode)
     {
-    	int[,] adjMatrix = LoadAdjMatrix("adj_matrix.bin", 42);
+    	int[,] adjMatrix = LoadAdjMatrix("./adj_matrix.bin", 42);
         List<int> neighbors = new List<int>();
         int n = adjMatrix.GetLength(0);  // Get the number of rows (or columns) in the matrix
 
@@ -80,7 +80,7 @@ public class Utils
     public static List<Territory> GetNeighborsOf(Territory territory)
     {
         List<Territory> territories = new List<Territory>();
-        int[,] adjMatrix = LoadAdjMatrix("adj_matrix.bin", 42);
+        int[,] adjMatrix = LoadAdjMatrix("./adj_matrix.bin", 42);
         List<int> nodes = GetNeighborsNodeOf(territory.node);
         foreach (var node in nodes)
         {
