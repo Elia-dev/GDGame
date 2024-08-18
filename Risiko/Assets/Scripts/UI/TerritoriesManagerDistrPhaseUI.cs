@@ -207,7 +207,8 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         Debug.Log("Tanks Avalable: " + Player.Instance.TanksAvailable);
         Debug.Log("Tanks Num: " + Player.Instance.TanksNum);
         Debug.Log("Tanks Placed: " + Player.Instance.TanksPlaced);
-        while(!distributionPhase && Player.Instance.TanksAvailable > 0 && Player.Instance.Territories.Count >= 3) {}
+        Debug.Log("Distr phase " + distributionPhase);
+        //while(!distributionPhase && Player.Instance.TanksAvailable > 0 && Player.Instance.Territories.Count >= 3) {}
         armyNumber = Player.Instance.TanksAvailable;
         if (armyNumber > 3 && distributionPhase) {
             armyNumber = 3;
