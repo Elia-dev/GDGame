@@ -119,6 +119,9 @@ class Game:
                 # REINFORCE PHASE TERMINATED
 
                 # FIGHT PHASE
+                print("Fight phase started")
+                await self.event.wait()
+                self.event = asyncio.Event()
                 #Ripete finché non termina il turno o finché non fa uno spostamento strategico
                     # (parte animazione su clientAttaccante con messaggio C->S) TERRITORY_ATTACK: idPlayerAttaccante-idPlayerDifensore, idTerrAttaccante-idTerrDifensore, numArmateAttaccante-numArmateDifensore
                     # prendere id difensore e mandargli un messaggio UNDER_ATTACK  (parte animazione su clientDifensore)
