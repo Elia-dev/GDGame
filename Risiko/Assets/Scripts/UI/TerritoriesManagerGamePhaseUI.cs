@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
 {
@@ -53,6 +54,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
                     _timer = _delay;
                     IsPhaseGoing = true;
                     this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = true;
+                    Debug.Log("Avvio altro script");
                     GetComponent<TerritoriesManagerDistrPhaseUI>().StartTurn();
                 }
             }
