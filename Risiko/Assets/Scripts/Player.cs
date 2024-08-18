@@ -14,7 +14,6 @@ public class Player
     {
             Sock = socket;
             Name = name;
-            LobbyId = lobbyId; // Forse questo lo possiamo togliere, sul player non serve perché è già salvato in ClientManager e in GameManager
             PlayerId = playerId;
             TanksNum = 0;
             TanksAvailable = 0;
@@ -27,13 +26,12 @@ public class Player
 
     public string ArmyColor { get; set; }
 
-    public void Initialize(object socket, string name, string lobbyId, string playerId)
+    public void Initialize(object socket, string name, string playerId)
     {
-        if (Sock == null && Name == null && LobbyId == null && PlayerId == null)
+        if (Sock == null && Name == null && PlayerId == null)
         {
             Sock = socket;
             Name = name;
-            LobbyId = lobbyId;
             PlayerId = playerId;
             TanksNum = 0;
             TanksAvailable = 0;
@@ -71,7 +69,6 @@ public class Player
     public bool IsMyTurn { get; set; }
     public string Name { get; set; }
     public object Sock { get; set; } // Assumendo che il tipo di socket sia object per semplicità
-    public string LobbyId { get; set; }
     public string PlayerId { get; set; }
     public int TanksNum { get; set; }
     public int TanksAvailable { get; set; }
@@ -81,7 +78,7 @@ public class Player
 
     public override string ToString()
     {
-        return $"Player(name={Name}, socket={Sock}, lobby_id={LobbyId}, player_id={PlayerId}, tanks_num={TanksNum}, tanks_available={TanksAvailable}, tanks_placed={TanksPlaced}, objective_card={ObjectiveCard}, territories={Territories})";
+        return $"Player(name={Name}, socket={Sock}, player_id={PlayerId}, tanks_num={TanksNum}, tanks_available={TanksAvailable}, tanks_placed={TanksPlaced}, objective_card={ObjectiveCard}, territories={Territories})";
     }
 
     public new string ToJson()

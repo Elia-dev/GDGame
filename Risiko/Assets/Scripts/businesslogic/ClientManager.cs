@@ -119,7 +119,6 @@ public class ClientManager
         {
             var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), cancellationToken);
             var response = Encoding.UTF8.GetString(buffer, 0, result.Count);
-            Debug.Log("Received from server: " + response);
             RequestHandler.AddRequest(webSocket.Options.ClientCertificates.ToString(), response);
         }
         Debug.Log("Uscito dal loop delle richieste");
@@ -133,6 +132,11 @@ public class ClientManager
     public async void KillLobby()
     {
         await SendMessage(_webSocket, _cancellationToken, "LOBBY_KILLED_BY_HOST: " + Player.Instance.PlayerId);
+    }
+
+    public async void LeaveLobby()
+    {
+        await SendMessage(_webSocket, _cancellationToken, "PLAYER_HAS_LEFT_THE_LOBBY: " + Player.Instance.PlayerId);
     }
     
     public async void JoinLobbyAsClient(string lobbyID)
@@ -165,9 +169,9 @@ public class ClientManager
         await SendMessage(_webSocket, _cancellationToken, "UPDATE_TERRITORIES_STATE: " + Player.Instance.PlayerId + ", " + JsonConvert.SerializeObject(Player.Instance.Territories));
     }
 
-    public async void RequestTerritoryInfo(string id)
+    public async void RequestTerritoryInfo(string Terr_id)
     {
-        await SendMessage(_webSocket, _cancellationToken, "REQUEST_TERRITORY_INFO: " + Player.Instance.PlayerId + "-" + id);
+        await SendMessage(_webSocket, _cancellationToken, "REQUEST_TERRITORY_INFO: " + Player.Instance.PlayerId + "-" + Terr_id);
     
     }
 }

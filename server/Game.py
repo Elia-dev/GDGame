@@ -35,7 +35,7 @@ class Game:
 
     def remove_player(self, player):
         self.players.remove(player)
-        print(f"Player {player} with name {player.name} removed from game {self.game_id}")
+        print(f"Player {player.player_id} with name {player.name} removed from game {self.game_id}")
 
     def remove_all_players(self):
         for player in self.players:
@@ -138,6 +138,12 @@ class Game:
                     self.game_id = None
                     self.remove_all_players()
                     return
+
+                if "PLAYER_HAS_LEFT_THE_LOBBY" in message:
+                    id = self._remove_request(message, "PLAYER_HAS_LEFT_THE_LOBBY: ")
+                    for player in self.players:
+                        if player.player_id == id:
+                            self.remove_player(player)
 
                 if "REQUEST_NAME_UPDATE_PLAYER_LIST" in message:
                     player_names = []

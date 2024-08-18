@@ -14,16 +14,13 @@ public class WaitingRoomClientUI : MonoBehaviour
     [SerializeField] private TMP_Text LobbyID;
     [SerializeField] private GameObject PopUpDice;
     
-    GameManager gm = GameManager.Instance;
-    private Player _player = Player.Instance;
-    private ClientManager cm = ClientManager.Instance;
     
     private float delay = 1.0f; // Durata del ritardo in secondi
     private float timer;
 
     void Start()
     {
-        LobbyID.text = _player.LobbyId;
+        LobbyID.text = GameManager.Instance.GetLobbyId();
         timer = delay;
     }
     
@@ -36,14 +33,14 @@ public class WaitingRoomClientUI : MonoBehaviour
         }
         else
         { 
-            cm.RequestNameUpdatePlayerList();
-            cm.SendName(); // Da vedere, se si potesse fare soltanto la prima volta sarebbe meglio
+            ClientManager.Instance.RequestNameUpdatePlayerList();
+            ClientManager.Instance.SendName(); // Da vedere, se si potesse fare soltanto la prima volta sarebbe meglio
             // Reset del timer
             timer = delay;
             Debug.Log("WAITING_ROOM - playerList:" + PlayerList.text);
         }
         
-        string stringa = string.Join(", ", gm.PlayersName);
+        string stringa = string.Join(", ", GameManager.Instance.PlayersName);
         PlayerList.text = "Players: " + stringa;
         
         //Quando l'HOST avvia il gioco
@@ -59,7 +56,9 @@ public class WaitingRoomClientUI : MonoBehaviour
     {
         BackButton.onClick.AddListener(() =>
         {
-           SceneManager.LoadScene("GameMenu");
+            ClientManager.Instance.LeaveLobby();
+            GameManager.Instance.ResetGameManager();
+            SceneManager.LoadScene("GameMenu");
         });
     }
 }

@@ -17,6 +17,8 @@ public class JoinGameMenuUI : MonoBehaviour
     
     private void Awake() {
         BackButton.onClick.AddListener(() => {
+            GameManager.Instance.ResetGameManager();
+            Player.Instance.resetPlayer();
             SceneManager.LoadScene("GameMenu");
         });
 		
@@ -28,7 +30,6 @@ public class JoinGameMenuUI : MonoBehaviour
 
     private void JoinLobby() {
         lobby_id = lobbyIdInputField.text;
-        Player.Instance.LobbyId = lobby_id;
         GameManager.Instance.SetLobbyId(lobby_id);
         Debug.Log("Lobby ID: " + lobby_id);
         if (lobby_id.Equals(""))
@@ -38,7 +39,6 @@ public class JoinGameMenuUI : MonoBehaviour
         else
         {
             ClientManager.Instance.JoinLobbyAsClient(lobby_id);
-            
             SceneManager.LoadScene("WaitingRoomClient");
         }
     }
