@@ -15,8 +15,8 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
     private bool _attackphase = false;
     private bool _isTurnInitialized = false;
     public bool IsPhaseGoing { get; set; } = false;
-    private float _delay = 5.0f; // Durata del ritardo in secondi
-    private float _timer;
+    //private float _delay = 5.0f; // Durata del ritardo in secondi
+    //private float _timer;
 
     public bool ReinforcePhase {
         set => _reinforcePhase = value;
@@ -45,18 +45,16 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
         }
         
         if (_reinforcePhase && !IsPhaseGoing && Player.Instance.TanksAvailable > 0) {
-            Debug.Log("Game Phase Tanks Available: " + Player.Instance.TanksAvailable);
             if (Player.Instance.Territories.Count >= 3) {
-                Debug.Log("Reinforce phase");
-                if (_timer > 0) 
-                    _timer -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
-                else {
-                    _timer = _delay;
+                //if (_timer > 0) 
+                    //_timer -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
+                //else {
+                    //_timer = _delay;
                     IsPhaseGoing = true;
                     this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = true;
-                    Debug.Log("Avvio altro script");
+                    //Debug.Log("Avvio altro script");
                     GetComponent<TerritoriesManagerDistrPhaseUI>().StartTurn();
-                }
+                //}
             }
             else {
                 _reinforcePhase = false;
@@ -93,7 +91,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
     
     private void StartTurn() {
         _isTurnInitialized = true;
-        _timer = _delay;
+        //_timer = _delay;
         endTurnButton.GetComponentInChildren<TMP_Text>().text = "Next Phase!";
         //TODO
     }
