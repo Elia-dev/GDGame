@@ -42,4 +42,20 @@ public class Utils
                 return new Color32(0, 0, 0, alpha);
         }
     }
+    
+    static int[,] LoadAdjMatrix(string filePath, int n)
+    {
+        int[,] adjMatrix = new int[n, n];
+        using (BinaryReader reader = new BinaryReader(File.Open(filePath, FileMode.Open)))
+        {
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    adjMatrix[i, j] = reader.ReadInt32();
+                }
+            }
+        }
+        return adjMatrix;
+    }
 }
