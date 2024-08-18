@@ -195,6 +195,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         
         if (GameManager.Instance.GetGamePhase() && distributionPhase) {
             distributionPhase = false;
+            Debug.Log("Ho settato distr phase a " + distributionPhase);
             this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = false;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().enabled = true;
         }
