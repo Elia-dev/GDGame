@@ -114,7 +114,7 @@ public class ClientManager
     
     private static async Task ReceiveMessage(ClientWebSocket webSocket, CancellationToken cancellationToken)
     {
-        var buffer = new byte[1024 * 4];
+        var buffer = new byte[1024 * 8];
         while (!cancellationToken.IsCancellationRequested)
         {
             var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), cancellationToken);
