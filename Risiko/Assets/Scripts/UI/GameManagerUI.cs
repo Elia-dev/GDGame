@@ -24,9 +24,10 @@ public class GameManagerUI : MonoBehaviour {
         //else
             //turn.text = Player.Instance.Name + "'S TURN!"; //DA CAMBIARE CON IL TURNO DEL PLAYER
             if (TerritoriesManagerUI.distributionPhase) {
-                turnInfo.text = "DISTRIBUTION PHASE\nSelect your states and add " + Player.Instance.TanksAvailable + " tanks"
-            } else if (clickHandler.GetComponent<TerritoriesManagerGamePhaseUI>().ReinforcePhase) {
+                turnInfo.text = "DISTRIBUTION PHASE\nSelect your states and add " + Player.Instance.TanksAvailable +
+                                " tanks";
+            } //else if (clickHandler.GetComponent<TerritoriesManagerGamePhaseUI>().ReinforcePhase) {
                 
-            }
+            //}
     }
 }
