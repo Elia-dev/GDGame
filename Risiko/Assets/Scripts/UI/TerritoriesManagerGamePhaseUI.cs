@@ -8,23 +8,20 @@ using UnityEngine.UI;
 public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
 {
     public static TerritoriesManagerGamePhaseUI Instance { get; private set; }
-    private List<GameObject> neighborhoodGameObj;
-    private List<Territory> neighborhoodTeeritories;
-    private bool reinforcePhase = true;
-    private bool attackphase = false;
-    private bool isTurnInitialized = false;
-    private bool isPhaseGoing = false;
-
-    public bool IsPhaseGoing {
-        get => isPhaseGoing;
-        set => isPhaseGoing = value;
-    }
+    private List<GameObject> _neighborhoodGameObj;
+    private List<Territory> _neighborhoodTeeritories;
+    private bool _reinforcePhase = true;
+    private bool _attackphase = false;
+    private bool _isTurnInitialized = false;
+    public bool IsPhaseGoing { get; set; } = false;
+    private float _delay = 10.0f; // Durata del ritardo in secondi
+    private float _timer;
 
     public bool ReinforcePhase {
-        set => reinforcePhase = value;
+        set => _reinforcePhase = value;
     }
     public bool Attackphase {
-        set => attackphase = value;
+        set => _attackphase = value;
     }
     
     private void Awake() {
@@ -42,17 +39,29 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
     }
 
     private void Update() {
-        if (Player.Instance.IsMyTurn && !isTurnInitialized) {
+        if (Player.Instance.IsMyTurn && !_isTurnInitialized) {
             StartTurn();
         }
         
-        if (reinforcePhase && !isPhaseGoing) {
-            isPhaseGoing = true;
-            this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = true;
-        } else if (attackphase && !isPhaseGoing) {
+        if (_reinforcePhase && !IsPhaseGoing && Player.Instance.TanksAvailable > 0) {
+            if (Player.Instance.Territories.Count >= 3) {
+                Debug.Log("Reinforce phase");
+                IsPhaseGoing = true;
+                if (_timer > 0) 
+                    _timer -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
+                else {
+                    _timer = _delay;
+                    this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = true;
+                }
+            }
+            else {
+                _reinforcePhase = false;
+                _attackphase = true;
+            }
+        } else if (_attackphase && !IsPhaseGoing) {
             endTurnButton.enabled = true;
             ActivateOtherPlayersTerritories();
-             if (Input.GetMouseButtonDown(0)) {
+            if (Input.GetMouseButtonDown(0)) {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
 
@@ -68,10 +77,10 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
                 }
             }
         }
-        else {
+        /*else {
             endTurnButton.GetComponentInChildren<TMP_Text>().text = "End Turn!";
-            
-        }
+
+        }*/
     }
 
     private void ActivateOtherPlayersTerritories() {
@@ -79,7 +88,8 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
     }
     
     private void StartTurn() {
-        isTurnInitialized = true;
+        _isTurnInitialized = true;
+        _timer = _delay;
         endTurnButton.GetComponentInChildren<TMP_Text>().text = "Next Phase!";
         //TODO
     }
@@ -90,28 +100,33 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
         }
         selectedTerritory = newTerritory;
         selectedTerritory.Select();
-        //Interrogazione server per ricevere la lista dei territori vicini
-        //neighborhoodTeeritories = GameManager.Instance.SOMETHING;
-        foreach (var territory in neighborhoodTeeritories) {
-            GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
-            neighborhoodGameObj.Add(terr);
-            if (terr is not null) {
-                Color32 tempColor = terr.GetComponent<SpriteRenderer>().color;
-                tempColor.a = 120;
-                terr.GetComponent<SpriteRenderer>().color = tempColor;
+        //Faccio apparire informazioni stato
+        if(TerritoryInformationsPlayer(selectedTerritory.name) is not null)
+            //Interrogazione server per ricevere la lista dei territori vicini
+            //neighborhoodTeeritories = GameManager.Instance.SOMETHING;
+            foreach (var territory in _neighborhoodTeeritories) {
+                GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
+                _neighborhoodGameObj.Add(terr);
+                if (terr is not null) {
+                    Color32 tempColor = terr.GetComponent<SpriteRenderer>().color;
+                    tempColor.a = 120;
+                    terr.GetComponent<SpriteRenderer>().color = tempColor;
+                }
             }
-        }
-        
     }
 
-    Territory TerritoryInformations(string id) {
+    Territory TerritoryInformationsPlayer(string id) {
+        return Player.Instance.Territories.Find(x => x.id.Equals(id));
+    }
+    
+    Territory TerritoryInformationsOtherPLayers(string id) {
         return Player.Instance.Territories.Find(x => x.id.Equals(id));
     }
     
     public void DeselectState() {
         if (selectedTerritory is not null) {
             selectedTerritory.Deselect();
-            foreach (var terr in neighborhoodGameObj) {
+            foreach (var terr in _neighborhoodGameObj) {
                 Color32 tempColor = terr.GetComponent<SpriteRenderer>().color;
                 tempColor.a = 50;
                 terr.GetComponent<SpriteRenderer>().color = tempColor;
