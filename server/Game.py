@@ -77,7 +77,7 @@ class Game:
             for territory in player.territories:
                 territories_list.append(territory.to_dict())
         await self.broadcast("SEND_TERRITORIES_TO_ALL: " + json.dumps(territories_list, indent=4))
-
+	
         initial_army_number = self.__army_start_num__(len(self.players))
         print("Initial army number: " + str(initial_army_number))
         for player in self.players:
