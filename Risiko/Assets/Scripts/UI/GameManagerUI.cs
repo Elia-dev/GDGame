@@ -9,8 +9,13 @@ public class GameManagerUI : MonoBehaviour {
     [SerializeField] private TMP_Text turn;
     [SerializeField] private GameObject clickHandler;
     [SerializeField] private TMP_Text turnInfo;
-
     [SerializeField] private GameObject uiContainer;
+    private static bool _settingGame = true;
+
+    public static bool SettingGame {
+        get => _settingGame;
+        set => _settingGame = value;
+    }
 
     // Start is called before the first frame update
     void Start() {
@@ -24,16 +29,16 @@ public class GameManagerUI : MonoBehaviour {
         else
             turn.text = GameManager.Instance.getEnemyNameById(GameManager.Instance.getPlayingPlayer()) + "'s turn!"; //DA CAMBIARE CON IL TURNO DEL PLAYER
         
-        /*if (TerritoriesManagerUI.distributionPhase) {
+        if (TerritoriesManagerUI.distributionPhase && !_settingGame) {
             turnInfo.text = "<u>Distribution Phase!</u>\nSelect your states and add " +
                             clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks";
         }
-        else if (clickHandler.GetComponent<TerritoriesManagerGamePhaseUI>().ReinforcePhase) {
+        else if (clickHandler.GetComponent<TerritoriesManagerGamePhaseUI>().ReinforcePhase && !_settingGame) {
             turnInfo.text = "<u>Reinforce Phase!</u>\nSelect your states and add " +
                             clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks";
-        } else if (clickHandler.GetComponent<TerritoriesManagerGamePhaseUI>().ReinforcePhase) {
+        } else if (clickHandler.GetComponent<TerritoriesManagerGamePhaseUI>().ReinforcePhase && !_settingGame) {
             turnInfo.text = "<u>Attack Phase!</u>\nAttack the enemies or move your army";
-        }*/
+        }
     }
 
     public void ShowTerritoryInfo(string id) {

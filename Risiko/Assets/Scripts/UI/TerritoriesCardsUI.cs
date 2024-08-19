@@ -39,6 +39,7 @@ public class TerritoriesCardsUI : MoveCardsUI {
             GameObject.Find("TerritoryCardsCanvas").SetActive(false);
             GameObject.Find("ClickHandler").GetComponent<TerritoriesManagerDistrPhaseUI>()
                 .activateTerritories();
+            GameManagerUI.SettingGame = false;
         }
     }
 
