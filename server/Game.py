@@ -307,6 +307,7 @@ class Game:
                             territories_list.append(territory.to_dict())
 
                     await self.broadcast("SEND_TERRITORIES_TO_ALL: " + json.dumps(territories_list, indent=4))
+                    #Mandare un messaggio all'attaccante e all'attaccato per dirgli che l'attacco è finito?
                     self.event.set()
 
                 self.queue.task_done()
