@@ -43,7 +43,6 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         //TerritoryHandlerUI.ArmyDistributionPhase();
         popUpAddTank.GetComponent<Image>().color = TerritoryHandlerUI.userColor;
         activateTerritories();*/
-        TerritoryHandlerUI.UserColor = Utils.ColorCode(Player.Instance.ArmyColor, 200);
     }
     
     //Scorre la lista dei territori territori assegnati al giocatori per ognuno di questi:

@@ -90,12 +90,11 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
     }
 
     private void ActivateOtherPlayersTerritories() {
-        foreach (var territory in GameManager.Instance.AllTerritories) {
+        foreach (var territory in GameManager.Instance.AllTerritories.FindAll(terr => !terr.player_id.Equals(Player.Instance.PlayerId))) {
             GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
             if (terr is not null) {
                 terr.GetComponent<PolygonCollider2D>().enabled = true;
-                string color = "red"; //DA ELIMINARE
-                //string color = GameManager.Instance.AllPLayers.Find( player => player.PlayerId.Equals(territory.playerId)).ArmyColor;
+                string color = GameManager.Instance.GetPlayerColor(territory.player_id);
                 terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 50); //DA CAMBIARE
                 terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 50); //DA CAMBIARE
             }

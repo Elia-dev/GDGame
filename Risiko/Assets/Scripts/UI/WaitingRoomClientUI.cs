@@ -46,7 +46,7 @@ public class WaitingRoomClientUI : MonoBehaviour
         if (!GameManager.Instance.GetGameWaitingToStart())
         {
             Debug.Log("L'HOST HA FATTO COMINCIARE LA PARTITA");
-            //popUpDice.SetActive(true);
+            popUpDice.SetActive(true);
             //Invio messaggio per skip
             //SceneManager.LoadScene("Main");
         }
