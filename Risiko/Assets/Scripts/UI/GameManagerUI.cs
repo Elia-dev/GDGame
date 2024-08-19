@@ -29,14 +29,14 @@ public class GameManagerUI : MonoBehaviour {
         else
             turn.text = GameManager.Instance.getEnemyNameById(GameManager.Instance.getPlayingPlayer()) + "'s turn!"; //DA CAMBIARE CON IL TURNO DEL PLAYER
         
-        if (TerritoriesManagerUI.distributionPhase && !_settingGame) {
+        if (!_settingGame && TerritoriesManagerUI.distributionPhase) {
             turnInfo.text = "<u>Distribution Phase!</u>\nSelect your states and add " +
                             clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks";
         }
-        else if (clickHandler.GetComponent<TerritoriesManagerGamePhaseUI>().ReinforcePhase && !_settingGame) {
+        else if (!_settingGame && clickHandler.GetComponent<TerritoriesManagerGamePhaseUI>().ReinforcePhase) {
             turnInfo.text = "<u>Reinforce Phase!</u>\nSelect your states and add " +
                             clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks";
-        } else if (clickHandler.GetComponent<TerritoriesManagerGamePhaseUI>().ReinforcePhase && !_settingGame) {
+        } else if (!_settingGame && clickHandler.GetComponent<TerritoriesManagerGamePhaseUI>().ReinforcePhase) {
             turnInfo.text = "<u>Attack Phase!</u>\nAttack the enemies or move your army";
         }
     }
