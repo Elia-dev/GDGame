@@ -147,6 +147,7 @@ public class RequestHandler
                 Debug.Log("Server_Request: SEND_TERRITORIES_TO_ALL");
                 _request = RemoveRequest(message, "SEND_TERRITORIES_TO_ALL: ");
                 GameManager.Instance.AllTerritories = JsonConvert.DeserializeObject<List<Territory>>(_request);
+                Debug.Log("Nella lista di tutti i territori il primo che viene caricato è: " + GameManager.Instance.AllTerritories[0].name);
             }
             else if (message.Contains("UNDER_ATTACK"))
             {
