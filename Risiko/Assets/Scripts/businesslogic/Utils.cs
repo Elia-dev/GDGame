@@ -96,6 +96,16 @@ public class Utils
     
     public static Territory GetTerritoryFromNode(int node)
     {
-        return GameManager.Instance.AllTerritories.Find(x => x.node == node);
+        foreach (var terr in GameManager.Instance.AllTerritories)
+        {
+            if (terr.node == node)
+            {
+                Debug.Log("Territorio trovato: " + terr.name);
+                return terr;
+            }
+        }
+        Debug.Log("Territorio non trovato");
+        return null;
+        //return GameManager.Instance.AllTerritories.Find(x => x.node == node);
     }
 }
