@@ -66,7 +66,6 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
             }
         } else if (_attackphase && !IsPhaseGoing) {
             endTurnButton.enabled = true;
-            ActivateOtherPlayersTerritories();
             if (Input.GetMouseButtonDown(0)) {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
@@ -89,18 +88,20 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
         }*/
     }
 
-    private void ActivateOtherPlayersTerritories() {
+    public void ActivateOtherPlayersTerritories() {
         Debug.Log("Lista di tutti i territori Attivazione:");
         foreach (var terr in GameManager.Instance.AllTerritories) {
             Debug.Log(terr);
         }
-        foreach (var territory in GameManager.Instance.AllTerritories.FindAll(terr => !terr.player_id.Equals(Player.Instance.PlayerId))) {
-            GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
-            if (terr is not null) {
-                terr.GetComponent<PolygonCollider2D>().enabled = true;
-                string color = GameManager.Instance.GetPlayerColor(territory.player_id);
-                terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 50); //DA CAMBIARE
-                terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 50); //DA CAMBIARE
+        foreach (var territory in GameManager.Instance.AllTerritories) {
+            if (!territory.player_id.Equals(Player.Instance.PlayerId)) {
+                GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
+                if (terr is not null) {
+                    terr.GetComponent<PolygonCollider2D>().enabled = true;
+                    string color = GameManager.Instance.GetPlayerColor(territory.player_id);
+                    terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 50); //DA CAMBIARE
+                    terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 50); //DA CAMBIARE
+                }
             }
         }
     }

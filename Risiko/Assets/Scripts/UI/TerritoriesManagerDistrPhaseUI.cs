@@ -151,6 +151,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             this.GetComponent<TerritoriesManagerGamePhaseUI>().ReinforcePhase = false;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().Attackphase = true;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().IsPhaseGoing = false;
+            this.GetComponent<TerritoriesManagerGamePhaseUI>().ActivateOtherPlayersTerritories();
         }
     }
     //restituisce l'indice del territorio all'interno del vettore dei territori su cui posizionare le armate
