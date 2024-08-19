@@ -24,7 +24,7 @@ public class GameManagerUI : MonoBehaviour {
         else
             turn.text = GameManager.Instance.getEnemyNameById(GameManager.Instance.getPlayingPlayer()) + "'s turn!"; //DA CAMBIARE CON IL TURNO DEL PLAYER
         
-        if (TerritoriesManagerUI.distributionPhase) {
+        /*if (TerritoriesManagerUI.distributionPhase) {
             turnInfo.text = "<u>Distribution Phase!</u>\nSelect your states and add " +
                             clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks";
         }
@@ -33,7 +33,7 @@ public class GameManagerUI : MonoBehaviour {
                             clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks";
         } else if (clickHandler.GetComponent<TerritoriesManagerGamePhaseUI>().ReinforcePhase) {
             turnInfo.text = "<u>Attack Phase!</u>\nAttack the enemies or move your army";
-        }
+        }*/
     }
 
     public void ShowTerritoryInfo(string id) {
