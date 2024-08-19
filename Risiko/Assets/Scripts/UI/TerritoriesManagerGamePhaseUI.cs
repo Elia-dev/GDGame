@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
@@ -19,6 +20,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
     //private float _timer;
 
     public bool ReinforcePhase {
+        get => _reinforcePhase;
         set => _reinforcePhase = value;
     }
     public bool Attackphase {
