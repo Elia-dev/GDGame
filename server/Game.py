@@ -26,6 +26,7 @@ class Game:
             'black': None
         }
         self.event = asyncio.Event()
+        self.event_strategic_movement = asyncio.Event()
 
     def add_player(self, player):
         if player.name == None:
@@ -101,7 +102,7 @@ class Game:
                 # REINFORCE PHASE
                 # CheckContinents
                 # CheckArmy
-                num_army_to_send = self.calculateArmyForThisTurn(player) #
+                num_army_to_send = self.calculateArmyForThisTurn(player)  #
                 print(f"Numero di armate ricevute nella fase di rinforzo: {num_army_to_send}")
                 player.tanks_num += num_army_to_send
                 player.tanks_available += num_army_to_send
@@ -111,7 +112,7 @@ class Game:
                 await player.sock.send("IS_YOUR_TURN: TRUE")
                 # Waiting for player to finish the turn and send updated territories
                 print("Waiting for player to end the reinforce phase")
-                await self.event.wait() #Aggiorna lo stato di tutti i territori ai client
+                await self.event.wait()  # Aggiorna lo stato di tutti i territori ai client
                 self.event = asyncio.Event()  # Event reset
                 player.tanks_available = 0
                 player.tanks_placed += num_army_to_send
@@ -120,24 +121,27 @@ class Game:
 
                 # FIGHT PHASE
                 print("Fight phase started")
-                await self.event.wait()
-                self.event = asyncio.Event()
-                #Ripete finché non termina il turno o finché non fa uno spostamento strategico
-                    # (parte animazione su clientAttaccante con messaggio C->S) TERRITORY_ATTACK: idPlayerAttaccante-idPlayerDifensore, idTerrAttaccante-idTerrDifensore, numArmateAttaccante-numArmateDifensore
-                    # prendere id difensore e mandargli un messaggio UNDER_ATTACK  (parte animazione su clientDifensore)
-                    # genera n numeri casuali, con n numero di armate
-                    # Confronto, in ordine, del più grande dell'attaccante con il più piccolo dell'attaccante
-                    # Rimuove i carri in funzione del risultato precedente
-                    # Capisce se il territorio attaccato è stato conquistato oppure no
-                    # updateAllTerritories in broadcast e controllo lato client della vittoria/sconfitta
+                '''
+                 Finché non fa il movimento strategico aspetto che attacchi
+                 appena attacca eseguo l'attacco e mi rimetto in attesa di un nuovo attacco
+                '''
+                while not self.event_strategic_movement.is_set():
+                    self.event = asyncio.Event()
+                    await self.event.wait()  # Attendo un attacco o un movimento strategico
 
                 print("[fake] Fight phase terminated")
-
                 # FIGHT PHASE TERMINATED
+
+                self.event = asyncio.Event()
+                self.event_strategic_movement = asyncio.Event()
+                print("[fake] Strategic movement terminated")
+
+
+
 
                 # STRATEGIC MOVEMENT
                 # await self.event.wait()
-                print("[fake] Strategic movement terminated")
+
                 # STRATEGIC MOVEMENT TERMINATED
 
                 # CHECK (card objective, number of tanks ecc...)
@@ -231,6 +235,75 @@ class Game:
                             if territory.id == territoryId:
                                 await tempPlayer.sock.send(
                                     "RECEIVED_REQUEST_TERRITORY_INFO: " + json.dumps(territory.to_dict()))
+
+                if "TERRITORY_ATTACK:" in message:
+                    # (parte animazione su clientAttaccante con messaggio C->S) TERRITORY_ATTACK: idPlayerAttaccante-idPlayerDifensore, idTerrAttaccante-idTerrDifensore, numArmateAttaccante-numArmateDifensore
+
+                    random.seed(time.time())
+                    attacker_player = None
+                    defender_player = None
+                    attacker_territory = None
+                    defender_territory = None
+                    # Received TERRITORY_ATTACK: idPlayerAttaccante-idPlayerDifensore, idTerrAttaccante-idTerrDifensore, numArmateAttaccante-numArmateDifensore
+                    message = self._remove_request(message, "TERRITORY_ATTACK: ")
+
+                    # Split the message in segments using comma as a separator removing blank space at the start and the end of the message
+                    clean_message = [segmento.strip() for segmento in message.split(",")]
+                    # Extract values separated by "-" removing extra blank spaces
+                    attacker_id, defender_id = clean_message[0].split("-")
+                    for player in self.players:
+                        if player.player_id == attacker_id:
+                            attacker_player = player
+                        if player.player_id == defender_id:
+                            defender_player = player
+
+                    attacker_ter_id, defender_ter_id = clean_message[1].split("-")
+                    for terr in attacker_player.territories:
+                        if terr.id == attacker_ter_id:
+                            attacker_territory = terr
+                    for terr in defender_player.territories:
+                        if terr.id == defender_ter_id:
+                            defender_territory = terr
+                    attacker_army_num, defender_army_num = clean_message[2].split("-")
+
+                    #Tell the defender it's under attack
+                    await defender_player.sock.send(
+                        "UNDER_ATTACK: " + attacker_id + ", " + attacker_ter_id + "-" + defender_ter_id + ", "
+                        + attacker_army_num + "-" + defender_army_num)
+
+                    # genera n numeri casuali, con n numero di armate
+                    extracted_numbers_attacker = [random.randint(1, 6) for _ in range(attacker_army_num)]
+                    extracted_numbers_defender = [random.randint(1, 6) for _ in range(defender_army_num)]
+                    extracted_numbers_attacker.sort(reverse=True)  # Sort in descending order
+                    extracted_numbers_defender.sort(reverse=True)
+                    attacker_wins = 0
+                    defender_wins = 0
+
+                    # Confronto, in ordine, del più grande dell'attaccante con il più piccolo dell'attaccante
+                    for attacker_num, defender_num in zip(extracted_numbers_attacker, extracted_numbers_defender):
+                        if attacker_num > defender_num:
+                            attacker_wins += 1
+                        else:
+                            defender_wins += 1
+
+                    # Rimuove i carri in funzione del risultato precedente
+                    attacker_territory.num_tanks -= defender_wins
+                    defender_territory.num_tanks -= attacker_wins
+
+                    if defender_territory.num_tanks == 0:  # Capisce se il territorio attaccato è stato conquistato oppure no
+                        defender_territory.player_id = attacker_id
+                        defender_player.removeTerritory(defender_territory)
+                        defender_territory.num_tanks = attacker_army_num - defender_wins
+                        attacker_player.addTerritory(defender_territory)
+
+                    # updateAllTerritories in broadcast e controllo lato client della vittoria/sconfitta
+                    territories_list = []
+                    for player in self.players:
+                        for territory in player.territories:
+                            territories_list.append(territory.to_dict())
+
+                    await self.broadcast("SEND_TERRITORIES_TO_ALL: " + json.dumps(territories_list, indent=4))
+                    self.event.set()
 
                 self.queue.task_done()
             except Exception as e:
