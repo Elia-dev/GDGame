@@ -90,6 +90,10 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
     }
 
     private void ActivateOtherPlayersTerritories() {
+        Debug.Log("Lista di tutti i territori Attivazione:");
+        foreach (var terr in GameManager.Instance.AllTerritories) {
+            Debug.Log(terr);
+        }
         foreach (var territory in GameManager.Instance.AllTerritories.FindAll(terr => !terr.player_id.Equals(Player.Instance.PlayerId))) {
             GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
             if (terr is not null) {
@@ -120,6 +124,10 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
             Debug.Log("I suoi vicini sono:");
             //Interrogazione server per ricevere la lista dei territori vicini
             _neighborhoodTeeritories = Utils.GetNeighborsOf(TerritoryInformationsPlayer(selectedTerritory.gameObject.name));
+            Debug.Log("Lista di tutti i territori Selezione:");
+            foreach (var terr in _neighborhoodTeeritories) {
+                Debug.Log(terr);
+            }
             foreach (var territory in _neighborhoodTeeritories) {
                 Debug.Log(territory.name + " del player: " + territory.player_id);
                 GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));

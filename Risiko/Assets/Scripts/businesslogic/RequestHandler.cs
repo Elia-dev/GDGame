@@ -147,7 +147,7 @@ public class RequestHandler
                 Debug.Log("Server_Request: SEND_TERRITORIES_TO_ALL");
                 _request = RemoveRequest(message, "SEND_TERRITORIES_TO_ALL: ");
                 GameManager.Instance.AllTerritories = JsonConvert.DeserializeObject<List<Territory>>(_request);
-                Debug.Log("Lista di tutti i territori:");
+                Debug.Log("Lista di tutti i territori RequestHandler: ");
                 foreach (var terr in GameManager.Instance.AllTerritories) {
                     Debug.Log(terr);
                 }
