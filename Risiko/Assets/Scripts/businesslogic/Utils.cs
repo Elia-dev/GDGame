@@ -81,12 +81,16 @@ public class Utils
     public static List<Territory> GetNeighborsOf(Territory territory)
     {
         List<Territory> territories = new List<Territory>();
+        Debug.Log("Provo a leggere tutti i nodi vicini del terr " + territory.name + " che ha come nodo: " + territory.node);
         List<int> nodes = GetNeighborsNodeOf(territory.node);
+        Debug.Log("Il territorio ha " + nodes.Count + " nodi vicini e sono i seguenti territori (stampo a capo): ");
         foreach (var node in nodes)
         {
+            Debug.Log(GetTerritoryFromNode(node).name);
             territories.Add(GetTerritoryFromNode(node));
         }
-
+        
+        Debug.Log("Quindi ritorno in totale " + territories.Count + " territori");
         return territories;
     }
     
