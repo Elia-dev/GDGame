@@ -135,10 +135,10 @@ public class GameManager
     {
         if (_playersDict.TryGetValue(playerId, out string name))
         {
-            Debug.Log($"Player trovato: ID = {playerId}, Nome = {name}");
+            //Debug.Log($"Player trovato: ID = {playerId}, Nome = {name}");
             return name;
         }
-        Debug.Log($"Player non trovato: ID = {playerId}");
+        //Debug.Log($"Player non trovato: ID = {playerId}");
         return "This player doesn't exist";
     }
     
