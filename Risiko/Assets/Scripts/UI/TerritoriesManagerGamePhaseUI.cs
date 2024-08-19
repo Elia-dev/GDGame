@@ -131,7 +131,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
 
             foreach (var territory in _neighborhoodTeeritories) {
                 _readyToAttack = true;
-                Debug.Log(territory.name + " del player: " + territory.player_id);
+                Debug.Log("ID: " + territory.id + "Nome territorio: " + territory.name + " del player: " + territory.player_id);
                 GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
                 _neighborhoodGameObj.Add(terr);
                 if (terr is not null) {
