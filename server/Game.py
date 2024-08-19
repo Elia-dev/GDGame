@@ -87,6 +87,7 @@ class Game:
         await self.broadcast("INITIAL_ARMY_NUMBER: " + str(initial_army_number))
         await self.broadcast("IS_YOUR_TURN: FALSE")
         await self.army_color_chose()
+        #MANDARE LISTA DI TUTTI I COLORI DI TUTTI I PLAYER
         await self._give_objective_cards()
         await self._assignDefaultArmiesOnTerritories()
         await self.broadcast("PREPARATION_PHASE_TERMINATED")
