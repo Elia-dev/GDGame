@@ -168,7 +168,9 @@ public class RequestHandler
                 int attacker_army_num = int.Parse(armyNums[0]);
                 int defender_army_num = int.Parse(armyNums[1]);
                 
-                
+                GameManager.Instance.setEnemyAttackerArmyNum(attacker_army_num);
+                GameManager.Instance.setMyArmyNumToDefende(defender_army_num);
+                // Mi salvo quale è lo stato che mi sta attaccando, e di chi è
                 foreach (var terr in GameManager.Instance.AllTerritories)
                 {
                     if (attacker_ter_id == terr.id)
@@ -182,6 +184,23 @@ public class RequestHandler
                         GameManager.Instance.getEnemyAttackerTerritory().function = terr.function;
                         GameManager.Instance.getEnemyAttackerTerritory().image = terr.image;
                         GameManager.Instance.getEnemyAttackerTerritory().player_id = terr.player_id;
+                    }
+                }
+                
+                // Mi salvo quale mio stato sta venendo attaccato
+                foreach (var terr in GameManager.Instance.AllTerritories)
+                {
+                    if (defender_ter_id == terr.id)
+                    {
+                        GameManager.Instance.getMyTerritoryUnderAttack().id = defender_ter_id;
+                        GameManager.Instance.getMyTerritoryUnderAttack().name = terr.name;
+                        GameManager.Instance.getMyTerritoryUnderAttack().continent = terr.continent;
+                        GameManager.Instance.getMyTerritoryUnderAttack().node = terr.node;
+                        GameManager.Instance.getMyTerritoryUnderAttack().num_tanks = terr.num_tanks;
+                        GameManager.Instance.getMyTerritoryUnderAttack().description = terr.description;
+                        GameManager.Instance.getMyTerritoryUnderAttack().function = terr.function;
+                        GameManager.Instance.getMyTerritoryUnderAttack().image = terr.image;
+                        GameManager.Instance.getMyTerritoryUnderAttack().player_id = terr.player_id;
                     }
                 }
                 
