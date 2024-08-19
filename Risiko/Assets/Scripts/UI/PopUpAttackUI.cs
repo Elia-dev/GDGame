@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PopUpAddTankUI : MonoBehaviour
+public class PopUpAttackUI : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -13,6 +13,10 @@ public class PopUpAddTankUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+    }
+
+    public static void SetPupUp(Territory territory, GameObject gameObjTerritory) {
         
     }
 }

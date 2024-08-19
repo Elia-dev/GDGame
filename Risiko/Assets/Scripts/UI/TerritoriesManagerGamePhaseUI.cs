@@ -15,10 +15,8 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
     private bool _reinforcePhase = true;
     private bool _attackphase = false;
     private bool _isTurnInitialized = false;
+    private bool _readyToAttack = false;
     public bool IsPhaseGoing { get; set; } = false;
-    //private float _delay = 5.0f; // Durata del ritardo in secondi
-    //private float _timer;
-
     public bool ReinforcePhase {
         get => _reinforcePhase;
         set => _reinforcePhase = value;
@@ -114,22 +112,25 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
     }
     
     public void SelectState(TerritoryHandlerUI newTerritory) {
-        if (selectedTerritory is not null) {
+        if (selectedTerritory is not null && !_readyToAttack) {
             selectedTerritory.Deselect();
         }
         selectedTerritory = newTerritory;
         selectedTerritory.Select();
         Debug.Log("Selezionato lo stato " + selectedTerritory.gameObject.name);
         //Faccio apparire informazioni stato
-        if(TerritoryInformationsPlayer(selectedTerritory.name) is not null)
+        if (TerritoryInformationsPlayer(selectedTerritory.name) is not null) {
             Debug.Log("I suoi vicini sono:");
             //Interrogazione server per ricevere la lista dei territori vicini
-            _neighborhoodTeeritories = Utils.GetNeighborsOf(TerritoryInformationsPlayer(selectedTerritory.gameObject.name));
+            _neighborhoodTeeritories =
+                Utils.GetNeighborsOf(TerritoryInformationsPlayer(selectedTerritory.gameObject.name));
             Debug.Log("Lista di tutti i territori Selezione:");
             foreach (var terr in _neighborhoodTeeritories) {
                 Debug.Log(terr);
             }
+
             foreach (var territory in _neighborhoodTeeritories) {
+                _readyToAttack = true;
                 Debug.Log(territory.name + " del player: " + territory.player_id);
                 GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
                 _neighborhoodGameObj.Add(terr);
@@ -139,6 +140,9 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
                     terr.GetComponent<SpriteRenderer>().color = tempColor;
                 }
             }
+        } else if (TerritoryInformationsOtherPLayers(selectedTerritory.name) is not null && _readyToAttack) {
+            
+        }
     }
 
     Territory TerritoryInformationsPlayer(string id) {
