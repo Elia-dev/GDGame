@@ -77,7 +77,7 @@ class Game:
             for territory in player.territories:
                 territories_list.append(territory.to_dict())
         await self.broadcast("SEND_TERRITORIES_TO_ALL: " + json.dumps(territories_list, indent=4))
-	
+
         initial_army_number = self.__army_start_num__(len(self.players))
         print("Initial army number: " + str(initial_army_number))
         for player in self.players:
@@ -136,9 +136,6 @@ class Game:
                 self.event = asyncio.Event()
                 self.event_strategic_movement = asyncio.Event()
                 print("Strategic movement terminated")
-
-
-
 
                 # STRATEGIC MOVEMENT
                 # await self.event.wait()
@@ -206,6 +203,17 @@ class Game:
                     print("Eseguito json.load sul messaggio")
                     territories = [Territory.Territory.from_dict(data) for data in territories_list_dict]
                     print("Eseguito from dict sulla lista dei dizionari sul messaggio")
+                    print("RISULTATO DEL FROM DICT: ")
+                    for terr in territories:
+                        print("Id:" + terr.id)
+                        print("Name:" + terr.name)
+                        print("Image:" +terr.image)
+                        print("function:"+terr.function)
+                        print("description:"+terr.description)
+                        print("player_id:"+terr.player_id)
+                        print("continent:"+terr.continent)
+                        print("node:"+terr.node)
+                        print("num_tanks:"+terr.num_tanks)
                     for player in self.players:
                         if player.player_id == id:
                             player.territories = territories
@@ -221,10 +229,9 @@ class Game:
 
                     await self.broadcast("SEND_TERRITORIES_TO_ALL: " + json.dumps(territories_list, indent=4))
                     print("Fine aggiornamento territori, mandati al client")
-                    self.event_strategic_movement.set() # Sfrutto la stessa funzione per controllare se il giocatore effettua il movimento strategico
-                                                        # durante la fase di gioco
+                    self.event_strategic_movement.set()  # Sfrutto la stessa funzione per controllare se il giocatore effettua il movimento strategico
+                    # durante la fase di gioco
                     self.event.set()
-
 
                 if "REQUEST_TERRITORY_INFO:" in message:  # TOBE TESTED
                     message = self._remove_request(message, "REQUEST_TERRITORY_INFO: ")
@@ -270,7 +277,7 @@ class Game:
                             defender_territory = terr
                     attacker_army_num, defender_army_num = clean_message[2].split("-")
 
-                    #Tell the defender it's under attack
+                    # Tell the defender it's under attack
                     await defender_player.sock.send(
                         "UNDER_ATTACK: " + attacker_id + ", " + attacker_ter_id + "-" + defender_ter_id + ", "
                         + attacker_army_num + "-" + defender_army_num)
@@ -307,7 +314,7 @@ class Game:
                             territories_list.append(territory.to_dict())
 
                     await self.broadcast("SEND_TERRITORIES_TO_ALL: " + json.dumps(territories_list, indent=4))
-                    #Mandare un messaggio all'attaccante e all'attaccato per dirgli che l'attacco è finito?
+                    # Mandare un messaggio all'attaccante e all'attaccato per dirgli che l'attacco è finito?
                     self.event.set()
 
                 self.queue.task_done()
@@ -424,10 +431,10 @@ class Game:
                     player.addTerritory(card_drawn)
                     cards.remove(card_drawn)
                     print("Extracted TERRITORY card " + card_drawn.id + " for player " + player.name)
+
         for player in self.players:
             territories_list = [terr.to_dict() for terr in player.territories]
-            await player.sock.send("TERRITORIES_CARDS_ASSIGNED: " + json.dumps(territories_list,
-                                                                               indent=4))  # Indent only for better readable
+            await player.sock.send("TERRITORIES_CARDS_ASSIGNED: " + json.dumps(territories_list, indent=4))  # Indent only for better readable
         print("sent")
 
     async def _assignDefaultArmiesOnTerritories(self):
