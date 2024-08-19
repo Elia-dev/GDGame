@@ -82,7 +82,9 @@ public class HostMenuUI : MonoBehaviour
         {
             
             ClientManager.Instance.StartHostGame();
-            popUpDiceHostMenu.SetActive(true);
+            //popUpDiceHostMenu.SetActive(true);
+            //Invio messaggio per skip
+            //SceneManager.LoadScene("Main");
         });
         
         updateButton.onClick.AddListener(() =>

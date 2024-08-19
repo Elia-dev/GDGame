@@ -41,6 +41,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         //TerritoryHandlerUI.ArmyDistributionPhase();
         popUpAddTank.GetComponent<Image>().color = TerritoryHandlerUI.userColor;
         activateTerritories();*/
+        TerritoryHandlerUI.UserColor = Utils.ColorCode(Player.Instance.ArmyColor, 200);
     }
     
     //Scorre la lista dei territori territori assegnati al giocatori per ognuno di questi:
@@ -205,11 +206,6 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     public void StartTurn() {
         _isTurnInitialized = true; // Attiva il turno
         // Cattura le armate da posizionare
-        Debug.Log("Tanks Avalable: " + Player.Instance.TanksAvailable);
-        Debug.Log("Tanks Num: " + Player.Instance.TanksNum);
-        Debug.Log("Tanks Placed: " + Player.Instance.TanksPlaced);
-        Debug.Log("Distr phase " + distributionPhase);
-        //while(!distributionPhase && Player.Instance.TanksAvailable > 0 && Player.Instance.Territories.Count >= 3) {}
         _armyNumber = Player.Instance.TanksAvailable;
         if (_armyNumber > 3 && distributionPhase) {
             _armyNumber = 3;
