@@ -21,8 +21,8 @@ class Territory(Card):
 
     @classmethod
     def from_dict(cls, data):
-        return cls(data["id"], data["image"], data["function"], data["description"], data["player_id"],
-                   data["name"], data["num_tanks"], data["continent"], data["node"])
+        return cls(data["id"], data["image"], data["function"], data["description"],
+                   data["name"], data["continent"], data["node"], data["player_id"], data["num_tanks"])
 
     def __repr__(self):
         return (

@@ -212,8 +212,8 @@ class Game:
                         print("description:"+terr.description)
                         print("player_id:"+terr.player_id)
                         print("continent:"+terr.continent)
-                        print("node:"+terr.node)
-                        print("num_tanks:"+terr.num_tanks)
+                        print("node:"+ str(terr.node))
+                        print("num_tanks:"+ str(terr.num_tanks))
                     for player in self.players:
                         if player.player_id == id:
                             player.territories = territories
