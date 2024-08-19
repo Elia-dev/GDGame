@@ -25,6 +25,8 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     private bool _isTurnInitialized = false; // Variabile per tracciare se il turno è stato inizializzato
     private int _armyNumber;
 
+    public int ArmyNumber => _armyNumber;
+
     public void Start() {
         //TUTTA ROBA DI DEBUG
         /*TerritoryHandlerUI.userColor = new Color32(0, 0, 255, 200);
