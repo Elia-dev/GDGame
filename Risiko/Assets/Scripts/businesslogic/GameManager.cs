@@ -8,6 +8,7 @@ public class GameManager
     private static GameManager _instance;
     private static readonly object Lock = new object();
     private Territory _enemyAttackerTerritory = null;
+    private Territory _myTerritoryUnderAttack = null;
     private Dictionary<string, string> _playersDict = new Dictionary<string, string>();
     private Dictionary<string, string> _colorsDict = new Dictionary<string, string>();
     public List<Territory> AllTerritories = new List<Territory>(); // Lista di tutti i territori della partita
@@ -22,18 +23,10 @@ public class GameManager
     private bool _gamePhase = false;
     private bool _imUnderAttack = false;
     private string _playingPlayer = "";
+    private int _enemy_attacker_army_num = 0;
+    private int _my_army_num_to_defende = 0;
 
     private string _lobbyID;
-    /*
-     * - Stato  fantoccio da riempire con le richieste mandate al server.
-     * "esempio" seleziono il canada, quindi chiedo al server info sul canada, oil server mi manda le info che io vado a mettere
-     * nello stato fantoccio
-     *
-     * - Dizionario idPlayer - Nome
-     * - idLobby
-     * - 
-     */
-    
     
     private GameManager() // Private constructor to allow instantiation using singleton only
     {
@@ -54,6 +47,36 @@ public class GameManager
         }
     }
 
+    public int getMyARmyNUmToDefende()
+    {
+        return _my_army_num_to_defende;
+    }
+
+    public void setMyArmyNumToDefende(int numArmy)
+    {
+        _my_army_num_to_defende = numArmy;
+    }
+
+    public void resetMyArmyNumToDefende()
+    {
+        _my_army_num_to_defende = 0;
+    }
+    
+    public int GetEnemyAttackerArmyNum()
+    {
+        return _enemy_attacker_army_num;
+    }
+
+    public void setEnemyAttackerArmyNum(int numArmy)
+    {
+        _enemy_attacker_army_num = numArmy;
+    }
+
+    public void resetEnemyAttackerArmyNum()
+    {
+        _enemy_attacker_army_num = 0;
+    }
+    
     public void AddPlayerColor(string id, string color)
     {
         if (!_colorsDict.ContainsKey(id))
@@ -89,11 +112,8 @@ public class GameManager
             Debug.Log($"Colore trovato: ID = {id}, Colore = {color}");
             return color;
         }
-        else
-        {
-            Debug.Log($"Il colore con ID = {id} non è stato trovato.");
-            return "Player non trovato";
-        }
+        Debug.Log($"Il colore con ID = {id} non è stato trovato.");
+        return "Player non trovato";
     }
     
     public string getPlayingPlayer()
@@ -104,6 +124,11 @@ public class GameManager
     public void setPlayingPlayer(string player)
     {
         _playingPlayer = player;
+    }
+
+    public void resetPlayingPlayer()
+    {
+        _playingPlayer = "";
     }
     
     public string getEnemyNameById(string playerId)
@@ -144,6 +169,21 @@ public class GameManager
         }
     }
     
+    public Territory getMyTerritoryUnderAttack()
+    {
+        if (_myTerritoryUnderAttack is null)
+        {
+            _myTerritoryUnderAttack = Territory.EmptyTerritory();
+        }
+
+        return _myTerritoryUnderAttack;
+    }
+    
+    public void deleteMyTerritoryUnderAttack()
+    {
+        _myTerritoryUnderAttack = null;
+    }
+    
     public Territory getEnemyAttackerTerritory()
     {
         if (_enemyAttackerTerritory is null)
@@ -153,8 +193,6 @@ public class GameManager
 
         return _enemyAttackerTerritory;
     }
-    
-    
 
     public void deleteAttackerTerritory()
     {
