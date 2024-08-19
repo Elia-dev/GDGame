@@ -16,6 +16,11 @@ public class Territory : Card
         this.continent = continent;
         this.node = node;
     }
+
+    public static Territory EmptyTerritory()
+    {
+        return new Territory(null, null, null, null, null, null, null, -1, -1);
+    }
     
     public new string ToJson()
     {

@@ -114,6 +114,7 @@ class Game:
                 print("Waiting for player to end the reinforce phase")
                 await self.event.wait()  # Aggiorna lo stato di tutti i territori ai client
                 self.event = asyncio.Event()  # Event reset
+                self.event_strategic_movement = asyncio.Event()
                 player.tanks_available = 0
                 player.tanks_placed += num_army_to_send
                 print("Reinforced phase terminated")
@@ -129,12 +130,12 @@ class Game:
                     self.event = asyncio.Event()
                     await self.event.wait()  # Attendo un attacco o un movimento strategico
 
-                print("[fake] Fight phase terminated")
+                print("Fight phase terminated")
                 # FIGHT PHASE TERMINATED
 
                 self.event = asyncio.Event()
                 self.event_strategic_movement = asyncio.Event()
-                print("[fake] Strategic movement terminated")
+                print("Strategic movement terminated")
 
 
 
@@ -220,7 +221,10 @@ class Game:
 
                     await self.broadcast("SEND_TERRITORIES_TO_ALL: " + json.dumps(territories_list, indent=4))
                     print("Fine aggiornamento territori, mandati al client")
+                    self.event_strategic_movement.set() # Sfrutto la stessa funzione per controllare se il giocatore effettua il movimento strategico
+                                                        # durante la fase di gioco
                     self.event.set()
+
 
                 if "REQUEST_TERRITORY_INFO:" in message:  # TOBE TESTED
                     message = self._remove_request(message, "REQUEST_TERRITORY_INFO: ")
@@ -236,7 +240,7 @@ class Game:
                                 await tempPlayer.sock.send(
                                     "RECEIVED_REQUEST_TERRITORY_INFO: " + json.dumps(territory.to_dict()))
 
-                if "TERRITORY_ATTACK:" in message:
+                if "ATTACK_TERRITORY:" in message:
                     # (parte animazione su clientAttaccante con messaggio C->S) TERRITORY_ATTACK: idPlayerAttaccante-idPlayerDifensore, idTerrAttaccante-idTerrDifensore, numArmateAttaccante-numArmateDifensore
 
                     random.seed(time.time())
@@ -245,7 +249,7 @@ class Game:
                     attacker_territory = None
                     defender_territory = None
                     # Received TERRITORY_ATTACK: idPlayerAttaccante-idPlayerDifensore, idTerrAttaccante-idTerrDifensore, numArmateAttaccante-numArmateDifensore
-                    message = self._remove_request(message, "TERRITORY_ATTACK: ")
+                    message = self._remove_request(message, "ATTACK_TERRITORY: ")
 
                     # Split the message in segments using comma as a separator removing blank space at the start and the end of the message
                     clean_message = [segmento.strip() for segmento in message.split(",")]

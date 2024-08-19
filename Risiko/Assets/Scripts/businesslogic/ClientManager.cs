@@ -169,6 +169,24 @@ public class ClientManager
         await SendMessage(_webSocket, _cancellationToken, "UPDATE_TERRITORIES_STATE: " + Player.Instance.PlayerId + ", " + JsonConvert.SerializeObject(Player.Instance.Territories));
     }
 
+    public async void AttackEnemyTerritory(Territory myTerritory, Territory enemyTerritory, int myNumArmy)
+    {
+        int enemyNumArmy;
+        if (enemyTerritory.num_tanks >= 3)
+        {
+            enemyNumArmy = 3;
+        }
+        else
+        {
+            enemyNumArmy = enemyTerritory.num_tanks;
+        }
+        
+        await SendMessage(_webSocket, _cancellationToken, "ATTACK_TERRITORY: " + 
+                                                          Player.Instance.PlayerId + "-" + enemyTerritory.player_id + ", " + 
+                                                          enemyTerritory.id + "-" + myTerritory.id + ", " + 
+                                                          myNumArmy.ToString() + "-" + enemyNumArmy.ToString());
+    }
+    
     public async void RequestTerritoryInfo(string Terr_id)
     {
         await SendMessage(_webSocket, _cancellationToken, "REQUEST_TERRITORY_INFO: " + Player.Instance.PlayerId + "-" + Terr_id);

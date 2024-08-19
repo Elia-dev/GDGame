@@ -136,12 +136,6 @@ public class RequestHandler
                 Player.Instance.TanksNum += armyNumber;
                 Debug.Log("Tanks Available server: " + Player.Instance.TanksAvailable);
             }
-            else if (message.Contains("RECEIVED_REQUEST_TERRITORY_INFO:"))
-            {
-                Debug.Log("Server_Request: RECEIVED_REQUEST_TERRITORY_INFO");
-                _request = RemoveRequest(message, "RECEIVED_REQUEST_TERRITORY_INFO: ");
-                GameManager.Instance.PuppetState = JsonConvert.DeserializeObject<Territory>(_request);
-            }
             else if (message.Contains("PREPARATION_PHASE_TERMINATED"))
             {
                 Debug.Log("Server_Request: PREPARATION_PHASE_TERMINATED");
@@ -153,6 +147,44 @@ public class RequestHandler
                 Debug.Log("Server_Request: SEND_TERRITORIES_TO_ALL");
                 _request = RemoveRequest(message, "SEND_TERRITORIES_TO_ALL: ");
                 GameManager.Instance.AllTerritories = JsonConvert.DeserializeObject<List<Territory>>(_request);
+            }
+            else if (message.Contains("UNDER_ATTACK"))
+            {
+                //UNDER_ATTACK: attackerId, attacker_ter_id-defender_ter_id, attacker_army_num-defender_army_num
+                Debug.Log("Server_Request: UNDER_ATTACK");
+                GameManager.Instance.setImUnderAttack(true);
+                _request = RemoveRequest(message, "UNDER_ATTACK: ");
+                
+                _request = _request.Replace(" ", "");
+                
+                string[] parts = _request.Split(',');
+                string attackerId = parts[0];
+                
+                string[] terIds = parts[1].Split('-');
+                string attacker_ter_id = terIds[0];
+                string defender_ter_id = terIds[1];
+                
+                string[] armyNums = parts[2].Split('-');
+                int attacker_army_num = int.Parse(armyNums[0]);
+                int defender_army_num = int.Parse(armyNums[1]);
+                
+                
+                foreach (var terr in GameManager.Instance.AllTerritories)
+                {
+                    if (attacker_ter_id == terr.id)
+                    {
+                        GameManager.Instance.getEnemyAttackerTerritory().id = attacker_ter_id;
+                        GameManager.Instance.getEnemyAttackerTerritory().name = terr.name;
+                        GameManager.Instance.getEnemyAttackerTerritory().continent = terr.continent;
+                        GameManager.Instance.getEnemyAttackerTerritory().node = terr.node;
+                        GameManager.Instance.getEnemyAttackerTerritory().num_tanks = terr.num_tanks;
+                        GameManager.Instance.getEnemyAttackerTerritory().description = terr.description;
+                        GameManager.Instance.getEnemyAttackerTerritory().function = terr.function;
+                        GameManager.Instance.getEnemyAttackerTerritory().image = terr.image;
+                        GameManager.Instance.getEnemyAttackerTerritory().player_id = terr.player_id;
+                    }
+                }
+                
             }
             else
             {

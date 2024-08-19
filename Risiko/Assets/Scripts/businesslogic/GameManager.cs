@@ -7,11 +7,11 @@ public class GameManager
 {
     private static GameManager _instance;
     private static readonly object Lock = new object();
-    public Territory PuppetState;
+    private Territory _enemyAttackerTerritory = null;
+    private Dictionary<string, string> _playersDict = new Dictionary<string, string>();
     public List<Territory> AllTerritories = new List<Territory>(); // Lista di tutti i territori della partita
     public List<string> PlayersName = new List<string>(); 
     public List<string> AvailableColors = new List<string>(); 
-    private Player _player;
     private string _gameOrder = "";
     private int _extractedNumber = 0;
     private string _gameOrderExtractedNumbers = "";
@@ -19,6 +19,8 @@ public class GameManager
     private bool _gameRunning = true;
     private bool _preparationPhase = true;
     private bool _gamePhase = false;
+    private bool _imUnderAttack = false;
+    private string _playingPlayer = "";
 
     private string _lobbyID;
     /*
@@ -51,6 +53,79 @@ public class GameManager
         }
     }
 
+    public string getPlayingPlayer()
+    {
+        return _playingPlayer;
+    }
+
+    public void setPlayingPlayer(string player)
+    {
+        _playingPlayer = player;
+    }
+    
+    public string getEnemyNameById(string playerId)
+    {
+        if (_playersDict.TryGetValue(playerId, out string name))
+        {
+            Debug.Log($"Player trovato: ID = {playerId}, Nome = {name}");
+            return name;
+        }
+        Debug.Log($"Player non trovato: ID = {playerId}");
+        return "This player doesn't exist";
+    }
+    
+    public void AddPlayerToLobbyDict(string playerId, string name)
+    {
+        if (!_playersDict.ContainsKey(playerId))
+        {
+            _playersDict.Add(playerId, name);
+            Debug.Log($"Player aggiunto: ID = {playerId}, Nome = {name}");
+        }
+        else
+        {
+            Debug.Log($"Il player con ID = {playerId} esiste già.");
+        }
+    }
+
+    // Funzione per rimuovere un player dal dizionario
+    public void RemovePlayerFromLobbyDict(string playerId)
+    {
+        if (_playersDict.ContainsKey(playerId))
+        {
+            _playersDict.Remove(playerId);
+            Debug.Log($"Player con ID = {playerId} rimosso.");
+        }
+        else
+        {
+            Debug.Log($"Il player con ID = {playerId} non esiste.");
+        }
+    }
+    
+    public Territory getEnemyAttackerTerritory()
+    {
+        if (_enemyAttackerTerritory is null)
+        {
+            _enemyAttackerTerritory = Territory.EmptyTerritory();
+        }
+
+        return _enemyAttackerTerritory;
+    }
+    
+    
+
+    public void deleteAttackerTerritory()
+    {
+        _enemyAttackerTerritory = null;
+    }
+    public void setImUnderAttack(bool value)
+    {
+        _imUnderAttack = value;
+    }
+
+    public bool getImUnderAttack()
+    {
+        return _imUnderAttack;
+    }
     public void ResetGameManager()
     {
         _instance = null;
