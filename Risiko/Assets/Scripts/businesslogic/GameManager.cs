@@ -9,6 +9,7 @@ public class GameManager
     private static readonly object Lock = new object();
     private Territory _enemyAttackerTerritory = null;
     private Dictionary<string, string> _playersDict = new Dictionary<string, string>();
+    private Dictionary<string, string> _colorsDict = new Dictionary<string, string>();
     public List<Territory> AllTerritories = new List<Territory>(); // Lista di tutti i territori della partita
     public List<string> PlayersName = new List<string>(); 
     public List<string> AvailableColors = new List<string>(); 
@@ -53,6 +54,48 @@ public class GameManager
         }
     }
 
+    public void AddPlayerColor(string id, string color)
+    {
+        if (!_colorsDict.ContainsKey(id))
+        {
+            _colorsDict.Add(id, color);
+            Debug.Log($"Colore aggiunto: ID = {id}, Colore = {color}");
+        }
+        else
+        {
+            Debug.Log($"Il colore con ID = {id} esiste già.");
+        }
+    }
+
+    // Funzione per rimuovere un colore dal dizionario
+    public void RemovePlayerColor(string id)
+    {
+        if (_colorsDict.ContainsKey(id))
+        {
+            _colorsDict.Remove(id);
+            Debug.Log($"Colore con ID = {id} rimosso.");
+        }
+        else
+        {
+            Debug.Log($"Il colore con ID = {id} non esiste.");
+        }
+    }
+
+    // Funzione per leggere un colore dal dizionario
+    public string GetPlayerColor(string id)
+    {
+        if (_colorsDict.TryGetValue(id, out string color))
+        {
+            Debug.Log($"Colore trovato: ID = {id}, Colore = {color}");
+            return color;
+        }
+        else
+        {
+            Debug.Log($"Il colore con ID = {id} non è stato trovato.");
+            return "Player non trovato";
+        }
+    }
+    
     public string getPlayingPlayer()
     {
         return _playingPlayer;
