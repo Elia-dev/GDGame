@@ -231,12 +231,10 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
             selectedTerritory = null;
             _neighborhoodGameObj = new List<GameObject>();
             _neighborhoodTeeritories = new List<Territory>();
-            
-            if (enemyTerritory is not null) {
-                Debug.Log("DESELECT NEMICO");
-                enemyTerritory.Deselect();
-                enemyTerritory = null;
-            }
+        }
+        if (enemyTerritory is not null) {
+            enemyTerritory.Deselect();
+            enemyTerritory = null;
         }
     }
 }
