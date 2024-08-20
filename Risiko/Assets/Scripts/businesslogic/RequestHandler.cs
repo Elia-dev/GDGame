@@ -95,6 +95,12 @@ public class RequestHandler
                 _request = RemoveRequest(message, "IS_YOUR_TURN: ");
                 Player.Instance.IsMyTurn = _request.Equals("TRUE");
             }
+            else if (message.Contains("PLAYER_TURN"))
+            {
+                Debug.Log("Server_Request: PLAYER_TURN");
+                _request = RemoveRequest(message, "PLAYER_TURN: ");
+                GameManager.Instance.setIdPlayingPlayer(_request);
+            }
             else if (message.Contains("AVAILABLE_COLORS:"))
             {
                 Debug.Log("Server_Request: AVAILABLE_COLORS");

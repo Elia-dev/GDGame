@@ -27,7 +27,7 @@ public class GameManagerUI : MonoBehaviour {
         if (Player.Instance.IsMyTurn) 
             turn.text = "Is your turn!";
         else
-            turn.text = GameManager.Instance.getEnemyNameById(GameManager.Instance.getPlayingPlayer()) + "'s turn!"; //DA CAMBIARE CON IL TURNO DEL PLAYER
+            turn.text = GameManager.Instance.getEnemyNameById(GameManager.Instance.getIdPlayingPlayer()) + "'s turn!"; //DA CAMBIARE CON IL TURNO DEL PLAYER
         
         if (!_settingGame && TerritoriesManagerUI.distributionPhase) {
             turnInfo.text = "<u>Distribution Phase!</u>\nSelect your states and add " +

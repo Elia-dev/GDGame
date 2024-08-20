@@ -22,7 +22,7 @@ public class GameManager
     private bool _preparationPhase = true;
     private bool _gamePhase = false;
     private bool _imUnderAttack = false;
-    private string _playingPlayer = "";
+    private string _idPlayingPlayer = "";
     private int _enemyAttackerArmyNum = 0;
     private int _myArmyNumToDefende = 0;
 
@@ -116,19 +116,19 @@ public class GameManager
         return "Player non trovato";
     }
     
-    public string getPlayingPlayer()
+    public string getIdPlayingPlayer()
     {
-        return _playingPlayer;
+        return _idPlayingPlayer;
     }
 
-    public void setPlayingPlayer(string player)
+    public void setIdPlayingPlayer(string player)
     {
-        _playingPlayer = player;
+        _idPlayingPlayer = player;
     }
 
-    public void resetPlayingPlayer()
+    public void resetIdPlayingPlayer()
     {
-        _playingPlayer = "";
+        _idPlayingPlayer = "";
     }
     
     public string getEnemyNameById(string playerId)

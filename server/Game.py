@@ -92,8 +92,8 @@ class Game:
         await self.broadcast("IS_YOUR_TURN: FALSE")
         await self.army_color_chose()
         dict_id_color = "ID_COLORS_DICT: "
-        for player in self.players:
-            dict_id_color += player.player_id + "-" + player.army_color + ", "
+        dict_id_color += ", ".join([f"{player.player_id}-{player.army_color}" for player in self.players])
+        print("DICT ID COLOR DA MANDARE: " + dict_id_color)
         await self.broadcast(dict_id_color)
         await self._give_objective_cards()
         await self._assignDefaultArmiesOnTerritories()
@@ -105,6 +105,7 @@ class Game:
         print("---INIZIO FASE DI GIOCO---")
         while self.game_running:
             for player in self.players:
+                await self.broadcast("PLAYER_TURN: " + player.player_id)
                 print(f"Turno del player id: {player.player_id} con nome {player.name}")
                 print("REINFORCE PHASE")
                 # REINFORCE PHASE
