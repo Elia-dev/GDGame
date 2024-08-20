@@ -67,8 +67,6 @@ class Game:
                 return
             await asyncio.sleep(2)
 
-
-
         # Preparation phase
         await self.__game_order__()
         name_id_dict = "ID_NAMES_DICT: " + ", ".join(f"{player.player_id}-{player.name}" for player in self.players)
@@ -219,13 +217,13 @@ class Game:
                     for terr in territories:
                         print("Id:" + terr.id)
                         print("Name:" + terr.name)
-                        print("Image:" +terr.image)
-                        print("function:"+terr.function)
-                        print("description:"+terr.description)
-                        print("player_id:"+terr.player_id)
-                        print("continent:"+terr.continent)
-                        print("node:"+ str(terr.node))
-                        print("num_tanks:"+ str(terr.num_tanks))
+                        print("Image:" + terr.image)
+                        print("function:" + terr.function)
+                        print("description:" + terr.description)
+                        print("player_id:" + terr.player_id)
+                        print("continent:" + terr.continent)
+                        print("node:" + str(terr.node))
+                        print("num_tanks:" + str(terr.num_tanks))
                     for player in self.players:
                         if player.player_id == id:
                             player.territories = territories
@@ -241,6 +239,7 @@ class Game:
 
                     await self.broadcast("SEND_TERRITORIES_TO_ALL: " + json.dumps(territories_list, indent=4))
                     print("Fine aggiornamento territori, mandati al client")
+                    print("PASSATO ASSEGNAZIONE TERRITORI OPPURE MOVIMENTO STRATEGICO")
                     self.event_strategic_movement.set()  # Sfrutto la stessa funzione per controllare se il giocatore effettua il movimento strategico
                     # durante la fase di gioco
                     self.event.set()
@@ -279,7 +278,8 @@ class Game:
                             attacker_player = player
                         if player.player_id == defender_id:
                             defender_player = player
-
+                    print(f"!!!OH MY GOD, {attacker_player.name} IS TRYING TO FUCK {defender_player.name}'S GIRL")
+                    print(f"id attaccante: {attacker_player.player_id}  id difensore: {defender_player.player_id}")
                     attacker_ter_id, defender_ter_id = clean_message[1].split("-")
                     for terr in attacker_player.territories:
                         if terr.id == attacker_ter_id:
@@ -287,13 +287,16 @@ class Game:
                     for terr in defender_player.territories:
                         if terr.id == defender_ter_id:
                             defender_territory = terr
+                    print(
+                        f"{attacker_player.name} IS USING {attacker_territory.name} TO FUCK {defender_territory.name} OWNED BY {defender_player.name}")
                     attacker_army_num, defender_army_num = clean_message[2].split("-")
-
+                    print(
+                        f"{attacker_player.name} WILL USE {attacker_army_num} AGAINST {defender_army_num} ARMY OWNED BY {defender_player.name}")
                     # Tell the defender it's under attack
                     await defender_player.sock.send(
                         "UNDER_ATTACK: " + attacker_id + ", " + attacker_ter_id + "-" + defender_ter_id + ", "
                         + attacker_army_num + "-" + defender_army_num)
-
+                    print("Server ha avvisato il difensore che sta per essere scassato")
                     # genera n numeri casuali, con n numero di armate
                     extracted_numbers_attacker = [random.randint(1, 6) for _ in range(attacker_army_num)]
                     extracted_numbers_defender = [random.randint(1, 6) for _ in range(defender_army_num)]
@@ -301,24 +304,44 @@ class Game:
                     extracted_numbers_defender.sort(reverse=True)
                     attacker_wins = 0
                     defender_wins = 0
-
+                    print(
+                        f"Generati {len(extracted_numbers_attacker)} numeri per l'attaccante, {len(extracted_numbers_defender)} per il difensore")
+                    print("Inizio confronto:")
                     # Confronto, in ordine, del più grande dell'attaccante con il più piccolo dell'attaccante
                     for attacker_num, defender_num in zip(extracted_numbers_attacker, extracted_numbers_defender):
+                        print(f"Num att: {attacker_num} num def: {defender_num}")
                         if attacker_num > defender_num:
+                            print("L'attaccante vince il confronto")
                             attacker_wins += 1
                         else:
+                            print("Il difensore vince il confronto")
                             defender_wins += 1
-
+                    print(f"ATTACCANTE VINCE {attacker_wins} CONFRONTI, DIFENSORE VINCE {defender_wins} CONFRONTI")
                     # Rimuove i carri in funzione del risultato precedente
                     attacker_territory.num_tanks -= defender_wins
                     defender_territory.num_tanks -= attacker_wins
 
+                    print(
+                        f"Armate rimaste in {attacker_territory.name} posseduto da {attacker_player.name}: {attacker_territory.num_tanks}")
+                    print(
+                        f"Armate rimaste in {defender_territory.name} posseduto da {defender_player.name}: {defender_territory.num_tanks}")
+
+                    print(f"Prima {attacker_player.name} aveva {len(attacker_player.territories)} territori")
+                    print(f"Sempre prima {defender_player.name} aveva {len(defender_player.territories)} territori")
                     if defender_territory.num_tanks == 0:  # Capisce se il territorio attaccato è stato conquistato oppure no
+                        print(f"OH NO! {defender_player.name} È STATO SCOPATO!!")
                         defender_territory.player_id = attacker_id
                         defender_player.removeTerritory(defender_territory)
                         defender_territory.num_tanks = attacker_army_num - defender_wins
                         attacker_player.addTerritory(defender_territory)
+                        print(
+                            f"Adesso {defender_territory.name} appartinene a {defender_territory.player_id} con {defender_territory.num_tanks} armate")
+                    else:
+                        print(
+                            f"Il brother {defender_player.name} ha scopato la mamma dell'attaccante {attacker_player.name}")
 
+                    print(f"Adesso {attacker_player.name} ha {len(attacker_player.territories)} territori")
+                    print(f"Sempre adesso {defender_player.name} ha {len(defender_player.territories)} territori")
                     # updateAllTerritories in broadcast e controllo lato client della vittoria/sconfitta
                     territories_list = []
                     for player in self.players:
@@ -326,10 +349,13 @@ class Game:
                             territories_list.append(territory.to_dict())
 
                     await self.broadcast("SEND_TERRITORIES_TO_ALL: " + json.dumps(territories_list, indent=4))
+                    print("Aggiornati tutti i client sul risultato del combattimento")
                     if len(defender_player.territories) == 0:
+                        print(f"Il brother {defender_player.name} è stato scopato così forte che è morto nell'atto e adesso verrà rimosso dalla lista dei players vivi per essere messo in quella dei players scassati...")
                         defender_player.killed_by = attacker_player
                         self.dead_players.append(defender_player)
                         self.players.remove(defender_player)
+                        print("done")
                     # Mandare un messaggio all'attaccante e all'attaccato per dirgli che l'attacco è finito?
                     self.event.set()
 
@@ -431,10 +457,14 @@ class Game:
             control = True
             while control:
                 card_drawn = cards[random.randint(0, len(cards) - 1)]
-                if (player.army_color == "red" and card_drawn.id == "obj9") or (player.army_color == "blue" and card_drawn.id == "obj10") or (player.army_color == "green" and card_drawn.id == "obj11"):
+                if (player.army_color == "red" and card_drawn.id == "obj9") or (
+                        player.army_color == "blue" and card_drawn.id == "obj10") or (
+                        player.army_color == "green" and card_drawn.id == "obj11"):
                     print("!!!!!CARTA OBIETTIVO ESTRATTA NON VALIDA!!!!!")
                     print(f"Estratto {card_drawn.id} con colore armata  {player.army_color}")
-                elif ("red" not in color_list and card_drawn.id == "obj9") or ("blue" not in color_list and card_drawn.id == "obj10") or ("green" not in color_list and card_drawn.id == "obj11"):
+                elif ("red" not in color_list and card_drawn.id == "obj9") or (
+                        "blue" not in color_list and card_drawn.id == "obj10") or (
+                        "green" not in color_list and card_drawn.id == "obj11"):
                     print("!!!!!CARTA OBIETTIVO ESTRATTA NON VALIDA!!!!!")
                     print(f"Estratto {card_drawn.id} con colori armate presenti in gioco  {color_list}")
                 else:
@@ -445,9 +475,9 @@ class Game:
             print("Extracted OBJECTIVE " + card_drawn.id + " for player " + player.name)
             await player.sock.send("OBJECTIVE_CARD_ASSIGNED: " + json.dumps(Card.Card.to_dict(player.objective_card)))
         print("SENT")
-            # Per ricevere dalla socket e trasformarlo in oggetto:
-            # received_dict = json.loads(received_data)
-            # received_card = Card.from_dict(received_dict)
+        # Per ricevere dalla socket e trasformarlo in oggetto:
+        # received_dict = json.loads(received_data)
+        # received_card = Card.from_dict(received_dict)
 
     async def _give_territory_cards(self):
         cards = utils.read_territories_cards()
@@ -463,7 +493,8 @@ class Game:
 
         for player in self.players:
             territories_list = [terr.to_dict() for terr in player.territories]
-            await player.sock.send("TERRITORIES_CARDS_ASSIGNED: " + json.dumps(territories_list, indent=4))  # Indent only for better readable
+            await player.sock.send("TERRITORIES_CARDS_ASSIGNED: " + json.dumps(territories_list,
+                                                                               indent=4))  # Indent only for better readable
         print("sent")
 
     async def _assignDefaultArmiesOnTerritories(self):
@@ -491,7 +522,7 @@ class Game:
                 else:
                     control += 1
 
-    def calculateArmyForThisTurn(self, player): #TOBE TESTED
+    def calculateArmyForThisTurn(self, player):  # TOBE TESTED
         # Continent name: NA SA EU AF AS OC
         armyForContinent = 0
         NA_count = 0
@@ -529,15 +560,17 @@ class Game:
             armyForContinent += 2
 
         totalArmyToAssing = armyForTerritories + armyForContinent
+        print("Armate bonus per questo turno: " + str(totalArmyToAssing))
         return totalArmyToAssing
 
-    def check_for_victory(self, player): #TOBE TESTED
+    def check_for_victory(self, player):  # TOBE TESTED
         NA_count = 0
         SA_count = 0
         EU_count = 0
         AF_count = 0
         AS_count = 0
         OC_count = 0
+        print(f"Il brother {player.name} ha l'obiettivo {player.objective_card.id}")
         if player.objective_card.id == "obj1":
             army_count = 0
             if len(player.territories) >= 18:
@@ -546,11 +579,13 @@ class Game:
                         army_count += 1
                 if army_count >= 18:
                     return True
+            print("Il fratello deve ancora conquistare 18 stati e metterci 2 carri ognuno")
             return False
 
         if player.objective_card.id == "obj2":
             if len(player.territories) >= 24:
                 return True
+            print("Il fratello deve ancora conquistare 24 stati")
             return False
 
         if player.objective_card.id == "obj3":
@@ -561,6 +596,7 @@ class Game:
                     AF_count += 1
             if NA_count == 9 and AF_count == 6:
                 return True
+            print("Il fratello deve ancora conquistare il Nord America e l'Africa")
             return False
 
         if player.objective_card.id == "obj4":
@@ -571,6 +607,7 @@ class Game:
                     OC_count += 1
             if NA_count == 9 and OC_count == 4:
                 return True
+            print("Il fratello deve ancora conquistare il Nord America e l'Oceania")
             return False
 
         if player.objective_card.id == "obj5":
@@ -581,6 +618,7 @@ class Game:
                     OC_count += 1
             if AS_count == 12 and OC_count == 4:
                 return True
+            print("Il fratello deve ancora conquistare l'Asia e l'Oceania")
             return False
 
         if player.objective_card.id == "obj6":
@@ -591,9 +629,10 @@ class Game:
                     AF_count += 1
             if AS_count == 12 and AF_count == 6:
                 return True
+            print("Il fratello deve ancora conquistare l'Asia e l'Africa")
             return False
 
-        if player.objective_card.id == "obj7":  # DA FINIRE
+        if player.objective_card.id == "obj7":
             for territory in player.territories:
                 if territory.continent == "EU":
                     EU_count += 1
@@ -611,6 +650,7 @@ class Game:
                         OC_count += 1
                 if NA_count == 9 or AF_count == 6 or AS_count == 12 or OC_count == 4:
                     return True
+            print("Il fratello deve ancora conquistare l'Europa, il Sud America e un terzo continente")
             return False
 
         if player.objective_card.id == "obj8":
@@ -631,9 +671,10 @@ class Game:
                         SA_count += 1
                 if NA_count == 9 or AF_count == 6 or AS_count == 12 or SA_count == 4:
                     return True
+            print("Il fratello deve ancora conquistare l'Europa, l'Oceania e un terzo continente")
             return False
 
-        if player.objective_card.id == "obj9": #DA IMPLEMENTARE IL SALVATAGGIO DEL KILLER DENTRO AGLI ATTACCHI
+        if player.objective_card.id == "obj9":  # DA IMPLEMENTARE IL SALVATAGGIO DEL KILLER DENTRO AGLI ATTACCHI
             control = 0
             killer = None
             enemy_player = next((player for player in self.players if player.army_color == "red"), None)
@@ -646,6 +687,7 @@ class Game:
                             killer = dead_player.killed_by
             while control < (len(self.players) + len(self.dead_players)):
                 if killer in self.players:
+                    print("Il fratello deve ancora uccidere il king con l'armata rossa o quello che gli ha rubato la kill")
                     return False
                 else:
                     if killer.killed_by.player_id == player.player_id:
@@ -653,6 +695,7 @@ class Game:
                     else:
                         killer = killer.killed_by
                 control += 1
+            print("Il fratello deve ancora uccidere il king con l'armata rossa o quello che gli ha rubato la kill")
             return False
 
         if player.objective_card.id == "obj10":
@@ -668,6 +711,8 @@ class Game:
                             killer = dead_player.killed_by
             while control < (len(self.players) + len(self.dead_players)):
                 if killer in self.players:
+                    print(
+                        "Il fratello deve ancora uccidere il king con l'armata blu o quello che gli ha rubato la kill")
                     return False
                 else:
                     if killer.killed_by.player_id == player.player_id:
@@ -675,6 +720,7 @@ class Game:
                     else:
                         killer = killer.killed_by
                 control += 1
+            print("Il fratello deve ancora uccidere il king con l'armata blu o quello che gli ha rubato la kill")
             return False
 
         if player.objective_card.id == "obj11":
@@ -690,6 +736,8 @@ class Game:
                             killer = dead_player.killed_by
             while control < (len(self.players) + len(self.dead_players)):
                 if killer in self.players:
+                    print(
+                        "Il fratello deve ancora uccidere il king con l'armata verde o quello che gli ha rubato la kill")
                     return False
                 else:
                     if killer.killed_by.player_id == player.player_id:
@@ -697,4 +745,5 @@ class Game:
                     else:
                         killer = killer.killed_by
                 control += 1
+            print("Il fratello deve ancora uccidere il king con l'armata verde o quello che gli ha rubato la kill")
             return False
