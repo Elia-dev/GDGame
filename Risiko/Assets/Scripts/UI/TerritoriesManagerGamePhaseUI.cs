@@ -120,7 +120,9 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
             else { //Altrimenti ho selezionato un nuovo stato e quindi vado alla ricerca dei vicini
                 //BRILLO I VICINI e debrillo quelli  di prima
                 if (selectedTerritory is not null) {
+                    Debug.Log("DESELECT AMICI");
                     selectedTerritory.Deselect();
+                    DeselectState();
                 }
                 selectedTerritory = newTerritory;
                 selectedTerritory.Select();
@@ -150,11 +152,18 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
             }
             else { //Se invece non è nei dintorni 
                 if (selectedTerritory is not null) {
+                    Debug.Log("DESELECT AMICI");
                     selectedTerritory.Deselect();
+                    selectedTerritory = null;
+                    DeselectState();
                 }
                 if (enemyTerritory is not null) {
+                    Debug.Log("DESELECT NEMICO");
                     enemyTerritory.Deselect();
+                    enemyTerritory = null;
                 }
+                _neighborhoodGameObj = new List<GameObject>();
+                _neighborhoodTeeritories = new List<Territory>();
                 enemyTerritory = newTerritory;
                 enemyTerritory.Select();
                 //CARICO INFO
@@ -216,6 +225,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
             
             if (enemyTerritory is not null) {
                 enemyTerritory.Deselect();
+                enemyTerritory = null;
             }
         }
     }
