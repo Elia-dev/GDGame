@@ -138,6 +138,8 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
                     Debug.Log("DESELECT AMICI");
                     selectedTerritory.Deselect();
                 }*/
+                popUpMoveTanks.SetActive(false);
+                popUpAttack.SetActive(false);
                 DeselectState();
                 selectedTerritory = newTerritory;
                 selectedTerritory.Select();
@@ -167,6 +169,8 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
             }
             else { //Se invece non è nei dintorni 
                 DeselectState();
+                popUpMoveTanks.SetActive(false);
+                popUpAttack.SetActive(false);
                 /*if (selectedTerritory is not null) {
                     Debug.Log("DESELECT AMICI");
                     selectedTerritory.Deselect();
@@ -239,7 +243,5 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
             enemyTerritory.Deselect();
             enemyTerritory = null;
         }
-        popUpMoveTanks.SetActive(false);
-        popUpAttack.SetActive(false);
     }
 }
