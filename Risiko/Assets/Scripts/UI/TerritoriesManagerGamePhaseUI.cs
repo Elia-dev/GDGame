@@ -10,6 +10,7 @@ using Debug = UnityEngine.Debug;
 public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
 {
     public static TerritoriesManagerGamePhaseUI Instance { get; private set; }
+    [SerializeField] private GameObject popUpAttack;
     private List<GameObject> _neighborhoodGameObj;
     private List<Territory> _neighborhoodTeeritories;
     private bool _reinforcePhase = true;
@@ -94,9 +95,11 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
         foreach (var territory in GameManager.Instance.AllTerritories) {
             if (!territory.player_id.Equals(Player.Instance.PlayerId)) {
                 GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
+                base.territories.ForEach(obj => Debug.Log("Territorio da lista territori GameObj " + obj.name)); //DA TESTARE
                 if (terr is not null) {
                     terr.GetComponent<PolygonCollider2D>().enabled = true;
                     string color = GameManager.Instance.GetPlayerColor(territory.player_id);
+                    Debug.Log("Colore player: " + color);
                     terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 50); //DA CAMBIARE
                     terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 50); //DA CAMBIARE
                 }
@@ -115,6 +118,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
         if (selectedTerritory is not null && !_readyToAttack) {
             selectedTerritory.Deselect();
         }
+        //Controllo se lo stato è il mio o del nemico
         selectedTerritory = newTerritory;
         selectedTerritory.Select();
         Debug.Log("Selezionato lo stato " + selectedTerritory.gameObject.name);
@@ -143,7 +147,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
                 }
             }
         } else if (TerritoryInformationsOtherPLayers(selectedTerritory.name) is not null && _readyToAttack) {
-            
+            //popUpAttack.GetComponent<PopUpAttackUI>().SetPupUp(selectedTerritory, );
         }
     }
 
