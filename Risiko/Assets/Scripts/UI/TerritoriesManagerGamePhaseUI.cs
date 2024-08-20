@@ -12,7 +12,8 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
     public static TerritoriesManagerGamePhaseUI Instance { get; private set; }
     [SerializeField] private GameObject popUpAttack;
     private List<GameObject> _neighborhoodGameObj = new List<GameObject>();
-    private List<Territory> _neighborhoodTeeritories;
+    private List<Territory> _neighborhoodTeeritories = new List<Territory>();
+    public TerritoryHandlerUI enemyTerritory;
     private bool _reinforcePhase = true;
     private bool _attackphase = false;
     private bool _isTurnInitialized = false;
@@ -72,7 +73,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
                 if (hit.collider is not null) {
                     TerritoryHandlerUI territoryHandlerUI = hit.transform.GetComponent<TerritoryHandlerUI>();
                     if (territoryHandlerUI is not null) {
-                        selectedTerritory = territoryHandlerUI;
+                        //selectedTerritory = territoryHandlerUI;
                         SelectState(territoryHandlerUI);
                     }
                 }
@@ -109,13 +110,65 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
     }
     
     public void SelectState(TerritoryHandlerUI newTerritory) {
+        //Se ho selezionato un mio stato
+        if (TerritoryInformationsPlayer(newTerritory.gameObject.name) is not null) {
+            //Se ho già selezionato un mio stato e questo è confinante ad esso
+            if (_readyToAttack && _neighborhoodGameObj.Contains(newTerritory.gameObject)) {
+                //POPUP MOVE
+                Debug.Log("POPUP MOVE");
+            }
+            else { //Altrimenti ho selezionato un nuovo stato e quindi vado alla ricerca dei vicini
+                //BRILLO I VICINI e debrillo quelli  di prima
+                if (selectedTerritory is not null) {
+                    selectedTerritory.Deselect();
+                }
+                selectedTerritory = newTerritory;
+                selectedTerritory.Select();
+                _neighborhoodTeeritories =
+                    Utils.GetNeighborsOf(TerritoryInformationsPlayer(selectedTerritory.gameObject.name));
+                _neighborhoodGameObj = new List<GameObject>();
+                _readyToAttack = true;
+                foreach (var territory in _neighborhoodTeeritories) {
+                    GameObject terr = base.territories.Find(obj => obj.name.Equals(territory.id));
+                    if (terr is not null) {
+                        _neighborhoodGameObj.Add(terr);
+                        string color = GameManager.Instance.GetPlayerColor(territory.player_id);
+                        terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 120);
+                        terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 120);
+                    }
+                }
+            }
+        }
+        else { //Se invece ho selezionato uno stato nemico
+            //Se è nei dintorni del mio stato selezionato
+            if (_readyToAttack && _neighborhoodGameObj.Contains(newTerritory.gameObject)) {
+                enemyTerritory = newTerritory;
+                popUpAttack.GetComponent<PopUpAttackUI>().SetPupUp(
+                    TerritoryInformationsPlayer(selectedTerritory.gameObject.name), 
+                    TerritoryInformationsOtherPLayers(enemyTerritory.gameObject.name), 
+                    enemyTerritory.gameObject);
+            }
+            else { //Se invece non è nei dintorni 
+                if (selectedTerritory is not null) {
+                    selectedTerritory.Deselect();
+                }
+                if (enemyTerritory is not null) {
+                    enemyTerritory.Deselect();
+                }
+                enemyTerritory = newTerritory;
+                enemyTerritory.Select();
+                //CARICO INFO
+            }
+        }
+        /*
         if (selectedTerritory is not null) {
             selectedTerritory.Deselect();
         }
-        //Controllo se lo stato è il mio o del nemico
-        selectedTerritory = newTerritory;
-        selectedTerritory.Select();
-        //Faccio apparire informazioni stato
+        if(TerritoryInformationsPlayer(selectedTerritory.gameObject.name) is not null) {
+            selectedTerritory = newTerritory;
+            selectedTerritory.Select();
+        }
+        //Faccio apparire informazioni stato barra dx
         if (TerritoryInformationsPlayer(selectedTerritory.name) is not null) {
             //Interrogazione server per ricevere la lista dei territori vicini
             _neighborhoodTeeritories =
@@ -135,7 +188,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
             }
         } else if (TerritoryInformationsOtherPLayers(selectedTerritory.name) is not null && _readyToAttack) {
             //popUpAttack.GetComponent<PopUpAttackUI>().SetPupUp(selectedTerritory, );
-        }
+        }*/
     }
 
     Territory TerritoryInformationsPlayer(string id) {
@@ -158,6 +211,12 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
                 terr.GetComponent<TerritoryHandlerUI>().StartColor = tempColor;
             }
             selectedTerritory = null;
+            _neighborhoodGameObj = new List<GameObject>();
+            _neighborhoodTeeritories = new List<Territory>();
+            
+            if (enemyTerritory is not null) {
+                enemyTerritory.Deselect();
+            }
         }
     }
 }
