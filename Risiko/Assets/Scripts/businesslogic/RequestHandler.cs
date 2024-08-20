@@ -64,6 +64,8 @@ public class RequestHandler
                     string[] parts = pair.Split('-');
                     GameManager.Instance.AddPlayerToLobbyDict(parts[0], parts[1]);
                 }
+                
+                Debug.Log("Aggiunti tutti i nomi al dizionario");
 
             }
             else if (message.Contains("EXTRACTED_NUMBER:"))
@@ -123,6 +125,7 @@ public class RequestHandler
                     string[] parts = pair.Split('-');
                     GameManager.Instance.AddPlayerColor(parts[0], parts[1]);
                 }
+                Debug.Log("Aggiunti tutti i colori al dizionario");
             }
             else if (message.Contains("INITIAL_ARMY_NUMBER:"))
             {
