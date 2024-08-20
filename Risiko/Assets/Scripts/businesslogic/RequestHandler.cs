@@ -190,19 +190,28 @@ public class RequestHandler
                 Debug.Log("Server_Request: UNDER_ATTACK");
                 GameManager.Instance.setImUnderAttack(true);
                 _request = RemoveRequest(message, "UNDER_ATTACK: ");
+                Debug.Log("Richiesta pulita: " + _request);
                 
                 _request = _request.Replace(" ", "");
                 
                 string[] parts = _request.Split(',');
                 string attackerId = parts[0];
                 
+                Debug.Log("AttackerId: " + attackerId);
+                
                 string[] terIds = parts[1].Split('-');
                 string attacker_ter_id = terIds[0];
                 string defender_ter_id = terIds[1];
                 
+                Debug.Log("attacker_ter_id: " + attacker_ter_id);
+                Debug.Log("defender_ter_id: " + defender_ter_id);
+                
                 string[] armyNums = parts[2].Split('-');
                 int attacker_army_num = int.Parse(armyNums[0]);
                 int defender_army_num = int.Parse(armyNums[1]);
+                
+                Debug.Log("attacker_army_num: " + attacker_army_num);
+                Debug.Log("defender_army_num: " + defender_army_num);
                 
                 GameManager.Instance.setEnemyAttackerArmyNum(attacker_army_num);
                 GameManager.Instance.setMyArmyNumToDefende(defender_army_num);
@@ -239,7 +248,10 @@ public class RequestHandler
                         GameManager.Instance.getMyTerritoryUnderAttack().player_id = terr.player_id;
                     }
                 }
-                
+                Debug.Log("Territorio nemico che mi attacca: " +  GameManager.Instance.getEnemyAttackerTerritory().name);
+                Debug.Log("Il mio territorio sotto attacco: " + GameManager.Instance.getMyTerritoryUnderAttack().name);
+                Debug.Log("Numero armate che il nemico sta usando: " + GameManager.Instance.GetEnemyAttackerArmyNum());
+                Debug.Log("Numero armate che uso per difendermi: " + GameManager.Instance.getMyArmyNumToDefende());
             }
             else
             {
