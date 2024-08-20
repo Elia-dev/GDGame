@@ -182,8 +182,8 @@ public class ClientManager
         }
         
         await SendMessage(_webSocket, _cancellationToken, "ATTACK_TERRITORY: " + 
-                                                          Player.Instance.PlayerId + "-" + enemyTerritory.player_id + ", " + 
-                                                          enemyTerritory.id + "-" + myTerritory.id + ", " + 
+                                                          Player.Instance.PlayerId + "-" + enemyTerritory.player_id + ", " 
+                                                          + myTerritory.id + "-" + enemyTerritory.id + ", " + 
                                                           myNumArmy.ToString() + "-" + enemyNumArmy.ToString());
     }
     

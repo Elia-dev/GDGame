@@ -278,20 +278,35 @@ class Game:
                             attacker_player = player
                         if player.player_id == defender_id:
                             defender_player = player
-                    print(f"!!!OH MY GOD, {attacker_player.name} IS TRYING TO FUCK {defender_player.name}'S GIRL")
+                    print(f"!!!OH MY GOD, {attacker_player.name} IS TRYING TO FUCK {defender_player.name}")
                     print(f"id attaccante: {attacker_player.player_id}  id difensore: {defender_player.player_id}")
                     attacker_ter_id, defender_ter_id = clean_message[1].split("-")
                     for terr in attacker_player.territories:
                         if terr.id == attacker_ter_id:
                             attacker_territory = terr
+                        else:
+                            print("Territorio dell'attaccante non trovato")
+                            for p in self.players:
+                                for territorio in p.territories:
+                                    if territorio.id == attacker_ter_id:
+                                        print(f"In realtà il territorio {attacker_ter_id} appartiene a {territorio.player_id}")
+
                     for terr in defender_player.territories:
                         if terr.id == defender_ter_id:
                             defender_territory = terr
+                        else:
+                            print("Territorio del difensore non trovato")
+                            for p in self.players:
+                                for territorio in p.territories:
+                                    if territorio.id == defender_ter_id:
+                                        print(
+                                            f"In realtà il territorio {defender_ter_id} appartiene a {territorio.player_id}")
+
                     print(
                         f"{attacker_player.name} IS USING {attacker_territory.name} TO FUCK {defender_territory.name} OWNED BY {defender_player.name}")
                     attacker_army_num, defender_army_num = clean_message[2].split("-")
                     print(
-                        f"{attacker_player.name} WILL USE {attacker_army_num} AGAINST {defender_army_num} ARMY OWNED BY {defender_player.name}")
+                        f"{attacker_player.name} WILL USE {str(attacker_army_num)} AGAINST {str(defender_army_num)} ARMY OWNED BY {defender_player.name}")
                     # Tell the defender it's under attack
                     await defender_player.sock.send(
                         "UNDER_ATTACK: " + attacker_id + ", " + attacker_ter_id + "-" + defender_ter_id + ", "
@@ -329,7 +344,7 @@ class Game:
                     print(f"Prima {attacker_player.name} aveva {len(attacker_player.territories)} territori")
                     print(f"Sempre prima {defender_player.name} aveva {len(defender_player.territories)} territori")
                     if defender_territory.num_tanks == 0:  # Capisce se il territorio attaccato è stato conquistato oppure no
-                        print(f"OH NO! {defender_player.name} È STATO SCOPATO!!")
+                        print(f"OH NO! {defender_player.name} È STATO SCOPATO ED HA PERSO IL TERRITORIO!!")
                         defender_territory.player_id = attacker_id
                         defender_player.removeTerritory(defender_territory)
                         defender_territory.num_tanks = attacker_army_num - defender_wins
@@ -349,6 +364,8 @@ class Game:
                             territories_list.append(territory.to_dict())
 
                     await self.broadcast("SEND_TERRITORIES_TO_ALL: " + json.dumps(territories_list, indent=4))
+                    #await attacker_player.sock.send("ATTACK_RESULT_ATTACKER: ")
+                    #await defender_player.sock.send("ATTACK_RESULT_DEFENDER: ")
                     print("Aggiornati tutti i client sul risultato del combattimento")
                     if len(defender_player.territories) == 0:
                         print(f"Il brother {defender_player.name} è stato scopato così forte che è morto nell'atto e adesso verrà rimosso dalla lista dei players vivi per essere messo in quella dei players scassati...")
