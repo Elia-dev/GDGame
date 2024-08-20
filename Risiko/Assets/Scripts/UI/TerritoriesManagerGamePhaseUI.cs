@@ -109,7 +109,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
     }
     
     public void SelectState(TerritoryHandlerUI newTerritory) {
-        if (selectedTerritory is not null && !_readyToAttack) {
+        if (selectedTerritory is not null) {
             selectedTerritory.Deselect();
         }
         //Controllo se lo stato è il mio o del nemico
@@ -121,18 +121,14 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
             _neighborhoodTeeritories =
                 Utils.GetNeighborsOf(TerritoryInformationsPlayer(selectedTerritory.gameObject.name));
             foreach (var terr in _neighborhoodTeeritories) {
-                Debug.Log("GetNeighborsOf " + terr);
             }
             _neighborhoodGameObj = new List<GameObject>();
             foreach (var territory in _neighborhoodTeeritories) {
                 _readyToAttack = true;
-                Debug.Log("Cerco nei game Object " + territory.id);
                 GameObject terr = base.territories.Find(obj => obj.name.Equals(territory.id));
-                Debug.Log("trovato: " + terr);
                 if (terr is not null) {
                     _neighborhoodGameObj.Add(terr);
                     string color = GameManager.Instance.GetPlayerColor(territory.player_id);
-                    Debug.Log("Player color: " + color);
                     terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 120);
                     terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 120);
                 }
