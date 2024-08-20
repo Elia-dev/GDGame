@@ -491,7 +491,7 @@ class Game:
                 else:
                     control += 1
 
-    def calculateArmyForThisTurn(self, player):
+    def calculateArmyForThisTurn(self, player): #TOBE TESTED
         # Continent name: NA SA EU AF AS OC
         armyForContinent = 0
         NA_count = 0
@@ -531,7 +531,7 @@ class Game:
         totalArmyToAssing = armyForTerritories + armyForContinent
         return totalArmyToAssing
 
-    def check_for_victory(self, player):
+    def check_for_victory(self, player): #TOBE TESTED
         NA_count = 0
         SA_count = 0
         EU_count = 0
