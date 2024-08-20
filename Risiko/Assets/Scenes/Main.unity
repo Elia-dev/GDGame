@@ -5242,6 +5242,7 @@ GameObject:
   - component: {fileID: 638433807}
   - component: {fileID: 638433806}
   - component: {fileID: 638433805}
+  - component: {fileID: 638433812}
   m_Layer: 8
   m_Name: PopUpAttack
   m_TagString: Untagged
@@ -5444,6 +5445,24 @@ Canvas:
   m_SortingLayerID: -8878699
   m_SortingOrder: 15
   m_TargetDisplay: 0
+--- !u!114 &638433812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 638433803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d332c32e0508a064d981dd357e07ae9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateNameAttack: {fileID: 929829086}
+  tankNumText: {fileID: 472847639}
+  tankToAdd: {fileID: 258149226}
+  plusButton: {fileID: 592501856}
+  minusButton: {fileID: 773319912}
+  attackButton: {fileID: 903567817}
 --- !u!1 &659301589
 GameObject:
   m_ObjectHideFlags: 0

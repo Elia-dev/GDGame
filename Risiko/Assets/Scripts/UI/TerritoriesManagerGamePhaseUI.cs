@@ -135,8 +135,8 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
                     if (terr is not null) {
                         _neighborhoodGameObj.Add(terr);
                         string color = GameManager.Instance.GetPlayerColor(territory.player_id);
-                        terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 120);
-                        terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 120);
+                        terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 150);
+                        terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 150);
                     }
                 }
             }
