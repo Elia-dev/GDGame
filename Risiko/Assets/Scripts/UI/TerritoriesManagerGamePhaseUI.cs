@@ -129,7 +129,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
                 GameObject terr = base.territories.Find(obj => obj.name.Equals(territory.id));
                 Debug.Log(terr);
                 if (terr is not null) {
-                    _neighborhoodGameObj.Add(terr);
+                    _neighborhoodGameObj.Append(terr);
                     string color = GameManager.Instance.GetPlayerColor(territory.player_id);
                     terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 120);
                     terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 120);
