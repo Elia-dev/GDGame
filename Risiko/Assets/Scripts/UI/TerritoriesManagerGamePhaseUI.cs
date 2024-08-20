@@ -150,9 +150,12 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
         if (selectedTerritory is not null) {
             selectedTerritory.Deselect();
             foreach (var terr in _neighborhoodGameObj) {
+                Debug.Log("Deseleziono lo stato: " + terr);
                 Color32 tempColor = terr.GetComponent<SpriteRenderer>().color;
                 tempColor.a = 50;
+                Debug.Log("Colore: " + tempColor);
                 terr.GetComponent<SpriteRenderer>().color = tempColor;
+                terr.GetComponent<TerritoryHandlerUI>().StartColor = tempColor;
             }
             selectedTerritory = null;
         }
