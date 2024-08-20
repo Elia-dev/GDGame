@@ -66,8 +66,12 @@ class Game:
                 return
             await asyncio.sleep(2)
 
+
+
         # Preparation phase
         await self.__game_order__()
+        name_id_dict = "ID_NAMES_DICT: " + ", ".join(f"{player.player_id}-{player.name}" for player in self.players)
+        await self.broadcast(name_id_dict)
         available_colors = [color for color, user_id in self.army_colors.items() if user_id is None]
         await self.players[0].sock.send("AVAILABLE_COLORS: " + ", ".join(available_colors))
         await self._give_territory_cards()
@@ -87,7 +91,10 @@ class Game:
         await self.broadcast("INITIAL_ARMY_NUMBER: " + str(initial_army_number))
         await self.broadcast("IS_YOUR_TURN: FALSE")
         await self.army_color_chose()
-        #MANDARE LISTA DI TUTTI I COLORI DI TUTTI I PLAYER
+        dict_id_color = "ID_COLORS_DICT: "
+        for player in self.players:
+            dict_id_color += player.player_id + "-" + player.army_color + ", "
+        await self.broadcast(dict_id_color)
         await self._give_objective_cards()
         await self._assignDefaultArmiesOnTerritories()
         await self.broadcast("PREPARATION_PHASE_TERMINATED")
@@ -172,6 +179,7 @@ class Game:
                     player_names = []
                     for p in self.players:
                         player_names.append(p.name)
+
                     await player.sock.send("REQUEST_NAME_UPDATE_PLAYER_LIST: " + str(player_names))
 
                 if "GAME_STARTED_BY_HOST" in message:

@@ -23,8 +23,8 @@ public class GameManager
     private bool _gamePhase = false;
     private bool _imUnderAttack = false;
     private string _playingPlayer = "";
-    private int _enemy_attacker_army_num = 0;
-    private int _my_army_num_to_defende = 0;
+    private int _enemyAttackerArmyNum = 0;
+    private int _myArmyNumToDefende = 0;
 
     private string _lobbyID;
     
@@ -47,34 +47,34 @@ public class GameManager
         }
     }
 
-    public int getMyARmyNUmToDefende()
+    public int getMyArmyNumToDefende()
     {
-        return _my_army_num_to_defende;
+        return _myArmyNumToDefende;
     }
 
     public void setMyArmyNumToDefende(int numArmy)
     {
-        _my_army_num_to_defende = numArmy;
+        _myArmyNumToDefende = numArmy;
     }
 
     public void resetMyArmyNumToDefende()
     {
-        _my_army_num_to_defende = 0;
+        _myArmyNumToDefende = 0;
     }
     
     public int GetEnemyAttackerArmyNum()
     {
-        return _enemy_attacker_army_num;
+        return _enemyAttackerArmyNum;
     }
 
     public void setEnemyAttackerArmyNum(int numArmy)
     {
-        _enemy_attacker_army_num = numArmy;
+        _enemyAttackerArmyNum = numArmy;
     }
 
     public void resetEnemyAttackerArmyNum()
     {
-        _enemy_attacker_army_num = 0;
+        _enemyAttackerArmyNum = 0;
     }
     
     public void AddPlayerColor(string id, string color)

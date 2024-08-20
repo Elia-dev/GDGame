@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class RequestHandler
@@ -51,6 +52,20 @@ public class RequestHandler
                 _request = RemoveRequest(message, "GAME_ORDER: ");
                 GameManager.Instance.setGame_order(_request);
             }
+            else if(message.Contains("ID_NAMES_DICT"))
+            {
+                Debug.Log("Server_Request: ID_NAMES_DICT");
+                _request = RemoveRequest(message, "ID_NAMES_DICT: ");
+                string[] pairs = _request.Split(", ");
+                
+                foreach (string pair in pairs)
+                {
+                    // Divide ogni coppia id-nome usando il trattino "-"
+                    string[] parts = pair.Split('-');
+                    GameManager.Instance.AddPlayerToLobbyDict(parts[0], parts[1]);
+                }
+
+            }
             else if (message.Contains("EXTRACTED_NUMBER:"))
             {
                 Debug.Log("Server_Request: EXTRACTED_NUMBER");
@@ -95,6 +110,18 @@ public class RequestHandler
                     string cleanedColor = color.Replace("[", "").Replace("]", "").Replace(",", "");
                     Debug.Log("COLORE PULITO: " + cleanedColor);
                     GameManager.Instance.AddAvailableColor(cleanedColor);
+                }
+            }
+            else if (message.Contains("ID_COLORS_DICT"))
+            {
+                Debug.Log("Server_Request: ID_COLORS_DICT");
+                _request = RemoveRequest(message, "ID_COLORS_DICT: ");
+                string[] pairs = _request.Split(", ");
+                
+                foreach (string pair in pairs)
+                {
+                    string[] parts = pair.Split('-');
+                    GameManager.Instance.AddPlayerColor(parts[0], parts[1]);
                 }
             }
             else if (message.Contains("INITIAL_ARMY_NUMBER:"))
