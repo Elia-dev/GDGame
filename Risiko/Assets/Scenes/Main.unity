@@ -1641,6 +1641,7 @@ GameObject:
   - component: {fileID: 217625271}
   - component: {fileID: 217625270}
   - component: {fileID: 217625269}
+  - component: {fileID: 217625276}
   m_Layer: 8
   m_Name: PopUpMoveTanks
   m_TagString: Untagged
@@ -1843,6 +1844,24 @@ Canvas:
   m_SortingLayerID: -8878699
   m_SortingOrder: 15
   m_TargetDisplay: 0
+--- !u!114 &217625276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 217625267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 493115791dc9fae448f58b55686b15e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateNameMove: {fileID: 767445454}
+  tankNumText: {fileID: 1680140530}
+  tankToAdd: {fileID: 788416972}
+  plusButton: {fileID: 1711471310}
+  minusButton: {fileID: 1240273235}
+  moveButton: {fileID: 1618061429}
 --- !u!1 &219922422
 GameObject:
   m_ObjectHideFlags: 0
@@ -20339,6 +20358,7 @@ MonoBehaviour:
   - {fileID: 1341229216}
   endTurnButton: {fileID: 886352705}
   popUpAttack: {fileID: 638433803}
+  popUpMoveTanks: {fileID: 217625267}
   enemyTerritory: {fileID: 0}
 --- !u!114 &2029590057
 MonoBehaviour:

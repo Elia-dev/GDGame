@@ -11,6 +11,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
 {
     public static TerritoriesManagerGamePhaseUI Instance { get; private set; }
     [SerializeField] private GameObject popUpAttack;
+    [SerializeField] private GameObject popUpMoveTanks;
     private List<GameObject> _neighborhoodGameObj = new List<GameObject>();
     private List<Territory> _neighborhoodTeeritories = new List<Territory>();
     public TerritoryHandlerUI enemyTerritory;
@@ -121,12 +122,15 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
     }
     
     public void SelectState(TerritoryHandlerUI newTerritory) {
+        //INFO STATO
         //Se ho selezionato un mio stato
         if (TerritoryInformationsPlayer(newTerritory.gameObject.name) is not null) {
             //Se ho già selezionato un mio stato e questo è confinante ad esso
             if (_neighborhoodGameObj.Contains(newTerritory.gameObject)) {//_readyToAttack && 
-                //POPUP MOVE
-                Debug.Log("POPUP MOVE");
+                popUpMoveTanks.GetComponent<PupUpMoveTanksUI>().SetPupUp(
+                    TerritoryInformationsPlayer(selectedTerritory.gameObject.name), 
+                    TerritoryInformationsPlayer(newTerritory.gameObject.name), 
+                    enemyTerritory.gameObject);
             }
             else { //Altrimenti ho selezionato un nuovo stato e quindi vado alla ricerca dei vicini
                 //BRILLO I VICINI e debrillo quelli  di prima
@@ -177,7 +181,6 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
                 _neighborhoodTeeritories = new List<Territory>();
                 enemyTerritory = newTerritory;
                 enemyTerritory.Select();
-                //CARICO INFO
             }
         }
         /*
@@ -236,5 +239,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
             enemyTerritory.Deselect();
             enemyTerritory = null;
         }
+        popUpMoveTanks.SetActive(false);
+        popUpAttack.SetActive(false);
     }
 }
