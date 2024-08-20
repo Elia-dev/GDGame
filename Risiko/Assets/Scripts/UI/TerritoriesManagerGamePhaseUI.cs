@@ -159,7 +159,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
                 popUpAttack.GetComponent<PopUpAttackUI>().SetPupUp(
                     TerritoryInformationsPlayer(selectedTerritory.gameObject.name), 
                     TerritoryInformationsOtherPLayers(enemyTerritory.gameObject.name), 
-                    enemyTerritory.gameObject); //QUI UN NULL
+                    enemyTerritory.gameObject);
             }
             else { //Se invece non è nei dintorni 
                 DeselectState();
@@ -223,10 +223,8 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
         if (selectedTerritory is not null) {
             selectedTerritory.Deselect();
             foreach (var terr in _neighborhoodGameObj) {
-                Debug.Log("Deseleziono lo stato: " + terr);
                 Color32 tempColor = terr.GetComponent<SpriteRenderer>().color;
                 tempColor.a = 50;
-                Debug.Log("Colore: " + tempColor);
                 terr.GetComponent<SpriteRenderer>().color = tempColor;
                 terr.GetComponent<TerritoryHandlerUI>().StartColor = tempColor;
             }
@@ -235,6 +233,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
             _neighborhoodTeeritories = new List<Territory>();
             
             if (enemyTerritory is not null) {
+                Debug.Log("DESELECT NEMICO");
                 enemyTerritory.Deselect();
                 enemyTerritory = null;
             }

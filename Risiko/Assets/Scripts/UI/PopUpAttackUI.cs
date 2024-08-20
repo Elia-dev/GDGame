@@ -52,7 +52,7 @@ public class PopUpAttackUI : MonoBehaviour {
     public void SetPupUp(Territory myTerritory, Territory enemyTerritory, GameObject gameObjTerritory) {
         _enemyTerr = enemyTerritory;
         _myTerr = myTerritory;
-        string color = GameManager.Instance.GetPlayerColor(enemyTerritory.player_id); //QUI UN NULL
+        string color = GameManager.Instance.GetPlayerColor(enemyTerritory.player_id);
         if (color.Equals("black") || color.Equals("blue")) {
             stateNameAttack.color = Color.white;
             tankNumText.color = Color.white;
