@@ -94,8 +94,8 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
                 if (terr is not null) {
                     terr.GetComponent<PolygonCollider2D>().enabled = true;
                     string color = GameManager.Instance.GetPlayerColor(territory.player_id);
-                    terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 50); //DA CAMBIARE
-                    terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 50); //DA CAMBIARE
+                    terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 50);
+                    terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 50);
                 }
             }
         }
@@ -115,29 +115,24 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
         //Controllo se lo stato è il mio o del nemico
         selectedTerritory = newTerritory;
         selectedTerritory.Select();
-        Debug.Log("Selezionato lo stato " + selectedTerritory.gameObject.name);
         //Faccio apparire informazioni stato
         if (TerritoryInformationsPlayer(selectedTerritory.name) is not null) {
-            Debug.Log("I suoi vicini sono:");
             //Interrogazione server per ricevere la lista dei territori vicini
             _neighborhoodTeeritories =
                 Utils.GetNeighborsOf(TerritoryInformationsPlayer(selectedTerritory.gameObject.name));
-            Debug.Log("Lista di tutti i territori Selezione:");
             foreach (var terr in _neighborhoodTeeritories) {
                 Debug.Log(terr);
             }
 
             foreach (var territory in _neighborhoodTeeritories) {
                 _readyToAttack = true;
-                Debug.Log("ID: " + territory.id + " Nome territorio: " + territory.name + " del player: " + territory.player_id);
                 GameObject terr = base.territories.Find(obj => obj.name.Equals(territory.id));
-                base.territories.ForEach(obj => Debug.Log("Territorio da lista territori GameObj " + obj.name)); //DA TESTARE
                 Debug.Log(terr);
-                _neighborhoodGameObj.Add(terr);
                 if (terr is not null) {
-                    Color32 tempColor = terr.GetComponent<SpriteRenderer>().color;
-                    tempColor.a = 120;
-                    terr.GetComponent<SpriteRenderer>().color = tempColor;
+                    _neighborhoodGameObj.Add(terr);
+                    string color = GameManager.Instance.GetPlayerColor(territory.player_id);
+                    terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 120);
+                    terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 120);
                 }
             }
         } else if (TerritoryInformationsOtherPLayers(selectedTerritory.name) is not null && _readyToAttack) {
