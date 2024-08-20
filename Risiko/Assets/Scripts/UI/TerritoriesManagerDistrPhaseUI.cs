@@ -165,8 +165,6 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     }
 
     private void Update() {
-        Debug.Log("Is my turn: " + Player.Instance.IsMyTurn);
-        Debug.Log("Turn Inizializzato: " +_isTurnInitialized);
         if (Player.Instance.IsMyTurn && !_isTurnInitialized) {
             StartTurn();
         }

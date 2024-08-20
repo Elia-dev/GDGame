@@ -121,16 +121,18 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
             _neighborhoodTeeritories =
                 Utils.GetNeighborsOf(TerritoryInformationsPlayer(selectedTerritory.gameObject.name));
             foreach (var terr in _neighborhoodTeeritories) {
-                Debug.Log(terr);
+                Debug.Log("GetNeighborsOf " + terr);
             }
 
             foreach (var territory in _neighborhoodTeeritories) {
                 _readyToAttack = true;
+                Debug.Log("Cerco nei game Object " + territory.id);
                 GameObject terr = base.territories.Find(obj => obj.name.Equals(territory.id));
-                Debug.Log(terr);
+                Debug.Log("trovato: " + terr);
                 if (terr is not null) {
                     _neighborhoodGameObj.Append(terr);
                     string color = GameManager.Instance.GetPlayerColor(territory.player_id);
+                    Debug.Log("Player color: " + color);
                     terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 120);
                     terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 120);
                 }
