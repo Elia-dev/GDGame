@@ -148,7 +148,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
                 popUpAttack.GetComponent<PopUpAttackUI>().SetPupUp(
                     TerritoryInformationsPlayer(selectedTerritory.gameObject.name), 
                     TerritoryInformationsOtherPLayers(enemyTerritory.gameObject.name), 
-                    enemyTerritory.gameObject);
+                    enemyTerritory.gameObject); //QUI UN NULL
             }
             else { //Se invece non è nei dintorni 
                 if (selectedTerritory is not null) {
