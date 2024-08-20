@@ -431,10 +431,10 @@ class Game:
             control = True
             while control:
                 card_drawn = cards[random.randint(0, len(cards) - 1)]
-                if (player.army_color == "red" and card_drawn.id != "obj9") or (player.army_color == "blue" and card_drawn.id != "obj10") or (player.army_color == "green" and card_drawn.id != "obj11"):
+                if (player.army_color == "red" and card_drawn.id == "obj9") or (player.army_color == "blue" and card_drawn.id == "obj10") or (player.army_color == "green" and card_drawn.id == "obj11"):
                     print("!!!!!CARTA OBIETTIVO ESTRATTA NON VALIDA!!!!!")
                     print(f"Estratto {card_drawn.id} con colore armata  {player.army_color}")
-                elif ("red" not in color_list and card_drawn.id != "obj9") or ("blue" not in color_list and card_drawn.id != "obj10") or ("green" not in color_list and card_drawn.id != "obj11"):
+                elif ("red" not in color_list and card_drawn.id == "obj9") or ("blue" not in color_list and card_drawn.id == "obj10") or ("green" not in color_list and card_drawn.id == "obj11"):
                     print("!!!!!CARTA OBIETTIVO ESTRATTA NON VALIDA!!!!!")
                     print(f"Estratto {card_drawn.id} con colori armate presenti in gioco  {color_list}")
                 else:
