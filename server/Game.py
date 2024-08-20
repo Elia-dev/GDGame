@@ -13,6 +13,7 @@ class Game:
     def __init__(self, game_id):
         self.game_id = game_id
         self.players = []
+        self.dead_players = []
         self.game_running = True
         self.game_waiting_to_start = True
         self.host_player = None
@@ -152,6 +153,7 @@ class Game:
                 # STRATEGIC MOVEMENT TERMINATED
 
                 # CHECK (card objective, number of tanks ecc...)
+                self.check_for_victory(player)
                 print("[fake] Check objective card terminated")
 
     async def handle_requests(self):
@@ -324,6 +326,10 @@ class Game:
                             territories_list.append(territory.to_dict())
 
                     await self.broadcast("SEND_TERRITORIES_TO_ALL: " + json.dumps(territories_list, indent=4))
+                    if len(defender_player.territories) == 0:
+                        defender_player.killedBy = attacker_player
+                        self.dead_players.append(defender_player)
+                        self.players.remove(defender_player)
                     # Mandare un messaggio all'attaccante e all'attaccato per dirgli che l'attacco è finito?
                     self.event.set()
 
@@ -417,15 +423,28 @@ class Game:
 
     async def _give_objective_cards(self):
         cards = utils.read_objects_cards()
+        card_drawn = None
+        color_list = [player.army_color for player in self.players]
+
         print("read all the objectives card from xml")
         for player in self.players:
-            card_drawn = cards[random.randint(0, len(cards) - 1)]
+            control = True
+            while control:
+                card_drawn = cards[random.randint(0, len(cards) - 1)]
+                if (player.army_color == "red" and card_drawn.id != "obj9") or (player.army_color == "blue" and card_drawn.id != "obj10") or (player.army_color == "green" and card_drawn.id != "obj11"):
+                    print("!!!!!CARTA OBIETTIVO ESTRATTA NON VALIDA!!!!!")
+                    print(f"Estratto {card_drawn.id} con colore armata  {player.army_color}")
+                elif ("red" not in color_list and card_drawn.id != "obj9") or ("blue" not in color_list and card_drawn.id != "obj10") or ("green" not in color_list and card_drawn.id != "obj11"):
+                    print("!!!!!CARTA OBIETTIVO ESTRATTA NON VALIDA!!!!!")
+                    print(f"Estratto {card_drawn.id} con colori armate presenti in gioco  {color_list}")
+                else:
+                    control = False
             card_drawn.player_id = player.player_id
             player.objective_card = card_drawn
             cards.remove(card_drawn)
             print("Extracted OBJECTIVE " + card_drawn.id + " for player " + player.name)
             await player.sock.send("OBJECTIVE_CARD_ASSIGNED: " + json.dumps(Card.Card.to_dict(player.objective_card)))
-            print("sent")
+        print("SENT")
             # Per ricevere dalla socket e trasformarlo in oggetto:
             # received_dict = json.loads(received_data)
             # received_card = Card.from_dict(received_dict)
@@ -512,3 +531,170 @@ class Game:
         totalArmyToAssing = armyForTerritories + armyForContinent
         return totalArmyToAssing
 
+    def check_for_victory(self, player):
+        NA_count = 0
+        SA_count = 0
+        EU_count = 0
+        AF_count = 0
+        AS_count = 0
+        OC_count = 0
+        if player.objective_card.id == "obj1":
+            army_count = 0
+            if len(player.territories) >= 18:
+                for terr in player.territories:
+                    if terr.num_tanks >= 2:
+                        army_count += 1
+                if army_count >= 18:
+                    return True
+            return False
+
+        if player.objective_card.id == "obj2":
+            if len(player.territories) >= 24:
+                return True
+            return False
+
+        if player.objective_card.id == "obj3":
+            for territory in player.territories:
+                if territory.continent == "NA":
+                    NA_count += 1
+                elif territory.continent == "AF":
+                    AF_count += 1
+            if NA_count == 9 and AF_count == 6:
+                return True
+            return False
+
+        if player.objective_card.id == "obj4":
+            for territory in player.territories:
+                if territory.continent == "NA":
+                    NA_count += 1
+                elif territory.continent == "OC":
+                    OC_count += 1
+            if NA_count == 9 and OC_count == 4:
+                return True
+            return False
+
+        if player.objective_card.id == "obj5":
+            for territory in player.territories:
+                if territory.continent == "AS":
+                    AS_count += 1
+                elif territory.continent == "OC":
+                    OC_count += 1
+            if AS_count == 12 and OC_count == 4:
+                return True
+            return False
+
+        if player.objective_card.id == "obj6":
+            for territory in player.territories:
+                if territory.continent == "AS":
+                    AS_count += 1
+                elif territory.continent == "AF":
+                    AF_count += 1
+            if AS_count == 12 and AF_count == 6:
+                return True
+            return False
+
+        if player.objective_card.id == "obj7":  # DA FINIRE
+            for territory in player.territories:
+                if territory.continent == "EU":
+                    EU_count += 1
+                elif territory.continent == "SA":
+                    SA_count += 1
+            if EU_count == 7 and SA_count == 4:
+                for territory in player.territories:
+                    if territory.continent == "NA":
+                        NA_count += 1
+                    elif territory.continent == "AF":
+                        AF_count += 1
+                    elif territory.continent == "AS":
+                        AS_count += 1
+                    elif territory.continent == "OC":
+                        OC_count += 1
+                if NA_count == 9 or AF_count == 6 or AS_count == 12 or OC_count == 4:
+                    return True
+            return False
+
+        if player.objective_card.id == "obj8":
+            for territory in player.territories:
+                if territory.continent == "EU":
+                    EU_count += 1
+                elif territory.continent == "OC":
+                    OC_count += 1
+            if EU_count == 7 and OC_count == 4:
+                for territory in player.territories:
+                    if territory.continent == "NA":
+                        NA_count += 1
+                    elif territory.continent == "AF":
+                        AF_count += 1
+                    elif territory.continent == "AS":
+                        AS_count += 1
+                    elif territory.continent == "SA":
+                        SA_count += 1
+                if NA_count == 9 or AF_count == 6 or AS_count == 12 or SA_count == 4:
+                    return True
+            return False
+
+        if player.objective_card.id == "obj9": #DA IMPLEMENTARE IL SALVATAGGIO DEL KILLER DENTRO AGLI ATTACCHI
+            control = 0
+            killer = None
+            enemy_player = next((player for player in self.players if player.army_color == "red"), None)
+            if enemy_player is None:
+                for dead_player in self.dead_players:
+                    if dead_player.army_color == "red":
+                        if dead_player.killed_by.player_id == player.player_id:
+                            return True
+                        else:
+                            killer = dead_player.killed_by
+            while control < (len(self.players) + len(self.dead_players)):
+                if killer in self.players:
+                    return False
+                else:
+                    if killer.killed_by.player_id == player.player_id:
+                        return True
+                    else:
+                        killer = killer.killed_by
+                control += 1
+            return False
+
+        if player.objective_card.id == "obj10":
+            control = 0
+            killer = None
+            enemy_player = next((player for player in self.players if player.army_color == "blue"), None)
+            if enemy_player is None:
+                for dead_player in self.dead_players:
+                    if dead_player.army_color == "blue":
+                        if dead_player.killed_by.player_id == player.player_id:
+                            return True
+                        else:
+                            killer = dead_player.killed_by
+            while control < (len(self.players) + len(self.dead_players)):
+                if killer in self.players:
+                    return False
+                else:
+                    if killer.killed_by.player_id == player.player_id:
+                        return True
+                    else:
+                        killer = killer.killed_by
+                control += 1
+            return False
+
+        if player.objective_card.id == "obj11":
+            control = 0
+            killer = None
+            enemy_player = next((player for player in self.players if player.army_color == "green"), None)
+            if enemy_player is None:
+                for dead_player in self.dead_players:
+                    if dead_player.army_color == "green":
+                        if dead_player.killed_by.player_id == player.player_id:
+                            return True
+                        else:
+                            killer = dead_player.killed_by
+            while control < (len(self.players) + len(self.dead_players)):
+                if killer in self.players:
+                    return False
+                else:
+                    if killer.killed_by.player_id == player.player_id:
+                        return True
+                    else:
+                        killer = killer.killed_by
+                control += 1
+            return False

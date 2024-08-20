@@ -15,6 +15,7 @@ class Player:
         self.objective_card = None
         self.territories = []
         self.army_color = None
+        self.killed_by = None
 
     def to_dict(self):
         return {
