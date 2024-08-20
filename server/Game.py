@@ -305,12 +305,14 @@ class Game:
                     print(
                         f"{attacker_player.name} IS USING {attacker_territory.name} TO FUCK {defender_territory.name} OWNED BY {defender_player.name}")
                     attacker_army_num, defender_army_num = clean_message[2].split("-")
+                    attacker_army_num = int(attacker_army_num)
+                    defender_army_num = int(defender_army_num)
                     print(
                         f"{attacker_player.name} WILL USE {str(attacker_army_num)} AGAINST {str(defender_army_num)} ARMY OWNED BY {defender_player.name}")
                     # Tell the defender it's under attack
                     await defender_player.sock.send(
                         "UNDER_ATTACK: " + attacker_id + ", " + attacker_ter_id + "-" + defender_ter_id + ", "
-                        + attacker_army_num + "-" + defender_army_num)
+                        + str(attacker_army_num) + "-" + str(defender_army_num))
                     print("Server ha avvisato il difensore che sta per essere scassato")
                     # genera n numeri casuali, con n numero di armate
                     extracted_numbers_attacker = [random.randint(1, 6) for _ in range(attacker_army_num)]
