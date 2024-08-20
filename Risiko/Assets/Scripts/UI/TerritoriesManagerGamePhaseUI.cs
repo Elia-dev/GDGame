@@ -88,18 +88,12 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
     }
 
     public void ActivateOtherPlayersTerritories() {
-        Debug.Log("Lista di tutti i territori Attivazione:");
-        foreach (var terr in GameManager.Instance.AllTerritories) {
-            Debug.Log(terr);
-        }
         foreach (var territory in GameManager.Instance.AllTerritories) {
             if (!territory.player_id.Equals(Player.Instance.PlayerId)) {
                 GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
-                base.territories.ForEach(obj => Debug.Log("Territorio da lista territori GameObj " + obj.name)); //DA TESTARE
                 if (terr is not null) {
                     terr.GetComponent<PolygonCollider2D>().enabled = true;
                     string color = GameManager.Instance.GetPlayerColor(territory.player_id);
-                    Debug.Log("Colore player: " + color);
                     terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 50); //DA CAMBIARE
                     terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 50); //DA CAMBIARE
                 }
