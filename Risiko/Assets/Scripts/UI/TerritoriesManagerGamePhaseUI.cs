@@ -122,8 +122,8 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
                 if (selectedTerritory is not null) {
                     Debug.Log("DESELECT AMICI");
                     selectedTerritory.Deselect();
-                    DeselectState();
                 }
+                DeselectState();
                 selectedTerritory = newTerritory;
                 selectedTerritory.Select();
                 _neighborhoodTeeritories =
@@ -155,13 +155,13 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
                     Debug.Log("DESELECT AMICI");
                     selectedTerritory.Deselect();
                     selectedTerritory = null;
-                    DeselectState();
                 }
                 if (enemyTerritory is not null) {
                     Debug.Log("DESELECT NEMICO");
                     enemyTerritory.Deselect();
                     enemyTerritory = null;
                 }
+                DeselectState();
                 _neighborhoodGameObj = new List<GameObject>();
                 _neighborhoodTeeritories = new List<Territory>();
                 enemyTerritory = newTerritory;
@@ -201,11 +201,11 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
     }
 
     Territory TerritoryInformationsPlayer(string id) {
-        return Player.Instance.Territories.Find(x => x.id.Equals(id));
+        return Player.Instance.Territories.Find(terr => terr.id.Equals(id));
     }
     
     Territory TerritoryInformationsOtherPLayers(string id) {
-        return Player.Instance.Territories.Find(x => x.id.Equals(id));
+        return GameManager.Instance.AllTerritories.Find(terr => terr.id.Equals(id));
     }
     
     public void DeselectState() {
