@@ -80,3 +80,4 @@ server/test/.idea/.name
 *.info
 *.cache
 *.info
+*.cache
