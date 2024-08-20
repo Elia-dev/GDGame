@@ -11,7 +11,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
 {
     public static TerritoriesManagerGamePhaseUI Instance { get; private set; }
     [SerializeField] private GameObject popUpAttack;
-    private List<GameObject> _neighborhoodGameObj;
+    private List<GameObject> _neighborhoodGameObj = new List<GameObject>();
     private List<Territory> _neighborhoodTeeritories;
     private bool _reinforcePhase = true;
     private bool _attackphase = false;
@@ -123,14 +123,14 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
             foreach (var terr in _neighborhoodTeeritories) {
                 Debug.Log("GetNeighborsOf " + terr);
             }
-
+            _neighborhoodGameObj = new List<GameObject>();
             foreach (var territory in _neighborhoodTeeritories) {
                 _readyToAttack = true;
                 Debug.Log("Cerco nei game Object " + territory.id);
                 GameObject terr = base.territories.Find(obj => obj.name.Equals(territory.id));
                 Debug.Log("trovato: " + terr);
                 if (terr is not null) {
-                    _neighborhoodGameObj.Append(terr);
+                    _neighborhoodGameObj.Add(terr);
                     string color = GameManager.Instance.GetPlayerColor(territory.player_id);
                     Debug.Log("Player color: " + color);
                     terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 120);
