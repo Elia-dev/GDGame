@@ -144,6 +144,7 @@ class Game:
                 self.event = asyncio.Event()
                 self.event_strategic_movement = asyncio.Event()
                 print("Strategic movement terminated")
+                await player.sock.send("IS_YOUR_TURN: FALSE")
 
                 # STRATEGIC MOVEMENT
                 # await self.event.wait()
@@ -151,8 +152,10 @@ class Game:
                 # STRATEGIC MOVEMENT TERMINATED
 
                 # CHECK (card objective, number of tanks ecc...)
-                self.check_for_victory(player)
-                print("[fake] Check objective card terminated")
+                if self.check_for_victory(player) is True:
+                    print(f"Il player {player.name} ha vinto")
+                print(" Check objective card terminated")
+
 
     async def handle_requests(self):
         while self.game_running:
@@ -295,6 +298,8 @@ class Game:
                     defender_army_num = int(defender_army_num)
                     print(
                         f"{attacker_player.name} WILL USE {str(attacker_army_num)} AGAINST {str(defender_army_num)} ARMY OWNED BY {defender_player.name}")
+                    print(f"Prima di attaccare {attacker_territory.name} aveva {attacker_territory.num_tanks} armate")
+                    print(f"Prima di essere attaccato {defender_territory.name} aveva {defender_territory.num_tanks} armate")
                     # Tell the defender it's under attack
                     await defender_player.sock.send(
                         "UNDER_ATTACK: " + attacker_id + ", " + attacker_ter_id + "-" + defender_ter_id + ", "
@@ -305,10 +310,13 @@ class Game:
                     extracted_numbers_defender = [random.randint(1, 6) for _ in range(defender_army_num)]
                     extracted_numbers_attacker.sort(reverse=True)  # Sort in descending order
                     extracted_numbers_defender.sort(reverse=True)
+
                     attacker_wins = 0
                     defender_wins = 0
                     print(
                         f"Generati {len(extracted_numbers_attacker)} numeri per l'attaccante, {len(extracted_numbers_defender)} per il difensore")
+                    print("Numeri dell'attaccante: ", extracted_numbers_attacker)
+                    print("Numeri del difensore: ", extracted_numbers_defender)
                     print("Inizio confronto:")
                     # Confronto, in ordine, del più grande dell'attaccante con il più piccolo dell'attaccante
                     for attacker_num, defender_num in zip(extracted_numbers_attacker, extracted_numbers_defender):
@@ -325,9 +333,9 @@ class Game:
                     defender_territory.num_tanks -= attacker_wins
 
                     print(
-                        f"Armate rimaste in {attacker_territory.name} posseduto da {attacker_player.name}: {attacker_territory.num_tanks}")
+                        f"Armate rimaste per l'attaccante {attacker_territory.name} posseduto da {attacker_player.name}: {attacker_territory.num_tanks}")
                     print(
-                        f"Armate rimaste in {defender_territory.name} posseduto da {defender_player.name}: {defender_territory.num_tanks}")
+                        f"Armate rimaste per il difensore {defender_territory.name} posseduto da {defender_player.name}: {defender_territory.num_tanks}")
 
                     print(f"Prima {attacker_player.name} aveva {len(attacker_player.territories)} territori")
                     print(f"Sempre prima {defender_player.name} aveva {len(defender_player.territories)} territori")
@@ -339,9 +347,6 @@ class Game:
                         attacker_player.addTerritory(defender_territory)
                         print(
                             f"Adesso {defender_territory.name} appartinene a {defender_territory.player_id} con {defender_territory.num_tanks} armate")
-                    else:
-                        print(
-                            f"Il brother {defender_player.name} ha scopato la mamma dell'attaccante {attacker_player.name}")
 
                     print(f"Adesso {attacker_player.name} ha {len(attacker_player.territories)} territori")
                     print(f"Sempre adesso {defender_player.name} ha {len(defender_player.territories)} territori")
@@ -354,6 +359,7 @@ class Game:
                     await self.broadcast("SEND_TERRITORIES_TO_ALL: " + json.dumps(territories_list, indent=4))
                     #await attacker_player.sock.send("ATTACK_RESULT_ATTACKER: ")
                     #await defender_player.sock.send("ATTACK_RESULT_DEFENDER: ")
+                    # Mandare un messaggio all'attaccante e all'attaccato per dirgli che l'attacco è finito?
                     print("Aggiornati tutti i client sul risultato del combattimento")
                     if len(defender_player.territories) == 0:
                         print(f"Il brother {defender_player.name} è stato scopato così forte che è morto nell'atto e adesso verrà rimosso dalla lista dei players vivi per essere messo in quella dei players scassati...")
@@ -361,7 +367,7 @@ class Game:
                         self.dead_players.append(defender_player)
                         self.players.remove(defender_player)
                         print("done")
-                    # Mandare un messaggio all'attaccante e all'attaccato per dirgli che l'attacco è finito?
+
                     self.event.set()
 
                 self.queue.task_done()
