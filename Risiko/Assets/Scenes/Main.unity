@@ -20319,7 +20319,8 @@ MonoBehaviour:
   - {fileID: 1608895993}
   - {fileID: 1341229216}
   endTurnButton: {fileID: 886352705}
-  popUpAttack: {fileID: 0}
+  popUpAttack: {fileID: 638433803}
+  enemyTerritory: {fileID: 0}
 --- !u!114 &2029590057
 MonoBehaviour:
   m_ObjectHideFlags: 0
