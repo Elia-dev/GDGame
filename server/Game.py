@@ -327,7 +327,7 @@ class Game:
 
                     await self.broadcast("SEND_TERRITORIES_TO_ALL: " + json.dumps(territories_list, indent=4))
                     if len(defender_player.territories) == 0:
-                        defender_player.killedBy = attacker_player
+                        defender_player.killed_by = attacker_player
                         self.dead_players.append(defender_player)
                         self.players.remove(defender_player)
                     # Mandare un messaggio all'attaccante e all'attaccato per dirgli che l'attacco è finito?
