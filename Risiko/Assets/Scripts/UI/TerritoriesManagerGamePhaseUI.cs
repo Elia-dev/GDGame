@@ -130,7 +130,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
                 popUpMoveTanks.GetComponent<PupUpMoveTanksUI>().SetPupUp(
                     TerritoryInformationsPlayer(selectedTerritory.gameObject.name), 
                     TerritoryInformationsPlayer(newTerritory.gameObject.name), 
-                    enemyTerritory.gameObject);
+                    newTerritory.gameObject);
             }
             else { //Altrimenti ho selezionato un nuovo stato e quindi vado alla ricerca dei vicini
                 //BRILLO I VICINI e debrillo quelli  di prima
