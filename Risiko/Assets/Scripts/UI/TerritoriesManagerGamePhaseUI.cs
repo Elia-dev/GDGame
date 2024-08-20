@@ -67,8 +67,19 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
         } else if (_attackphase && !IsPhaseGoing) {
             endTurnButton.enabled = true;
             if (Input.GetMouseButtonDown(0)) {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
+                Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                RaycastHit2D[] hits = Physics2D.RaycastAll(mousePosition, Vector2.zero);
+                RaycastHit2D hit = new RaycastHit2D();
+                //Ciclo che evita che non sia possibile selezionare tutto ciò che sta dietro il popup
+                foreach (RaycastHit2D hitted in hits) {
+                    Collider2D hittedCollider = hitted.collider;
+                    if (hittedCollider is BoxCollider2D) {
+                        hit = new RaycastHit2D();
+                        break;
+                    }
+                    if (hittedCollider is PolygonCollider2D)
+                        hit = hitted;
+                }
 
                 if (hit.collider is not null) {
                     TerritoryHandlerUI territoryHandlerUI = hit.transform.GetComponent<TerritoryHandlerUI>();
@@ -113,7 +124,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
         //Se ho selezionato un mio stato
         if (TerritoryInformationsPlayer(newTerritory.gameObject.name) is not null) {
             //Se ho già selezionato un mio stato e questo è confinante ad esso
-            if (_readyToAttack && _neighborhoodGameObj.Contains(newTerritory.gameObject)) {
+            if (_neighborhoodGameObj.Contains(newTerritory.gameObject)) {//_readyToAttack && 
                 //POPUP MOVE
                 Debug.Log("POPUP MOVE");
             }
@@ -143,7 +154,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
         }
         else { //Se invece ho selezionato uno stato nemico
             //Se è nei dintorni del mio stato selezionato
-            if (_readyToAttack && _neighborhoodGameObj.Contains(newTerritory.gameObject)) {
+            if ( _neighborhoodGameObj.Contains(newTerritory.gameObject)) {//_readyToAttack &&
                 enemyTerritory = newTerritory;
                 popUpAttack.GetComponent<PopUpAttackUI>().SetPupUp(
                     TerritoryInformationsPlayer(selectedTerritory.gameObject.name), 
