@@ -453,6 +453,7 @@ class Game:
         while control < len(self.players):
             for player in self.players:
                 if player.tanks_available > 0:
+                    await self.broadcast("PLAYER_TURN: " + player.player_id)
                     await player.sock.send("IS_YOUR_TURN: TRUE")
                     print(f"Turno del player id: {player.player_id} con nome {player.name}")
                     print(f"Armate totali: {player.tanks_num}")
