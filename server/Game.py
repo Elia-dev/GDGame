@@ -284,23 +284,9 @@ class Game:
                     for terr in attacker_player.territories:
                         if terr.id == attacker_ter_id:
                             attacker_territory = terr
-                        else:
-                            print("Territorio dell'attaccante non trovato")
-                            for p in self.players:
-                                for territorio in p.territories:
-                                    if territorio.id == attacker_ter_id:
-                                        print(f"In realtà il territorio {attacker_ter_id} appartiene a {territorio.player_id}")
-
                     for terr in defender_player.territories:
                         if terr.id == defender_ter_id:
                             defender_territory = terr
-                        else:
-                            print("Territorio del difensore non trovato")
-                            for p in self.players:
-                                for territorio in p.territories:
-                                    if territorio.id == defender_ter_id:
-                                        print(
-                                            f"In realtà il territorio {defender_ter_id} appartiene a {territorio.player_id}")
 
                     print(
                         f"{attacker_player.name} IS USING {attacker_territory.name} TO FUCK {defender_territory.name} OWNED BY {defender_player.name}")
