@@ -154,13 +154,13 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         endTurnButton.interactable = false; //Disattiva il tasto per il passaggio del turno
         _isTurnInitialized = false;
 
-        if (!distributionPhase) {
+        if (!TerritoriesManagerUI.distributionPhase) {
             this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = false;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().ReinforcePhase = false;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().Attackphase = true;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().IsPhaseGoing = false;
             endTurnButton.GetComponentInChildren<TMP_Text>().text = "End Turn!";
-            endTurnButton.enabled = true;
+            endTurnButton.interactable = true;
         }
     }
 
@@ -206,8 +206,8 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             }
         }
 
-        if (GameManager.Instance.GetGamePhase() && distributionPhase) {
-            distributionPhase = false;
+        if (GameManager.Instance.GetGamePhase() && TerritoriesManagerUI.distributionPhase) {
+            TerritoriesManagerUI.distributionPhase = false;
             this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = false;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().enabled = true;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().ActivateOtherPlayersTerritories();
@@ -219,7 +219,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         _isTurnInitialized = true; // Attiva il turno
         // Cattura le armate da posizionare
         _armyNumber = Player.Instance.TanksAvailable;
-        if (_armyNumber > 3 && distributionPhase) {
+        if (_armyNumber > 3 && TerritoriesManagerUI.distributionPhase) {
             _armyNumber = 3;
         }
 
