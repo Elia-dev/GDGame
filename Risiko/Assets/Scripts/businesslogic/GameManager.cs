@@ -27,7 +27,8 @@ public class GameManager
     private int _myArmyNumToDefende = 0;
 
     private string _lobbyID;
-    
+    private bool _imAttacking = false;
+
     private GameManager() // Private constructor to allow instantiation using singleton only
     {
     }
@@ -311,5 +312,14 @@ public class GameManager
     public void SetGameRunning(bool value)
     {
         _gameRunning = value;
+    }
+
+    public void setImAttacking(bool value)
+    {
+        _imAttacking = true;
+    }
+    public bool getImAttacking()
+    {
+        return _imAttacking;
     }
 }
