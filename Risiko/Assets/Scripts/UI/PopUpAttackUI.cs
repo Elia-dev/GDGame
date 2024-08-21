@@ -65,6 +65,7 @@ public class PopUpAttackUI : MonoBehaviour {
             tankToAdd.color = Color.black;
         }
         gameObject.GetComponent<Image>().color = Utils.ColorCode(color, 255);
+        tankToAdd.text = armyNumAttack + "";
         stateNameAttack.text = enemyTerritory.name;
         this.gameObject.transform.position = gameObjTerritory.gameObject.transform.position;
         this.gameObject.transform.position = new Vector3(this.gameObject.transform.position.x,
