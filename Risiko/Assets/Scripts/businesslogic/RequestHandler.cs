@@ -183,6 +183,9 @@ public class RequestHandler
                 Debug.Log("Server_Request: SEND_TERRITORIES_TO_ALL");
                 _request = RemoveRequest(message, "SEND_TERRITORIES_TO_ALL: ");
                 GameManager.Instance.AllTerritories = JsonConvert.DeserializeObject<List<Territory>>(_request);
+                // DA TESTARE
+                
+                /*
                 foreach (var terr in GameManager.Instance.AllTerritories)
                 {
                     if (Player.Instance.Territories.Contains(terr) && terr.player_id != Player.Instance.PlayerId)
@@ -197,6 +200,7 @@ public class RequestHandler
                 }
                 GameManager.Instance.setImUnderAttack(false);
                 GameManager.Instance.setImAttacking(false);
+                */ 
             }
             else if (message.Contains("UNDER_ATTACK"))
             {
