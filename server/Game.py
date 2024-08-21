@@ -696,6 +696,8 @@ class Game:
                             return True
                         else:
                             killer = dead_player.killed_by
+            else:
+                return False
             while control < (len(self.players) + len(self.dead_players)):
                 if killer in self.players:
                     print("Il fratello deve ancora uccidere il king con l'armata rossa o quello che gli ha rubato la kill")
@@ -720,6 +722,8 @@ class Game:
                             return True
                         else:
                             killer = dead_player.killed_by
+            else:
+                return False
             while control < (len(self.players) + len(self.dead_players)):
                 if killer in self.players:
                     print(
@@ -745,6 +749,8 @@ class Game:
                             return True
                         else:
                             killer = dead_player.killed_by
+            else:
+                return False
             while control < (len(self.players) + len(self.dead_players)):
                 if killer in self.players:
                     print(
