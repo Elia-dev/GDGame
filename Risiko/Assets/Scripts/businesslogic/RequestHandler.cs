@@ -183,24 +183,27 @@ public class RequestHandler
                 Debug.Log("Server_Request: SEND_TERRITORIES_TO_ALL");
                 _request = RemoveRequest(message, "SEND_TERRITORIES_TO_ALL: ");
                 GameManager.Instance.AllTerritories = JsonConvert.DeserializeObject<List<Territory>>(_request);
-                // DA TESTARE
                 
-                /*
                 foreach (var terr in GameManager.Instance.AllTerritories)
                 {
                     if (Player.Instance.Territories.Contains(terr) && terr.player_id != Player.Instance.PlayerId)
                     {
+                        Debug.Log("Il terr: " + terr.name + " è nella tua lista territori, ma appartiene a "
+                                  + GameManager.Instance.getEnemyNameById(terr.player_id));
                         Player.Instance.Territories.Remove(terr);
+                        Debug.Log("Rimosso");
                     }
 
                     if (!Player.Instance.Territories.Contains(terr) && terr.player_id == Player.Instance.PlayerId)
                     {
+                        Debug.Log("Il terr: " + terr.name + "non è nella tua lista territori ma in realtà ti appartiene");
                         Player.Instance.Territories.Add(terr);
+                        Debug.Log("Aggiunto");
                     }
                 }
                 GameManager.Instance.setImUnderAttack(false);
                 GameManager.Instance.setImAttacking(false);
-                */ 
+                
             }
             else if (message.Contains("UNDER_ATTACK"))
             {
