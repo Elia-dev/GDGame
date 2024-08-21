@@ -159,6 +159,8 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             this.GetComponent<TerritoriesManagerGamePhaseUI>().ReinforcePhase = false;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().Attackphase = true;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().IsPhaseGoing = false;
+            endTurnButton.GetComponentInChildren<TMP_Text>().text = "End Turn!";
+            endTurnButton.enabled = true;
         }
     }
 
