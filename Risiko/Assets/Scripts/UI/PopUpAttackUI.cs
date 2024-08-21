@@ -21,6 +21,7 @@ public class PopUpAttackUI : MonoBehaviour {
         minusButton.onClick.AddListener(() => RemoveArmy());
         attackButton.onClick.AddListener(() => {
             ClientManager.Instance.AttackEnemyTerritory(myTerr, enemyTerr, armyNumAttack);
+            TerritoriesManagerGamePhaseUI.AttackFinished = true;
             this.gameObject.SetActive(false);
         });
     }
