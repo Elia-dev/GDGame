@@ -367,7 +367,7 @@ class Game:
                         self.dead_players.append(defender_player)
                         self.players.remove(defender_player)
                         print("done")
-
+                    await self.broadcast("ATTACK_FINISHED_FORCE_UPDATE")
                     self.event.set()
 
                 self.queue.task_done()

@@ -183,27 +183,6 @@ public class RequestHandler
                 Debug.Log("Server_Request: SEND_TERRITORIES_TO_ALL");
                 _request = RemoveRequest(message, "SEND_TERRITORIES_TO_ALL: ");
                 GameManager.Instance.AllTerritories = JsonConvert.DeserializeObject<List<Territory>>(_request);
-                
-                foreach (var terr in GameManager.Instance.AllTerritories)
-                {
-                    if (Player.Instance.Territories.Contains(terr) && terr.player_id != Player.Instance.PlayerId)
-                    {
-                        Debug.Log("Il terr: " + terr.name + " è nella tua lista territori, ma appartiene a "
-                                  + GameManager.Instance.getEnemyNameById(terr.player_id));
-                        Player.Instance.Territories.Remove(terr);
-                        Debug.Log("Rimosso");
-                    }
-
-                    if (!Player.Instance.Territories.Contains(terr) && terr.player_id == Player.Instance.PlayerId)
-                    {
-                        Debug.Log("Il terr: " + terr.name + "non è nella tua lista territori ma in realtà ti appartiene");
-                        Player.Instance.Territories.Add(terr);
-                        Debug.Log("Aggiunto");
-                    }
-                }
-                GameManager.Instance.setImUnderAttack(false);
-                GameManager.Instance.setImAttacking(false);
-                
             }
             else if (message.Contains("UNDER_ATTACK"))
             {
@@ -273,6 +252,30 @@ public class RequestHandler
                 Debug.Log("Il mio territorio sotto attacco: " + GameManager.Instance.getMyTerritoryUnderAttack().name);
                 Debug.Log("Numero armate che il nemico sta usando: " + GameManager.Instance.GetEnemyAttackerArmyNum());
                 Debug.Log("Numero armate che uso per difendermi: " + GameManager.Instance.getMyArmyNumToDefende());
+            }
+            else if (message.Contains("ATTACK_FINISHED_FORCE_UPDATE"))
+            {
+                Debug.Log("Server_Request: ATTACK_FINISHED_FORCE_UPDATE");
+                foreach (var terr in GameManager.Instance.AllTerritories)
+                {
+                    if (Player.Instance.Territories.Contains(terr) && terr.player_id != Player.Instance.PlayerId)
+                    {
+                        Debug.Log("Il terr: " + terr.name + " è nella tua lista territori, ma appartiene a "
+                                  + GameManager.Instance.getEnemyNameById(terr.player_id));
+                        Player.Instance.Territories.Remove(terr);
+                        Debug.Log("Rimosso");
+                    }
+
+                    if (!Player.Instance.Territories.Contains(terr) && terr.player_id == Player.Instance.PlayerId)
+                    {
+                        Debug.Log("Il terr: " + terr.name + " non è nella tua lista territori ma in realtà ti appartiene");
+                        Player.Instance.Territories.Add(terr);
+                        Debug.Log("Aggiunto");
+                    }
+                }
+                GameManager.Instance.setImUnderAttack(false);
+                GameManager.Instance.setImAttacking(false);
+                Debug.Log("FORCED UPDATE FINISHED");
             }
             else
             {
