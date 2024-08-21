@@ -76,7 +76,6 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
 
         plusButton.onClick.AddListener(() => AddArmy());
         minusButton.onClick.AddListener(() => RemoveArmy());
-        endTurnButton.onClick.AddListener(() => SendArmy());
     }
 
     public void AddArmy() {
@@ -225,6 +224,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
 
         _selectedTerritories.territories = new Territory[_armyNumber];
         _selectedTerritories.count = new int[_armyNumber];
+        endTurnButton.onClick.AddListener(() => SendArmy());
     }
 
     //Trova un territorio dato l'id del territorio
