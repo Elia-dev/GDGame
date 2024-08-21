@@ -320,6 +320,6 @@ public class GameManager
     }
     public bool getImAttacking()
     {
-        return _imAttacking;
+        return _imAttacking;git
     }
 }
