@@ -256,8 +256,15 @@ public class RequestHandler
             else if (message.Contains("ATTACK_FINISHED_FORCE_UPDATE"))
             {
                 Debug.Log("Server_Request: ATTACK_FINISHED_FORCE_UPDATE");
+                Debug.Log("NOTA: IO SONO " + Player.Instance.Name + " con id=" + Player.Instance.PlayerId);
+                Debug.Log("Adesso stampo tutti i miei territori");
+                foreach (var terr in Player.Instance.Territories)
+                {
+                    Debug.Log("Nome" + terr.name + " id " + terr.player_id);
+                }
                 foreach (var terr in GameManager.Instance.AllTerritories)
                 {
+                    Debug.Log("Controllo il terr " + terr.name + "che appartiene a " + GameManager.Instance.getEnemyNameById(terr.player_id) + " che ha player_id = " + terr.player_id);
                     if (Player.Instance.Territories.Contains(terr) && terr.player_id != Player.Instance.PlayerId)
                     {
                         Debug.Log("Il terr: " + terr.name + " è nella tua lista territori, ma appartiene a "
