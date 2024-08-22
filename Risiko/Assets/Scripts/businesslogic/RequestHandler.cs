@@ -265,7 +265,8 @@ public class RequestHandler
                 foreach (var terr in GameManager.Instance.AllTerritories)
                 {
                     Debug.Log("Controllo il terr " + terr.name + "che appartiene a " + GameManager.Instance.getEnemyNameById(terr.player_id) + " che ha player_id = " + terr.player_id);
-                    if (Player.Instance.Territories.Contains(terr) && terr.player_id != Player.Instance.PlayerId)
+                    
+                    if (Player.Instance.Territories.Find(x => x.id == terr.id) is not null && terr.player_id != Player.Instance.PlayerId)
                     {
                         Debug.Log("Il terr: " + terr.name + " è nella tua lista territori, ma appartiene a "
                                   + GameManager.Instance.getEnemyNameById(terr.player_id));
@@ -273,7 +274,7 @@ public class RequestHandler
                         Debug.Log("Rimosso");
                     }
 
-                    if (!Player.Instance.Territories.Contains(terr) && terr.player_id == Player.Instance.PlayerId)
+                    if (Player.Instance.Territories.Find(x => x.id == terr.id) is null && terr.player_id == Player.Instance.PlayerId)
                     {
                         Debug.Log("Il terr: " + terr.name + " non è nella tua lista territori ma in realtà ti appartiene");
                         Player.Instance.Territories.Add(terr);
