@@ -61,8 +61,8 @@ class Game:
 
     async def handle_game(self):
         print("Aperto HANDLE_GAME\n")
+        print("ASPETTANDO CHE SI COLLEGHINO TUTTI\n")
         while self.game_waiting_to_start is True:
-            print("ASPETTANDO CHE SI COLLEGHINO TUTTI\n")
             if self.game_id is None:
                 return
             await asyncio.sleep(2)
