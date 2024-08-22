@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManagerUI : MonoBehaviour {
     [SerializeField] private TMP_Text playerName;
-    [SerializeField] private GameObject circlePLayerColor;
+    [SerializeField] private GameObject circlePlayerColor;
     [SerializeField] private TMP_Text turn;
     [SerializeField] private GameObject clickHandler;
     [SerializeField] private TMP_Text turnInfo;
@@ -25,8 +26,8 @@ public class GameManagerUI : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         playerName.text = Player.Instance.Name;
-        circlePLayerColor.GetComponent<SpriteRenderer>().color = Utils.ColorCode(Player.Instance.ArmyColor, 255);
-        //objectiveInfo.text = //OBJECTIVE INFO
+        circlePlayerColor.GetComponent<Image>().color = Utils.ColorCode(Player.Instance.ArmyColor, 255);
+        objectiveInfo.text = Player.Instance.ObjectiveCard.description;
     }
 
     // Update is called once per frame

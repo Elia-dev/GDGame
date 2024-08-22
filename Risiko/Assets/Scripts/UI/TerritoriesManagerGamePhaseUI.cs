@@ -115,6 +115,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
             _attackFinished = false;
             //ALTRO
         }
+        RefreshTerritories();
     }
 
     public void RefreshTerritories() {
