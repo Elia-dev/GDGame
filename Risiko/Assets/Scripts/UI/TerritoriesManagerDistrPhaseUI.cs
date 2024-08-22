@@ -76,7 +76,15 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
 
         plusButton.onClick.AddListener(() => AddArmy());
         minusButton.onClick.AddListener(() => RemoveArmy());
-        endTurnButton.onClick.AddListener(() => SendArmy()); // L'AVEVO TOLTO DA QUI
+        endTurnButton.onClick.AddListener(() => {
+            if (distributionPhase) 
+                SendArmy();
+            else {
+                ClientManager.Instance.UpdateTerritoriesState();
+                endTurnButton.interactable = false;
+            }
+            
+        });
     }
 
     public void AddArmy() {
@@ -159,8 +167,8 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             this.GetComponent<TerritoriesManagerGamePhaseUI>().ReinforcePhase = false;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().Attackphase = true;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().IsPhaseGoing = false;
-            //endTurnButton.GetComponentInChildren<TMP_Text>().text = "End Turn!";
-            //endTurnButton.interactable = true;
+            endTurnButton.GetComponentInChildren<TMP_Text>().text = "End Turn!";
+            endTurnButton.interactable = true;
         }
     }
 
