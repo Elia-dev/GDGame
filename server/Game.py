@@ -451,6 +451,7 @@ class Game:
 
     def __army_start_num__(self, num_player):
         switcher = {
+            2: 24,
             3: 35,
             4: 30,
             5: 25,
