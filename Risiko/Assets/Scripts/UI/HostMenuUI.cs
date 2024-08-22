@@ -57,7 +57,7 @@ public class HostMenuUI : MonoBehaviour
 
         
         //Quando i giocatori saranno 3+
-        if (GameManager.Instance.GetPlayersNumber() >= 3)
+        if (GameManager.Instance.GetPlayersNumber() >= 2)
         {
             runGameButton.interactable = true;
         }
