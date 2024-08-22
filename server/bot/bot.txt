@@ -1,0 +1,29 @@
+SETUP
+Selezione iniziale delle armate DEFAULT (una per territorio)
+Posizionamento delle armate successive
+ - mossa dipendente dalla CARTA OBIETTIVO
+    - continente da conquistare posizione più armate sui terr. di quel continente
+    - se devo distruggere un avversario posiziono più armate sui terr. a lui adiacenti
+ Eseguire la mossa con prob P = 90%, 60%, 30% (dipendente dalla difficoltà)
+
+ATTACCO
+Dipendente dalla carta obiettivo
+ - conquista di un continente
+    - predilige attacchi verso territori nemici sul continente obiettivo
+ - distruzione di un nemico
+    - predilige attacchi verso l'armata nemica da eliminare
+Schema attaccante di BASE
+ - individuare il territorio da attaccare secondo schema sopra
+ - selezionare il territorio attaccante con il maggior numero di carri armati tra quelli confinanti con l'attaccato
+ - evitare attacchi svantaggiosi
+    - NON attaccare se la differenza (carri_attaccanti - carri_difensivi) < 0
+Eseguire ogni mossa con prob. P = 90%, 60%, 30% (dipendente dalla difficoltà)
+
+DIFESA
+Schema difensivo di DEFAULT per ogni difficoltà
+ - difende con tutti i carri disponibili sul suolo attaccato
+
+
+RINFORZO
+Come nella fase di SETUP, disporre le truppe secondo la carta obiettivo con prob. P
+Se un proprio stato confina con soli stati amici lasciare un solo carro su di esso e spostare le truppe su quelli limitrofi.
