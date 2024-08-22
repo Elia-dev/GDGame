@@ -118,6 +118,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
     }
 
     public void RefreshTerritories() {
+        Debug.Log("REFRESH");
         foreach (var territory in GameManager.Instance.AllTerritories) {
             GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
             if (terr is not null) {

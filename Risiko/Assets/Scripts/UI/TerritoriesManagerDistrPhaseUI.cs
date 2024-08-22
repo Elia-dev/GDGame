@@ -77,16 +77,13 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         plusButton.onClick.AddListener(() => AddArmy());
         minusButton.onClick.AddListener(() => RemoveArmy());
         endTurnButton.onClick.AddListener(() => {
-            if (distributionPhase || TerritoriesManagerGamePhaseUI.ReinforcePhase) {
-                Debug.Log("EndButton distr. phase");
+            if (distributionPhase || TerritoriesManagerGamePhaseUI.ReinforcePhase)
                 SendArmy();
-            }
+            
             else {
-                Debug.Log("EndButton attack phase");
                 ClientManager.Instance.UpdateTerritoriesState();
                 endTurnButton.interactable = false;
             }
-            
         });
     }
 
