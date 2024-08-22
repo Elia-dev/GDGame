@@ -110,7 +110,7 @@ public class GameManager
     {
         if (_colorsDict.TryGetValue(id, out string color))
         {
-            Debug.Log($"Colore trovato: ID = {id}, Colore = {color}");
+            //Debug.Log($"Colore trovato: ID = {id}, Colore = {color}");
             return color;
         }
         Debug.Log($"Il colore con ID = {id} non è stato trovato.");
