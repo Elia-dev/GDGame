@@ -77,7 +77,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         plusButton.onClick.AddListener(() => AddArmy());
         minusButton.onClick.AddListener(() => RemoveArmy());
         endTurnButton.onClick.AddListener(() => {
-            if (distributionPhase) {
+            if (distributionPhase || TerritoriesManagerGamePhaseUI.ReinforcePhase) {
                 Debug.Log("EndButton distr. phase");
                 SendArmy();
             }
@@ -167,8 +167,8 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
 
         if (!distributionPhase) {
             this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = false;
-            this.GetComponent<TerritoriesManagerGamePhaseUI>().ReinforcePhase = false;
-            this.GetComponent<TerritoriesManagerGamePhaseUI>().Attackphase = true;
+            TerritoriesManagerGamePhaseUI.ReinforcePhase = false;
+            TerritoriesManagerGamePhaseUI.Attackphase = true;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().IsPhaseGoing = false;
             endTurnButton.GetComponentInChildren<TMP_Text>().text = "End Turn!";
             endTurnButton.interactable = true;

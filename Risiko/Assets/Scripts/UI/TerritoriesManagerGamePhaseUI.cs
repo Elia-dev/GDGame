@@ -14,8 +14,8 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
     private List<GameObject> _neighborhoodGameObj = new List<GameObject>();
     private List<Territory> _neighborhoodTeeritories = new List<Territory>();
     public TerritoryHandlerUI enemyTerritory;
-    private bool _reinforcePhase = true;
-    private bool _attackphase = false;
+    private static bool _reinforcePhase = true;
+    private static bool _attackphase = false;
     private bool _isTurnInitialized = false;
     private static bool _attackFinished = false;
 
@@ -26,12 +26,13 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
 
     public bool IsPhaseGoing { get; set; } = false;
 
-    public bool ReinforcePhase {
+    public static bool ReinforcePhase {
         get => _reinforcePhase;
         set => _reinforcePhase = value;
     }
 
-    public bool Attackphase {
+    public static bool Attackphase {
+        get => _attackphase;
         set => _attackphase = value;
     }
 

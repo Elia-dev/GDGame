@@ -46,11 +46,11 @@ public class GameManagerUI : MonoBehaviour {
                             clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks of "
                             + Player.Instance.TanksAvailable + " still available";
         }
-        else if (!_settingGame && clickHandler.GetComponent<TerritoriesManagerGamePhaseUI>().ReinforcePhase) {
+        else if (!_settingGame && TerritoriesManagerGamePhaseUI.ReinforcePhase) {
             turnInfo.text = "<u>Reinforce Phase!</u>\nSelect your states and add " +
                             clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks";
         }
-        else if (!_settingGame && clickHandler.GetComponent<TerritoriesManagerGamePhaseUI>().ReinforcePhase) {//DA CAMBIARE CON ATTACKPHASE
+        else if (!_settingGame && TerritoriesManagerGamePhaseUI.Attackphase) {
             turnInfo.text = "<u>Attack Phase!</u>\nAttack the enemies or move your army";
         }
     }
