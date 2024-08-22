@@ -292,7 +292,7 @@ public class RequestHandler
                 GameManager.Instance.setImUnderAttack(false);
                 GameManager.Instance.setImAttacking(false);
                 GameManager.Instance.setForceUpdateAfterAttack(true);
-                Debug.Log("FORCED UPDATE FINISHED");
+                Debug.Log("FORCED UPDATE FINISHED"); // PERCHE TI BLOCCHI NEL FOREACH? PERCHÉ NON RAGGIUNGI QUESTO PUNTO? :(
             }
             else
             {

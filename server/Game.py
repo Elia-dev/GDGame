@@ -161,8 +161,8 @@ class Game:
         while self.game_running:
             try:
                 player, message = await self.queue.get()
-                print(
-                    f"GAME: handling request from client id - : {player.player_id} with name {player.name}: {message}")
+                #print(
+                #    f"GAME: handling request from client id - : {player.player_id} with name {player.name}: {message}")
 
                 if "LOBBY_KILLED_BY_HOST" in message:
                     id = self._remove_request(message, "LOBBY_KILLED_BY_HOST: ")
