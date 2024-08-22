@@ -17,9 +17,9 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
     private static bool _reinforcePhase = true;
     private static bool _attackphase = false;
     private bool _isTurnInitialized = false;
-    private static bool _attackFinished = false;
+    private bool _attackFinished = false;
 
-    public static bool AttackFinished {
+    public bool AttackFinished {
         get => _attackFinished;
         set => _attackFinished = value;
     }
@@ -110,16 +110,14 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
             }
         }
 
-        if (_attackFinished) {
+        if (GameManager.Instance.getForceUpdateAfterAttack()) {
             RefreshTerritories();
-            _attackFinished = false;
+            GameManager.Instance.setForceUpdateAfterAttack(false);
             //ALTRO
         }
-        RefreshTerritories();
     }
 
     public void RefreshTerritories() {
-        Debug.Log("REFRESH");
         foreach (var territory in GameManager.Instance.AllTerritories) {
             GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
             if (terr is not null) {
