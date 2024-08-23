@@ -2,7 +2,6 @@ import websockets
 import json
 import asyncio
 
-from Objective import Objective
 from Player import Player
 from Game_manager import GameManager
 from RequestHandler import RequestHandler
@@ -17,13 +16,19 @@ class ClientManager:
         self.game_manager = GameManager()
 
     async def start_client(self):
-        async with websockets.connect('ws://localhost:1234') as websocket:
-            self._connected = True
-            self.player = Player(websocket)
-            self._websocket = websocket
-            request_handler = RequestHandler(self.player, self.game_manager)
-            handler_task = asyncio.create_task(request_handler.handler(websocket))
-            await asyncio.gather(handler_task)
+        print("Try to connect...")
+        async with websockets.connect('ws://93.57.245.63:12345') as websocket:
+            try:
+                print("debug")
+                self._connected = True
+                self.player = Player(websocket)
+                self._websocket = websocket
+                request_handler = RequestHandler(self.player, self.game_manager)
+                handler_task = asyncio.create_task(request_handler.handler(websocket))
+                print("Connected")
+                await asyncio.gather(handler_task)
+            except Exception as e:
+                await websocket.close()
 
 
     def is_connected(self):
@@ -64,6 +69,7 @@ class ClientManager:
         await self.send_message("REQUEST_NAME_UPDATE_PLAYER_LIST: ")
 
     async def send_name(self):
+        print(f'Sending name: {self.player.name}')
         await self.send_message(f"UPDATE_NAME: {self.player.player_id}-{self.player.name}")
 
     async def start_host_game(self):

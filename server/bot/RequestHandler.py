@@ -11,14 +11,15 @@ class RequestHandler:
         self._queue = asyncio.Queue()
 
     async def handler(self, websocket):
+        print(f'Connected!')
         while True:
             try:
                 async for message in websocket:
 
-                    print(f'PLAYER: Receive message from server {message}')
+                    # print(f'PLAYER: Receive message from server {message}')
 
                     if 'LOBBY_ID' in message:
-                        print(f'PLAYER: Receive request: LOBBY_ID {message}')
+                        # print(f'PLAYER: Receive request: LOBBY_ID {message}')
                         self.game_manager.set_lobby_id(message.replace('LOBBY_ID:', '').strip())
 
                     elif 'GAME_STARTED_BY_HOST' in message:
