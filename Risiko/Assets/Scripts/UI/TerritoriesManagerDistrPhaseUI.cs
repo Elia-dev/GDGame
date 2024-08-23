@@ -76,6 +76,17 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
 
         plusButton.onClick.AddListener(() => AddArmy());
         minusButton.onClick.AddListener(() => RemoveArmy());
+        endTurnButton.onClick.AddListener(() => {
+            if (distributionPhase || TerritoriesManagerGamePhaseUI.ReinforcePhase) {
+                Debug.Log("EndTurn Button DISTR. OR REINFORCE");
+                SendArmy();
+            }
+            else if (TerritoriesManagerGamePhaseUI.Attackphase) {
+                Debug.Log("EndTurn Button ATTACK");
+                ClientManager.Instance.UpdateTerritoriesState();
+                endTurnButton.interactable = false;
+            }
+        });
     }
 
     public void AddArmy() {
@@ -153,10 +164,10 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         endTurnButton.interactable = false; //Disattiva il tasto per il passaggio del turno
         _isTurnInitialized = false;
 
-        if (!TerritoriesManagerUI.distributionPhase) {
+        if (!distributionPhase) {
             this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = false;
-            this.GetComponent<TerritoriesManagerGamePhaseUI>().ReinforcePhase = false;
-            this.GetComponent<TerritoriesManagerGamePhaseUI>().Attackphase = true;
+            TerritoriesManagerGamePhaseUI.ReinforcePhase = false;
+            TerritoriesManagerGamePhaseUI.Attackphase = true;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().IsPhaseGoing = false;
             endTurnButton.GetComponentInChildren<TMP_Text>().text = "End Turn!";
             endTurnButton.interactable = true;
@@ -205,7 +216,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             }
         }
 
-        if (GameManager.Instance.GetGamePhase() && TerritoriesManagerUI.distributionPhase) {
+        if (GameManager.Instance.GetGamePhase() && distributionPhase) {
             TerritoriesManagerUI.distributionPhase = false;
             this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = false;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().enabled = true;
@@ -218,13 +229,12 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         _isTurnInitialized = true; // Attiva il turno
         // Cattura le armate da posizionare
         _armyNumber = Player.Instance.TanksAvailable;
-        if (_armyNumber > 3 && TerritoriesManagerUI.distributionPhase) {
+        if (_armyNumber > 3 && distributionPhase) {
             _armyNumber = 3;
         }
 
         _selectedTerritories.territories = new Territory[_armyNumber];
         _selectedTerritories.count = new int[_armyNumber];
-        endTurnButton.onClick.AddListener(() => SendArmy());
     }
 
     //Trova un territorio dato l'id del territorio

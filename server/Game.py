@@ -61,8 +61,8 @@ class Game:
 
     async def handle_game(self):
         print("Aperto HANDLE_GAME\n")
+        print("ASPETTANDO CHE SI COLLEGHINO TUTTI\n")
         while self.game_waiting_to_start is True:
-            print("ASPETTANDO CHE SI COLLEGHINO TUTTI\n")
             if self.game_id is None:
                 return
             await asyncio.sleep(2)
@@ -161,8 +161,8 @@ class Game:
         while self.game_running:
             try:
                 player, message = await self.queue.get()
-                print(
-                    f"GAME: handling request from client id - : {player.player_id} with name {player.name}: {message}")
+                #print(
+                #    f"GAME: handling request from client id - : {player.player_id} with name {player.name}: {message}")
 
                 if "LOBBY_KILLED_BY_HOST" in message:
                     id = self._remove_request(message, "LOBBY_KILLED_BY_HOST: ")
@@ -451,6 +451,7 @@ class Game:
 
     def __army_start_num__(self, num_player):
         switcher = {
+            2: 24,
             3: 35,
             4: 30,
             5: 25,

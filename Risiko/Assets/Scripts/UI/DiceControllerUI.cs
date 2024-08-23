@@ -25,14 +25,14 @@ public class DiceControllerUI : MonoBehaviour {
             diceResults.text = "Extracted number: " + GameManager.Instance.GetExtractedNumber() + "\n Game order: " 
                                + GameManager.Instance.getGame_order();
             diceResults.gameObject.SetActive(true);
-            StartCoroutine(WaitAndLoadScene(8f)); //Delay di qualcosa o un tasto per passare di scena
+            StartCoroutine(WaitAndLoadScene(1f)); //Delay di qualcosa o un tasto per passare di scena ////ERA 8
             // GameManager.LoadScene("Main") -> scena della mappa
         }
     }
 
     public void ThrowDice() {
         diceButton.interactable = false;
-        StartCoroutine(Wait(4f));
+        StartCoroutine(Wait(1f)); ///ERA 4
     }
 
     IEnumerator Wait(float delay) {

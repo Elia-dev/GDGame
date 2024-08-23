@@ -14,24 +14,25 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
     private List<GameObject> _neighborhoodGameObj = new List<GameObject>();
     private List<Territory> _neighborhoodTeeritories = new List<Territory>();
     public TerritoryHandlerUI enemyTerritory;
-    private bool _reinforcePhase = true;
-    private bool _attackphase = false;
+    private static bool _reinforcePhase = true;
+    private static bool _attackphase = false;
     private bool _isTurnInitialized = false;
-    private static bool _attackFinished = false;
+    private bool _attackFinished = false;
 
-    public static bool AttackFinished {
+    public bool AttackFinished {
         get => _attackFinished;
         set => _attackFinished = value;
     }
 
     public bool IsPhaseGoing { get; set; } = false;
 
-    public bool ReinforcePhase {
+    public static bool ReinforcePhase {
         get => _reinforcePhase;
         set => _reinforcePhase = value;
     }
 
-    public bool Attackphase {
+    public static bool Attackphase {
+        get => _attackphase;
         set => _attackphase = value;
     }
 
@@ -75,10 +76,11 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
             }
         }
         else if (_attackphase && !IsPhaseGoing) {
-            endTurnButton.onClick.AddListener(() => {
+            endTurnButton.interactable = true;
+            /*endTurnButton.onClick.AddListener(() => {
                 ClientManager.Instance.UpdateTerritoriesState();
                 endTurnButton.interactable = false;
-            });
+            });*/
             if (Input.GetMouseButtonDown(0)) {
                 Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 RaycastHit2D[] hits = Physics2D.RaycastAll(mousePosition, Vector2.zero);
@@ -108,9 +110,10 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
             }
         }
 
-        if (_attackFinished) {
+        if (GameManager.Instance.getForceUpdateAfterAttack()) {
+            Debug.Log("REFRESH");
             RefreshTerritories();
-            _attackFinished = false;
+            GameManager.Instance.setForceUpdateAfterAttack(false);
             //ALTRO
         }
     }

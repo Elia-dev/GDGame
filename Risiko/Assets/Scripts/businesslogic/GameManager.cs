@@ -25,7 +25,7 @@ public class GameManager
     private string _idPlayingPlayer = "";
     private int _enemyAttackerArmyNum = 0;
     private int _myArmyNumToDefende = 0;
-
+    private bool _forceUpdateAfterAttack = false;
     private string _lobbyID;
     private bool _imAttacking = false;
 
@@ -48,6 +48,16 @@ public class GameManager
         }
     }
 
+    public bool getForceUpdateAfterAttack()
+    {
+        return _forceUpdateAfterAttack;
+    }
+
+    public void setForceUpdateAfterAttack(bool value)
+    {
+        _forceUpdateAfterAttack = value;
+    }
+    
     public int getMyArmyNumToDefende()
     {
         return _myArmyNumToDefende;
@@ -110,7 +120,7 @@ public class GameManager
     {
         if (_colorsDict.TryGetValue(id, out string color))
         {
-            Debug.Log($"Colore trovato: ID = {id}, Colore = {color}");
+            //Debug.Log($"Colore trovato: ID = {id}, Colore = {color}");
             return color;
         }
         Debug.Log($"Il colore con ID = {id} non è stato trovato.");
