@@ -16,6 +16,7 @@ class Player:
         self.territories = []
         self.army_color = None
         self.killed_by = None
+        self.is_my_turn = False
 
     def to_dict(self):
         return {
