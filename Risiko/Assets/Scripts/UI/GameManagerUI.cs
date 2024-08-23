@@ -15,7 +15,7 @@ public class GameManagerUI : MonoBehaviour {
     [SerializeField] private TMP_Text territoryInfo;
     [SerializeField] private TMP_Text objectiveInfo;
     private static bool _settingGame = true;
-    
+    private bool _playerBaseInfoSet = false;
 
 
     public static bool SettingGame {
