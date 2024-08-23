@@ -42,6 +42,13 @@ public class GameManagerUI : MonoBehaviour {
                         "'s turn!";
         }
 
+        if (!_settingGame && !_playerBaseInfoSet) {
+            circlePlayerColor.gameObject.SetActive(true);
+            circlePlayerColor.GetComponent<Image>().color = Utils.ColorCode(Player.Instance.ArmyColor, 255);
+            objectiveInfo.gameObject.SetActive(true);
+            objectiveInfo.text = "Ojective: " + Player.Instance.ObjectiveCard.description;
+        }
+        
         if (!_settingGame && TerritoriesManagerUI.distributionPhase) {
             turnInfo.text = "<u>Distribution Phase!</u>\nSelect your states and add " +
                             clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks of "
