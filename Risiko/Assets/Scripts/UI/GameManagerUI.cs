@@ -28,9 +28,9 @@ public class GameManagerUI : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         playerName.text = Player.Instance.Name;
-        allInfo.GetComponent<LayoutElement>().preferredWidth = userSpace.GetComponent<RectTransform>().rect.width;
-        Debug.Log("Preferred Width " + allInfo.GetComponent<LayoutElement>().preferredWidth + 
-                  "\nRect Width " + userSpace.GetComponent<RectTransform>().rect.width);
+        //allInfo.GetComponent<LayoutElement>().preferredWidth = userSpace.GetComponent<Transform>().;
+        //Debug.Log("Preferred Width " + allInfo.GetComponent<LayoutElement>().preferredWidth + 
+                  //"\nRect Width " + userSpace.GetComponent<RectTransform>().rect.width);
         //circlePlayerColor.GetComponent<Image>().color = Utils.ColorCode(Player.Instance.ArmyColor, 255);
         //objectiveInfo.text = Player.Instance.ObjectiveCard.description;
     }
