@@ -68,6 +68,8 @@ async def handler(websocket):
                             await client_task
                         else:
                             print("Lobby is full")
+                    else:
+                        print("Unable to find the lobby")
 
 
     except websockets.exceptions.ConnectionClosed:
