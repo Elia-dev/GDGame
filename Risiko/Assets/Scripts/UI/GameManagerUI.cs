@@ -14,8 +14,8 @@ public class GameManagerUI : MonoBehaviour {
     [SerializeField] private TMP_Text allInfo;
     [SerializeField] private GameObject userSpace;
     private string _territoryInfo;
-    [SerializeField] private TMP_Text territoryInfo;
-    [SerializeField] private TMP_Text objectiveInfo;
+    /*[SerializeField] private TMP_Text territoryInfo;
+    [SerializeField] private TMP_Text objectiveInfo;*/
     private static bool _settingGame = true;
     //private bool _playerBaseInfoSet = false;
 
@@ -72,9 +72,9 @@ public class GameManagerUI : MonoBehaviour {
         allInfo.text += "\n" + _territoryInfo;
     }
 
-    public void ShowTerritoryInfo(string id) {
-        territoryInfo.gameObject.SetActive(true);
-        Territory territory = GameManager.Instance.AllTerritories.Find(terr => terr.id.Equals(id));
+    public void ShowTerritoryInfo(Territory territory) {
+        //territoryInfo.gameObject.SetActive(true);
+        //Territory territory = GameManager.Instance.AllTerritories.Find(terr => terr.id.Equals(id));
         if (territory is not null) {
             _territoryInfo = territory.name + $": state of the continent {territory.continent}, owned by the player" +
                              $"<color={GameManager.Instance.GetPlayerColor(territory.player_id)}>" +
@@ -84,7 +84,7 @@ public class GameManagerUI : MonoBehaviour {
         }
     }
     
-    public void HideTerritoryInfo(string id) {
+    public void HideTerritoryInfo() {
         _territoryInfo = "";
     }
     

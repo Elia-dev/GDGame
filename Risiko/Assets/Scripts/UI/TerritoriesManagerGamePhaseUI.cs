@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
@@ -11,6 +12,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
     public static TerritoriesManagerGamePhaseUI Instance { get; private set; }
     [SerializeField] private GameObject popUpAttack;
     [SerializeField] private GameObject popUpMoveTanks;
+    [SerializeField] private GameObject gameManager;
     private List<GameObject> _neighborhoodGameObj = new List<GameObject>();
     private List<Territory> _neighborhoodTeeritories = new List<Territory>();
     public TerritoryHandlerUI enemyTerritory;
@@ -89,7 +91,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
                 foreach (RaycastHit2D hitted in hits) {
                     Collider2D hittedCollider = hitted.collider;
                     if (hittedCollider is BoxCollider2D) {
-                        hit = new RaycastHit2D();
+                        hit = hitted;//new RaycastHit2D();
                         break;
                     }
 
@@ -97,15 +99,17 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
                         hit = hitted;
                 }
 
-                if (hit.collider is not null) {
+                if (hit.collider is PolygonCollider2D) {
                     TerritoryHandlerUI territoryHandlerUI = hit.transform.GetComponent<TerritoryHandlerUI>();
                     if (territoryHandlerUI is not null) {
                         //selectedTerritory = territoryHandlerUI;
                         SelectState(territoryHandlerUI);
                     }
                 }
-                else {
+                else if (hit.collider is null) {
                     DeselectState();
+                    popUpMoveTanks.SetActive(false);
+                    popUpAttack.SetActive(false);
                 }
             }
         }
@@ -152,6 +156,8 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
 
     public void SelectState(TerritoryHandlerUI newTerritory) {
         //INFO STATO
+        gameManager.GetComponent<GameManagerUI>().
+            ShowTerritoryInfo(TerritoryInformationsOtherPLayers(newTerritory.gameObject.name));
         //Se ho selezionato un mio stato
         if (TerritoryInformationsPlayer(newTerritory.gameObject.name) is not null) {
             //Se ho già selezionato un mio stato e questo è confinante ad esso
@@ -278,5 +284,6 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
             enemyTerritory.Deselect();
             enemyTerritory = null;
         }
+        gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
     }
 }
