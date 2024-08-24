@@ -137,6 +137,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
         if (GameManager.Instance.getForceUpdateAfterAttack()) {
             Debug.Log("REFRESH");
             RefreshTerritories();
+            DeselectState();
             GameManager.Instance.setForceUpdateAfterAttack(false);
             //ALTRO
         }
