@@ -27,7 +27,7 @@ public class PopUpAttackUI : MonoBehaviour {
     }
 
     private void AddArmy() {
-        if (armyNumAttack < 3) {
+        if (armyNumAttack < 3 && armyNumAttack < myTerr.num_tanks-1) {
             armyNumAttack++;
             tankToAdd.text = armyNumAttack + "";
         }
