@@ -263,46 +263,59 @@ public class RequestHandler
                     Debug.Log("Nome" + terr.name + " id " + terr.player_id);
                 }
                 Debug.Log("Sto per scorrere " + GameManager.Instance.AllTerritories.Count + " territori");
-                int i = 0;
                 
                 try 
                 {
-                    foreach (Territory terr in GameManager.Instance.AllTerritories)
+                    // Genero delle liste a parte per applicare i cambiamenti alla fine ed evitare errori di sincronizzazione durante i foreach
+                    List<Territory> toRemove = new List<Territory>();
+                    List<Territory> toAdd = new List<Territory>();
+
+                    for(int i = 0; i <  GameManager.Instance.AllTerritories.Count; i++)
                     {
+                        Territory terr = GameManager.Instance.AllTerritories[i];
                         Debug.Log("Territorio numero " + i);
                         Debug.Log("Controllo il terr " + terr.name + " che appartiene a " + GameManager.Instance.getEnemyNameById(terr.player_id) + " che ha player_id = " + terr.player_id);
                         Debug.Log("Per il meme, la grandezza di player.territories è: " + Player.Instance.Territories.Count);
+
                         foreach (Territory playerTerr in Player.Instance.Territories)
                         {
                             if (playerTerr.id == terr.id && terr.player_id != Player.Instance.PlayerId)
                             {
                                 Debug.Log("Il terr: " + terr.name + " è nella tua lista territori, ma appartiene a "
                                           + GameManager.Instance.getEnemyNameById(terr.player_id));
-                                Player.Instance.Territories.Remove(terr);
-                                Debug.Log("Rimosso");
+                                toRemove.Add(playerTerr);
                             }
                             else if (playerTerr.id != terr.id && terr.player_id == Player.Instance.PlayerId)
                             {
                                 Debug.Log("Il terr: " + terr.name + " non è nella tua lista territori ma in realtà ti appartiene");
-                                Player.Instance.Territories.Add(terr);
-                                Debug.Log("Aggiunto");
+                                toAdd.Add(terr);
                             }
-                            else // Ho quello stato nella lista ed effettivamente mi appartiene, quindi ho fatto/subito un attacco ma nessuno ha perso/conquistato il territorio
+                            else
                             {
                                 Debug.Log("Aggiornati numero di tank del territorio " + playerTerr.name);
                                 Debug.Log("Passati da " + playerTerr.num_tanks + " Carri");
-                                Player.Instance.Territories.Find(x => x.id == terr.id).num_tanks = terr.num_tanks;
-                            
+                                playerTerr.num_tanks = terr.num_tanks;
                                 Debug.Log("ad adesso con " + playerTerr.num_tanks + " carri!!!");
                             }
                         }
-                        i++;
+                    }
+
+                    // Applica le modifiche dopo aver completato l'iterazione
+                    foreach (var terrToRemove in toRemove)
+                    {
+                        Player.Instance.Territories.Remove(terrToRemove);
+                    }
+
+                    foreach (var terrToAdd in toAdd)
+                    {
+                        Player.Instance.Territories.Add(terrToAdd);
                     }
                 }
                 catch (Exception ex)
                 {
                     Debug.LogError("Errore: " + ex.Message);
                 }
+
                 
                 GameManager.Instance.setImUnderAttack(false);
                 Debug.Log("Settato imunderattack");
