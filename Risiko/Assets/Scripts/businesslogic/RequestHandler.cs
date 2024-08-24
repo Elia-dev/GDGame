@@ -283,12 +283,16 @@ public class RequestHandler
                                 Debug.Log("Il terr: " + terr.name + " non è nella tua lista territori ma in realtà ti appartiene");
                                 toAdd.Add(terr);
                             }
-                            else
+                            else if (playerTerr is null && terr.player_id != Player.Instance.PlayerId)
                             {
-                                Debug.Log("Aggiornati numero di tank del territorio " + playerTerr.name);
-                                Debug.Log("Passati da " + playerTerr.num_tanks + " Carri");
-                                playerTerr.num_tanks = terr.num_tanks;
-                                Debug.Log("ad adesso con " + playerTerr.num_tanks + " carri!!!");
+                                Debug.Log("Il territorio non è nella tua lista, non è nemmeno tuo, no work to do here");
+                            }
+                            else // Quando il territorio c'è nella mia lista ed è effettivamente mio
+                            {
+                                Debug.Log("Aggiornati numero di tank del territorio " + Player.Instance.Territories.Find(x => x.id == terr.id).name);
+                                Debug.Log("Passati da " + Player.Instance.Territories.Find(x => x.id == terr.id).num_tanks + " Carri");
+                                Player.Instance.Territories.Find(x => x.id == terr.id).num_tanks = terr.num_tanks;
+                                Debug.Log("ad adesso con " + Player.Instance.Territories.Find(x => x.id == terr.id).num_tanks + " carri!!!");
                             }
                     }
                     
