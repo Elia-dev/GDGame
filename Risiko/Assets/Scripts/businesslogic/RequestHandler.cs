@@ -262,8 +262,11 @@ public class RequestHandler
                 {
                     Debug.Log("Nome" + terr.name + " id " + terr.player_id);
                 }
+                Debug.Log("Sto per scorrere " + GameManager.Instance.AllTerritories.Count + " territori");
+                int i = 0;
                 foreach (var terr in GameManager.Instance.AllTerritories)
                 {
+                    Debug.Log("Territorio numero " + i);
                     Debug.Log("Controllo il terr " + terr.name + " che appartiene a " + GameManager.Instance.getEnemyNameById(terr.player_id) + " che ha player_id = " + terr.player_id);
                     
                     if (Player.Instance.Territories.Find(x => x.id == terr.id) is not null && terr.player_id != Player.Instance.PlayerId)
@@ -287,10 +290,15 @@ public class RequestHandler
                         
                         Debug.Log("ad adesso con " + Player.Instance.Territories.Find(x => x.id == terr.id).num_tanks + " carri!!!");
                     }
-                    
+
+                    i++;
+
                 }
+                
                 GameManager.Instance.setImUnderAttack(false);
+                Debug.Log("Settato imunderattack");
                 GameManager.Instance.setImAttacking(false);
+                Debug.Log("Settato imattacking");
                 GameManager.Instance.setForceUpdateAfterAttack(true);
                 Debug.Log("FORCED UPDATE FINISHED"); // PERCHE TI BLOCCHI NEL FOREACH? PERCHÉ NON RAGGIUNGI QUESTO PUNTO? :(
             }
