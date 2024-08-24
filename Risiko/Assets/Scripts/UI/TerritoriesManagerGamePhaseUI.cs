@@ -114,6 +114,26 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
             }
         }
 
+        if (!_attackphase) {
+            if (Input.GetMouseButtonDown(0)) {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
+
+                if (hit.collider is not null) {
+                    TerritoryHandlerUI territoryHandlerUI = hit.transform.GetComponent<TerritoryHandlerUI>();
+                    if (territoryHandlerUI is not null) {
+                        gameManager.GetComponent<GameManagerUI>().
+                            ShowTerritoryInfo(TerritoryInformationsOtherPLayers(territoryHandlerUI.gameObject.name));
+                        //selectedTerritory = territoryHandlerUI;
+                        //SelectState(territoryHandlerUI);
+                    }
+                }
+                else {
+                    gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
+                }
+            }
+        }
+
         if (GameManager.Instance.getForceUpdateAfterAttack()) {
             Debug.Log("REFRESH");
             RefreshTerritories();

@@ -18,6 +18,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     [SerializeField] private TMP_Text tankToAdd;
     [SerializeField] private Button plusButton;
     [SerializeField] private Button minusButton;
+    [SerializeField] private GameObject gameManager;
     private SelectedTerritories _selectedTerritories;
     //private Dictionary<string, int> selectedTerritories;
 
@@ -85,6 +86,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
                 Debug.Log("EndTurn Button ATTACK");
                 ClientManager.Instance.UpdateTerritoriesState();
                 endTurnButton.interactable = false;
+                TerritoriesManagerGamePhaseUI.Attackphase = false;
             }
         });
     }
@@ -160,6 +162,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         popUpAddTank.SetActive(false); //Toglie il popup dei tank
         Player.Instance.TanksAvailable -= _selectedTerritories.count.Sum(); //Decrementa le armate disponinbili
         Player.Instance.TanksPlaced += _selectedTerritories.count.Sum(); //Incrementa i carri posizionati
+        gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
         ClientManager.Instance.UpdateTerritoriesState();
         endTurnButton.interactable = false; //Disattiva il tasto per il passaggio del turno
         _isTurnInitialized = false;
@@ -244,6 +247,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
 
     //Mostra il popup per aggiungere o togliere armate
     public void SelectState(TerritoryHandlerUI newTerritory) {
+        gameManager.GetComponent<GameManagerUI>().ShowTerritoryInfo(TerritoryInformations(newTerritory.name));
         if (Player.Instance.ArmyColor.Equals("black") || Player.Instance.ArmyColor.Equals("blue")) {
             stateNameAddTank.color = Color.white;
             tankNumber.color = Color.white;

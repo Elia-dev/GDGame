@@ -28,6 +28,13 @@ public class GameManagerUI : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         playerName.text = Player.Instance.Name;
+        RectTransform labelRectTransform = allInfo.GetComponent<RectTransform>();
+
+        // Imposta gli anchor per farli estendere su tutto il pannello
+        labelRectTransform.anchorMin = new Vector2(0, 0);
+        labelRectTransform.anchorMax = new Vector2(1, 1);
+        labelRectTransform.offsetMin = Vector2.zero; // Nessun offset
+        labelRectTransform.offsetMax = Vector2.zero; // Nessun offset
         //allInfo.GetComponent<LayoutElement>().preferredWidth = userSpace.GetComponent<Transform>().;
         //Debug.Log("Preferred Width " + allInfo.GetComponent<LayoutElement>().preferredWidth + 
                   //"\nRect Width " + userSpace.GetComponent<RectTransform>().rect.width);
