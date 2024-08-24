@@ -268,7 +268,7 @@ public class RequestHandler
                 {
                     Debug.Log("Territorio numero " + i);
                     Debug.Log("Controllo il terr " + terr.name + " che appartiene a " + GameManager.Instance.getEnemyNameById(terr.player_id) + " che ha player_id = " + terr.player_id);
-                    
+                    Debug.Log("Per il meme, la grandezza di player.territories è: " + Player.Instance.Territories.Count);
                     if (Player.Instance.Territories.Find(x => x.id == terr.id) is not null && terr.player_id != Player.Instance.PlayerId)
                     {
                         Debug.Log("Il terr: " + terr.name + " è nella tua lista territori, ma appartiene a "
