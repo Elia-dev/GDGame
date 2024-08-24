@@ -209,24 +209,9 @@ class Game:
                 if "UPDATE_TERRITORIES_STATE:" in message:
                     message = self._remove_request(message, "UPDATE_TERRITORIES_STATE: ")
                     id = message.split(", ")[0]
-                    print(f"ID del player che ha mandato l'update: {id}")
                     message = self._remove_request(message, (id + ", "))
-                    print(f"Messaggio pulito da richiesta e ID: {message}")
                     territories_list_dict = json.loads(message)
-                    print("Eseguito json.load sul messaggio")
                     territories = [Territory.Territory.from_dict(data) for data in territories_list_dict]
-                    print("Eseguito from dict sulla lista dei dizionari sul messaggio")
-                    print("RISULTATO DEL FROM DICT: ")
-                    for terr in territories:
-                        print("Id:" + terr.id)
-                        print("Name:" + terr.name)
-                        print("Image:" + terr.image)
-                        print("function:" + terr.function)
-                        print("description:" + terr.description)
-                        print("player_id:" + terr.player_id)
-                        print("continent:" + terr.continent)
-                        print("node:" + str(terr.node))
-                        print("num_tanks:" + str(terr.num_tanks))
                     for player in self.players:
                         if player.player_id == id:
                             player.territories = territories
