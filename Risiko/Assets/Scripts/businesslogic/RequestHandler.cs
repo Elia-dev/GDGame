@@ -257,11 +257,6 @@ public class RequestHandler
             {
                 Debug.Log("Server_Request: ATTACK_FINISHED_FORCE_UPDATE");
                 Debug.Log("NOTA: IO SONO " + Player.Instance.Name + " con id=" + Player.Instance.PlayerId);
-                Debug.Log("Adesso stampo tutti i miei territori");
-                foreach (var terr in Player.Instance.Territories)
-                {
-                    Debug.Log("Nome" + terr.name + " id " + terr.player_id);
-                }
                 Debug.Log("Sto per scorrere " + GameManager.Instance.AllTerritories.Count + " territori");
                 
                 try 
@@ -273,12 +268,13 @@ public class RequestHandler
                     for(int i = 0; i <  GameManager.Instance.AllTerritories.Count; i++)
                     {
                         Territory terr = GameManager.Instance.AllTerritories[i];
-                        Debug.Log("Territorio numero " + i);
+                        Debug.Log("[ALL_TERRITORIES] Territorio numero " + i);
                         Debug.Log("Controllo il terr " + terr.name + " che appartiene a " + GameManager.Instance.getEnemyNameById(terr.player_id) + " che ha player_id = " + terr.player_id);
                         Debug.Log("Per il meme, la grandezza di player.territories è: " + Player.Instance.Territories.Count);
 
                         foreach (Territory playerTerr in Player.Instance.Territories)
                         {
+                            Debug.Log("[PLAYER_TERRITORIES] Controllo Territorio " + playerTerr.name + " contenuto nella mia lista ma posseduto da : " + GameManager.Instance.getEnemyNameById(playerTerr.player_id));
                             if (playerTerr.id == terr.id && terr.player_id != Player.Instance.PlayerId)
                             {
                                 Debug.Log("Il terr: " + terr.name + " è nella tua lista territori, ma appartiene a "
@@ -299,6 +295,8 @@ public class RequestHandler
                             }
                         }
                     }
+                    
+                    Debug.Log("Sto per rimuovere " + toRemove.Count + " territori dalla mia lista, e sto per aggiungerne " + toAdd.Count);
 
                     // Applica le modifiche dopo aver completato l'iterazione
                     foreach (var terrToRemove in toRemove)
@@ -310,6 +308,7 @@ public class RequestHandler
                     {
                         Player.Instance.Territories.Add(terrToAdd);
                     }
+                    Debug.Log("Done");
                 }
                 catch (Exception ex)
                 {
