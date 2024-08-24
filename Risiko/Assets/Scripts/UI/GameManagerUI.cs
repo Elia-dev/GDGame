@@ -25,16 +25,11 @@ public class GameManagerUI : MonoBehaviour {
         set => _settingGame = value;
     }
 
-    // Start is called before the first frame update
     void Start() {
         playerName.text = Player.Instance.Name;
-        RectTransform labelRectTransform = allInfo.GetComponent<RectTransform>();
-
-        // Imposta gli anchor per farli estendere su tutto il pannello
-        labelRectTransform.anchorMin = new Vector2(0, 0);
-        labelRectTransform.anchorMax = new Vector2(1, 1);
-        labelRectTransform.offsetMin = Vector2.zero; // Nessun offset
-        labelRectTransform.offsetMax = Vector2.zero; // Nessun offset
+        allInfo.gameObject.GetComponent<RectTransform>().sizeDelta = 
+            new Vector2(userSpace.GetComponent<RectTransform>().rect.width, 
+                userSpace.GetComponent<RectTransform>().sizeDelta.y);
         //allInfo.GetComponent<LayoutElement>().preferredWidth = userSpace.GetComponent<Transform>().;
         //Debug.Log("Preferred Width " + allInfo.GetComponent<LayoutElement>().preferredWidth + 
                   //"\nRect Width " + userSpace.GetComponent<RectTransform>().rect.width);
@@ -42,7 +37,6 @@ public class GameManagerUI : MonoBehaviour {
         //objectiveInfo.text = Player.Instance.ObjectiveCard.description;
     }
 
-    // Update is called once per frame
     void Update() {
         allInfo.text = "";
         if (Player.Instance.IsMyTurn) {
