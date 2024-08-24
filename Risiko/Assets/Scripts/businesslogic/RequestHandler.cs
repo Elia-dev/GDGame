@@ -275,6 +275,7 @@ public class RequestHandler
                         foreach (Territory playerTerr in Player.Instance.Territories)
                         {
                             Debug.Log("[PLAYER_TERRITORIES] Controllo Territorio " + playerTerr.name + " contenuto nella mia lista ma posseduto da : " + GameManager.Instance.getEnemyNameById(playerTerr.player_id));
+                            Debug.Log("playerTerr.id=" + playerTerr.id + ", terr.id="+terr.id+", terr.player_id="+terr.player_id+", Player.Instance.PlayerId="+Player.Instance.PlayerId);
                             if (playerTerr.id == terr.id && terr.player_id != Player.Instance.PlayerId)
                             {
                                 Debug.Log("Il terr: " + terr.name + " è nella tua lista territori, ma appartiene a "
