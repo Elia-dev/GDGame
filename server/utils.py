@@ -36,8 +36,6 @@ def read_territories_cards():
         continent = card.find('continent').text
         node = int(card.find('node').text)
 
-        print("!!!Node letto da XML: " + str(node))
-
         card = Territory(card_id, image, function, description, name, continent, node, None, 1)
         cards.append(card)
     return cards
