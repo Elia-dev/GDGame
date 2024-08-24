@@ -267,50 +267,49 @@ public class RequestHandler
                 
                 try 
                 {
-                    foreach (var terr in GameManager.Instance.AllTerritories)
-                {
-                    Debug.Log("Territorio numero " + i);
-                    Debug.Log("Controllo il terr " + terr.name + " che appartiene a " + GameManager.Instance.getEnemyNameById(terr.player_id) + " che ha player_id = " + terr.player_id);
-                    Debug.Log("Per il meme, la grandezza di player.territories è: " + Player.Instance.Territories.Count);
-                    if (Player.Instance.Territories.Find(x => x.id == terr.id) is not null && terr.player_id != Player.Instance.PlayerId)
+                    foreach (Territory terr in GameManager.Instance.AllTerritories)
                     {
-                        Debug.Log("Il terr: " + terr.name + " è nella tua lista territori, ma appartiene a "
-                                  + GameManager.Instance.getEnemyNameById(terr.player_id));
-                        Player.Instance.Territories.Remove(terr);
-                        Debug.Log("Rimosso");
+                        Debug.Log("Territorio numero " + i);
+                        Debug.Log("Controllo il terr " + terr.name + " che appartiene a " + GameManager.Instance.getEnemyNameById(terr.player_id) + " che ha player_id = " + terr.player_id);
+                        Debug.Log("Per il meme, la grandezza di player.territories è: " + Player.Instance.Territories.Count);
+                        foreach (Territory playerTerr in Player.Instance.Territories)
+                        {
+                            if (playerTerr.id == terr.id && terr.player_id != Player.Instance.PlayerId)
+                            {
+                                Debug.Log("Il terr: " + terr.name + " è nella tua lista territori, ma appartiene a "
+                                          + GameManager.Instance.getEnemyNameById(terr.player_id));
+                                Player.Instance.Territories.Remove(terr);
+                                Debug.Log("Rimosso");
+                            }
+                            else if (playerTerr.id != terr.id && terr.player_id == Player.Instance.PlayerId)
+                            {
+                                Debug.Log("Il terr: " + terr.name + " non è nella tua lista territori ma in realtà ti appartiene");
+                                Player.Instance.Territories.Add(terr);
+                                Debug.Log("Aggiunto");
+                            }
+                            else // Ho quello stato nella lista ed effettivamente mi appartiene, quindi ho fatto/subito un attacco ma nessuno ha perso/conquistato il territorio
+                            {
+                                Debug.Log("Aggiornati numero di tank del territorio " + playerTerr.name);
+                                Debug.Log("Passati da " + playerTerr.num_tanks + " Carri");
+                                Player.Instance.Territories.Find(x => x.id == terr.id).num_tanks = terr.num_tanks;
+                            
+                                Debug.Log("ad adesso con " + playerTerr.num_tanks + " carri!!!");
+                            }
+                        }
+                        i++;
                     }
-                    else if (Player.Instance.Territories.Find(x => x.id == terr.id) is null && terr.player_id == Player.Instance.PlayerId)
-                    {
-                        Debug.Log("Il terr: " + terr.name + " non è nella tua lista territori ma in realtà ti appartiene");
-                        Player.Instance.Territories.Add(terr);
-                        Debug.Log("Aggiunto");
-                    }
-                    else
-                    {
-                        Debug.Log("Aggiornati numero di tank del territorio " + Player.Instance.Territories.Find(x => x.id == terr.id).name);
-                        Debug.Log("Passati da " + Player.Instance.Territories.Find(x => x.id == terr.id).num_tanks + " Carri");
-                        Player.Instance.Territories.Find(x => x.id == terr.id).num_tanks = terr.num_tanks;
-                        
-                        Debug.Log("ad adesso con " + Player.Instance.Territories.Find(x => x.id == terr.id).num_tanks + " carri!!!");
-                    }
-
-                    i++;
-
-                }
                 }
                 catch (Exception ex)
                 {
                     Debug.LogError("Errore: " + ex.Message);
                 }
                 
-                
-                
                 GameManager.Instance.setImUnderAttack(false);
                 Debug.Log("Settato imunderattack");
                 GameManager.Instance.setImAttacking(false);
                 Debug.Log("Settato imattacking");
                 GameManager.Instance.setForceUpdateAfterAttack(true);
-                Debug.Log("FORCED UPDATE FINISHED"); // PERCHE TI BLOCCHI NEL FOREACH? PERCHÉ NON RAGGIUNGI QUESTO PUNTO? :(
+                Debug.Log("FORCED UPDATE FINISHED");
             }
             else
             {
