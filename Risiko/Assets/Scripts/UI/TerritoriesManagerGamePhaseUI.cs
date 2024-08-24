@@ -20,6 +20,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
     private static bool _attackphase = false;
     private bool _isTurnInitialized = false;
     private bool _attackFinished = false;
+    private static bool _stategicMove = false;
 
     public bool AttackFinished {
         get => _attackFinished;
@@ -36,6 +37,11 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
     public static bool Attackphase {
         get => _attackphase;
         set => _attackphase = value;
+    }
+    
+    public static bool StategicMove {
+        get => _stategicMove;
+        set => _stategicMove = value;
     }
 
     private void Awake() {
@@ -140,6 +146,13 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
             DeselectState();
             GameManager.Instance.setForceUpdateAfterAttack(false);
             //ALTRO
+        }
+
+        if (_stategicMove) {
+            _stategicMove = false;
+            _attackphase = false;
+            DeselectState();
+            endTurnButton.interactable = false;
         }
     }
 

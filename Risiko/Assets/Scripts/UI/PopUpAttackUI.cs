@@ -32,7 +32,7 @@ public class PopUpAttackUI : MonoBehaviour {
             tankToAdd.text = armyNumAttack + "";
         }
 
-        if (armyNumAttack > 1)
+        if (armyNumAttack > 0)
             attackButton.interactable = true;
         else
             attackButton.interactable = false;
@@ -44,7 +44,7 @@ public class PopUpAttackUI : MonoBehaviour {
             tankToAdd.text = armyNumAttack + "";
         }
 
-        if (armyNumAttack > 1)
+        if (armyNumAttack > 0)
             attackButton.interactable = true;
         else
             attackButton.interactable = false;
@@ -54,6 +54,7 @@ public class PopUpAttackUI : MonoBehaviour {
         enemyTerr = enemyTerritory;
         myTerr = myTerritory;
         armyNumAttack = 0;
+        attackButton.interactable = false;
         string color = GameManager.Instance.GetPlayerColor(enemyTerritory.player_id);
         if (color.Equals("black") || color.Equals("blue")) {
             stateNameAttack.color = Color.white;

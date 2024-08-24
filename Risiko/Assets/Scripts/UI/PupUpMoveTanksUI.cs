@@ -24,6 +24,7 @@ public class PupUpMoveTanksUI : MonoBehaviour
             fromTerritory.num_tanks -= armyToMove;
             toTerritory.num_tanks += armyToMove;
             ClientManager.Instance.UpdateTerritoriesState();
+            TerritoriesManagerGamePhaseUI.StategicMove = true;
             this.gameObject.SetActive(false);
         });
     }
@@ -57,6 +58,7 @@ public class PupUpMoveTanksUI : MonoBehaviour
         this.toTerritory = toTerritory;
         Debug.Log("SPOSTO DAL TERRITORIO " + fromTerritory +" AL TERRITORIO " + toTerritory);
         armyToMove = 0;
+        moveButton.interactable = false;
         string color = Player.Instance.ArmyColor;
         if (color.Equals("black") || color.Equals("blue")) {
             stateNameMove.color = Color.white;
