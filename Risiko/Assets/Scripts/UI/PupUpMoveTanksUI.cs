@@ -29,7 +29,7 @@ public class PupUpMoveTanksUI : MonoBehaviour
     }
 
     private void AddArmy() {
-        if(armyToMove < toTerritory.num_tanks-1){
+        if(armyToMove < fromTerritory.num_tanks-1){
             armyToMove++;
             tankToAdd.text = armyToMove + "";
         }
@@ -46,7 +46,7 @@ public class PupUpMoveTanksUI : MonoBehaviour
             tankToAdd.text = armyToMove + "";
         }
 
-        if (armyToMove > 1)
+        if (armyToMove > 0)
             moveButton.interactable = true;
         else
             moveButton.interactable = false;
@@ -55,6 +55,7 @@ public class PupUpMoveTanksUI : MonoBehaviour
     public void SetPupUp(Territory fromTerritory, Territory toTerritory, GameObject gameObjTerritory) {
         this.fromTerritory = fromTerritory;
         this.toTerritory = toTerritory;
+        Debug.Log("SPOSTO DAL TERRITORIO " + fromTerritory +" AL TERRITORIO " + toTerritory);
         armyToMove = 0;
         string color = Player.Instance.ArmyColor;
         if (color.Equals("black") || color.Equals("blue")) {
