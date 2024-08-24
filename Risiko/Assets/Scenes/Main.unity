@@ -387,7 +387,7 @@ MonoBehaviour:
   turn: {fileID: 1504136692}
   clickHandler: {fileID: 2029590054}
   allInfo: {fileID: 104593349}
-  uiContainer: {fileID: 561743766}
+  userSpace: {fileID: 741143792}
   territoryInfo: {fileID: 1667788929}
   objectiveInfo: {fileID: 104593349}
 --- !u!1 &64526168
@@ -692,6 +692,7 @@ GameObject:
   - component: {fileID: 104593350}
   - component: {fileID: 104593349}
   - component: {fileID: 104593351}
+  - component: {fileID: 104593352}
   m_Layer: 5
   m_Name: AllInfo
   m_TagString: Untagged
@@ -715,7 +716,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 231.7562, y: -534.2488}
+  m_AnchoredPosition: {x: 240.8471, y: -534.2488}
   m_SizeDelta: {x: 140.14, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &104593349
@@ -829,6 +830,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!114 &104593352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 104593347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: 140.14
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &130116249
 GameObject:
   m_ObjectHideFlags: 0
@@ -6678,13 +6699,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
+    m_Left: 10
+    m_Right: 10
     m_Top: 10
     m_Bottom: 10
   m_ChildAlignment: 1
   m_Spacing: 0
-  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0

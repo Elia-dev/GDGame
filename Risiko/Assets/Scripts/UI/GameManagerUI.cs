@@ -12,8 +12,8 @@ public class GameManagerUI : MonoBehaviour {
     [SerializeField] private TMP_Text turn;
     [SerializeField] private GameObject clickHandler;
     [SerializeField] private TMP_Text allInfo;
+    [SerializeField] private GameObject userSpace;
     private string _territoryInfo;
-    [SerializeField] private GameObject uiContainer;
     [SerializeField] private TMP_Text territoryInfo;
     [SerializeField] private TMP_Text objectiveInfo;
     private static bool _settingGame = true;
@@ -28,6 +28,9 @@ public class GameManagerUI : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         playerName.text = Player.Instance.Name;
+        allInfo.GetComponent<LayoutElement>().preferredWidth = userSpace.GetComponent<RectTransform>().rect.width;
+        Debug.Log("Preferred Width " + allInfo.GetComponent<LayoutElement>().preferredWidth + 
+                  "\nRect Width " + userSpace.GetComponent<RectTransform>().rect.width);
         //circlePlayerColor.GetComponent<Image>().color = Utils.ColorCode(Player.Instance.ArmyColor, 255);
         //objectiveInfo.text = Player.Instance.ObjectiveCard.description;
     }
