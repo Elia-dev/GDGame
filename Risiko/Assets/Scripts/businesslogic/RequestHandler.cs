@@ -271,18 +271,14 @@ public class RequestHandler
                         Debug.Log("[ALL_TERRITORIES] Territorio numero " + i);
                         Debug.Log("Controllo il terr " + terr.name + " che appartiene a " + GameManager.Instance.getEnemyNameById(terr.player_id) + " che ha player_id = " + terr.player_id);
                         Debug.Log("Per il meme, la grandezza di player.territories è: " + Player.Instance.Territories.Count);
-
-                        foreach (Territory playerTerr in Player.Instance.Territories)
-                        {
-                            Debug.Log("[PLAYER_TERRITORIES] Controllo Territorio " + playerTerr.name + " contenuto nella mia lista ma posseduto da : " + GameManager.Instance.getEnemyNameById(playerTerr.player_id));
-                            Debug.Log("playerTerr.id=" + playerTerr.id + ", terr.id="+terr.id+", terr.player_id="+terr.player_id+", Player.Instance.PlayerId="+Player.Instance.PlayerId);
-                            if (playerTerr.id == terr.id && terr.player_id != Player.Instance.PlayerId)
+                        Territory playerTerr = Player.Instance.Territories.Find(x => x.id == terr.id);
+                            if (playerTerr is not null && terr.player_id != Player.Instance.PlayerId)
                             {
                                 Debug.Log("Il terr: " + terr.name + " è nella tua lista territori, ma appartiene a "
                                           + GameManager.Instance.getEnemyNameById(terr.player_id));
                                 toRemove.Add(playerTerr);
                             }
-                            else if (playerTerr.id != terr.id && terr.player_id == Player.Instance.PlayerId)
+                            else if (playerTerr is null && terr.player_id == Player.Instance.PlayerId)
                             {
                                 Debug.Log("Il terr: " + terr.name + " non è nella tua lista territori ma in realtà ti appartiene");
                                 toAdd.Add(terr);
@@ -294,7 +290,6 @@ public class RequestHandler
                                 playerTerr.num_tanks = terr.num_tanks;
                                 Debug.Log("ad adesso con " + playerTerr.num_tanks + " carri!!!");
                             }
-                        }
                     }
                     
                     Debug.Log("Sto per rimuovere " + toRemove.Count + " territori dalla mia lista, e sto per aggiungerne " + toAdd.Count);
