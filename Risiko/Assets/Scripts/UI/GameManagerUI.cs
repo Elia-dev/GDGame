@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class GameManagerUI : MonoBehaviour {
@@ -10,12 +11,13 @@ public class GameManagerUI : MonoBehaviour {
     [SerializeField] private GameObject circlePlayerColor;
     [SerializeField] private TMP_Text turn;
     [SerializeField] private GameObject clickHandler;
-    [SerializeField] private TMP_Text turnInfo;
+    [SerializeField] private TMP_Text allInfo;
+    private string _territoryInfo;
     [SerializeField] private GameObject uiContainer;
     [SerializeField] private TMP_Text territoryInfo;
     [SerializeField] private TMP_Text objectiveInfo;
     private static bool _settingGame = true;
-    private bool _playerBaseInfoSet = false;
+    //private bool _playerBaseInfoSet = false;
 
 
     public static bool SettingGame {
@@ -26,12 +28,13 @@ public class GameManagerUI : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         playerName.text = Player.Instance.Name;
-        circlePlayerColor.GetComponent<Image>().color = Utils.ColorCode(Player.Instance.ArmyColor, 255);
-        objectiveInfo.text = Player.Instance.ObjectiveCard.description;
+        //circlePlayerColor.GetComponent<Image>().color = Utils.ColorCode(Player.Instance.ArmyColor, 255);
+        //objectiveInfo.text = Player.Instance.ObjectiveCard.description;
     }
 
     // Update is called once per frame
     void Update() {
+        allInfo.text = "";
         if (Player.Instance.IsMyTurn) {
             turn.color = Color.black;
             turn.text = "Is your turn!";
@@ -42,41 +45,44 @@ public class GameManagerUI : MonoBehaviour {
                         "'s turn!";
         }
 
-        if (!_settingGame && !_playerBaseInfoSet) {
+        if (!_settingGame) {
             circlePlayerColor.gameObject.SetActive(true);
             circlePlayerColor.GetComponent<Image>().color = Utils.ColorCode(Player.Instance.ArmyColor, 255);
-            objectiveInfo.gameObject.SetActive(true);
-            objectiveInfo.text = "Ojective: " + Player.Instance.ObjectiveCard.description;
+            //objectiveInfo.gameObject.SetActive(true);
+            //objectiveInfo.text = "Ojective: " + Player.Instance.ObjectiveCard.description;
+            allInfo.text += "Ojective: " + Player.Instance.ObjectiveCard.description;
         }
         
         if (!_settingGame && TerritoriesManagerUI.distributionPhase) {
-            turnInfo.text = "<u>Distribution Phase!</u>\nSelect your states and add " +
+            allInfo.text += "\n<u>Distribution Phase!</u>\nSelect your states and add " +
                             clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks of "
                             + Player.Instance.TanksAvailable + " still available";
         }
         else if (!_settingGame && TerritoriesManagerGamePhaseUI.ReinforcePhase) {
-            turnInfo.text = "<u>Reinforce Phase!</u>\nSelect your states and add " +
+            allInfo.text += "\n<u>Reinforce Phase!</u>\nSelect your states and add " +
                             clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks";
         }
         else if (!_settingGame && TerritoriesManagerGamePhaseUI.Attackphase) {
-            turnInfo.text = "<u>Attack Phase!</u>\nAttack the enemies or move your army";
+            allInfo.text += "\n<u>Attack Phase!</u>\nAttack the enemies or move your army";
         }
+
+        allInfo.text += "\n" + _territoryInfo;
     }
 
     public void ShowTerritoryInfo(string id) {
         territoryInfo.gameObject.SetActive(true);
         Territory territory = GameManager.Instance.AllTerritories.Find(terr => terr.id.Equals(id));
         if (territory is not null) {
-            territoryInfo.text = territory.name + $": state of the continent {territory.continent}, owned by the player" +
-                                 $"<color={GameManager.Instance.GetPlayerColor(territory.player_id)}>" +
-                                 $"{GameManager.Instance.getEnemyNameById(territory.player_id)}</color>.\n" +
-                                 $"On the territory there are {territory.num_tanks} army on it.";
+            _territoryInfo = territory.name + $": state of the continent {territory.continent}, owned by the player" +
+                             $"<color={GameManager.Instance.GetPlayerColor(territory.player_id)}>" +
+                             $"{GameManager.Instance.getEnemyNameById(territory.player_id)}</color>.\n" +
+                             $"On the territory there are {territory.num_tanks} army on it.";
             
         }
     }
     
     public void HideTerritoryInfo(string id) {
-        territoryInfo.gameObject.SetActive(false);
+        _territoryInfo = "";
     }
     
 }
