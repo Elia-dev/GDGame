@@ -264,7 +264,10 @@ public class RequestHandler
                 }
                 Debug.Log("Sto per scorrere " + GameManager.Instance.AllTerritories.Count + " territori");
                 int i = 0;
-                foreach (var terr in GameManager.Instance.AllTerritories)
+                
+                try 
+                {
+                    foreach (var terr in GameManager.Instance.AllTerritories)
                 {
                     Debug.Log("Territorio numero " + i);
                     Debug.Log("Controllo il terr " + terr.name + " che appartiene a " + GameManager.Instance.getEnemyNameById(terr.player_id) + " che ha player_id = " + terr.player_id);
@@ -294,6 +297,13 @@ public class RequestHandler
                     i++;
 
                 }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError("Errore: " + ex.Message);
+                }
+                
+                
                 
                 GameManager.Instance.setImUnderAttack(false);
                 Debug.Log("Settato imunderattack");
