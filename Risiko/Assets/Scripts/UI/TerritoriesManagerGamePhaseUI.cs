@@ -120,7 +120,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
             }
         }
 
-        /*if (!_attackphase) {
+        if (!_attackphase) {
             if (Input.GetMouseButtonDown(0)) {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
@@ -138,7 +138,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
                     gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
                 }
             }
-        }*/
+        }
 
         if (GameManager.Instance.getForceUpdateAfterAttack()) {
             Debug.Log("REFRESH");
@@ -183,6 +183,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
 
     private void StartTurn() {
         _isTurnInitialized = true;
+        _reinforcePhase = true;
         //_timer = _delay;
         endTurnButton.GetComponentInChildren<TMP_Text>().text = "Next Phase!";
         //TODO
