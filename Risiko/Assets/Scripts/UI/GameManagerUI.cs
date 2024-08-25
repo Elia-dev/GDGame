@@ -40,8 +40,6 @@ public class GameManagerUI : MonoBehaviour {
     }
 
     void Update() {
-        Debug.Log("DIM " + userSpace.GetComponent<RectTransform>().rect.width );
-        
         allInfo.text = "";
         if (Player.Instance.IsMyTurn) {
             turn.color = Color.black;
@@ -54,7 +52,6 @@ public class GameManagerUI : MonoBehaviour {
         }
 
         if (!_settingGame && !_dimensionSetted) {
-            _dimensionSetted = true;
             Debug.Log("DIM " + userSpace.GetComponent<RectTransform>().rect.width );
             allInfo.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(userSpace.GetComponent<RectTransform>().rect.width, 
                 allInfo.gameObject.GetComponent<RectTransform>().sizeDelta.y);
@@ -65,6 +62,7 @@ public class GameManagerUI : MonoBehaviour {
             //objectiveInfo.gameObject.SetActive(true);
             //objectiveInfo.text = "Ojective: " + Player.Instance.ObjectiveCard.description;
             allInfo.text += "\nObjective: " + Player.Instance.ObjectiveCard.description + "\n";
+            _dimensionSetted = true;
         }
         
         if (!_settingGame && TerritoriesManagerUI.distributionPhase) {
