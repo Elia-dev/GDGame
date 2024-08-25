@@ -18,7 +18,13 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
     public TerritoryHandlerUI enemyTerritory;
     private static bool _reinforcePhase = true;
     private static bool _attackphase = false;
-    private bool _isTurnInitialized = false;
+    private static bool _isTurnInitialized = false;
+
+    public static bool IsTurnInitialized {
+        get => _isTurnInitialized;
+        set => _isTurnInitialized = value;
+    }
+
     private bool _attackFinished = false;
     private static bool _stategicMove = false;
 
@@ -151,6 +157,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
         if (_stategicMove) {
             _stategicMove = false;
             _attackphase = false;
+            _isTurnInitialized = false;
             DeselectState();
             endTurnButton.interactable = false;
         }

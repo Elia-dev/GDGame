@@ -87,6 +87,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
                 ClientManager.Instance.UpdateTerritoriesState();
                 endTurnButton.interactable = false;
                 TerritoriesManagerGamePhaseUI.Attackphase = false;
+                TerritoriesManagerGamePhaseUI.IsTurnInitialized = false;
             }
         });
     }
