@@ -269,6 +269,11 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
                 popUpAddTank.transform.position.y + (float)(0.3), popUpAddTank.transform.position.z);
             popUpAddTank.SetActive(true);
         }
+        else {
+            popUpAddTank.SetActive(false);
+            selectedTerritory.Deselect();
+            selectedTerritory = null;
+        }
     }
 
     /*public void DeselectState() {
