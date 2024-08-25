@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class MainMenuUI : MonoBehaviour {
     [SerializeField] private Button startButton;
     [SerializeField] private Button exitButton;
+    [SerializeField] private Button optionsButton;
     [SerializeField] private GameObject popUpConnection;
     [SerializeField] private Button x;
     private bool _pressedButton = false;
@@ -25,7 +26,7 @@ public class MainMenuUI : MonoBehaviour {
             _timer = _delay;
             ClientManager.Instance.StartClient();
         });
-
+        optionsButton.onClick.AddListener(() => { SceneManager.LoadScene("OptionsMenu"); });
         exitButton.onClick.AddListener(() => { SceneManager.LoadScene("ExitMenu"); });
     }
 
