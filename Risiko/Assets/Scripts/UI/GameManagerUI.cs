@@ -27,10 +27,10 @@ public class GameManagerUI : MonoBehaviour {
 
     void Start() {
         playerName.text = Player.Instance.Name;
-        allInfo.gameObject.GetComponent<RectTransform>().sizeDelta = 
+        /*allInfo.gameObject.GetComponent<RectTransform>().sizeDelta = 
             new Vector2(userSpace.GetComponent<RectTransform>().rect.width, 
                 userSpace.GetComponent<RectTransform>().sizeDelta.y);
-        Debug.Log("DELTA: " + allInfo.gameObject.GetComponent<RectTransform>().sizeDelta);
+        Debug.Log("DELTA: " + allInfo.gameObject.GetComponent<RectTransform>().sizeDelta);*/
         //allInfo.GetComponent<LayoutElement>().preferredWidth = userSpace.GetComponent<Transform>().;
         //Debug.Log("Preferred Width " + allInfo.GetComponent<LayoutElement>().preferredWidth + 
                   //"\nRect Width " + userSpace.GetComponent<RectTransform>().rect.width);
