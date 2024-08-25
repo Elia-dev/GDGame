@@ -91,10 +91,6 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
         }
         else if (_attackphase && !IsPhaseGoing) {
             endTurnButton.interactable = true;
-            /*endTurnButton.onClick.AddListener(() => {
-                ClientManager.Instance.UpdateTerritoriesState();
-                endTurnButton.interactable = false;
-            });*/
             if (Input.GetMouseButtonDown(0)) {
                 Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 RaycastHit2D[] hits = Physics2D.RaycastAll(mousePosition, Vector2.zero);
@@ -117,6 +113,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
                         //selectedTerritory = territoryHandlerUI;
                         gameManager.GetComponent<GameManagerUI>().
                             ShowTerritoryInfo(TerritoryInformationsOtherPLayers(territoryHandlerUI.gameObject.name));
+                        Debug.Log("Mostrato " + TerritoryInformationsOtherPLayers(territoryHandlerUI.gameObject.name));
                         SelectState(territoryHandlerUI);
                     }
                 }
