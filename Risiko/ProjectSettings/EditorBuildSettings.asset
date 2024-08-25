@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: cce72afb9e139417a85f70f22cda5f1b
   - enabled: 1
+    path: Assets/Scenes/OptionsMenu.unity
+    guid: dc8e8f0a14ca436f2b4fca1ba113dd29
+  - enabled: 1
     path: Assets/Scenes/ExitMenu.unity
     guid: c06ebf95c8f6fa561ab5f03182fdde36
   - enabled: 1
@@ -23,6 +26,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/JoinGameMenu.unity
     guid: 21b9a9e591bdfb6cdb7aab32ebff3990
+  - enabled: 1
+    path: Assets/Scenes/WaitingRoomClient.unity
+    guid: 06a9ca0f864810c4c9d5fd0ffffb3e1f
   - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: 4a65b8e5d2f00aabcb826683c14e6227
