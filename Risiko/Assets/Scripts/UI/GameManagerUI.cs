@@ -51,18 +51,22 @@ public class GameManagerUI : MonoBehaviour {
                         "'s turn!\n";
         }
 
-        if (!_settingGame && !_dimensionSetted) {
+        if (!_settingGame) {
             Debug.Log("DIM " + userSpace.GetComponent<RectTransform>().rect.width );
-            allInfo.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(userSpace.GetComponent<RectTransform>().rect.width, 
-                allInfo.gameObject.GetComponent<RectTransform>().sizeDelta.y);
-            turn.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(userSpace.GetComponent<RectTransform>().rect.width - 20, 
-                turn.gameObject.GetComponent<RectTransform>().sizeDelta.y);
+            if(!_dimensionSetted) {
+                _dimensionSetted = true;
+                allInfo.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                    userSpace.GetComponent<RectTransform>().rect.width,
+                    allInfo.gameObject.GetComponent<RectTransform>().sizeDelta.y);
+                turn.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                    userSpace.GetComponent<RectTransform>().rect.width - 20,
+                    turn.gameObject.GetComponent<RectTransform>().sizeDelta.y);
+            }
             circlePlayerColor.gameObject.SetActive(true);
             circlePlayerColor.GetComponent<Image>().color = Utils.ColorCode(Player.Instance.ArmyColor, 255);
             //objectiveInfo.gameObject.SetActive(true);
             //objectiveInfo.text = "Ojective: " + Player.Instance.ObjectiveCard.description;
             allInfo.text += "\nObjective: " + Player.Instance.ObjectiveCard.description + "\n";
-            _dimensionSetted = true;
         }
         
         if (!_settingGame && TerritoriesManagerUI.distributionPhase) {
