@@ -43,16 +43,17 @@ public class GameManagerUI : MonoBehaviour {
         allInfo.text = "";
         if (Player.Instance.IsMyTurn) {
             turn.color = Color.black;
-            turn.text = "Is your turn!\n";
+            turn.text = "Is your turn!";
         }
         else {
             turn.color = Utils.ColorCode(GameManager.Instance.GetPlayerColor(GameManager.Instance.getIdPlayingPlayer()), 255);
             turn.text = GameManager.Instance.getEnemyNameById(GameManager.Instance.getIdPlayingPlayer()) +
-                        "'s turn!\n";
+                        "'s turn!";
         }
 
         if (!_settingGame) {
-            allInfo.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(userSpace.GetComponent<RectTransform>().rect.width - 20, 
+            Debug.Log("DIM " + userSpace.GetComponent<RectTransform>().rect.width );
+            allInfo.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(userSpace.GetComponent<RectTransform>().rect.width, 
                 allInfo.gameObject.GetComponent<RectTransform>().sizeDelta.y);
             turn.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(userSpace.GetComponent<RectTransform>().rect.width - 20, 
                 turn.gameObject.GetComponent<RectTransform>().sizeDelta.y);
@@ -60,20 +61,20 @@ public class GameManagerUI : MonoBehaviour {
             circlePlayerColor.GetComponent<Image>().color = Utils.ColorCode(Player.Instance.ArmyColor, 255);
             //objectiveInfo.gameObject.SetActive(true);
             //objectiveInfo.text = "Ojective: " + Player.Instance.ObjectiveCard.description;
-            allInfo.text += "\nObjective: " + Player.Instance.ObjectiveCard.description + "\n";
+            allInfo.text += "Ojective: " + Player.Instance.ObjectiveCard.description;
         }
         
         if (!_settingGame && TerritoriesManagerUI.distributionPhase) {
-            allInfo.text += "\n<b>Distribution Phase!</b>\nSelect your states and add " +
+            allInfo.text += "\n<u>Distribution Phase!</u>\nSelect your states and add " +
                             clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks of "
-                            + Player.Instance.TanksAvailable + " still available\n";
+                            + Player.Instance.TanksAvailable + " still available";
         }
         else if (!_settingGame && TerritoriesManagerGamePhaseUI.ReinforcePhase) {
-            allInfo.text += "\n<b>Reinforce Phase!</b>\nSelect your states and add " +
-                            clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks\n";
+            allInfo.text += "\n<u>Reinforce Phase!</u>\nSelect your states and add " +
+                            clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks";
         }
         else if (!_settingGame && TerritoriesManagerGamePhaseUI.Attackphase) {
-            allInfo.text += "\n<b>Attack Phase!</b>\nAttack the enemies or move your army\n";
+            allInfo.text += "\n<u>Attack Phase!</u>\nAttack the enemies or move your army";
         }
 
         allInfo.text += "\n" + _territoryInfo;
@@ -83,10 +84,10 @@ public class GameManagerUI : MonoBehaviour {
         //territoryInfo.gameObject.SetActive(true);
         //Territory territory = GameManager.Instance.AllTerritories.Find(terr => terr.id.Equals(id));
         if (territory is not null) {
-            _territoryInfo = "\n" + territory.name + $": state of the continent {territory.continent}, owned by the player" +
+            _territoryInfo = territory.name + $": state of the continent {territory.continent}, owned by the player" +
                              $"<color={GameManager.Instance.GetPlayerColor(territory.player_id)}>" +
                              $"{GameManager.Instance.getEnemyNameById(territory.player_id)}</color>.\n" +
-                             $"On the territory there are {territory.num_tanks} army on it.\n";
+                             $"On the territory there are {territory.num_tanks} army on it.";
             
         }
     }
