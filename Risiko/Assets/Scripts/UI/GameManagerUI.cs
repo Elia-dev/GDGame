@@ -43,12 +43,12 @@ public class GameManagerUI : MonoBehaviour {
         allInfo.text = "";
         if (Player.Instance.IsMyTurn) {
             turn.color = Color.black;
-            turn.text = "Is your turn!";
+            turn.text = "Is your turn!\n";
         }
         else {
             turn.color = Utils.ColorCode(GameManager.Instance.GetPlayerColor(GameManager.Instance.getIdPlayingPlayer()), 255);
             turn.text = GameManager.Instance.getEnemyNameById(GameManager.Instance.getIdPlayingPlayer()) +
-                        "'s turn!";
+                        "'s turn!\n";
         }
 
         if (!_settingGame) {
@@ -61,20 +61,20 @@ public class GameManagerUI : MonoBehaviour {
             circlePlayerColor.GetComponent<Image>().color = Utils.ColorCode(Player.Instance.ArmyColor, 255);
             //objectiveInfo.gameObject.SetActive(true);
             //objectiveInfo.text = "Ojective: " + Player.Instance.ObjectiveCard.description;
-            allInfo.text += "Ojective: " + Player.Instance.ObjectiveCard.description;
+            allInfo.text += "\nObjective: " + Player.Instance.ObjectiveCard.description + "\n";
         }
         
         if (!_settingGame && TerritoriesManagerUI.distributionPhase) {
             allInfo.text += "\n<u>Distribution Phase!</u>\nSelect your states and add " +
                             clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks of "
-                            + Player.Instance.TanksAvailable + " still available";
+                            + Player.Instance.TanksAvailable + " still available\n";
         }
         else if (!_settingGame && TerritoriesManagerGamePhaseUI.ReinforcePhase) {
             allInfo.text += "\n<u>Reinforce Phase!</u>\nSelect your states and add " +
-                            clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks";
+                            clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks\n";
         }
         else if (!_settingGame && TerritoriesManagerGamePhaseUI.Attackphase) {
-            allInfo.text += "\n<u>Attack Phase!</u>\nAttack the enemies or move your army";
+            allInfo.text += "\n<u>Attack Phase!</u>\nAttack the enemies or move your army\n";
         }
 
         allInfo.text += "\n" + _territoryInfo;
@@ -84,10 +84,10 @@ public class GameManagerUI : MonoBehaviour {
         //territoryInfo.gameObject.SetActive(true);
         //Territory territory = GameManager.Instance.AllTerritories.Find(terr => terr.id.Equals(id));
         if (territory is not null) {
-            _territoryInfo = territory.name + $": state of the continent {territory.continent}, owned by the player" +
+            _territoryInfo = "\n" + territory.name + $": state of the continent {territory.continent}, owned by the player" +
                              $"<color={GameManager.Instance.GetPlayerColor(territory.player_id)}>" +
                              $"{GameManager.Instance.getEnemyNameById(territory.player_id)}</color>.\n" +
-                             $"On the territory there are {territory.num_tanks} army on it.";
+                             $"On the territory there are {territory.num_tanks} army on it.\n";
             
         }
     }
