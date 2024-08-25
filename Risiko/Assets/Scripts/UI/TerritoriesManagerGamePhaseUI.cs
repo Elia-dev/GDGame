@@ -196,8 +196,8 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
         if (TerritoryInformationsPlayer(newTerritory.gameObject.name) is not null) {
             //Se ho già selezionato un mio stato e questo è confinante ad esso
             if (_neighborhoodGameObj.Contains(newTerritory.gameObject)) {
-                if(popUpAttack.activeInHierarchy)
-                    popUpAttack.SetActive(false);
+                /*if(popUpAttack.activeInHierarchy)
+                    popUpAttack.SetActive(false);*/
                 
                 popUpMoveTanks.GetComponent<PupUpMoveTanksUI>().SetPupUp(
                     TerritoryInformationsPlayer(selectedTerritory.gameObject.name),
@@ -237,8 +237,8 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
                 //_readyToAttack &&
                 enemyTerritory = newTerritory;
                 
-                if(popUpMoveTanks.activeInHierarchy)
-                    popUpMoveTanks.SetActive(false);
+                /*if(popUpMoveTanks.activeInHierarchy)
+                    popUpMoveTanks.SetActive(false);*/
                 
                 popUpAttack.GetComponent<PopUpAttackUI>().SetPupUp(
                     TerritoryInformationsPlayer(selectedTerritory.gameObject.name),
