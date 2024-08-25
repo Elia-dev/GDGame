@@ -12,7 +12,7 @@ public class MainMenuUI : MonoBehaviour {
     [SerializeField] private GameObject popUpConnection;
     [SerializeField] private Button x;
     private bool _pressedButton = false;
-    private float _delay = 10.0f; // Durata del ritardo in secondi
+    private float _delay = 12.0f; // Durata del ritardo in secondi
     private float _timer;
 
     private void Awake() {
