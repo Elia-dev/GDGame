@@ -2,29 +2,31 @@ using UnityEngine;
 
 public class MenuMusicController : MonoBehaviour
 {
-    private AudioSource audioSource;
-    private static MenuMusicController instance;
-    void Awake()
+    public static MenuMusicController music;
+    private AudioSource _audioSource;
+    private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        if (music != null)
         {
             Destroy(gameObject);
         }
+        else
+        {
+            music = null;
+        }
+        DontDestroyOnLoad(this.gameObject);
+        _audioSource = GetComponent<AudioSource>();
+        PlayMusic();
     }
-    
-    void Start()
+
+    public void PlayMusic()
     {
-        audioSource = GetComponent<AudioSource>();
-        audioSource.Play(); // Avvia la musica quando viene caricato il menu
+        if (_audioSource.isPlaying) return;
+        _audioSource.Play();
     }
 
     public void StopMusic()
     {
-        audioSource.Stop(); // Ferma la musica
+        _audioSource.Stop();
     }
 }

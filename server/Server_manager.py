@@ -32,6 +32,7 @@ async def handler(websocket):
                 for game in games:
                     if game.game_id is None: # For each 5 messages the server check if there are empty lobby and delete them
                         games.remove(game)
+                print("Pulizia completata")
 
             if "HOST_GAME" in message:
                 game_id = None
