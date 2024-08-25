@@ -40,6 +40,7 @@ public class GameManagerUI : MonoBehaviour {
     }
 
     void Update() {
+        Debug.Log("DIM " + userSpace.GetComponent<RectTransform>().rect.width );
         
         allInfo.text = "";
         if (Player.Instance.IsMyTurn) {
