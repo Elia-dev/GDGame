@@ -27,7 +27,7 @@ public class GameManagerUI : MonoBehaviour {
 
     void Start() {
         playerName.text = Player.Instance.Name;
-        Debug.Log("DIM " + userSpace.GetComponent<RectTransform>().rect.width + " " + userSpace.GetComponent<Rect>().width);
+        Debug.Log("DIM " + userSpace.GetComponent<RectTransform>().rect.width );
         /*allInfo.gameObject.GetComponent<RectTransform>().sizeDelta = 
             new Vector2(userSpace.GetComponent<RectTransform>().rect.width, 
                 userSpace.GetComponent<RectTransform>().sizeDelta.y);
