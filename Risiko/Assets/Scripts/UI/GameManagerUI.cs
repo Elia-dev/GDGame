@@ -53,10 +53,10 @@ public class GameManagerUI : MonoBehaviour {
 
         if (!_settingGame) {
             Debug.Log("DIM " + userSpace.GetComponent<RectTransform>().rect.width );
-            allInfo.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(userSpace.GetComponent<RectTransform>().rect.width, 
+            /*allInfo.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(userSpace.GetComponent<RectTransform>().rect.width, 
                 allInfo.gameObject.GetComponent<RectTransform>().sizeDelta.y);
             turn.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(userSpace.GetComponent<RectTransform>().rect.width - 20, 
-                turn.gameObject.GetComponent<RectTransform>().sizeDelta.y);
+                turn.gameObject.GetComponent<RectTransform>().sizeDelta.y);*/
             circlePlayerColor.gameObject.SetActive(true);
             circlePlayerColor.GetComponent<Image>().color = Utils.ColorCode(Player.Instance.ArmyColor, 255);
             //objectiveInfo.gameObject.SetActive(true);
