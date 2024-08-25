@@ -115,6 +115,8 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
                     TerritoryHandlerUI territoryHandlerUI = hit.transform.GetComponent<TerritoryHandlerUI>();
                     if (territoryHandlerUI is not null) {
                         //selectedTerritory = territoryHandlerUI;
+                        gameManager.GetComponent<GameManagerUI>().
+                            ShowTerritoryInfo(TerritoryInformationsOtherPLayers(territoryHandlerUI.gameObject.name));
                         SelectState(territoryHandlerUI);
                     }
                 }
@@ -197,9 +199,6 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
     }
 
     public void SelectState(TerritoryHandlerUI newTerritory) {
-        //INFO STATO
-        gameManager.GetComponent<GameManagerUI>().
-            ShowTerritoryInfo(TerritoryInformationsOtherPLayers(newTerritory.gameObject.name));
         //Se ho selezionato un mio stato
         if (TerritoryInformationsPlayer(newTerritory.gameObject.name) is not null) {
             //Se ho già selezionato un mio stato e questo è confinante ad esso
