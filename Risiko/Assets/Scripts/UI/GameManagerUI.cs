@@ -17,6 +17,7 @@ public class GameManagerUI : MonoBehaviour {
     /*[SerializeField] private TMP_Text territoryInfo;
     [SerializeField] private TMP_Text objectiveInfo;*/
     private static bool _settingGame = true;
+    private bool _dimensionSetted = false;
     //private bool _playerBaseInfoSet = false;
 
 
@@ -51,8 +52,8 @@ public class GameManagerUI : MonoBehaviour {
                         "'s turn!\n";
         }
 
-        if (!_settingGame) {
-            _settingGame = true;
+        if (!_settingGame && !_dimensionSetted) {
+            _dimensionSetted = true;
             Debug.Log("DIM " + userSpace.GetComponent<RectTransform>().rect.width );
             allInfo.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(userSpace.GetComponent<RectTransform>().rect.width, 
                 allInfo.gameObject.GetComponent<RectTransform>().sizeDelta.y);

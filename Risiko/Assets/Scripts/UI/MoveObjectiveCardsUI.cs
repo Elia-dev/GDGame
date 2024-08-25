@@ -39,6 +39,7 @@ public class MoveObjectiveCardsUI : MoveCardsUI {
                 GameObject.Find("ObjectiveCardCanvas").SetActive(false);
                 territoriesCardCanvas.SetActive(true);
                 cardBack.SetActive(false);
+                GameManagerUI.SettingGame = false;
             }
         }
         
