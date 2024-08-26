@@ -111,14 +111,11 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
                     TerritoryHandlerUI territoryHandlerUI = hit.transform.GetComponent<TerritoryHandlerUI>();
                     if (territoryHandlerUI is not null) {
                         //selectedTerritory = territoryHandlerUI;
-                        gameManager.GetComponent<GameManagerUI>().
-                            ShowTerritoryInfo(TerritoryInformationsOtherPLayers(territoryHandlerUI.gameObject.name));
-                        Debug.Log("Mostrato " + TerritoryInformationsOtherPLayers(territoryHandlerUI.gameObject.name));
                         SelectState(territoryHandlerUI);
                     }
-                }
-                else if (hit.collider is null) {
+                } else if (hit.collider is null) {
                     DeselectState();
+                    gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
                     popUpMoveTanks.SetActive(false);
                     popUpAttack.SetActive(false);
                 }
@@ -150,6 +147,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
             RefreshTerritories();
             DeselectState();
             GameManager.Instance.setForceUpdateAfterAttack(false);
+            gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
             //ALTRO
         }
 
@@ -158,6 +156,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
             _attackphase = false;
             _isTurnInitialized = false;
             DeselectState();
+            gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
             endTurnButton.interactable = false;
         }
     }
@@ -196,6 +195,9 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
     }
 
     public void SelectState(TerritoryHandlerUI newTerritory) {
+        //Info stato
+        gameManager.GetComponent<GameManagerUI>().
+            ShowTerritoryInfo(TerritoryInformationsOtherPLayers(newTerritory.gameObject.name));
         //Se ho selezionato un mio stato
         if (TerritoryInformationsPlayer(newTerritory.gameObject.name) is not null) {
             //Se ho già selezionato un mio stato e questo è confinante ad esso
@@ -328,6 +330,5 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
             enemyTerritory.Deselect();
             enemyTerritory = null;
         }
-        gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
     }
 }
