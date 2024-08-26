@@ -74,6 +74,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
 
         if (_reinforcePhase && !IsPhaseGoing && Player.Instance.TanksAvailable > 0) {
             if (Player.Instance.Territories.Count >= 3) {
+                GameManagerUI.ReinforcePhase = true;
                 //if (_timer > 0) 
                 //_timer -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
                 //else {
@@ -192,7 +193,6 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
     private void StartTurn() {
         _isTurnInitialized = true;
         _reinforcePhase = true;
-        GameManagerUI.ReinforcePhase = true;
         //_timer = _delay;
         endTurnButton.GetComponentInChildren<TMP_Text>().text = "Next Phase!";
         //TODO
