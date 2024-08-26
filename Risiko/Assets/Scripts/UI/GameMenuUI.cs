@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -13,8 +14,7 @@ public class GameMenuUI : MonoBehaviour
     [SerializeField] private Button joinLobbyButton; 
     [SerializeField] TMP_InputField usernameInputField;
     [SerializeField] private GameObject popupError;
-    
-    
+
     private void Awake() {
         backButton.onClick.AddListener(() => {
             SceneManager.LoadScene("MainMenu");
@@ -30,6 +30,7 @@ public class GameMenuUI : MonoBehaviour
                 Debug.Log("Username OK, changing scene from GameMenu to HostMenu");
                 Player.Instance.Initialize();
                 Player.Instance.Name = username;
+                
                 SceneManager.LoadScene("HostMenu");
                 
             }
