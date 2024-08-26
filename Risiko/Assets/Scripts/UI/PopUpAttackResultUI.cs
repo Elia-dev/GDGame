@@ -22,11 +22,8 @@ public class PopUpAttackResultUI : MonoBehaviour {
         });
     }
 
-    private void Start() {
-        gameObject.SetActive(true);
-    }
-
     public void SetPupUp(Territory myTerritory, Territory enemyTerritory) { //, GameObject myTerritoryGObj, GameObject enemyTerritoryGObj) {
+        gameObject.SetActive(true);
         popUpAttackTitle.text = "You're attacking!";
         Territory enemyTerr = GameManager.Instance.getEnemyAttackerTerritory();
         Territory myTerr = GameManager.Instance.getMyTerritoryUnderAttack();
@@ -34,6 +31,7 @@ public class PopUpAttackResultUI : MonoBehaviour {
     }
 
     public void SetPupUp() {
+        gameObject.SetActive(true);
         popUpAttackTitle.text = "You're under attack!";
         Territory enemyTerritory = GameManager.Instance.getEnemyAttackerTerritory();
         Territory myTerritory = GameManager.Instance.getMyTerritoryUnderAttack();
