@@ -83,10 +83,10 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
                 SendArmy();
             }
             else if (TerritoriesManagerGamePhaseUI.AttackPhase) {
-                ClientManager.Instance.UpdateTerritoriesState();
-                endTurnButton.interactable = false;
                 TerritoriesManagerGamePhaseUI.AttackPhase = false;
                 GameManagerUI.AttackPhase = false;
+                ClientManager.Instance.UpdateTerritoriesState();
+                endTurnButton.interactable = false;
                 TerritoriesManagerGamePhaseUI.IsTurnInitialized = false;
             }
         });
