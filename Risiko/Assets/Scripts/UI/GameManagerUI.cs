@@ -89,7 +89,7 @@ public class GameManagerUI : MonoBehaviour {
         //territoryInfo.gameObject.SetActive(true);
         //Territory territory = GameManager.Instance.AllTerritories.Find(terr => terr.id.Equals(id));
         if (territory is not null) {
-            _territoryInfo = "\n" + territory.name + $": state of the continent {territory.continent}, owned by the player" +
+            _territoryInfo = "\n" + territory.name + $": state of the continent {territory.continent}, owned by the player " +
                              $"<color={GameManager.Instance.GetPlayerColor(territory.player_id)}>" +
                              $"{GameManager.Instance.getEnemyNameById(territory.player_id)}</color>.\n" +
                              $"On the territory there are {territory.num_tanks} army on it.\n";

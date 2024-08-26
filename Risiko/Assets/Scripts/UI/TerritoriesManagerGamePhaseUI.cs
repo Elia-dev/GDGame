@@ -125,7 +125,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
             }
         }
 
-        if (!_attackphase) {
+        if (!Player.Instance.IsMyTurn) {
             if (Input.GetMouseButtonDown(0)) {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
