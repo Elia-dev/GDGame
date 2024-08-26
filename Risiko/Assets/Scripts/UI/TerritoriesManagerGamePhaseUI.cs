@@ -14,24 +14,24 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
     [SerializeField] private GameObject popUpMoveTanks;
     [SerializeField] private GameObject gameManager;
     private List<GameObject> _neighborhoodGameObj = new List<GameObject>();
-    private List<Territory> _neighborhoodTeeritories = new List<Territory>();
+    private List<Territory> _neighborhoodTerritories = new List<Territory>();
     public TerritoryHandlerUI enemyTerritory;
     private static bool _reinforcePhase = true;
-    private static bool _attackphase = false;
+    private static bool _attackPhase = false;
     private static bool _isTurnInitialized = false;
+    private static bool _strategicMove = false;
 
     public static bool IsTurnInitialized {
         get => _isTurnInitialized;
         set => _isTurnInitialized = value;
     }
+    
+    //private bool _attackFinished = false;
 
-    private bool _attackFinished = false;
-    private static bool _stategicMove = false;
-
-    public bool AttackFinished {
+    /*public bool AttackFinished {
         get => _attackFinished;
         set => _attackFinished = value;
-    }
+    }*/
 
     public bool IsPhaseGoing { get; set; } = false;
 
@@ -40,14 +40,14 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
         set => _reinforcePhase = value;
     }
 
-    public static bool Attackphase {
-        get => _attackphase;
-        set => _attackphase = value;
+    public static bool AttackPhase {
+        get => _attackPhase;
+        set => _attackPhase = value;
     }
     
     public static bool StategicMove {
-        get => _stategicMove;
-        set => _stategicMove = value;
+        get => _strategicMove;
+        set => _strategicMove = value;
     }
 
     private void Awake() {
@@ -86,10 +86,12 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
             }
             else {
                 _reinforcePhase = false;
-                _attackphase = true;
+                GameManagerUI.ReinforcePhase = false;
+                _attackPhase = true;
+                GameManagerUI.AttackPhase = true;
             }
         }
-        else if (_attackphase && !IsPhaseGoing) {
+        else if (_attackPhase && !IsPhaseGoing) {
             endTurnButton.interactable = true;
             if (Input.GetMouseButtonDown(0)) {
                 Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -151,9 +153,10 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
             //ALTRO
         }
 
-        if (_stategicMove) {
-            _stategicMove = false;
-            _attackphase = false;
+        if (_strategicMove) {
+            _strategicMove = false;
+            _attackPhase = false;
+            GameManagerUI.AttackPhase = false;
             _isTurnInitialized = false;
             DeselectState();
             gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
@@ -189,6 +192,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
     private void StartTurn() {
         _isTurnInitialized = true;
         _reinforcePhase = true;
+        GameManagerUI.ReinforcePhase = true;
         //_timer = _delay;
         endTurnButton.GetComponentInChildren<TMP_Text>().text = "Next Phase!";
         //TODO
@@ -222,10 +226,10 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
                 DeselectState();
                 selectedTerritory = newTerritory;
                 selectedTerritory.Select();
-                _neighborhoodTeeritories =
+                _neighborhoodTerritories =
                     Utils.GetNeighborsOf(TerritoryInformationsPlayer(selectedTerritory.gameObject.name));
                 _neighborhoodGameObj = new List<GameObject>();
-                foreach (var territory in _neighborhoodTeeritories) {
+                foreach (var territory in _neighborhoodTerritories) {
                     GameObject terr = base.territories.Find(obj => obj.name.Equals(territory.id));
                     if (terr is not null) {
                         _neighborhoodGameObj.Add(terr);
@@ -267,7 +271,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
                     enemyTerritory = null;
                 }*/
                 _neighborhoodGameObj = new List<GameObject>();
-                _neighborhoodTeeritories = new List<Territory>();
+                _neighborhoodTerritories = new List<Territory>();
                 enemyTerritory = newTerritory;
                 enemyTerritory.Select();
             }
@@ -283,12 +287,12 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
         //Faccio apparire informazioni stato barra dx
         if (TerritoryInformationsPlayer(selectedTerritory.name) is not null) {
             //Interrogazione server per ricevere la lista dei territori vicini
-            _neighborhoodTeeritories =
+            _neighborhoodTerritories =
                 Utils.GetNeighborsOf(TerritoryInformationsPlayer(selectedTerritory.gameObject.name));
-            foreach (var terr in _neighborhoodTeeritories) {
+            foreach (var terr in _neighborhoodTerritories) {
             }
             _neighborhoodGameObj = new List<GameObject>();
-            foreach (var territory in _neighborhoodTeeritories) {
+            foreach (var territory in _neighborhoodTerritories) {
                 _readyToAttack = true;
                 GameObject terr = base.territories.Find(obj => obj.name.Equals(territory.id));
                 if (terr is not null) {
@@ -323,7 +327,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
 
             selectedTerritory = null;
             _neighborhoodGameObj = new List<GameObject>();
-            _neighborhoodTeeritories = new List<Territory>();
+            _neighborhoodTerritories = new List<Territory>();
         }
 
         if (enemyTerritory is not null) {

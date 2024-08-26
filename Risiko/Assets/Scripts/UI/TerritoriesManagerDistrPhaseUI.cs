@@ -29,6 +29,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     public int ArmyNumber => _armyNumber;
 
     public void Start() {
+        GameManagerUI.DistributionPhase = true;
         //TUTTA ROBA DI DEBUG
         /*TerritoryHandlerUI.userColor = new Color32(0, 0, 255, 200);
         List<Territory> terr = new List<Territory>();
@@ -81,10 +82,11 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             if (distributionPhase || TerritoriesManagerGamePhaseUI.ReinforcePhase) {
                 SendArmy();
             }
-            else if (TerritoriesManagerGamePhaseUI.Attackphase) {
+            else if (TerritoriesManagerGamePhaseUI.AttackPhase) {
                 ClientManager.Instance.UpdateTerritoriesState();
                 endTurnButton.interactable = false;
-                TerritoriesManagerGamePhaseUI.Attackphase = false;
+                TerritoriesManagerGamePhaseUI.AttackPhase = false;
+                GameManagerUI.AttackPhase = false;
                 TerritoriesManagerGamePhaseUI.IsTurnInitialized = false;
             }
         });
@@ -169,7 +171,10 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         if (!distributionPhase) {
             this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = false;
             TerritoriesManagerGamePhaseUI.ReinforcePhase = false;
-            TerritoriesManagerGamePhaseUI.Attackphase = true;
+            //Per barra dx
+            GameManagerUI.ReinforcePhase = false;
+            TerritoriesManagerGamePhaseUI.AttackPhase = true;
+            GameManagerUI.AttackPhase = true;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().IsPhaseGoing = false;
             endTurnButton.GetComponentInChildren<TMP_Text>().text = "End Turn!";
             endTurnButton.interactable = true;
@@ -240,6 +245,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
 
         if (GameManager.Instance.GetGamePhase() && distributionPhase) {
             TerritoriesManagerUI.distributionPhase = false;
+            GameManagerUI.DistributionPhase = false;
             this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = false;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().enabled = true;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().ActivateOtherPlayersTerritories();
@@ -254,7 +260,6 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         if (_armyNumber > 3 && distributionPhase) {
             _armyNumber = 3;
         }
-
         _selectedTerritories.territories = new Territory[_armyNumber];
         _selectedTerritories.count = new int[_armyNumber];
     }

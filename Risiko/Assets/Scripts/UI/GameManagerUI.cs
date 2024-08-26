@@ -18,12 +18,30 @@ public class GameManagerUI : MonoBehaviour {
     [SerializeField] private TMP_Text objectiveInfo;*/
     private static bool _settingGame = true;
     private bool _dimensionSetted = false;
-    //private bool _playerBaseInfoSet = false;
+
+    private static bool _distributionPhase = false;
+    private static bool _reinforcePhase = false;
+    private static bool _attackPhase = false;
 
 
     public static bool SettingGame {
         get => _settingGame;
         set => _settingGame = value;
+    }
+    
+    public static bool DistributionPhase {
+        get => _distributionPhase;
+        set => _distributionPhase = value;
+    }
+
+    public static bool ReinforcePhase {
+        get => _reinforcePhase;
+        set => _reinforcePhase = value;
+    }
+
+    public static bool AttackPhase {
+        get => _attackPhase;
+        set => _attackPhase = value;
     }
 
     void Start() {
@@ -69,16 +87,16 @@ public class GameManagerUI : MonoBehaviour {
             allInfo.text += "\n<b>Objective</b>: " + Player.Instance.ObjectiveCard.description + "\n";
         }
         
-        if (!_settingGame && TerritoriesManagerUI.distributionPhase) {
+        if (!_settingGame && _distributionPhase) {
             allInfo.text += "\n<b>Distribution Phase!</b>\nSelect your states and add " +
                             clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks of "
                             + Player.Instance.TanksAvailable + " still available\n";
         }
-        else if (!_settingGame && TerritoriesManagerGamePhaseUI.ReinforcePhase) {
+        else if (!_settingGame && _reinforcePhase) {
             allInfo.text += "\n<b>Reinforce Phase!</b>\nSelect your states and add " +
                             clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks\n";
         }
-        else if (!_settingGame && TerritoriesManagerGamePhaseUI.Attackphase) {
+        else if (!_settingGame && _attackPhase) {
             allInfo.text += "\n<b>Attack Phase!</b>\nAttack the enemies or move your army\n";
         }
         else
