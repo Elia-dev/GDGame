@@ -13,6 +13,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
     [SerializeField] private GameObject popUpAttack;
     [SerializeField] private GameObject popUpMoveTanks;
     [SerializeField] private GameObject gameManager;
+    [SerializeField] private GameObject popUpAttackResult;
     private List<GameObject> _neighborhoodGameObj = new List<GameObject>();
     private List<Territory> _neighborhoodTerritories = new List<Territory>();
     public TerritoryHandlerUI enemyTerritory;
@@ -20,18 +21,17 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
     private static bool _attackPhase = false;
     private static bool _isTurnInitialized = false;
     private static bool _strategicMove = false;
+    private static bool _underAttack = false;
+
+    public static bool UnderAttack {
+        get => _underAttack;
+        set => _underAttack = value;
+    }
 
     public static bool IsTurnInitialized {
         get => _isTurnInitialized;
         set => _isTurnInitialized = value;
     }
-    
-    //private bool _attackFinished = false;
-
-    /*public bool AttackFinished {
-        get => _attackFinished;
-        set => _attackFinished = value;
-    }*/
 
     public bool IsPhaseGoing { get; set; } = false;
 
@@ -162,6 +162,11 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
             DeselectState();
             gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
             endTurnButton.interactable = false;
+        }
+
+        if (GameManager.Instance.getImUnderAttack() && !_underAttack) {
+            _underAttack = true;
+            popUpAttackResult.GetComponent<PopUpAttackResultUI>().SetPupUp();
         }
     }
 

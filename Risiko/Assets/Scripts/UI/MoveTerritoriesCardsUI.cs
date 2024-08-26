@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TerritoriesCardsUI : MoveCardsUI {
+public class MoveTerritoriesCardsUI : MoveCardsUI {
     [SerializeField] public GameObject imagePrefab; // Prefab dell'immagine da muovere
     [SerializeField] public Transform gridTransform; // Transform del Grid Layout Group
     private bool animationDone = false;

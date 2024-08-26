@@ -14,6 +14,7 @@ public class PopUpAttackUI : MonoBehaviour {
     [SerializeField] private Button plusButton;
     [SerializeField] private Button minusButton;
     [SerializeField] private Button attackButton;
+    [SerializeField] private GameObject popUpAttackResult;
     private int armyNumAttack = 0;
 
     private void Awake() {
@@ -23,6 +24,7 @@ public class PopUpAttackUI : MonoBehaviour {
             ClientManager.Instance.AttackEnemyTerritory(myTerr, enemyTerr, armyNumAttack);
             //TerritoriesManagerGamePhaseUI.AttackFinished = true;
             this.gameObject.SetActive(false);
+            popUpAttackResult.GetComponent<PopUpAttackResultUI>().SetPupUp(myTerr, enemyTerr);
         });
     }
 
