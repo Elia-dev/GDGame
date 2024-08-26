@@ -52,14 +52,14 @@ public class GameManagerUI : MonoBehaviour {
         }
 
         if (!_settingGame) {
-            Debug.Log("DIM " + userSpace.GetComponent<RectTransform>().rect.width );
+            //Debug.Log("DIM " + userSpace.GetComponent<RectTransform>().rect.width );
             if(!_dimensionSetted) {
                 _dimensionSetted = true;
                 allInfo.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(
-                    userSpace.GetComponent<RectTransform>().rect.width,
+                    userSpace.GetComponent<RectTransform>().rect.width - 30,
                     allInfo.gameObject.GetComponent<RectTransform>().sizeDelta.y);
                 turn.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(
-                    userSpace.GetComponent<RectTransform>().rect.width - 20,
+                    userSpace.GetComponent<RectTransform>().rect.width - 30,
                     turn.gameObject.GetComponent<RectTransform>().sizeDelta.y);
             }
             circlePlayerColor.gameObject.SetActive(true);
@@ -81,6 +81,8 @@ public class GameManagerUI : MonoBehaviour {
         else if (!_settingGame && TerritoriesManagerGamePhaseUI.Attackphase) {
             allInfo.text += "\n<b>Attack Phase!</b>\nAttack the enemies or move your army\n";
         }
+        else
+            allInfo.text += "\nWaiting for other players\n";
 
         allInfo.text += "\n" + _territoryInfo;
     }
