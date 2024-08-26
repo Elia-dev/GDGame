@@ -66,20 +66,20 @@ public class GameManagerUI : MonoBehaviour {
             circlePlayerColor.GetComponent<Image>().color = Utils.ColorCode(Player.Instance.ArmyColor, 255);
             //objectiveInfo.gameObject.SetActive(true);
             //objectiveInfo.text = "Ojective: " + Player.Instance.ObjectiveCard.description;
-            allInfo.text += "\nObjective: " + Player.Instance.ObjectiveCard.description + "\n";
+            allInfo.text += "\n<b>Objective</b>: " + Player.Instance.ObjectiveCard.description + "\n";
         }
         
         if (!_settingGame && TerritoriesManagerUI.distributionPhase) {
-            allInfo.text += "\n<u>Distribution Phase!</u>\nSelect your states and add " +
+            allInfo.text += "\n<b>Distribution Phase!</b>\nSelect your states and add " +
                             clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks of "
                             + Player.Instance.TanksAvailable + " still available\n";
         }
         else if (!_settingGame && TerritoriesManagerGamePhaseUI.ReinforcePhase) {
-            allInfo.text += "\n<u>Reinforce Phase!</u>\nSelect your states and add " +
+            allInfo.text += "\n<b>Reinforce Phase!</b>\nSelect your states and add " +
                             clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks\n";
         }
         else if (!_settingGame && TerritoriesManagerGamePhaseUI.Attackphase) {
-            allInfo.text += "\n<u>Attack Phase!</u>\nAttack the enemies or move your army\n";
+            allInfo.text += "\n<b>Attack Phase!</b>\nAttack the enemies or move your army\n";
         }
 
         allInfo.text += "\n" + _territoryInfo;
