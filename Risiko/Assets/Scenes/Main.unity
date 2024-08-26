@@ -389,7 +389,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 312, y: -30.994953}
+  m_AnchoredPosition: {x: 312, y: -30.99495}
   m_SizeDelta: {x: 0, y: 21.989908}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &37566555
@@ -15925,7 +15925,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 312, y: -76.29136}
+  m_AnchoredPosition: {x: 312, y: -76.29135}
   m_SizeDelta: {x: 594, y: 68.602905}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1555170015
@@ -15964,7 +15964,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1565116144}
   - component: {fileID: 1565116145}
-  - component: {fileID: 1565116146}
   m_Layer: 5
   m_Name: PopUpContainer
   m_TagString: Untagged
@@ -16020,25 +16019,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &1565116146
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1565116143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3245fc4b2840d142918da98b9cc7ca0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  x: {fileID: 1820638958}
-  popUpAttackTitle: {fileID: 37566552}
-  yoursInfo: {fileID: 699949301}
-  otherPlayerInfo: {fileID: 1306417226}
-  yourState: {fileID: 1523641391}
-  diceResult: {fileID: 695963779}
-  otherPlayerState: {fileID: 50100165}
 --- !u!1 &1577455925
 GameObject:
   m_ObjectHideFlags: 0
@@ -17625,6 +17605,7 @@ GameObject:
   - component: {fileID: 1718548845}
   - component: {fileID: 1718548844}
   - component: {fileID: 1718548843}
+  - component: {fileID: 1718548848}
   m_Layer: 5
   m_Name: PopUpAttackResult
   m_TagString: Untagged
@@ -17730,6 +17711,25 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1718548848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1718548842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3245fc4b2840d142918da98b9cc7ca0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  x: {fileID: 1820638958}
+  popUpAttackTitle: {fileID: 37566552}
+  yoursInfo: {fileID: 699949301}
+  otherPlayerInfo: {fileID: 1306417226}
+  yourState: {fileID: 1523641391}
+  diceResult: {fileID: 695963779}
+  otherPlayerState: {fileID: 50100165}
 --- !u!1 &1737077229
 GameObject:
   m_ObjectHideFlags: 0
