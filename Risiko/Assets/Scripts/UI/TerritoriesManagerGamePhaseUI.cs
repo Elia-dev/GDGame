@@ -131,7 +131,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
                     TerritoryHandlerUI territoryHandlerUI = hit.transform.GetComponent<TerritoryHandlerUI>();
                     if (territoryHandlerUI is not null) {
                         gameManager.GetComponent<GameManagerUI>().
-                            ShowTerritoryInfo(TerritoryInformationsOtherPLayers(territoryHandlerUI.gameObject.name));
+                            ShowTerritoryInfo(TerritoryInformationsAllPlayers(territoryHandlerUI.gameObject.name));
                         //selectedTerritory = territoryHandlerUI;
                         //SelectState(territoryHandlerUI);
                     }
@@ -197,7 +197,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
     public void SelectState(TerritoryHandlerUI newTerritory) {
         //Info stato
         gameManager.GetComponent<GameManagerUI>().
-            ShowTerritoryInfo(TerritoryInformationsOtherPLayers(newTerritory.gameObject.name));
+            ShowTerritoryInfo(TerritoryInformationsAllPlayers(newTerritory.gameObject.name));
         //Se ho selezionato un mio stato
         if (TerritoryInformationsPlayer(newTerritory.gameObject.name) is not null) {
             //Se ho già selezionato un mio stato e questo è confinante ad esso
@@ -248,7 +248,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
                 
                 popUpAttack.GetComponent<PopUpAttackUI>().SetPupUp(
                     TerritoryInformationsPlayer(selectedTerritory.gameObject.name),
-                    TerritoryInformationsOtherPLayers(enemyTerritory.gameObject.name),
+                    TerritoryInformationsAllPlayers(enemyTerritory.gameObject.name),
                     enemyTerritory.gameObject);
             }
             else {
@@ -298,16 +298,16 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
                     terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 120);
                 }
             }
-        } else if (TerritoryInformationsOtherPLayers(selectedTerritory.name) is not null && _readyToAttack) {
+        } else if (TerritoryInformationsAllPlayers(selectedTerritory.name) is not null && _readyToAttack) {
             //popUpAttack.GetComponent<PopUpAttackUI>().SetPupUp(selectedTerritory, );
         }*/
     }
 
-    Territory TerritoryInformationsPlayer(string id) {
+    private Territory TerritoryInformationsPlayer(string id) {
         return Player.Instance.Territories.Find(terr => terr.id.Equals(id));
     }
 
-    Territory TerritoryInformationsOtherPLayers(string id) {
+    private Territory TerritoryInformationsAllPlayers(string id) {
         return GameManager.Instance.AllTerritories.Find(terr => terr.id.Equals(id));
     }
 

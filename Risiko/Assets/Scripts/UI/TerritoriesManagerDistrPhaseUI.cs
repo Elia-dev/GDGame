@@ -102,7 +102,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
                 //Cerca il primo posto vuoto nel vettore ed inserisce il territorio corrispondente
                 for (int i = 0; i < _selectedTerritories.count.Length; i++)
                     if (_selectedTerritories.count[i] == 0) {
-                        _selectedTerritories.territories[i] = TerritoryInformations(selectedTerritory.name);
+                        _selectedTerritories.territories[i] = TerritoryInformationsPlayer(selectedTerritory.name);
                         //Incrementa il numero di armate che saranno posizionate sul territorio
                         _selectedTerritories.count[i]++;
                         tankToAdd.text = _selectedTerritories.count[i] + "";
@@ -227,7 +227,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
                     TerritoryHandlerUI territoryHandlerUI = hit.transform.GetComponent<TerritoryHandlerUI>();
                     if (territoryHandlerUI is not null) {
                         gameManager.GetComponent<GameManagerUI>().
-                            ShowTerritoryInfo(TerritoryInformations(territoryHandlerUI.gameObject.name));
+                            ShowTerritoryInfo(TerritoryInformationsAllPlayers(territoryHandlerUI.gameObject.name));
                         //selectedTerritory = territoryHandlerUI;
                         //SelectState(territoryHandlerUI);
                     }
@@ -260,22 +260,26 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     }
 
     //Trova un territorio dato l'id del territorio
-    Territory TerritoryInformations(string id) {
+    private Territory TerritoryInformationsPlayer(string id) {
         return Player.Instance.Territories.Find(x => x.id.Equals(id));
+    }
+    
+    private Territory TerritoryInformationsAllPlayers(string id) {
+        return GameManager.Instance.AllTerritories.Find(terr => terr.id.Equals(id));
     }
 
     //Mostra il popup per aggiungere o togliere armate
     public void SelectState(TerritoryHandlerUI newTerritory) {
-        gameManager.GetComponent<GameManagerUI>().ShowTerritoryInfo(TerritoryInformations(newTerritory.name));
+        gameManager.GetComponent<GameManagerUI>().ShowTerritoryInfo(TerritoryInformationsAllPlayers(newTerritory.name));
         if (Player.Instance.ArmyColor.Equals("black") || Player.Instance.ArmyColor.Equals("blue")) {
             stateNameAddTank.color = Color.white;
             tankNumber.color = Color.white;
             tankToAdd.color = Color.white;
         }
 
-        if (TerritoryInformations(newTerritory.name) is not null) {
-            stateNameAddTank.text = TerritoryInformations(newTerritory.name).name;
-            tankNumber.text = TerritoryInformations(newTerritory.name).num_tanks + "";
+        if (TerritoryInformationsPlayer(newTerritory.name) is not null) {
+            stateNameAddTank.text = TerritoryInformationsPlayer(newTerritory.name).name;
+            tankNumber.text = TerritoryInformationsPlayer(newTerritory.name).num_tanks + "";
             int result = FindTerritory(selectedTerritory.name);
             //Controlla se sono già stati aggiuntu altre armate in questa fase e rispristina tale numero nell'UI
             if (result == -1)
