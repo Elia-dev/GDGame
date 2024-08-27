@@ -290,7 +290,7 @@ public class RequestHandler
                 _request = RemoveRequest(message, "ATTACKER_ALL_EXTRACTED_DICE: ");
                 var matches = Regex.Matches(_request, @"\[(.*?)\]");
         
-                Debug.Log("Prova ad estrarre le parentesi quadre");
+                
                 // Estrai i numeri dalla prima lista e mettili in un array
                 GameManager.Instance.setMyExtractedNumbers(
                     matches[0].Groups[1].Value
@@ -306,6 +306,9 @@ public class RequestHandler
                         .Select(int.Parse)
                         .ToArray()
                 );
+                
+                Debug.Log("Sono l'attaccante, ho estratto " + GameManager.Instance.getEnemyExtractedNumbers().ToString());
+                Debug.Log("il difensore ha estratto " + GameManager.Instance.getMyExtractedNumbers().ToString());
             }
             else if (message.Contains("ATTACK_FINISHED_FORCE_UPDATE"))
             {

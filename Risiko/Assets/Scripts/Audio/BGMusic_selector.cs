@@ -47,6 +47,7 @@ public class BGMusic_selector : MonoBehaviour
                 menuTrack.Stop();
                 gameTrack.Stop();
                 winTrack.Play();
+                Debug.Log("WinTrack.isPlaying = " + winTrack.isPlaying);
             }
             else
             {
@@ -55,6 +56,7 @@ public class BGMusic_selector : MonoBehaviour
                 gameTrack.Stop();
                 winTrack.Stop();
                 loseTrack.Play();
+                Debug.Log("LoseTrack.isPlaying = " + loseTrack.isPlaying);
             }
         }
     }
