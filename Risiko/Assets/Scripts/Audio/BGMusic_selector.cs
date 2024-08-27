@@ -21,7 +21,7 @@ public class BGMusic_selector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Update di volumeManager");
+        //Debug.Log("Update di volumeManager");
         if (SceneManager.GetActiveScene().name == "MainMenu" && !menuTrack.isPlaying)
         {
             Debug.Log("MainMenu selected, menuTrack is not playing, ATTIVATA!");
@@ -40,7 +40,7 @@ public class BGMusic_selector : MonoBehaviour
         }
         else if (SceneManager.GetActiveScene().name == "Main" && GameManager.Instance.getWinnerGameId() != "")
         {
-            if (GameManager.Instance.getWinnerGameId() == Player.Instance.PlayerId)
+            if (GameManager.Instance.getWinnerGameId() == Player.Instance.PlayerId && !winTrack.isPlaying)
             {
                 Debug.Log("Main selected, I won the game, winTrack is not playing, ATTIVATA!");
                 loseTrack.Stop();
@@ -49,7 +49,7 @@ public class BGMusic_selector : MonoBehaviour
                 winTrack.Play();
                 Debug.Log("WinTrack.isPlaying = " + winTrack.isPlaying);
             }
-            else
+            else if(GameManager.Instance.getWinnerGameId() != Player.Instance.PlayerId && !loseTrack.isPlaying)
             {
                 Debug.Log("Main selected, I Lose the game, loseTrack is not playing, ATTIVATA!");
                 menuTrack.Stop();
