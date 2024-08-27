@@ -81,7 +81,8 @@ async def handler(websocket):
 
 async def main():
     print("server started")
-    async with websockets.serve(handler, "0.0.0.0", 12345):
+    async with websockets.serve(handler, "0.0.0.0", 12345, ping_interval=300, ping_timeout=300):
+        # Gestisce il timeout della connessione mandando ogni 5 minuti un ping e aspettando il pong di risposta entro altri 5 minuti
     #async with websockets.serve(handler, "localhost", 8766):
         await asyncio.Future()  # Run forever
 

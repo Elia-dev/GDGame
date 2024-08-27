@@ -68,12 +68,14 @@ public class ClientManager
             try
             {
                 //await _webSocket.ConnectAsync(uri, cancellationTokenSource.Token);
+                _webSocket.Options.KeepAliveInterval = TimeSpan.FromMinutes(2.5); // invia un ping ogni 2.5 minuti
                 await _webSocket.ConnectAsync(uri, cancellationTokenSourceFirstConnection.Token);
             
                 if (_webSocket.State == WebSocketState.Open)
                 {
                     Debug.Log("Connected");
                     SetConnected(true);
+                    
                     var handlerTask = RequestHandler.HandleRequests(cancellationTokenSource.Token);
                     var receiveTask = ReceiveMessage(_webSocket, cancellationTokenSource.Token);
                     await Task.WhenAll(handlerTask, receiveTask);
