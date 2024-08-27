@@ -18430,11 +18430,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   x: {fileID: 1820638958}
   popUpAttackTitle: {fileID: 37566552}
-  yoursInfo: {fileID: 699949301}
-  otherPlayerInfo: {fileID: 1306417226}
-  yourState: {fileID: 1523641391}
+  myInfo: {fileID: 699949301}
+  enemyInfo: {fileID: 1306417226}
+  myState: {fileID: 1523641391}
   diceResult: {fileID: 695963779}
-  otherPlayerState: {fileID: 50100165}
+  enemyState: {fileID: 50100165}
 --- !u!1 &1737077229
 GameObject:
   m_ObjectHideFlags: 0
