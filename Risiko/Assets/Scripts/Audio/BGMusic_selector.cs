@@ -2,34 +2,60 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class BGMusic_selector : MonoBehaviour
 {
-    public AudioSource MenuTrack;
-    public AudioSource GameTrack;
-    public AudioSource WinTrack;
-    public AudioSource LoseTrack;
+    public AudioSource menuTrack;
+    public AudioSource gameTrack;
+    public AudioSource winTrack;
+    public AudioSource loseTrack;
     void Start()
     {
-        MenuTrack.Play();
+        menuTrack.Play();
+        gameTrack.Stop();
+        winTrack.Stop();
+        loseTrack.Stop();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (SceneManager.GetActiveScene().name == "MainMenu" && !MenuTrack.isPlaying)
+        Debug.Log("Update di volumeManager");
+        if (SceneManager.GetActiveScene().name == "MainMenu" && !menuTrack.isPlaying)
         {
-            GameTrack.Stop();
-            WinTrack.Stop();
-            LoseTrack.Stop();
-            MenuTrack.Play();
+            Debug.Log("MainMenu selected, menuTrack is not playing, ATTIVATA!");
+            gameTrack.Stop();
+            winTrack.Stop();
+            loseTrack.Stop();
+            menuTrack.Play();
         }
-        else if (SceneManager.GetActiveScene().name == "GameMenu" && !GameTrack.isPlaying)
+        else if (SceneManager.GetActiveScene().name == "Main" && !gameTrack.isPlaying)
         {
-            WinTrack.Stop();
-            LoseTrack.Stop();
-            MenuTrack.Stop();
-            GameTrack.Play();
+            Debug.Log("Main selected, GameTrack is not playing, ATTIVATA!");
+            winTrack.Stop();
+            loseTrack.Stop();
+            menuTrack.Stop();
+            gameTrack.Play();
+        }
+        else if (SceneManager.GetActiveScene().name == "Main" && GameManager.Instance.getWinnerGameId() != "")
+        {
+            if (GameManager.Instance.getWinnerGameId() == Player.Instance.PlayerId)
+            {
+                Debug.Log("Main selected, I won the game, winTrack is not playing, ATTIVATA!");
+                loseTrack.Stop();
+                menuTrack.Stop();
+                gameTrack.Stop();
+                winTrack.Play();
+            }
+            else
+            {
+                Debug.Log("Main selected, I Lose the game, loseTrack is not playing, ATTIVATA!");
+                menuTrack.Stop();
+                gameTrack.Stop();
+                winTrack.Stop();
+                loseTrack.Play();
+            }
         }
     }
 }

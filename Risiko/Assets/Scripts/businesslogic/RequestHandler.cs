@@ -331,11 +331,14 @@ public class RequestHandler
                                // Debug.Log("Il terr: " + terr.name + " è nella tua lista territori, ma appartiene a "
                                 //          + GameManager.Instance.getEnemyNameById(terr.player_id));
                                 toRemove.Add(playerTerr);
+                                GameManager.Instance.setWinnerBattleId(GameManager.Instance.getEnemyTerritory().player_id); // mi segno che ho perso la battaglia per il territorio
                             }
                             else if (playerTerr is null && terr.player_id == Player.Instance.PlayerId)
                             {
                              //   Debug.Log("Il terr: " + terr.name + " non è nella tua lista territori ma in realtà ti appartiene");
                                 toAdd.Add(terr);
+                                GameManager.Instance.setWinnerBattleId(Player.Instance.PlayerId); // mi segno che ho perso la battaglia per il territorio
+
                             }
                             else if (playerTerr is null && terr.player_id != Player.Instance.PlayerId)
                             {
@@ -377,7 +380,7 @@ public class RequestHandler
             {
                 Debug.Log("Server_Request: WINNER");
                 _request = RemoveRequest(message, "WINNER: ");
-                GameManager.Instance.setWinnerId(_request);
+                GameManager.Instance.setWinnerGameId(_request);
             }
             else
             {

@@ -14,7 +14,8 @@ public class GameManager
     public List<Territory> AllTerritories = new List<Territory>(); // Lista di tutti i territori della partita
     public List<string> PlayersName = new List<string>(); 
     public List<string> AvailableColors = new List<string>();
-    private string _winnerId = "";
+    private string _winnerGameId = "";
+    private string _winnerBattleId = "";
     private string _gameOrder = "";
     private int _extractedNumber = 0;
     private int[] _extractedEnemyNumbers = new int[3];
@@ -51,14 +52,24 @@ public class GameManager
         }
     }
 
-    public void setWinnerId(string id)
+    public void setWinnerBattleId(string id)
     {
-        _winnerId = id;
+        _winnerBattleId = id;
     }
 
-    public string getWinnerId()
+    public string getWinnerBattleId()
     {
-        return _winnerId;
+        return _winnerBattleId;
+    }
+    
+    public void setWinnerGameId(string id)
+    {
+        _winnerGameId = id;
+    }
+
+    public string getWinnerGameId()
+    {
+        return _winnerGameId;
     }
     
     public void setEnemyExtractedNumbers(int[] vet)

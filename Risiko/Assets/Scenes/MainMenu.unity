@@ -2172,7 +2172,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -2264,11 +2264,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 3d630c917c993d75a8517c41d04b3154, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -2364,7 +2364,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -2460,7 +2460,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -2554,10 +2554,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 762aed137cccd85298cc7cbf1d03a124, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MenuTrack: {fileID: 1920287647}
-  GameTrack: {fileID: 1920287646}
-  WinTrack: {fileID: 0}
-  LoseTrack: {fileID: 1920287644}
+  menuTrack: {fileID: 1920287647}
+  gameTrack: {fileID: 1920287646}
+  winTrack: {fileID: 1920287645}
+  loseTrack: {fileID: 1920287644}
 --- !u!4 &1920287649
 Transform:
   m_ObjectHideFlags: 0
