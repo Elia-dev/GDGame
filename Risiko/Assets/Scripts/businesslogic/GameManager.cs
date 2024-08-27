@@ -109,6 +109,8 @@ public class GameManager
         resetMyTerritory();
         resetEnemyExtractedNumbers();
         resetMyExtractedNumbers();
+        setImUnderAttack(false);
+        setImAttacking(false);
     }
     
     public int getMyArmyNum()
