@@ -39,7 +39,7 @@ public class PopUpAttackResultUI : MonoBehaviour {
     private void InitializeAllElement(Territory yoursTerritory, Territory OtherPLayerTerritory) {
         //Tu
         yoursInfo.text = Player.Instance.Name + "\n" +
-                         yoursTerritory.name + "\nWith " + GameManager.Instance.getMyArmyNum() +" army";
+                         "<b>" + yoursTerritory.name + "</b>" + "\nWith " + GameManager.Instance.getMyArmyNum() +" army";
         yourState.sprite = loadSprite("TerritoriesSprite/" + yoursTerritory.id);
         yourState.color = Utils.ColorCode(Player.Instance.ArmyColor, 150);
         
@@ -47,7 +47,7 @@ public class PopUpAttackResultUI : MonoBehaviour {
         
         //Altro giocatore
         otherPlayerInfo.text = GameManager.Instance.getEnemyNameById(OtherPLayerTerritory.player_id)+ "\n" +
-                               OtherPLayerTerritory.name + "\nWith " + GameManager.Instance.GetEnemyArmyNum() +" army";
+                               "<b>" + OtherPLayerTerritory.name + "</b>" + "\nWith " + GameManager.Instance.GetEnemyArmyNum() +" army";
         otherPlayerState.sprite = loadSprite("TerritoriesSprite/" + OtherPLayerTerritory.id);
         otherPlayerState.color = Utils.ColorCode(GameManager.Instance.GetPlayerColor(OtherPLayerTerritory.player_id), 150);
     }
