@@ -7,8 +7,8 @@ public class GameManager
 {
     private static GameManager _instance;
     private static readonly object Lock = new object();
-    private Territory _enemyAttackerTerritory = null;
-    private Territory _myTerritoryUnderAttack = null;
+    private Territory _enemyTerritory = null;
+    private Territory _myTerritory = null;
     private Dictionary<string, string> _playersDict = new Dictionary<string, string>();
     private Dictionary<string, string> _colorsDict = new Dictionary<string, string>();
     public List<Territory> AllTerritories = new List<Territory>(); // Lista di tutti i territori della partita
@@ -16,6 +16,8 @@ public class GameManager
     public List<string> AvailableColors = new List<string>(); 
     private string _gameOrder = "";
     private int _extractedNumber = 0;
+    private int[] _extractedEnemyNumbers = new int[3];
+    private int[] _extractedMyNumbers = new int[3];
     private string _gameOrderExtractedNumbers = "";
     private bool _gameWaitingToStart = true;
     private bool _gameRunning = true;
@@ -23,8 +25,8 @@ public class GameManager
     private bool _gamePhase = false;
     private bool _imUnderAttack = false;
     private string _idPlayingPlayer = "";
-    private int _enemyAttackerArmyNum = 0;
-    private int _myArmyNumToDefende = 0;
+    private int _enemyArmyNum = 0;
+    private int _myArmyNum = 0;
     private bool _forceUpdateAfterAttack = false;
     private string _lobbyID;
     private bool _imAttacking = false;
@@ -47,7 +49,8 @@ public class GameManager
             }
         }
     }
-
+    
+    
     public bool getForceUpdateAfterAttack()
     {
         return _forceUpdateAfterAttack;
@@ -57,35 +60,44 @@ public class GameManager
     {
         _forceUpdateAfterAttack = value;
     }
-    
-    public int getMyArmyNumToDefende()
-    {
-        return _myArmyNumToDefende;
-    }
 
-    public void setMyArmyNumToDefende(int numArmy)
+    public void cleanAfterBattle()
     {
-        _myArmyNumToDefende = numArmy;
-    }
-
-    public void resetMyArmyNumToDefende()
-    {
-        _myArmyNumToDefende = 0;
+        resetEnemyArmyNum();
+        resetMyArmyNum();
+        resetEnemyTerritory();
+        resetMyTerritory();
+        
     }
     
-    public int GetEnemyAttackerArmyNum()
+    public int getMyArmyNum()
     {
-        return _enemyAttackerArmyNum;
+        return _myArmyNum;
     }
 
-    public void setEnemyAttackerArmyNum(int numArmy)
+    public void setMyArmyNum(int numArmy)
     {
-        _enemyAttackerArmyNum = numArmy;
+        _myArmyNum = numArmy;
     }
 
-    public void resetEnemyAttackerArmyNum()
+    public void resetMyArmyNum()
     {
-        _enemyAttackerArmyNum = 0;
+        _myArmyNum = 0;
+    }
+    
+    public int GetEnemyArmyNum()
+    {
+        return _enemyArmyNum;
+    }
+
+    public void setEnemyArmyNum(int numArmy)
+    {
+        _enemyArmyNum = numArmy;
+    }
+
+    public void resetEnemyArmyNum()
+    {
+        _enemyArmyNum = 0;
     }
     
     public void AddPlayerColor(string id, string color)
@@ -180,34 +192,44 @@ public class GameManager
         }
     }
     
-    public Territory getMyTerritoryUnderAttack()
+    public Territory getMyTerritory()
     {
-        if (_myTerritoryUnderAttack is null)
+        if (_myTerritory is null)
         {
-            _myTerritoryUnderAttack = Territory.EmptyTerritory();
+            _myTerritory = Territory.EmptyTerritory();
         }
 
-        return _myTerritoryUnderAttack;
+        return _myTerritory;
+    }
+
+    public void setMyTerritory(Territory ter)
+    {
+        _myTerritory = ter;
     }
     
-    public void deleteMyTerritoryUnderAttack()
+    public void resetMyTerritory()
     {
-        _myTerritoryUnderAttack = null;
+        _myTerritory = null;
     }
     
-    public Territory getEnemyAttackerTerritory()
+    public Territory getEnemyTerritory()
     {
-        if (_enemyAttackerTerritory is null)
+        if (_enemyTerritory is null)
         {
-            _enemyAttackerTerritory = Territory.EmptyTerritory();
+            _enemyTerritory = Territory.EmptyTerritory();
         }
 
-        return _enemyAttackerTerritory;
+        return _enemyTerritory;
     }
 
-    public void deleteAttackerTerritory()
+    public void resetEnemyTerritory()
     {
-        _enemyAttackerTerritory = null;
+        _enemyTerritory = null;
+    }
+
+    public void setEnemyTerritoy(Territory ter)
+    {
+        _enemyTerritory = ter;
     }
     public void setImUnderAttack(bool value)
     {

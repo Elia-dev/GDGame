@@ -25,33 +25,33 @@ public class PopUpAttackResultUI : MonoBehaviour {
     public void SetPupUp(Territory myTerritory, Territory enemyTerritory) { //, GameObject myTerritoryGObj, GameObject enemyTerritoryGObj) {
         gameObject.SetActive(true);
         popUpAttackTitle.text = "You're attacking!";
-        Territory enemyTerr = GameManager.Instance.getEnemyAttackerTerritory();
-        Territory myTerr = GameManager.Instance.getMyTerritoryUnderAttack();
+        Territory enemyTerr = GameManager.Instance.getEnemyTerritory();
+        Territory myTerr = GameManager.Instance.getMyTerritory();
         InitializeAllElement(myTerritory, enemyTerritory);
     }
 
     public void SetPupUp() {
         gameObject.SetActive(true);
         popUpAttackTitle.text = "You're under attack!";
-        Territory enemyTerritory = GameManager.Instance.getEnemyAttackerTerritory();
-        Territory myTerritory = GameManager.Instance.getMyTerritoryUnderAttack();
+        Territory enemyTerritory = GameManager.Instance.getEnemyTerritory();
+        Territory myTerritory = GameManager.Instance.getMyTerritory();
         InitializeAllElement(myTerritory, enemyTerritory);
     }
 
     private void InitializeAllElement(Territory yoursTerritory, Territory OtherPLayerTerritory) {
         //Tu
-        //Territory enemyTerr = GameManager.Instance.getEnemyAttackerTerritory();
+        //Territory enemyTerr = GameManager.Instance.getEnemyTerritory();
         yoursInfo.text = Player.Instance.Name + "\n" +
-                         yoursTerritory.name + "\nWith " + GameManager.Instance.getMyArmyNumToDefende() +" army";
+                         yoursTerritory.name + "\nWith " + GameManager.Instance.getMyArmyNum() +" army";
         yourState.sprite = loadSprite("TerrritoriesSprite/" + yoursTerritory.id);
         yourState.color = Utils.ColorCode(Player.Instance.ArmyColor, 150);
         
         diceResult.text = "Soon available";
         
         //Altro giocatore
-        //Territory myTerr = GameManager.Instance.getMyTerritoryUnderAttack();
+        //Territory myTerr = GameManager.Instance.getMyTerritory();
         otherPlayerInfo.text = GameManager.Instance.getEnemyNameById(OtherPLayerTerritory.player_id)+ "\n" +
-                               OtherPLayerTerritory.name + "\nWith " + GameManager.Instance.GetEnemyAttackerArmyNum() +" army";
+                               OtherPLayerTerritory.name + "\nWith " + GameManager.Instance.GetEnemyArmyNum() +" army";
         otherPlayerState.sprite = loadSprite("TerrritoriesSprite/" + OtherPLayerTerritory.id);
         otherPlayerState.color = Utils.ColorCode(GameManager.Instance.GetPlayerColor(yoursTerritory.player_id), 150);
     }

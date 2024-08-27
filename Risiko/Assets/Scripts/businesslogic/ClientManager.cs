@@ -171,20 +171,26 @@ public class ClientManager
 
     public async void AttackEnemyTerritory(Territory myTerritory, Territory enemyTerritory, int myNumArmy)
     {
-        int enemyNumArmy;
+        int enemyArmyNum;
         if (enemyTerritory.num_tanks >= 3)
         {
-            enemyNumArmy = 3;
+            enemyArmyNum = 3;
         }
         else
         {
-            enemyNumArmy = enemyTerritory.num_tanks;
+            enemyArmyNum = enemyTerritory.num_tanks;
         }
+        
+        GameManager.Instance.setEnemyArmyNum(enemyArmyNum);
+        GameManager.Instance.setMyArmyNum(myNumArmy);
+        GameManager.Instance.setImUnderAttack(false);
+        GameManager.Instance.setMyTerritory(myTerritory);
+        GameManager.Instance.setEnemyTerritoy(enemyTerritory);
         
         await SendMessage(_webSocket, _cancellationToken, "ATTACK_TERRITORY: " + 
                                                           Player.Instance.PlayerId + "-" + enemyTerritory.player_id + ", " 
                                                           + myTerritory.id + "-" + enemyTerritory.id + ", " + 
-                                                          myNumArmy.ToString() + "-" + enemyNumArmy.ToString());
+                                                          myNumArmy.ToString() + "-" + enemyArmyNum.ToString());
         GameManager.Instance.setImAttacking(true);
     }
     

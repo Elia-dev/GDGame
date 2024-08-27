@@ -189,6 +189,7 @@ public class RequestHandler
                 //UNDER_ATTACK: attackerId, attacker_ter_id-defender_ter_id, attacker_army_num-defender_army_num
                 Debug.Log("Server_Request: UNDER_ATTACK");
                 GameManager.Instance.setImUnderAttack(true);
+                GameManager.Instance.setImAttacking(false);
                 _request = RemoveRequest(message, "UNDER_ATTACK: ");
                 Debug.Log("Richiesta pulita: " + _request);
                 
@@ -213,45 +214,54 @@ public class RequestHandler
                 Debug.Log("attacker_army_num: " + attacker_army_num);
                 Debug.Log("defender_army_num: " + defender_army_num);
                 
-                GameManager.Instance.setEnemyAttackerArmyNum(attacker_army_num);
-                GameManager.Instance.setMyArmyNumToDefende(defender_army_num);
+                GameManager.Instance.setEnemyArmyNum(attacker_army_num);
+                GameManager.Instance.setMyArmyNum(defender_army_num);
+
+                GameManager.Instance.setEnemyTerritoy(GameManager.Instance.AllTerritories.Find(x => x.id == attacker_ter_id));
+                
+                /*
                 // Mi salvo quale è lo stato che mi sta attaccando, e di chi è
                 foreach (var terr in GameManager.Instance.AllTerritories)
                 {
                     if (attacker_ter_id == terr.id)
                     {
-                        GameManager.Instance.getEnemyAttackerTerritory().id = attacker_ter_id;
-                        GameManager.Instance.getEnemyAttackerTerritory().name = terr.name;
-                        GameManager.Instance.getEnemyAttackerTerritory().continent = terr.continent;
-                        GameManager.Instance.getEnemyAttackerTerritory().node = terr.node;
-                        GameManager.Instance.getEnemyAttackerTerritory().num_tanks = terr.num_tanks;
-                        GameManager.Instance.getEnemyAttackerTerritory().description = terr.description;
-                        GameManager.Instance.getEnemyAttackerTerritory().function = terr.function;
-                        GameManager.Instance.getEnemyAttackerTerritory().image = terr.image;
-                        GameManager.Instance.getEnemyAttackerTerritory().player_id = terr.player_id;
+                        GameManager.Instance.getEnemyTerritory().id = attacker_ter_id;
+                        GameManager.Instance.getEnemyTerritory().name = terr.name;
+                        GameManager.Instance.getEnemyTerritory().continent = terr.continent;
+                        GameManager.Instance.getEnemyTerritory().node = terr.node;
+                        GameManager.Instance.getEnemyTerritory().num_tanks = terr.num_tanks;
+                        GameManager.Instance.getEnemyTerritory().description = terr.description;
+                        GameManager.Instance.getEnemyTerritory().function = terr.function;
+                        GameManager.Instance.getEnemyTerritory().image = terr.image;
+                        GameManager.Instance.getEnemyTerritory().player_id = terr.player_id;
                     }
                 }
+                */
+                
+                GameManager.Instance.setMyTerritory(Player.Instance.Territories.Find(x => x.id == defender_ter_id));
+                /*
                 
                 // Mi salvo quale mio stato sta venendo attaccato
                 foreach (var terr in GameManager.Instance.AllTerritories)
                 {
                     if (defender_ter_id == terr.id)
                     {
-                        GameManager.Instance.getMyTerritoryUnderAttack().id = defender_ter_id;
-                        GameManager.Instance.getMyTerritoryUnderAttack().name = terr.name;
-                        GameManager.Instance.getMyTerritoryUnderAttack().continent = terr.continent;
-                        GameManager.Instance.getMyTerritoryUnderAttack().node = terr.node;
-                        GameManager.Instance.getMyTerritoryUnderAttack().num_tanks = terr.num_tanks;
-                        GameManager.Instance.getMyTerritoryUnderAttack().description = terr.description;
-                        GameManager.Instance.getMyTerritoryUnderAttack().function = terr.function;
-                        GameManager.Instance.getMyTerritoryUnderAttack().image = terr.image;
-                        GameManager.Instance.getMyTerritoryUnderAttack().player_id = terr.player_id;
+                        GameManager.Instance.getMyTerritory().id = defender_ter_id;
+                        GameManager.Instance.getMyTerritory().name = terr.name;
+                        GameManager.Instance.getMyTerritory().continent = terr.continent;
+                        GameManager.Instance.getMyTerritory().node = terr.node;
+                        GameManager.Instance.getMyTerritory().num_tanks = terr.num_tanks;
+                        GameManager.Instance.getMyTerritory().description = terr.description;
+                        GameManager.Instance.getMyTerritory().function = terr.function;
+                        GameManager.Instance.getMyTerritory().image = terr.image;
+                        GameManager.Instance.getMyTerritory().player_id = terr.player_id;
                     }
                 }
-                Debug.Log("Territorio nemico che mi attacca: " +  GameManager.Instance.getEnemyAttackerTerritory().name);
-                Debug.Log("Il mio territorio sotto attacco: " + GameManager.Instance.getMyTerritoryUnderAttack().name);
-                Debug.Log("Numero armate che il nemico sta usando: " + GameManager.Instance.GetEnemyAttackerArmyNum());
-                Debug.Log("Numero armate che uso per difendermi: " + GameManager.Instance.getMyArmyNumToDefende());
+                */
+                Debug.Log("Territorio nemico che mi attacca: " +  GameManager.Instance.getEnemyTerritory().name);
+                Debug.Log("Il mio territorio sotto attacco: " + GameManager.Instance.getMyTerritory().name);
+                Debug.Log("Numero armate che il nemico sta usando: " + GameManager.Instance.GetEnemyArmyNum());
+                Debug.Log("Numero armate che uso per difendermi: " + GameManager.Instance.getMyArmyNum());
             }
             else if (message.Contains("ATTACK_FINISHED_FORCE_UPDATE"))
             {
