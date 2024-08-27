@@ -31,6 +31,11 @@ public class MainMenuUI : MonoBehaviour {
         exitButton.onClick.AddListener(() => { SceneManager.LoadScene("ExitMenu"); });
     }
 
+    void Start()
+    {
+        AudioListener.volume = PlayerPrefs.GetFloat("musicVolume", 1.0f);
+    }
+    
     private void Update() {
         if (_pressedButton) {
             ClientManager.Instance.StartClient();
