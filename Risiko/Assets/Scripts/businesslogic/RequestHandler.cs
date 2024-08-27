@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using System.Threading;
 using System.Threading.Channels;
@@ -192,6 +194,26 @@ public class RequestHandler
                 GameManager.Instance.setImAttacking(false);
                 _request = RemoveRequest(message, "UNDER_ATTACK: ");
                 Debug.Log("Richiesta pulita: " + _request);
+                
+                var matches = Regex.Matches(_request, @"\[(.*?)\]");
+        
+                    Debug.Log("Prova ad estrarre le parentesi quadre");
+                    // Estrai i numeri dalla prima lista e mettili in un array
+                    int[] firstArray = matches[0].Groups[1].Value
+                        .Split(',')
+                        .Select(int.Parse)
+                        .ToArray();
+            
+                    // Estrai i numeri dalla seconda lista e mettili in un array
+                    int[] secondArray = matches[1].Groups[1].Value
+                        .Split(',')
+                        .Select(int.Parse)
+                        .ToArray();
+            
+                    // Stampa i risultati per verificare
+                    Console.WriteLine("Primo vettore: " + string.Join(", ", firstArray));
+                    Console.WriteLine("Secondo vettore: " + string.Join(", ", secondArray));
+                
                 
                 _request = _request.Replace(" ", "");
                 

@@ -285,16 +285,20 @@ class Game:
                         f"{attacker_player.name} WILL USE {str(attacker_army_num)} AGAINST {str(defender_army_num)} ARMY OWNED BY {defender_player.name}")
                     print(f"Prima di attaccare {attacker_territory.name} aveva {attacker_territory.num_tanks} armate")
                     print(f"Prima di essere attaccato {defender_territory.name} aveva {defender_territory.num_tanks} armate")
-                    # Tell the defender it's under attack
-                    await defender_player.sock.send(
-                        "UNDER_ATTACK: " + attacker_id + ", " + attacker_ter_id + "-" + defender_ter_id + ", "
-                        + str(attacker_army_num) + "-" + str(defender_army_num))
-                    print("Server ha avvisato il difensore che sta per essere scassato")
+
                     # genera n numeri casuali, con n numero di armate
                     extracted_numbers_attacker = [random.randint(1, 6) for _ in range(attacker_army_num)]
                     extracted_numbers_defender = [random.randint(1, 6) for _ in range(defender_army_num)]
                     extracted_numbers_attacker.sort(reverse=True)  # Sort in descending order
                     extracted_numbers_defender.sort(reverse=True)
+
+                    print("!!!Extracted_numbers_Attacker.tostring!!! -> " + extracted_numbers_attacker.__str__())
+
+                    # Tell the defender it's under attack
+                    await defender_player.sock.send(
+                        "UNDER_ATTACK: " + attacker_id + ", " + attacker_ter_id + "-" + defender_ter_id + ", "
+                        + str(attacker_army_num) + "-" + str(defender_army_num) + ", " + extracted_numbers_attacker.__str__() + ", " + extracted_numbers_defender.__str__())
+                    print("Server ha avvisato il difensore che sta per essere scassato")
 
                     attacker_wins = 0
                     defender_wins = 0

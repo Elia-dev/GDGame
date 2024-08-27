@@ -35,17 +35,4 @@ public class VolumeManager : MonoBehaviour
         PlayerPrefs.SetFloat("musicVolume", volumeSlider.value);
         Debug.Log("Salvato libello volumen: " + PlayerPrefs.GetFloat("musicVolume"));
     }
-
-    public void useImp()
-    {
-        if (!PlayerPrefs.HasKey("musicVolume"))
-        {
-            PlayerPrefs.SetFloat("musicVolume", 1);
-            Load();
-        }
-        else
-        {
-            Load();
-        }
-    }
 }
