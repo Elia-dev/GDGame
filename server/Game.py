@@ -128,7 +128,7 @@ class Game:
                 print("Reinforced phase terminated")
                 # REINFORCE PHASE TERMINATED
 
-                # FIGHT PHASE
+                # FIGHT PHASE OR STRATEGIC MOVEMENT PHASE
                 print("Fight phase started")
                 '''
                  Finché non fa il movimento strategico aspetto che attacchi
@@ -139,21 +139,18 @@ class Game:
                     await self.event.wait()  # Attendo un attacco o un movimento strategico
 
                 print("Fight phase terminated")
-                # FIGHT PHASE TERMINATED
+                # FIGHT PHASE AND STRATEGIC MOVEMENT TERMINATED
 
                 self.event = asyncio.Event()
                 self.event_strategic_movement = asyncio.Event()
                 print("Strategic movement terminated")
                 await player.sock.send("IS_YOUR_TURN: FALSE")
 
-                # STRATEGIC MOVEMENT
-                # await self.event.wait()
-
-                # STRATEGIC MOVEMENT TERMINATED
-
                 # CHECK (card objective, number of tanks ecc...)
                 if self.check_for_victory(player) is True:
+                    await self.broadcast("WINNER: " + player.player_id)
                     print(f"Il player {player.name} ha vinto")
+                    self.game_running = False
                 print(" Check objective card terminated")
 
 

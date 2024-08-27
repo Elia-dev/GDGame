@@ -13,7 +13,8 @@ public class GameManager
     private Dictionary<string, string> _colorsDict = new Dictionary<string, string>();
     public List<Territory> AllTerritories = new List<Territory>(); // Lista di tutti i territori della partita
     public List<string> PlayersName = new List<string>(); 
-    public List<string> AvailableColors = new List<string>(); 
+    public List<string> AvailableColors = new List<string>();
+    private string _winnerId = "";
     private string _gameOrder = "";
     private int _extractedNumber = 0;
     private int[] _extractedEnemyNumbers = new int[3];
@@ -50,6 +51,16 @@ public class GameManager
         }
     }
 
+    public void setWinnerId(string id)
+    {
+        _winnerId = id;
+    }
+
+    public string getWinnerId()
+    {
+        return _winnerId;
+    }
+    
     public void setEnemyExtractedNumbers(int[] vet)
     {
         _extractedEnemyNumbers = vet;

@@ -373,6 +373,12 @@ public class RequestHandler
                 GameManager.Instance.setForceUpdateAfterAttack(true);
                 Debug.Log("FORCED UPDATE FINISHED");
             }
+            else if (message.Contains("WINNER"))
+            {
+                Debug.Log("Server_Request: WINNER");
+                _request = RemoveRequest(message, "WINNER: ");
+                GameManager.Instance.setWinnerId(_request);
+            }
             else
             {
                 Debug.Log("HANDLER: request not manageable: " + message);
