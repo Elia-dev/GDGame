@@ -69,17 +69,20 @@ public class PopUpAttackResultUI : MonoBehaviour {
             }
         }
 
-        if (GameManager.Instance.getWinnerBattleId().Equals(Player.Instance.PlayerId))
+        if (GameManager.Instance.getWinnerBattleId().Equals(Player.Instance.PlayerId)) {
             Debug.Log("Winner UI " + GameManager.Instance.getEnemyNameById(GameManager.Instance.getWinnerBattleId()));
-            if(_attacking)
+            if (_attacking)
                 diceResult.text += "<color=green>You WIN!\n" + enemyTerritory.name + " now is yours!</color>";
-            else 
+            else
                 diceResult.text += "<color=green>You WIN!\n" + enemyTerritory.name + " is safe!</color>";
-        else
-            if(_attacking)
+        }
+        else {
+            if (_attacking)
                 diceResult.text += "<color=red>You lose!</color>";
             else
-                diceResult.text += "<color=red>You lose!\n" + yoursTerritory.name + " doesn't belong to you anymore!</color>";
+                diceResult.text += "<color=red>You lose!\n" + yoursTerritory.name +
+                                   " doesn't belong to you anymore!</color>";
+        }
         
         //Altro giocatore
         enemyInfo.text = GameManager.Instance.getEnemyNameById(enemyTerritory.player_id)+ "\n" +
