@@ -36,7 +36,7 @@ public class PopUpAttackResultUI : MonoBehaviour {
         InitializeAllElement(myTerritory, enemyTerritory);
     }
 
-    private void InitializeAllElement(Territory yoursTerritory, Territory OtherPLayerTerritory) {
+    private void InitializeAllElement(Territory yoursTerritory, Territory OtherPlayerTerritory) {
         //Tu
         yoursInfo.text = Player.Instance.Name + "\n" +
                          "<b>" + yoursTerritory.name + "</b>" + "\nWith " + GameManager.Instance.getMyArmyNum() +" army";
@@ -46,10 +46,10 @@ public class PopUpAttackResultUI : MonoBehaviour {
         diceResult.text = "Soon available";
         
         //Altro giocatore
-        otherPlayerInfo.text = GameManager.Instance.getEnemyNameById(OtherPLayerTerritory.player_id)+ "\n" +
-                               "<b>" + OtherPLayerTerritory.name + "</b>" + "\nWith " + GameManager.Instance.GetEnemyArmyNum() +" army";
-        otherPlayerState.sprite = loadSprite("TerritoriesSprite/" + OtherPLayerTerritory.id);
-        otherPlayerState.color = Utils.ColorCode(GameManager.Instance.GetPlayerColor(OtherPLayerTerritory.player_id), 150);
+        otherPlayerInfo.text = GameManager.Instance.getEnemyNameById(OtherPlayerTerritory.player_id)+ "\n" +
+                               "<b>" + OtherPlayerTerritory.name + "</b>" + "\nWith " + GameManager.Instance.GetEnemyArmyNum() +" army";
+        otherPlayerState.sprite = loadSprite("TerritoriesSprite/" + OtherPlayerTerritory.id);
+        otherPlayerState.color = Utils.ColorCode(GameManager.Instance.GetPlayerColor(OtherPlayerTerritory.player_id), 150);
     }
     
     public Sprite loadSprite(string spriteName) {

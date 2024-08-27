@@ -203,23 +203,27 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             RaycastHit2D hit = new RaycastHit2D();
             //Ciclo che evita che non sia possibile selezionare tutto ciò che sta dietro il popup
             foreach (RaycastHit2D hitted in hits) {
-                Collider2D collider = hitted.collider;
-
-                if (collider is BoxCollider2D) {
-                    hit = new RaycastHit2D();
+                Collider2D hittedCollider = hitted.collider;
+                if (hittedCollider is BoxCollider2D) {
+                    hit = hitted;//new RaycastHit2D();
                     break;
                 }
 
-                if (collider is PolygonCollider2D)
+                if (hittedCollider is PolygonCollider2D)
                     hit = hitted;
             }
 
-            if (hit.collider is not null) {
+            if (hit.collider is PolygonCollider2D) {
                 TerritoryHandlerUI territoryHandlerUI = hit.transform.GetComponent<TerritoryHandlerUI>();
                 if (territoryHandlerUI is not null) {
                     selectedTerritory = territoryHandlerUI;
                     SelectState(selectedTerritory);
                 }
+            } else if (hit.collider is null) {
+                gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
+                popUpAddTank.SetActive(false);
+                selectedTerritory.Deselect();
+                selectedTerritory = null;
             }
         }
         
@@ -298,6 +302,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             popUpAddTank.SetActive(true);
         }
         else {
+            gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
             popUpAddTank.SetActive(false);
             selectedTerritory.Deselect();
             selectedTerritory = null;
