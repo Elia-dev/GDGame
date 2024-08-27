@@ -14,6 +14,7 @@ public class PopUpAttackResultUI : MonoBehaviour {
     [SerializeField] private Image yourState;
     [SerializeField] private TMP_Text diceResult;
     [SerializeField] private Image otherPlayerState;
+    private bool _attacking;
 
     private void Awake() {
         x.onClick.AddListener(() => {
@@ -24,12 +25,14 @@ public class PopUpAttackResultUI : MonoBehaviour {
 
     public void SetPupUp(Territory myTerritory, Territory enemyTerritory) { //, GameObject myTerritoryGObj, GameObject enemyTerritoryGObj) {
         gameObject.SetActive(true);
+        _attacking = false;
         popUpAttackTitle.text = "You're attacking!";
         InitializeAllElement(myTerritory, enemyTerritory);
     }
 
     public void SetPupUp() {
         gameObject.SetActive(true);
+        _attacking = true;
         popUpAttackTitle.text = "You're under attack!";
         Territory enemyTerritory = GameManager.Instance.getEnemyTerritory();
         Territory myTerritory = GameManager.Instance.getMyTerritory();
@@ -67,9 +70,15 @@ public class PopUpAttackResultUI : MonoBehaviour {
         }
 
         if (GameManager.Instance.getWinnerBattleId().Equals(Player.Instance.PlayerId))
-            diceResult.text += "<color=green>You WIN!\n" + enemyTerritory.name + " now is yours!</color>";
+            if(_attacking)
+                diceResult.text += "<color=green>You WIN!\n" + enemyTerritory.name + " now is yours!</color>";
+            else 
+                diceResult.text += "<color=green>You WIN!\n" + enemyTerritory.name + " is safe!</color>";
         else
-            diceResult.text += "<color=red>You lose!\n" + yoursTerritory.name + " doesn't belong to you anymore!</color>";
+            if(_attacking)
+                diceResult.text += "<color=red>You lose!</color>";
+            else
+                diceResult.text += "<color=red>You lose!\n" + yoursTerritory.name + " doesn't belong to you anymore!</color>";
         
         //Altro giocatore
         otherPlayerInfo.text = GameManager.Instance.getEnemyNameById(enemyTerritory.player_id)+ "\n" +
