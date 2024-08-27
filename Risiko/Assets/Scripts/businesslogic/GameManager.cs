@@ -49,7 +49,36 @@ public class GameManager
             }
         }
     }
+
+    public void setEnemyExtractedNumbers(int[] vet)
+    {
+        _extractedEnemyNumbers = vet;
+    }
     
+    public int[] getEnemyExtractedNumbers()
+    {
+        return _extractedEnemyNumbers;
+    }
+    
+    public void resetEnemyExtractedNumbers()
+    {
+        _extractedEnemyNumbers = null;
+    }
+    
+    public void setMyExtractedNumbers(int[] vet)
+    {
+        _extractedMyNumbers = vet;
+    }
+
+    public int[] getMyExtractedNumbers()
+    {
+        return _extractedMyNumbers;
+    }
+    
+    public void resetMyExtractedNumbers()
+    {
+        _extractedMyNumbers = null;
+    }
     
     public bool getForceUpdateAfterAttack()
     {
@@ -67,7 +96,8 @@ public class GameManager
         resetMyArmyNum();
         resetEnemyTerritory();
         resetMyTerritory();
-        
+        resetEnemyExtractedNumbers();
+        resetMyExtractedNumbers();
     }
     
     public int getMyArmyNum()
