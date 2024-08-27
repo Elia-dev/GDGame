@@ -46,15 +46,6 @@ public class GameManagerUI : MonoBehaviour {
 
     void Start() {
         playerName.text = Player.Instance.Name;
-        /*allInfo.gameObject.GetComponent<RectTransform>().sizeDelta = 
-            new Vector2(userSpace.GetComponent<RectTransform>().rect.width, 
-                userSpace.GetComponent<RectTransform>().sizeDelta.y);
-        Debug.Log("DELTA: " + allInfo.gameObject.GetComponent<RectTransform>().sizeDelta);*/
-        //allInfo.GetComponent<LayoutElement>().preferredWidth = userSpace.GetComponent<Transform>().;
-        //Debug.Log("Preferred Width " + allInfo.GetComponent<LayoutElement>().preferredWidth + 
-                  //"\nRect Width " + userSpace.GetComponent<RectTransform>().rect.width);
-        //circlePlayerColor.GetComponent<Image>().color = Utils.ColorCode(Player.Instance.ArmyColor, 255);
-        //objectiveInfo.text = Player.Instance.ObjectiveCard.description;
     }
 
     void Update() {
@@ -103,6 +94,10 @@ public class GameManagerUI : MonoBehaviour {
             allInfo.text += "\nWaiting for other players\n";
 
         allInfo.text += "\n" + _territoryInfo;
+        
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            //SceneManager.LoadScene();
+        }
     }
 
     public void ShowTerritoryInfo(Territory territory) {

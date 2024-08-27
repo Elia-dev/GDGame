@@ -36,20 +36,44 @@ public class PopUpAttackResultUI : MonoBehaviour {
         InitializeAllElement(myTerritory, enemyTerritory);
     }
 
-    private void InitializeAllElement(Territory yoursTerritory, Territory OtherPlayerTerritory) {
+    private void InitializeAllElement(Territory yoursTerritory, Territory enemyTerritory) {
         //Tu
         yoursInfo.text = Player.Instance.Name + "\n" +
                          "<b>" + yoursTerritory.name + "</b>" + "\nWith " + GameManager.Instance.getMyArmyNum() +" army";
         yourState.sprite = loadSprite("TerritoriesSprite/" + yoursTerritory.id);
         yourState.color = Utils.ColorCode(Player.Instance.ArmyColor, 150);
-        
-        diceResult.text = "Soon available";
+
+        int[] myExtractedNumbers = GameManager.Instance.getMyExtractedNumbers();
+        int[] enemyExtractedNumbers = GameManager.Instance.getEnemyExtractedNumbers();
+        diceResult.text = "<b>Dice results</b>\n";
+        if (myExtractedNumbers.Length <= enemyExtractedNumbers.Length) {
+            for (int i = 0; i < enemyExtractedNumbers.Length; i++) {
+                if (myExtractedNumbers.Length > i)
+                    diceResult.text += myExtractedNumbers[i] + " - " + enemyExtractedNumbers[i];
+                else
+                    diceResult.text += "    " + enemyExtractedNumbers[i];
+                diceResult.text += "\n";
+            }
+        } else {
+            for (int i = 0; i < myExtractedNumbers.Length; i++) {
+                if (enemyExtractedNumbers.Length > i)
+                    diceResult.text += myExtractedNumbers[i] + " - " + enemyExtractedNumbers[i];
+                else
+                    diceResult.text += myExtractedNumbers[i];
+                diceResult.text += "\n";
+            }
+        }
+
+        if (GameManager.Instance.getWinnerBattleId().Equals(Player.Instance.PlayerId))
+            diceResult.text += "<color=green>You WIN!\n" + enemyTerritory.name + " now is yours!</color>";
+        else
+            diceResult.text += "<color=red>You lose!\n" + yoursTerritory.name + " doesn't belong to you anymore!</color>";
         
         //Altro giocatore
-        otherPlayerInfo.text = GameManager.Instance.getEnemyNameById(OtherPlayerTerritory.player_id)+ "\n" +
-                               "<b>" + OtherPlayerTerritory.name + "</b>" + "\nWith " + GameManager.Instance.GetEnemyArmyNum() +" army";
-        otherPlayerState.sprite = loadSprite("TerritoriesSprite/" + OtherPlayerTerritory.id);
-        otherPlayerState.color = Utils.ColorCode(GameManager.Instance.GetPlayerColor(OtherPlayerTerritory.player_id), 150);
+        otherPlayerInfo.text = GameManager.Instance.getEnemyNameById(enemyTerritory.player_id)+ "\n" +
+                               "<b>" + enemyTerritory.name + "</b>" + "\nWith " + GameManager.Instance.GetEnemyArmyNum() +" army";
+        otherPlayerState.sprite = loadSprite("TerritoriesSprite/" + enemyTerritory.id);
+        otherPlayerState.color = Utils.ColorCode(GameManager.Instance.GetPlayerColor(enemyTerritory.player_id), 150);
     }
     
     public Sprite loadSprite(string spriteName) {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
@@ -14,6 +15,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
     [SerializeField] private GameObject popUpMoveTanks;
     [SerializeField] private GameObject gameManager;
     [SerializeField] private GameObject popUpAttackResult;
+    [SerializeField] private GameObject endGame;
     private List<GameObject> _neighborhoodGameObj = new List<GameObject>();
     private List<Territory> _neighborhoodTerritories = new List<Territory>();
     public TerritoryHandlerUI enemyTerritory;
@@ -167,6 +169,10 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
         if (GameManager.Instance.getImUnderAttack() && !_underAttack) {
             _underAttack = true;
             popUpAttackResult.GetComponent<PopUpAttackResultUI>().SetPupUp();
+        }
+
+        if (!GameManager.Instance.getWinnerGameId().Equals("")) {
+            endGame.GetComponent<EndGameUI>().SetPopUp(GameManager.Instance.getWinnerGameId());
         }
     }
 

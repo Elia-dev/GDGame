@@ -222,8 +222,10 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             } else if (hit.collider is null) {
                 gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
                 popUpAddTank.SetActive(false);
-                selectedTerritory.Deselect();
-                selectedTerritory = null;
+                if(selectedTerritory is not null) {
+                    selectedTerritory.Deselect();
+                    selectedTerritory = null;
+                }
             }
         }
         

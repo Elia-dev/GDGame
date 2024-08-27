@@ -22807,6 +22807,7 @@ MonoBehaviour:
   popUpMoveTanks: {fileID: 217625267}
   gameManager: {fileID: 64225033}
   popUpAttackResult: {fileID: 1718548842}
+  endGame: {fileID: 1255752440}
   enemyTerritory: {fileID: 0}
 --- !u!114 &2029590057
 MonoBehaviour:
