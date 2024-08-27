@@ -32,8 +32,8 @@ public class ClientManager
     }
     private static readonly RequestHandler RequestHandler = new RequestHandler();
     //private string _server = "ws://150.217.51.105:8766";
-    //private string _server = "ws://93.57.245.63:12345";
-    private string _server = "ws://101.58.64.113:12345";
+    private string _server = "ws://93.57.245.63:12345";
+    //private string _server = "ws://101.58.64.113:12345";
     private ClientWebSocket _webSocket = null;
     private CancellationToken _cancellationToken;
     
