@@ -68,6 +68,7 @@ public class PopUpAttackResultUI : MonoBehaviour {
                 diceResult.text += "\n";
             }
         }
+        diceResult.text += "\n";
 
         if (GameManager.Instance.getWinnerBattleId().Equals(Player.Instance.PlayerId)) {
             Debug.Log("Winner UI " + GameManager.Instance.getEnemyNameById(GameManager.Instance.getWinnerBattleId()));
@@ -77,6 +78,7 @@ public class PopUpAttackResultUI : MonoBehaviour {
                 diceResult.text += "<color=green>You WIN!\n" + enemyTerritory.name + " is safe!</color>";
         }
         else {
+            Debug.Log("Winner UI " + GameManager.Instance.getEnemyNameById(GameManager.Instance.getWinnerBattleId()));
             if (_attacking)
                 diceResult.text += "<color=red>You lose!</color>";
             else
