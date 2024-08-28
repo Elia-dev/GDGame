@@ -31,7 +31,7 @@ public class BGMusic_selector : MonoBehaviour
             loseTrack.Stop();
             menuTrack.Play();
         }
-        else if (SceneManager.GetActiveScene().name == "Main" && !gameTrack.isPlaying)
+        else if (SceneManager.GetActiveScene().name == "Main" && !gameTrack.isPlaying && !winTrack.isPlaying && !loseTrack.isPlaying)
         {
             Debug.Log("Main selected, GameTrack is not playing, ATTIVATA!");
             winTrack.Stop();
