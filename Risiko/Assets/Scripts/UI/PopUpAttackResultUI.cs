@@ -24,8 +24,8 @@ public class PopUpAttackResultUI : MonoBehaviour {
     }
 
     public void SetPupUp(Territory myTerritory, Territory enemyTerritory) { //, GameObject myTerritoryGObj, GameObject enemyTerritoryGObj) {
-        //while(!GameManager.Instance.getImAttacking())
-            
+        StartCoroutine(WaitUntilTrue());
+        //Attesa che vengano elaborati i dati dell'attacco
         gameObject.SetActive(true);
         _attacking = true;
         popUpAttackTitle.text = "You're attacking!";
@@ -103,5 +103,10 @@ public class PopUpAttackResultUI : MonoBehaviour {
     
     public Sprite loadSprite(string spriteName) {
         return Resources.Load<Sprite>(spriteName);
+    }
+    
+    IEnumerator WaitUntilTrue()
+    {
+        yield return new WaitUntil(() => !GameManager.Instance.getImAttacking());
     }
 }
