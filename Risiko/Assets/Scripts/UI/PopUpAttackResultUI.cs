@@ -24,7 +24,7 @@ public class PopUpAttackResultUI : MonoBehaviour {
     }
 
     public void SetPupUp(Territory myTerritory, Territory enemyTerritory) { //, GameObject myTerritoryGObj, GameObject enemyTerritoryGObj) {
-        while(!GameManager.Instance.getImAttacking())
+        //while(!GameManager.Instance.getImAttacking())
             
         gameObject.SetActive(true);
         _attacking = true;
