@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -15,6 +16,7 @@ public class PopUpAttackResultUI : MonoBehaviour {
     [SerializeField] private TMP_Text diceResult;
     [SerializeField] private Image enemyState;
     private bool _attacking;
+    private bool _dataArrived = false;
 
     private void Awake() {
         x.onClick.AddListener(() => {
@@ -23,10 +25,15 @@ public class PopUpAttackResultUI : MonoBehaviour {
         });
     }
 
-    public void SetPupUp(Territory myTerritory, Territory enemyTerritory) { //, GameObject myTerritoryGObj, GameObject enemyTerritoryGObj) {
+    public async Task SetPupUp(Territory myTerritory, Territory enemyTerritory) { //, GameObject myTerritoryGObj, GameObject enemyTerritoryGObj) {
         gameObject.SetActive(true);
         //Attesa che vengano elaborati i dati dell'attacco
-        StartCoroutine(WaitUntilTrue());
+        //StartCoroutine(WaitUntilTrue());
+        while (!GameManager.Instance.getImAttacking())
+        {
+            // Attende un frame prima di ricontrollare la condizione
+            await Task.Yield();
+        }
         _attacking = true;
         popUpAttackTitle.text = "You're attacking!";
         InitializeAllElement(myTerritory, enemyTerritory);

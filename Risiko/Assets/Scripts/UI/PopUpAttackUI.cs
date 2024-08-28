@@ -20,11 +20,11 @@ public class PopUpAttackUI : MonoBehaviour {
     private void Awake() {
         plusButton.onClick.AddListener(() => AddArmy());
         minusButton.onClick.AddListener(() => RemoveArmy());
-        attackButton.onClick.AddListener(() => {
+        attackButton.onClick.AddListener(async () => {
             ClientManager.Instance.AttackEnemyTerritory(myTerr, enemyTerr, armyNumAttack);
             //TerritoriesManagerGamePhaseUI.AttackFinished = true;
             this.gameObject.SetActive(false);
-            popUpAttackResult.GetComponent<PopUpAttackResultUI>().SetPupUp(myTerr, enemyTerr);
+            await popUpAttackResult.GetComponent<PopUpAttackResultUI>().SetPupUp(myTerr, enemyTerr);
         });
     }
 
