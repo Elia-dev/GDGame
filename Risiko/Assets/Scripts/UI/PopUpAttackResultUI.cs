@@ -34,6 +34,8 @@ public class PopUpAttackResultUI : MonoBehaviour {
             // Attende un frame prima di ricontrollare la condizione
             await Task.Yield();
         }
+        Debug.Log("ImAttacking: " + GameManager.Instance.getImAttacking());
+        Debug.Log("getMyExtractedNumber[0]: " + GameManager.Instance.getMyExtractedNumbers()[0]);
         _attacking = true;
         popUpAttackTitle.text = "You're attacking!";
         InitializeAllElement(myTerritory, enemyTerritory);
