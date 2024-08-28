@@ -152,7 +152,6 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
             RefreshTerritories();
             DeselectState();
             GameManager.Instance.setForceUpdateAfterAttack(false);
-            GameManager.Instance.cleanAfterBattle();
             gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
             //ALTRO
         }

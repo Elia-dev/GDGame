@@ -28,6 +28,7 @@ public class PopUpAttackResultUI : MonoBehaviour {
         popUpContainer.SetActive(true);
         x.onClick.AddListener(() => {
             gameObject.SetActive(false);
+            GameManager.Instance.cleanAfterBattle();
             TerritoriesManagerGamePhaseUI.UnderAttack = false;
         });
     }
