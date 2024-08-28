@@ -81,3 +81,6 @@ server/test/.idea/.name
 *.cache
 *.info
 *.cache
+*.project.model.nuget.info
+*.model.nuget.info
+*.nuget.info
