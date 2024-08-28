@@ -55,9 +55,10 @@ public class PopUpAttackResultUI : MonoBehaviour {
         while (!GameManager.Instance.getImAttacking())
         {
             // Attende un frame prima di ricontrollare la condizione
-            await Task.Yield();
+            await Task.Delay(100);
         }
-
+        Debug.Log("ImAttacking: " + GameManager.Instance.getImAttacking());
+        Debug.Log("getMyExtractedNumber[0]: " + GameManager.Instance.getMyExtractedNumbers()[0]);
         this.myTerritory = myTerritory;
         this.enemyTerritory = enemyTerritory;
         _attacking = true;
