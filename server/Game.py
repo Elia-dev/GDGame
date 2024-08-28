@@ -289,15 +289,18 @@ class Game:
                     extracted_numbers_attacker.sort(reverse=True)  # Sort in descending order
                     extracted_numbers_defender.sort(reverse=True)
 
+                    await attacker_player.sock.send(
+                        "ATTACKER_ALL_EXTRACTED_DICE: " + extracted_numbers_attacker.__str__() + ", " + extracted_numbers_defender.__str__())
+                    print("Server ha avvisato l'attaccante che sta per essere scassato")
                     # Tell the defender it's under attack
                     await defender_player.sock.send(
                         "UNDER_ATTACK: " + attacker_id + ", " + attacker_ter_id + "-" + defender_ter_id + ", "
                         + str(attacker_army_num) + "-" + str(defender_army_num) + ", " + extracted_numbers_attacker.__str__() + ", " + extracted_numbers_defender.__str__())
                     print("Server ha avvisato il difensore che sta per essere scassato")
 
-                    await attacker_player.sock.send("ATTACKER_ALL_EXTRACTED_DICE: " + extracted_numbers_attacker.__str__() + ", " + extracted_numbers_defender.__str__())
 
-                    await asyncio.sleep(0.5) # Diamo il tempo di fare "l'animazione" al client
+
+                    #await asyncio.sleep(0.5) # Diamo il tempo di fare "l'animazione" al client
 
                     attacker_wins = 0
                     defender_wins = 0

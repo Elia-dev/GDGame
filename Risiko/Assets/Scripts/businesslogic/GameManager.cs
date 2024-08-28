@@ -61,6 +61,11 @@ public class GameManager
     {
         return _winnerBattleId;
     }
+
+    public void resetWinnerBattleId()
+    {
+        _winnerBattleId = "";
+    }
     
     public void setWinnerGameId(string id)
     {
@@ -120,6 +125,7 @@ public class GameManager
         resetMyTerritory();
         resetEnemyExtractedNumbers();
         resetMyExtractedNumbers();
+        resetWinnerBattleId();
         setImUnderAttack(false);
         setImAttacking(false);
     }
@@ -159,11 +165,11 @@ public class GameManager
         if (!_colorsDict.ContainsKey(id))
         {
             _colorsDict.Add(id, color);
-            Debug.Log($"Colore aggiunto: ID = {id}, Colore = {color}");
+            //Debug.Log($"Colore aggiunto: ID = {id}, Colore = {color}");
         }
         else
         {
-            Debug.Log($"Il colore con ID = {id} esiste già.");
+            //Debug.Log($"Il colore con ID = {id} esiste già.");
         }
     }
 
@@ -173,7 +179,7 @@ public class GameManager
         if (_colorsDict.ContainsKey(id))
         {
             _colorsDict.Remove(id);
-            Debug.Log($"Colore con ID = {id} rimosso.");
+            //Debug.Log($"Colore con ID = {id} rimosso.");
         }
         else
         {
@@ -224,7 +230,7 @@ public class GameManager
         if (!_playersDict.ContainsKey(playerId))
         {
             _playersDict.Add(playerId, name);
-            Debug.Log($"Player aggiunto: ID = {playerId}, Nome = {name}");
+            //Debug.Log($"Player aggiunto: ID = {playerId}, Nome = {name}");
         }
         else
         {
@@ -238,7 +244,7 @@ public class GameManager
         if (_playersDict.ContainsKey(playerId))
         {
             _playersDict.Remove(playerId);
-            Debug.Log($"Player con ID = {playerId} rimosso.");
+            //Debug.Log($"Player con ID = {playerId} rimosso.");
         }
         else
         {
