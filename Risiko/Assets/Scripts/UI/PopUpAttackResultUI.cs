@@ -24,8 +24,6 @@ public class PopUpAttackResultUI : MonoBehaviour {
     private Territory myTerritory;
 
     private void Awake() {
-        popUpContainerResult.SetActive(false);
-        popUpContainer.SetActive(true);
         x.onClick.AddListener(() => {
             gameObject.SetActive(false);
             GameManager.Instance.cleanAfterBattle();
@@ -34,22 +32,22 @@ public class PopUpAttackResultUI : MonoBehaviour {
     }
 
     private void Update() {
-        if (!GameManager.Instance.getWinnerBattleId().Equals("")) {
-            popUpContainer.SetActive(false);
-            popUpContainerResult.SetActive(true);
+        if (!GameManager.Instance.getWinnerBattleId().Equals("")  && !_dataArrived) {
+            _dataArrived = true;
             if (GameManager.Instance.getWinnerBattleId().Equals(Player.Instance.PlayerId)) {
                 Debug.Log("Winner UI " + GameManager.Instance.getEnemyNameById(GameManager.Instance.getWinnerBattleId()));
-                attackResult.text += "<color=green>You WIN!\n" + enemyTerritory.name + " now is yours!</color>";
+                diceResult.text += "<color=green>You WIN!\n" + enemyTerritory.name + " now is yours!</color>";
             }
             else {
                 Debug.Log("Winner UI " + GameManager.Instance.getEnemyNameById(GameManager.Instance.getWinnerBattleId()));
-                    attackResult.text += "<color=red>You lose!\n" + myTerritory.name +
-                                         " doesn't belong to you anymore!</color>";
+                diceResult.text += "<color=red>You lose!\n" + myTerritory.name +
+                                   " doesn't belong to you anymore!</color>";
             }
         }
     }
 
     public async Task SetPupUp(Territory myTerritory, Territory enemyTerritory) { //, GameObject myTerritoryGObj, GameObject enemyTerritoryGObj) {
+        _dataArrived = false;
         gameObject.SetActive(true);
         //Attesa che vengano elaborati i dati dell'attacco
         //StartCoroutine(WaitUntilTrue());
@@ -68,6 +66,7 @@ public class PopUpAttackResultUI : MonoBehaviour {
     }
 
     public void SetPupUp() {
+        _dataArrived = false;
         gameObject.SetActive(true);
         _attacking = false;
         popUpAttackTitle.text = "You're under attack!";
