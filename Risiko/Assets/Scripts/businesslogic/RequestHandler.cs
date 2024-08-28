@@ -389,7 +389,7 @@ public class RequestHandler
                     Debug.LogError("Errore: " + ex.Message);
                 }
 
-                GameManager.Instance.cleanAfterBattle();
+                //GameManager.Instance.cleanAfterBattle();
                 GameManager.Instance.setForceUpdateAfterAttack(true);
                 Debug.Log("FORCED UPDATE FINISHED");
             }

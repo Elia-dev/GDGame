@@ -152,6 +152,8 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
             RefreshTerritories();
             DeselectState();
             GameManager.Instance.setForceUpdateAfterAttack(false);
+            // Forse la pulitura dopo l'attacco la possiamo fare qui(?) - Filo
+            //GameManager.Instance.cleanAfterBattle();
             gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
             //ALTRO
         }
