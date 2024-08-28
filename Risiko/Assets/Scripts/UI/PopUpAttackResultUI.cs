@@ -24,9 +24,9 @@ public class PopUpAttackResultUI : MonoBehaviour {
     }
 
     public void SetPupUp(Territory myTerritory, Territory enemyTerritory) { //, GameObject myTerritoryGObj, GameObject enemyTerritoryGObj) {
-        StartCoroutine(WaitUntilTrue());
-        //Attesa che vengano elaborati i dati dell'attacco
         gameObject.SetActive(true);
+        //Attesa che vengano elaborati i dati dell'attacco
+        StartCoroutine(WaitUntilTrue());
         _attacking = true;
         popUpAttackTitle.text = "You're attacking!";
         InitializeAllElement(myTerritory, enemyTerritory);
