@@ -48,8 +48,14 @@ public class PopUpAttackResultUI : MonoBehaviour {
 
         int[] myExtractedNumbers = GameManager.Instance.getMyExtractedNumbers();
         int[] enemyExtractedNumbers = GameManager.Instance.getEnemyExtractedNumbers();
-        Debug.Log("MyExtractedNumber UI: " + myExtractedNumbers);
-        Debug.Log("EnemyExtractedNumber UI: " + enemyExtractedNumbers);
+        Debug.Log("MyExtractedNumber UI: ");
+        foreach (var myNum in myExtractedNumbers) {
+            Debug.Log(myNum);
+        }
+        Debug.Log("EnemyExtractedNumber UI: ");
+        foreach (var enemyNum in myExtractedNumbers) {
+            Debug.Log(enemyNum);
+        }
         diceResult.text = "<b>Dice results</b>\n";
         if (myExtractedNumbers.Length <= enemyExtractedNumbers.Length) {
             for (int i = 0; i < enemyExtractedNumbers.Length; i++) {
