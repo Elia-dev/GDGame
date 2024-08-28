@@ -313,8 +313,16 @@ public class RequestHandler
                         .ToArray()
                 );
                 
-                Debug.Log("Sono l'attaccante, ho estratto " + GameManager.Instance.getEnemyExtractedNumbers().ToString());
-                Debug.Log("il difensore ha estratto " + GameManager.Instance.getMyExtractedNumbers().ToString());
+                Debug.Log("Sono l'attaccante, ho estratto " + GameManager.Instance.getMyExtractedNumbers().ToString());
+                for (int i = 0; i < GameManager.Instance.getMyExtractedNumbers().Length; i++)
+                {
+                    Debug.Log(GameManager.Instance.getMyExtractedNumbers()[i]);
+                }
+                Debug.Log("il difensore ha estratto " + GameManager.Instance.getEnemyExtractedNumbers().ToString());
+                for (int i = 0; i < GameManager.Instance.getEnemyExtractedNumbers().Length; i++)
+                {
+                    Debug.Log(GameManager.Instance.getEnemyExtractedNumbers()[i]);
+                }
             }
             else if (message.Contains("ATTACK_FINISHED_FORCE_UPDATE"))
             {
