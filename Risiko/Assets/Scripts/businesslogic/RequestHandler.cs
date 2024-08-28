@@ -25,10 +25,16 @@ public class RequestHandler
             
             if(message.Contains("LOBBY_ID:")) // Manage lobby_id request
             {
-                Debug.Log("Ricevuta richiesta: LOBBY_ID " + message);
+                Debug.Log("Ricevuta richiesta: LOBBY_ID");
                 _request = RemoveRequest(message, "LOBBY_ID:");
                 //Debug.Log("INFO ESTRAPOLATA:" + _request);
                 GameManager.Instance.SetLobbyId(_request);
+            }
+            else if (message.Contains("SELECT_ALL_GAMES:"))
+            {
+                Debug.Log("Ricevuta richiesta: SELECT_ALL_GAMES");
+                _request = RemoveRequest(message, "SELECT_ALL_GAMES: ");
+                //TODO
             }
             else if (message.Contains("GAME_STARTED_BY_HOST"))
             {

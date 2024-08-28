@@ -65,7 +65,7 @@ class Game:
         while self.game_waiting_to_start is True:
             if self.game_id is None:
                 return
-            await asyncio.sleep(2)
+            await asyncio.sleep(1)
 
         # Preparation phase
         await self.__game_order__()
@@ -184,8 +184,8 @@ class Game:
                     await player.sock.send("REQUEST_NAME_UPDATE_PLAYER_LIST: " + str(player_names))
 
                 if "GAME_STARTED_BY_HOST" in message:
-                    await self.broadcast("GAME_STARTED_BY_HOST")
                     self.game_waiting_to_start = False
+                    await self.broadcast("GAME_STARTED_BY_HOST")
 
                 if "UPDATE_NAME:" in message:
                     message = self._remove_request(message, "UPDATE_NAME: ")

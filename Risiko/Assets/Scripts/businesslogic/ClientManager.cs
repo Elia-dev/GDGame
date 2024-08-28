@@ -125,7 +125,11 @@ public class ClientManager
         }
         Debug.Log("Uscito dal loop delle richieste");
     }
-    
+
+    public async void RequestAllGames()
+    {
+        await SendMessage(_webSocket, _cancellationToken, "SELECT_ALL_GAMES");
+    }
     public async void CreateLobbyAsHost()
     {
         await SendMessage(_webSocket, _cancellationToken, "HOST_GAME:"); // Telling the server that I will be the host

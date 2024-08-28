@@ -10,6 +10,7 @@ public class BGMusic_selector : MonoBehaviour
     public AudioSource gameTrack;
     public AudioSource winTrack;
     public AudioSource loseTrack;
+    private int i = 0;
     void Start()
     {
         menuTrack.Play();
@@ -42,21 +43,23 @@ public class BGMusic_selector : MonoBehaviour
         {
             if (GameManager.Instance.getWinnerGameId() == Player.Instance.PlayerId && !winTrack.isPlaying)
             {
-                Debug.Log("Main selected, I won the game, winTrack is not playing, ATTIVATA!");
+                Debug.Log("Main selected, I won the game, winTrack is not playing, ATTIVATA volte numero = " + i);
                 loseTrack.Stop();
                 menuTrack.Stop();
                 gameTrack.Stop();
                 winTrack.Play();
                 Debug.Log("WinTrack.isPlaying = " + winTrack.isPlaying);
+                i++;
             }
             else if(GameManager.Instance.getWinnerGameId() != Player.Instance.PlayerId && !loseTrack.isPlaying)
             {
-                Debug.Log("Main selected, I Lose the game, loseTrack is not playing, ATTIVATA!");
+                Debug.Log("Main selected, I Lose the game, loseTrack is not playing, ATTIVATA volte numero = " + i);
                 menuTrack.Stop();
                 gameTrack.Stop();
                 winTrack.Stop();
                 loseTrack.Play();
                 Debug.Log("LoseTrack.isPlaying = " + loseTrack.isPlaying);
+                i++;
             }
         }
     }
