@@ -197,7 +197,7 @@ public class ClientManager
                                                           Player.Instance.PlayerId + "-" + enemyTerritory.player_id + ", " 
                                                           + myTerritory.id + "-" + enemyTerritory.id + ", " + 
                                                           myNumArmy.ToString() + "-" + enemyArmyNum.ToString());
-        GameManager.Instance.setImAttacking(true);
+        //GameManager.Instance.setImAttacking(true); SPOSTATO IN requestHandler
     }
     
     public async void RequestTerritoryInfo(string Terr_id)

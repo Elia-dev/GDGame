@@ -323,6 +323,7 @@ public class RequestHandler
                 {
                     Debug.Log(GameManager.Instance.getEnemyExtractedNumbers()[i]);
                 }
+                GameManager.Instance.setImAttacking(true);
             }
             else if (message.Contains("ATTACK_FINISHED_FORCE_UPDATE"))
             {
