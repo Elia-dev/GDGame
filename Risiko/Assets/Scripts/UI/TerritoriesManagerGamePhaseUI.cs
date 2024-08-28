@@ -172,6 +172,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
         }
 
         if (!GameManager.Instance.getWinnerGameId().Equals("")) {
+            gameObject.GetComponent<TerritoriesManagerGamePhaseUI>().enabled = false;
             endGame.GetComponent<EndGameUI>().SetPopUp(GameManager.Instance.getWinnerGameId());
         }
     }
