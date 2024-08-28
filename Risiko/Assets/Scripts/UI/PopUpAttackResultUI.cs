@@ -79,7 +79,7 @@ public class PopUpAttackResultUI : MonoBehaviour {
                 if (enemyExtractedNumbers.Length > i)
                     diceResult.text += myExtractedNumbers[i] + " - " + enemyExtractedNumbers[i];
                 else
-                    diceResult.text += myExtractedNumbers[i];
+                    diceResult.text += myExtractedNumbers[i] + "        ";
                 diceResult.text += "\n";
             }
         }
