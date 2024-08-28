@@ -108,7 +108,8 @@ public class PopUpAttackResultUI : MonoBehaviour {
     IEnumerator WaitUntilTrue()
     {
         yield return new WaitUntil(() => GameManager.Instance.getImAttacking());
-        yield return new WaitUntil(() => GameManager.Instance.getMyExtractedNumbers().Length > 0);
+        yield return new WaitUntil(() => GameManager.Instance.getMyExtractedNumbers()[0] > 0);
         Debug.Log("ImAttacking: " + GameManager.Instance.getImAttacking());
+        Debug.Log("getMyExtractedNumber[0]: " + GameManager.Instance.getMyExtractedNumbers()[0]);
     }
 }
