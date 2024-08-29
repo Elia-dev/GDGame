@@ -5,7 +5,6 @@ from Player import Player
 from Game import Game
 
 games = []
-message_counter = 0
 '''
 La logica è questa:
 Mi collego al server, il collegamento fa si che il client decida se joinare od hostare una lobby
@@ -26,12 +25,9 @@ async def handler(websocket):
     try:
         async for message in websocket:
             print(f"SERVER: Received message from {client_id}: {message}")
-            message_counter += 1
-            if message_counter >= 5:
-                message_counter = 0
-                for game in games:
-                    if game.game_id is None: # For each 5 messages the server check if there are empty lobby and delete them
-                        games.remove(game)
+            for game in games:
+                if game.game_id is None: #Check if there are empty lobby and delete them
+                    games.remove(game)
                 print("Pulizia completata")
 
             if "HOST_GAME" in message:
@@ -75,11 +71,16 @@ async def handler(websocket):
                 response = []
                 #Voglio mandare id lobby, numPlayers, hostName
                 for game in games:
-                    response.append(game.game_id)
-                    response.append(game.host_player.name)
-                    response.append(len(game.players))
+                    if len(game.players) < 6 and game.game_waiting_to_start is True:
+                        response.append(game.game_id)
+                        response.append(game.host_player.name)
+                        response.append(len(game.players))
                 print("Mi è stata chiesta la lista di tutte le lobby attive, rispondo con: " + response.__str__())
-                await websocket.send("SELECT_ALL_GAMES: " + response.__str__())
+                if response:
+                    await websocket.send("SELECT_ALL_GAMES: " + response.__str__())
+                else:
+                    print("Non mando niente tanto non c'è nessuna partita");
+                
 
 
     except websockets.exceptions.ConnectionClosed:
