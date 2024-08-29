@@ -65,7 +65,7 @@ public class PopUpAttackResultUI : MonoBehaviour {
         InitializeAllElement(myTerritory, enemyTerritory);
     }*/
 
-    public void SetPupUp() {
+    /*public void SetPupUp() {
         _dataArrived = false;
         gameObject.SetActive(true);
         //_attacking = false;
@@ -76,9 +76,17 @@ public class PopUpAttackResultUI : MonoBehaviour {
         this.enemyTerritory = GameManager.Instance.getEnemyTerritory();
         this.myTerritory = GameManager.Instance.getMyTerritory();
         InitializeAllElement(myTerritory, enemyTerritory);
-    }
+    }*/
 
-    private void InitializeAllElement(Territory myTerritory, Territory enemyTerritory) {
+    public void SetPupUp() {
+        _dataArrived = false;
+        gameObject.SetActive(true);
+        if(GameManager.Instance.getImAttacking())
+            popUpAttackTitle.text = "You're attacking!";
+        else
+            popUpAttackTitle.text = "You're under attack!";
+        this.enemyTerritory = GameManager.Instance.getEnemyTerritory();
+        this.myTerritory = GameManager.Instance.getMyTerritory();
         //Tu
         myInfo.text = Player.Instance.Name + "\n" +
                          "<b>" + myTerritory.name + "</b>" + "\nWith " + GameManager.Instance.getMyArmyNum() +" army";
@@ -87,15 +95,7 @@ public class PopUpAttackResultUI : MonoBehaviour {
 
         int[] myExtractedNumbers = GameManager.Instance.getMyExtractedNumbers();
         int[] enemyExtractedNumbers = GameManager.Instance.getEnemyExtractedNumbers();
-        Debug.Log("MyExtractedNumber UI: ");
-        foreach (var myNum in myExtractedNumbers) {
-            Debug.Log(myNum);
-        }
-        Debug.Log("EnemyExtractedNumber UI: ");
-        foreach (var enemyNum in myExtractedNumbers) {
-            Debug.Log(enemyNum);
-        }
-        diceResult.text = "<b>Dice results</b>\n";
+        diceResult.text = "\n<b>Dice results</b>\n";
         if (myExtractedNumbers.Length <= enemyExtractedNumbers.Length) {
             for (int i = 0; i < enemyExtractedNumbers.Length; i++) {
                 if (myExtractedNumbers.Length > i)
