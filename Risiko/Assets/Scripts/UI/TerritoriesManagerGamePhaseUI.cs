@@ -168,7 +168,8 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
 
         if ((GameManager.Instance.getImUnderAttack() || GameManager.Instance.getImAttacking()) && !_underAttack) {
             _underAttack = true;
-            Debug.Log("getImAttacking: " + GameManager.Instance.getImAttacking() + " getImUnderAttack: " + GameManager.Instance.getImUnderAttack());
+            Debug.Log("getImAttacking: " + GameManager.Instance.getImAttacking() + " getImUnderAttack: " 
+                      + GameManager.Instance.getImUnderAttack() + " _underAttack: " + _underAttack);
             popUpAttackResult.GetComponent<PopUpAttackResultUI>().SetPupUp();
         }
 

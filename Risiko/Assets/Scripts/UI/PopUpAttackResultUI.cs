@@ -46,7 +46,7 @@ public class PopUpAttackResultUI : MonoBehaviour {
         }
     }
 
-    public async Task SetPupUp(Territory myTerritory, Territory enemyTerritory) { //, GameObject myTerritoryGObj, GameObject enemyTerritoryGObj) {
+    /*public async Task SetPupUp(Territory myTerritory, Territory enemyTerritory) { //, GameObject myTerritoryGObj, GameObject enemyTerritoryGObj) {
         _dataArrived = false;
         gameObject.SetActive(true);
         //Attesa che vengano elaborati i dati dell'attacco
@@ -63,13 +63,16 @@ public class PopUpAttackResultUI : MonoBehaviour {
         _attacking = true;
         popUpAttackTitle.text = "You're attacking!";
         InitializeAllElement(myTerritory, enemyTerritory);
-    }
+    }*/
 
     public void SetPupUp() {
         _dataArrived = false;
         gameObject.SetActive(true);
-        _attacking = false;
-        popUpAttackTitle.text = "You're under attack!";
+        //_attacking = false;
+        if(GameManager.Instance.getImAttacking())
+            popUpAttackTitle.text = "You're attacking!";
+        else
+            popUpAttackTitle.text = "You're under attack!";
         this.enemyTerritory = GameManager.Instance.getEnemyTerritory();
         this.myTerritory = GameManager.Instance.getMyTerritory();
         InitializeAllElement(myTerritory, enemyTerritory);
