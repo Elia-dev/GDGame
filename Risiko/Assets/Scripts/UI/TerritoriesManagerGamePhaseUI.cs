@@ -166,7 +166,7 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
             endTurnButton.interactable = false;
         }
 
-        if (GameManager.Instance.getImUnderAttack() || GameManager.Instance.getImAttacking() && !_underAttack) {
+        if ((GameManager.Instance.getImUnderAttack() || GameManager.Instance.getImAttacking()) && !_underAttack) {
             Debug.Log("getImAttacking: " + GameManager.Instance.getImAttacking() + " getImUnderAttack: " + GameManager.Instance.getImUnderAttack());
             _underAttack = true;
             popUpAttackResult.GetComponent<PopUpAttackResultUI>().SetPupUp();
