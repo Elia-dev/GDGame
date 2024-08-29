@@ -13,6 +13,7 @@ public class GameManagerUI : MonoBehaviour {
     [SerializeField] private GameObject clickHandler;
     [SerializeField] private TMP_Text allInfo;
     [SerializeField] private GameObject userSpace;
+    [SerializeField] private GameObject escMenu;
     private string _territoryInfo;
     /*[SerializeField] private TMP_Text territoryInfo;
     [SerializeField] private TMP_Text objectiveInfo;*/
@@ -96,7 +97,7 @@ public class GameManagerUI : MonoBehaviour {
         allInfo.text += "\n" + _territoryInfo;
         
         if (Input.GetKeyDown(KeyCode.Escape)) {
-            //SceneManager.LoadScene();
+            escMenu.SetActive(true);
         }
     }
 
