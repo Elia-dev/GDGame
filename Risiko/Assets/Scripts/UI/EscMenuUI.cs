@@ -13,16 +13,24 @@ public class EscMenuUI : MonoBehaviour {
 
     private void Awake() {
         backButton.onClick.AddListener(() => gameObject.SetActive(false));
-        optionsButton.onClick.AddListener(() => volumeMenu.SetActive(true));
-        exitButton.onClick.AddListener(() => exitMenu.SetActive(true));
+        optionsButton.onClick.AddListener(() => {
+            gameObject.SetActive(false);
+            volumeMenu.SetActive(true);
+        });
+        exitButton.onClick.AddListener(() => {
+            gameObject.SetActive(false);
+            exitMenu.SetActive(true);
+        });
     }
 
     public void BackForVolumeMenu() {
         volumeMenu.SetActive(false);
+        gameObject.SetActive(true);
     }
     
     public void BackButtonForExitMenu() {
         exitMenu.SetActive(false);
+        gameObject.SetActive(true);
     }
 
     public void ExitButtonForExitMenu() {
