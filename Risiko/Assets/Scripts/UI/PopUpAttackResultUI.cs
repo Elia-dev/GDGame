@@ -57,7 +57,7 @@ public class PopUpAttackResultUI : MonoBehaviour {
             await Task.Delay(100);
         }
         Debug.Log("ImAttacking: " + GameManager.Instance.getImAttacking());
-        Debug.Log("getMyExtractedNumber[0]: " + GameManager.Instance.getMyExtractedNumbers()[0]);
+        Debug.Log("getMyExtractedNumber[0]: " + GameManager.Instance.getMyExtractedNumbers()[0]); //NullReferenceException
         this.myTerritory = myTerritory;
         this.enemyTerritory = enemyTerritory;
         _attacking = true;
