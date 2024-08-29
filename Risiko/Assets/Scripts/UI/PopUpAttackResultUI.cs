@@ -18,10 +18,9 @@ public class PopUpAttackResultUI : MonoBehaviour {
     [SerializeField] private GameObject popUpContainer;
     [SerializeField] private GameObject popUpContainerResult;
     [SerializeField] private TMP_Text attackResult;
-    private bool _attacking;
     private bool _dataArrived = false;
-    private Territory enemyTerritory;
-    private Territory myTerritory;
+    private Territory _enemyTerritory;
+    private Territory _myTerritory;
 
     private void Awake() {
         x.onClick.AddListener(() => {
@@ -35,12 +34,10 @@ public class PopUpAttackResultUI : MonoBehaviour {
         if (!GameManager.Instance.getWinnerBattleId().Equals("")  && !_dataArrived) {
             _dataArrived = true;
             if (GameManager.Instance.getWinnerBattleId().Equals(Player.Instance.PlayerId)) {
-                Debug.Log("Winner UI " + GameManager.Instance.getEnemyNameById(GameManager.Instance.getWinnerBattleId()));
-                diceResult.text += "<color=green>You WIN!\n" + enemyTerritory.name + " now is yours!</color>";
+                diceResult.text += "<color=green>You WIN!\n" + _enemyTerritory.name + " now is yours!</color>";
             }
             else {
-                Debug.Log("Winner UI " + GameManager.Instance.getEnemyNameById(GameManager.Instance.getWinnerBattleId()));
-                diceResult.text += "<color=red>You lose!\n" + myTerritory.name +
+                diceResult.text += "<color=red>You lose!\n" + _myTerritory.name +
                                    " doesn't belong to you anymore!</color>";
             }
         }
@@ -85,12 +82,12 @@ public class PopUpAttackResultUI : MonoBehaviour {
             popUpAttackTitle.text = "You're attacking!";
         else
             popUpAttackTitle.text = "You're under attack!";
-        this.enemyTerritory = GameManager.Instance.getEnemyTerritory();
-        this.myTerritory = GameManager.Instance.getMyTerritory();
+        this._enemyTerritory = GameManager.Instance.getEnemyTerritory();
+        this._myTerritory = GameManager.Instance.getMyTerritory();
         //Tu
         myInfo.text = Player.Instance.Name + "\n" +
-                         "<b>" + myTerritory.name + "</b>" + "\nWith " + GameManager.Instance.getMyArmyNum() +" army";
-        myState.sprite = loadSprite("TerritoriesSprite/" + myTerritory.id);
+                         "<b>" + _myTerritory.name + "</b>" + "\nWith " + GameManager.Instance.getMyArmyNum() +" army";
+        myState.sprite = loadSprite("TerritoriesSprite/" + _myTerritory.id);
         myState.color = Utils.ColorCode(Player.Instance.ArmyColor, 150);
 
         int[] myExtractedNumbers = GameManager.Instance.getMyExtractedNumbers();
@@ -116,10 +113,10 @@ public class PopUpAttackResultUI : MonoBehaviour {
         diceResult.text += "\n";
         
         //Altro giocatore
-        enemyInfo.text = GameManager.Instance.getEnemyNameById(enemyTerritory.player_id)+ "\n" +
-                               "<b>" + enemyTerritory.name + "</b>" + "\nWith " + GameManager.Instance.GetEnemyArmyNum() +" army";
-        enemyState.sprite = loadSprite("TerritoriesSprite/" + enemyTerritory.id);
-        enemyState.color = Utils.ColorCode(GameManager.Instance.GetPlayerColor(enemyTerritory.player_id), 150);
+        enemyInfo.text = GameManager.Instance.getEnemyNameById(_enemyTerritory.player_id)+ "\n" +
+                               "<b>" + _enemyTerritory.name + "</b>" + "\nWith " + GameManager.Instance.GetEnemyArmyNum() +" army";
+        enemyState.sprite = loadSprite("TerritoriesSprite/" + _enemyTerritory.id);
+        enemyState.color = Utils.ColorCode(GameManager.Instance.GetPlayerColor(_enemyTerritory.player_id), 150);
     }
     
     public Sprite loadSprite(string spriteName) {
