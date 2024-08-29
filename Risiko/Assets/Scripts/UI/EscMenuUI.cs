@@ -23,6 +23,12 @@ public class EscMenuUI : MonoBehaviour {
         });
     }
 
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            gameObject.SetActive(false);
+        }
+    }
+
     public void BackForVolumeMenu() {
         volumeMenu.SetActive(false);
         this.gameObject.SetActive(true);

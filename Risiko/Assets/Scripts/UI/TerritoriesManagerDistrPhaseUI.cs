@@ -198,6 +198,20 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         }
 
         if (Input.GetMouseButtonDown(0) && Player.Instance.IsMyTurn) {
+            Canvas[] allCanvases = FindObjectsOfType<Canvas>();
+
+            foreach (Canvas canvas in allCanvases)
+            {
+                // Controlla se il canvas è in modalità Screen Space - Overlay
+                if (canvas.renderMode == RenderMode.ScreenSpaceOverlay)
+                {
+                    // Controlla se il Canvas è attivo e se ha GameObject attivi
+                    if (canvas.gameObject.activeInHierarchy)
+                    {
+                        Debug.Log("Trovato un Canvas Screen Space - Overlay con GameObject attivi: " + canvas.name);
+                    }
+                }
+            }
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D[] hits = Physics2D.RaycastAll(mousePosition, Vector2.zero);
             RaycastHit2D hit = new RaycastHit2D();
