@@ -5,6 +5,7 @@ import asyncio
 from Player import Player
 from Game_manager import GameManager
 from RequestHandler import RequestHandler
+from Territory import Territory
 
 
 class ClientManager:
@@ -17,7 +18,7 @@ class ClientManager:
 
     async def start_client(self):
         print("Try to connect...")
-        async with websockets.connect('ws://93.57.245.63:12345') as websocket:
+        async with websockets.connect('ws://101.58.64.113:12345') as websocket:
             try:
                 print("debug")
                 self._connected = True
@@ -79,7 +80,8 @@ class ClientManager:
         await self.send_message(f"CHOSEN_ARMY_COLOR: {self.player.player_id}-{self.player.army_color}")
 
     async def update_territories_state(self):
-        await self.send_message(f"UPDATE_TERRITORIES_STATE: {self.player.player_id}, {json.dumps(self.player.territories)}")
+        territories_dict = [terr.to_dict() for terr in self.player.territories]
+        await self.send_message(f"UPDATE_TERRITORIES_STATE: {self.player.player_id}, {json.dumps(territories_dict)}")
 
     async def attack_enemy_territory(self, my_territory, enemy_territory, my_num_army):
         enemy_num_army = min(3, enemy_territory.num_tanks)

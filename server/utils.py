@@ -1,4 +1,5 @@
 import random
+import os
 import xml.etree.ElementTree as ET
 from Card import Card
 from Territory import Territory
@@ -49,15 +50,31 @@ def generate_player_id():
     return secrets.token_hex(16)
 
 
-def get_adj_matrix():
-    return np.load('assets/adj_matrix.npy')
+def get_adj_matrix(path):
+    return np.load(path)
 
 
-def get_neighbors_of(territory_node):
-    adj_matrix = get_adj_matrix()
+def get_neighbors_node_of(territory_node):
+    file_path = os.path.join(os.getcwd(), os.pardir, 'assets/adj_matrix.npy')
+    adj_matrix = get_adj_matrix(file_path)
     neighbors = []
     row = adj_matrix[territory_node]
     for i, node in enumerate(row):
         if node == 1:
             neighbors.append(i)
     return neighbors
+
+
+def get_territory_from_node(node, all_territories):
+    for territory in all_territories:
+        if node == territory.node:
+            return territory
+    return None
+
+
+def get_neighbors_of(territory, all_terr):
+    territories = []
+    nodes = get_neighbors_node_of(territory.node)
+    for node in nodes:
+        territories.append(get_territory_from_node(node, all_terr))
+    return territories

@@ -2,6 +2,7 @@ import json
 from Objective import Objective
 import websockets
 import asyncio
+from Territory import Territory
 
 
 class RequestHandler:
@@ -76,14 +77,20 @@ class RequestHandler:
                         army_number = int(request)
                         self.player.tanks_num = army_number
                         self.player.tanks_placed = len(self.player.territories)
-                        self.player.tanks_available = self.player.tanks_placed
+                        self.player.tanks_available = army_number - self.player.tanks_placed
 
                     elif 'OBJECTIVE_CARD_ASSIGNED:' in message:
-                        self.player.objective_card = Objective.from_dict(message.replace('OBJECTIVE_CARD_ASSIGNED: ', ''))
+                        request = message.replace('OBJECTIVE_CARD_ASSIGNED: ', '').strip()
+                        print(f'SERVER: {request}')
+                        objective_dict = json.loads(request)
+                        self.player.objective_card = Objective.from_dict(objective_dict)
+                        print(f'CARD: {self.player.objective_card.description}')
 
                     elif 'TERRITORIES_CARDS_ASSIGNED:' in message:
                         request = message.replace('TERRITORIES_CARDS_ASSIGNED: ', '').strip()
-                        self.player.territories = json.loads(request)
+                        print(f'SERVER: {request}')
+                        territory_dict = json.loads(request)
+                        self.player.territories = [Territory.from_dict(data) for data in territory_dict]
 
                     elif 'NUMBER_OF_ARMY_TO_ASSIGN_IN_THIS_TURN:' in message:
                         request = message.replace('NUMBER_OF_ARMY_TO_ASSIGN_IN_THIS_TURN: ', '')
@@ -96,6 +103,12 @@ class RequestHandler:
                         self.game_manager.set_game_phase(True)
 
                     elif 'SEND_TERRITORIES_TO_ALL' in message:
+                        request = message.replace('SEND_TERRITORIES_TO_ALL: ', '').strip()
+                        territory_dict = json.loads(request)
+                        territories = [Territory.from_dict(data) for data in territory_dict]
+                        self.game_manager.all_territories = territories
+
+                    elif 'UNDER_ATTACK' in message:
                         self.game_manager.set_im_under_attack(True)
                         parts = message.replace('SEND_TERRITORIES_TO_ALL: ', '').replace(' ', '').strip()
                         attacker_id = parts[0]
@@ -134,12 +147,24 @@ class RequestHandler:
                                 self.game_manager.get_my_territory_under_attack().player_id = territory.player_id
 
                     elif 'ATTACK_FINISHED_FORCE_UPDATE' in message:
+
+                        # Se non funziona probabilmente è perché pythin confronta l'indirizzo di memoria e non l'oggetto
+                        # quando verifica che il territorio sia contenuto in all_territories.
                         for territory in self.game_manager.all_territories:
+
                             if territory in self.player.territories and territory.player_id != self.player.player_id:
                                 self.player.territories.remove(territory)
 
-                            if territory not in self.player.territories and territory.player_id == self.player.player_id:
+                            elif territory not in self.player.territories and territory.player_id == self.player.player_id:
                                 self.player.territories.append(territory)
+
+                            elif territory not in self.player.territories and territory.player_id != self.player.player_id:
+                                print('nothing to do')
+
+                            else:
+                                player_terr = list(filter(lambda x: x.id == territory.id, self.player.territories))
+                                player_terr.num_tanks = territory.num_tanks
+
                         self.game_manager.set_im_under_attack(False)
                         self.game_manager.set_im_attacking(True)
 

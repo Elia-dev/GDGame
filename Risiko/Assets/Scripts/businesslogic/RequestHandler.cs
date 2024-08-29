@@ -65,6 +65,7 @@ public class RequestHandler
                     GameManager.Instance.AddPlayerToLobbyDict(parts[0], parts[1]);
                 }
                 
+
                 Debug.Log("Aggiunti tutti i nomi al dizionario");
 
             }
