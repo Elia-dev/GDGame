@@ -12,25 +12,25 @@ public class EscMenuUI : MonoBehaviour {
     [SerializeField] private Button exitButton;
 
     private void Awake() {
-        backButton.onClick.AddListener(() => gameObject.SetActive(false));
+        backButton.onClick.AddListener(() => this.gameObject.SetActive(false));
         optionsButton.onClick.AddListener(() => {
-            gameObject.SetActive(false);
+            this.gameObject.SetActive(false);
             volumeMenu.SetActive(true);
         });
         exitButton.onClick.AddListener(() => {
-            gameObject.SetActive(false);
+            this.gameObject.SetActive(false);
             exitMenu.SetActive(true);
         });
     }
 
     public void BackForVolumeMenu() {
         volumeMenu.SetActive(false);
-        gameObject.SetActive(true);
+        this.gameObject.SetActive(true);
     }
     
     public void BackButtonForExitMenu() {
         exitMenu.SetActive(false);
-        gameObject.SetActive(true);
+        this.gameObject.SetActive(true);
     }
 
     public void ExitButtonForExitMenu() {
