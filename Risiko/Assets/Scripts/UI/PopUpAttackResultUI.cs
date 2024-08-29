@@ -106,7 +106,7 @@ public class PopUpAttackResultUI : MonoBehaviour {
                 if (enemyExtractedNumbers.Length > i)
                     diceResult.text += myExtractedNumbers[i] + " - " + enemyExtractedNumbers[i];
                 else
-                    diceResult.text += myExtractedNumbers[i] + "        ";
+                    diceResult.text += myExtractedNumbers[i] + "        \n";
                 diceResult.text += "\n";
             }
         }
@@ -121,13 +121,5 @@ public class PopUpAttackResultUI : MonoBehaviour {
     
     public Sprite loadSprite(string spriteName) {
         return Resources.Load<Sprite>(spriteName);
-    }
-    
-    IEnumerator WaitUntilTrue()
-    {
-        yield return new WaitUntil(() => GameManager.Instance.getImAttacking());
-        yield return new WaitUntil(() => GameManager.Instance.getMyExtractedNumbers()[0] > 0);
-        Debug.Log("ImAttacking: " + GameManager.Instance.getImAttacking());
-        Debug.Log("getMyExtractedNumber[0]: " + GameManager.Instance.getMyExtractedNumbers()[0]);
     }
 }

@@ -24,7 +24,7 @@ public class PopUpAttackUI : MonoBehaviour {
             ClientManager.Instance.AttackEnemyTerritory(myTerr, enemyTerr, armyNumAttack);
             //TerritoriesManagerGamePhaseUI.AttackFinished = true;
             this.gameObject.SetActive(false);
-            await popUpAttackResult.GetComponent<PopUpAttackResultUI>().SetPupUp(myTerr, enemyTerr);
+            //await popUpAttackResult.GetComponent<PopUpAttackResultUI>().SetPupUp(myTerr, enemyTerr);
         });
     }
 
