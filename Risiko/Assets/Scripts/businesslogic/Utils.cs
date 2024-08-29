@@ -32,11 +32,11 @@ public class Utils
             case "green":
                 return new Color32(0, 190, 0, alpha);
             case "blue":
-                return new Color32(0, 0, 255, alpha);
+                return new Color32(0, 122, 255, alpha);//0, 0, 255, alpha);
             case "yellow":
                 return new Color32(226, 230, 30, alpha);
             case "purple":
-                return new Color32(124, 33, 239, alpha);
+                return new Color32(150, 0, 255, alpha);//124, 33, 239, alpha);
             case "black":
                 return new Color32(0, 0, 0, alpha);      
             default:
@@ -99,7 +99,7 @@ public class Utils
                 return terr;
             }
         }
-        Debug.Log("Territorio non trovato");
+        //Debug.Log("Territorio non trovato");
         return null;
         //return GameManager.Instance.AllTerritories.Find(x => x.node == node);
     }

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class OptionsMenuUI : MonoBehaviour {
     [SerializeField] private Button backButton;
-
+    
     private void Awake() 
     {
         backButton.onClick.AddListener(() => {
@@ -16,11 +16,6 @@ public class OptionsMenuUI : MonoBehaviour {
             SceneManager.LoadScene("MainMenu");
         });
 
-        
-    }
-
-    private void Update() 
-    {
         
     }
 }

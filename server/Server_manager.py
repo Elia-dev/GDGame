@@ -62,15 +62,24 @@ async def handler(websocket):
                 game_id = message.split(": ")[1]
                 for game in games:
                     if game.game_id == game_id:
-                        if len(game.players) < 6:
+                        if len(game.players) < 6 and game.game_waiting_to_start is True:
                             print(f"Added player {player} to lobby {game_id}")
                             game.add_player(player)
                             client_task = asyncio.create_task(game.listen_to_player_request(player))
                             await client_task
                         else:
-                            print("Lobby is full")
+                            print("Lobby is full or the game is already started")
                     else:
                         print("Unable to find the lobby")
+            elif "SELECT_ALL_GAMES" in message:
+                response = []
+                #Voglio mandare id lobby, numPlayers, hostName
+                for game in games:
+                    response.append(game.game_id)
+                    response.append(game.host_player.name)
+                    response.append(len(game.players))
+                print("Mi è stata chiesta la lista di tutte le lobby attive, rispondo con: " + response.__str__())
+                await websocket.send("SELECT_ALL_GAMES: " + response.__str__())
 
 
     except websockets.exceptions.ConnectionClosed:
@@ -81,7 +90,8 @@ async def handler(websocket):
 
 async def main():
     print("server started")
-    async with websockets.serve(handler, "0.0.0.0", 12345):
+    async with websockets.serve(handler, "0.0.0.0", 12345, ping_interval=300, ping_timeout=300):
+        # Gestisce il timeout della connessione mandando ogni 5 minuti un ping e aspettando il pong di risposta entro altri 5 minuti
     #async with websockets.serve(handler, "localhost", 8766):
         await asyncio.Future()  # Run forever
 

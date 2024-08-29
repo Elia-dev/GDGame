@@ -29,6 +29,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
     public int ArmyNumber => _armyNumber;
 
     public void Start() {
+        GameManagerUI.DistributionPhase = true;
         //TUTTA ROBA DI DEBUG
         /*TerritoryHandlerUI.userColor = new Color32(0, 0, 255, 200);
         List<Territory> terr = new List<Territory>();
@@ -81,10 +82,11 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             if (distributionPhase || TerritoriesManagerGamePhaseUI.ReinforcePhase) {
                 SendArmy();
             }
-            else if (TerritoriesManagerGamePhaseUI.Attackphase) {
+            else if (TerritoriesManagerGamePhaseUI.AttackPhase) {
+                TerritoriesManagerGamePhaseUI.AttackPhase = false;
+                GameManagerUI.AttackPhase = false;
                 ClientManager.Instance.UpdateTerritoriesState();
                 endTurnButton.interactable = false;
-                TerritoriesManagerGamePhaseUI.Attackphase = false;
                 TerritoriesManagerGamePhaseUI.IsTurnInitialized = false;
             }
         });
@@ -102,7 +104,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
                 //Cerca il primo posto vuoto nel vettore ed inserisce il territorio corrispondente
                 for (int i = 0; i < _selectedTerritories.count.Length; i++)
                     if (_selectedTerritories.count[i] == 0) {
-                        _selectedTerritories.territories[i] = TerritoryInformations(selectedTerritory.name);
+                        _selectedTerritories.territories[i] = TerritoryInformationsPlayer(selectedTerritory.name);
                         //Incrementa il numero di armate che saranno posizionate sul territorio
                         _selectedTerritories.count[i]++;
                         tankToAdd.text = _selectedTerritories.count[i] + "";
@@ -169,7 +171,10 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         if (!distributionPhase) {
             this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = false;
             TerritoriesManagerGamePhaseUI.ReinforcePhase = false;
-            TerritoriesManagerGamePhaseUI.Attackphase = true;
+            //Per barra dx
+            GameManagerUI.ReinforcePhase = false;
+            TerritoriesManagerGamePhaseUI.AttackPhase = true;
+            GameManagerUI.AttackPhase = true;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().IsPhaseGoing = false;
             endTurnButton.GetComponentInChildren<TMP_Text>().text = "End Turn!";
             endTurnButton.interactable = true;
@@ -193,33 +198,83 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         }
 
         if (Input.GetMouseButtonDown(0) && Player.Instance.IsMyTurn) {
+            Canvas[] allCanvases = FindObjectsOfType<Canvas>();
+            foreach (Canvas canvas in allCanvases)
+            {
+                // Controlla se il canvas è in modalità Screen Space - Overlay
+                if (canvas.renderMode == RenderMode.ScreenSpaceOverlay)
+                {
+                    // Controlla se il Canvas è attivo e se ha GameObject attivi
+                    if (canvas.gameObject.activeInHierarchy) {
+                        return;
+                    }
+                }
+            }
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D[] hits = Physics2D.RaycastAll(mousePosition, Vector2.zero);
             RaycastHit2D hit = new RaycastHit2D();
             //Ciclo che evita che non sia possibile selezionare tutto ciò che sta dietro il popup
             foreach (RaycastHit2D hitted in hits) {
-                Collider2D collider = hitted.collider;
-
-                if (collider is BoxCollider2D) {
-                    hit = new RaycastHit2D();
+                Collider2D hittedCollider = hitted.collider;
+                if (hittedCollider is BoxCollider2D) {
+                    hit = hitted;//new RaycastHit2D();
                     break;
                 }
 
-                if (collider is PolygonCollider2D)
+                if (hittedCollider is PolygonCollider2D)
                     hit = hitted;
             }
-
-            if (hit.collider is not null) {
+            if (hit.collider is PolygonCollider2D) {
                 TerritoryHandlerUI territoryHandlerUI = hit.transform.GetComponent<TerritoryHandlerUI>();
                 if (territoryHandlerUI is not null) {
                     selectedTerritory = territoryHandlerUI;
                     SelectState(selectedTerritory);
+                }
+            } else if (hit.collider is null) {
+                gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
+                popUpAddTank.SetActive(false);
+                if(selectedTerritory is not null) {
+                    selectedTerritory.Deselect();
+                    selectedTerritory = null;
+                }
+            }
+        }
+        
+        if (!Player.Instance.IsMyTurn) {
+            if (Input.GetMouseButtonDown(0)) {
+                Canvas[] allCanvases = FindObjectsOfType<Canvas>();
+                foreach (Canvas canvas in allCanvases)
+                {
+                    // Controlla se il canvas è in modalità Screen Space - Overlay
+                    if (canvas.renderMode == RenderMode.ScreenSpaceOverlay)
+                    {
+                        // Controlla se il Canvas è attivo e se ha GameObject attivi
+                        if (canvas.gameObject.activeInHierarchy) {
+                            return;
+                        }
+                    }
+                }
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
+
+                if (hit.collider is not null) {
+                    TerritoryHandlerUI territoryHandlerUI = hit.transform.GetComponent<TerritoryHandlerUI>();
+                    if (territoryHandlerUI is not null) {
+                        gameManager.GetComponent<GameManagerUI>().
+                            ShowTerritoryInfo(TerritoryInformationsAllPlayers(territoryHandlerUI.gameObject.name));
+                        //selectedTerritory = territoryHandlerUI;
+                        //SelectState(territoryHandlerUI);
+                    }
+                }
+                else {
+                    gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
                 }
             }
         }
 
         if (GameManager.Instance.GetGamePhase() && distributionPhase) {
             TerritoriesManagerUI.distributionPhase = false;
+            GameManagerUI.DistributionPhase = false;
             this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = false;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().enabled = true;
             this.GetComponent<TerritoriesManagerGamePhaseUI>().ActivateOtherPlayersTerritories();
@@ -234,28 +289,31 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
         if (_armyNumber > 3 && distributionPhase) {
             _armyNumber = 3;
         }
-
         _selectedTerritories.territories = new Territory[_armyNumber];
         _selectedTerritories.count = new int[_armyNumber];
     }
 
     //Trova un territorio dato l'id del territorio
-    Territory TerritoryInformations(string id) {
+    private Territory TerritoryInformationsPlayer(string id) {
         return Player.Instance.Territories.Find(x => x.id.Equals(id));
+    }
+    
+    private Territory TerritoryInformationsAllPlayers(string id) {
+        return GameManager.Instance.AllTerritories.Find(terr => terr.id.Equals(id));
     }
 
     //Mostra il popup per aggiungere o togliere armate
     public void SelectState(TerritoryHandlerUI newTerritory) {
-        gameManager.GetComponent<GameManagerUI>().ShowTerritoryInfo(TerritoryInformations(newTerritory.name));
+        gameManager.GetComponent<GameManagerUI>().ShowTerritoryInfo(TerritoryInformationsAllPlayers(newTerritory.name));
         if (Player.Instance.ArmyColor.Equals("black") || Player.Instance.ArmyColor.Equals("blue")) {
             stateNameAddTank.color = Color.white;
             tankNumber.color = Color.white;
             tankToAdd.color = Color.white;
         }
 
-        if (TerritoryInformations(newTerritory.name) is not null) {
-            stateNameAddTank.text = TerritoryInformations(newTerritory.name).name;
-            tankNumber.text = TerritoryInformations(newTerritory.name).num_tanks + "";
+        if (TerritoryInformationsPlayer(newTerritory.name) is not null) {
+            stateNameAddTank.text = TerritoryInformationsPlayer(newTerritory.name).name;
+            tankNumber.text = TerritoryInformationsPlayer(newTerritory.name).num_tanks + "";
             int result = FindTerritory(selectedTerritory.name);
             //Controlla se sono già stati aggiuntu altre armate in questa fase e rispristina tale numero nell'UI
             if (result == -1)
@@ -269,6 +327,7 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
             popUpAddTank.SetActive(true);
         }
         else {
+            gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
             popUpAddTank.SetActive(false);
             selectedTerritory.Deselect();
             selectedTerritory = null;

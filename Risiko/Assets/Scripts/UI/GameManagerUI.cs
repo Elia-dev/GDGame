@@ -13,30 +13,40 @@ public class GameManagerUI : MonoBehaviour {
     [SerializeField] private GameObject clickHandler;
     [SerializeField] private TMP_Text allInfo;
     [SerializeField] private GameObject userSpace;
+    [SerializeField] private GameObject escMenu;
     private string _territoryInfo;
     /*[SerializeField] private TMP_Text territoryInfo;
     [SerializeField] private TMP_Text objectiveInfo;*/
     private static bool _settingGame = true;
     private bool _dimensionSetted = false;
-    //private bool _playerBaseInfoSet = false;
+
+    private static bool _distributionPhase = false;
+    private static bool _reinforcePhase = false;
+    private static bool _attackPhase = false;
 
 
     public static bool SettingGame {
         get => _settingGame;
         set => _settingGame = value;
     }
+    
+    public static bool DistributionPhase {
+        get => _distributionPhase;
+        set => _distributionPhase = value;
+    }
+
+    public static bool ReinforcePhase {
+        get => _reinforcePhase;
+        set => _reinforcePhase = value;
+    }
+
+    public static bool AttackPhase {
+        get => _attackPhase;
+        set => _attackPhase = value;
+    }
 
     void Start() {
         playerName.text = Player.Instance.Name;
-        /*allInfo.gameObject.GetComponent<RectTransform>().sizeDelta = 
-            new Vector2(userSpace.GetComponent<RectTransform>().rect.width, 
-                userSpace.GetComponent<RectTransform>().sizeDelta.y);
-        Debug.Log("DELTA: " + allInfo.gameObject.GetComponent<RectTransform>().sizeDelta);*/
-        //allInfo.GetComponent<LayoutElement>().preferredWidth = userSpace.GetComponent<Transform>().;
-        //Debug.Log("Preferred Width " + allInfo.GetComponent<LayoutElement>().preferredWidth + 
-                  //"\nRect Width " + userSpace.GetComponent<RectTransform>().rect.width);
-        //circlePlayerColor.GetComponent<Image>().color = Utils.ColorCode(Player.Instance.ArmyColor, 255);
-        //objectiveInfo.text = Player.Instance.ObjectiveCard.description;
     }
 
     void Update() {
@@ -52,14 +62,14 @@ public class GameManagerUI : MonoBehaviour {
         }
 
         if (!_settingGame) {
-            Debug.Log("DIM " + userSpace.GetComponent<RectTransform>().rect.width );
+            //Debug.Log("DIM " + userSpace.GetComponent<RectTransform>().rect.width );
             if(!_dimensionSetted) {
                 _dimensionSetted = true;
                 allInfo.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(
-                    userSpace.GetComponent<RectTransform>().rect.width,
+                    userSpace.GetComponent<RectTransform>().rect.width - 30,
                     allInfo.gameObject.GetComponent<RectTransform>().sizeDelta.y);
                 turn.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(
-                    userSpace.GetComponent<RectTransform>().rect.width - 20,
+                    userSpace.GetComponent<RectTransform>().rect.width - 30,
                     turn.gameObject.GetComponent<RectTransform>().sizeDelta.y);
             }
             circlePlayerColor.gameObject.SetActive(true);
@@ -69,27 +79,33 @@ public class GameManagerUI : MonoBehaviour {
             allInfo.text += "\n<b>Objective</b>: " + Player.Instance.ObjectiveCard.description + "\n";
         }
         
-        if (!_settingGame && TerritoriesManagerUI.distributionPhase) {
+        if (!_settingGame && _distributionPhase) {
             allInfo.text += "\n<b>Distribution Phase!</b>\nSelect your states and add " +
                             clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks of "
                             + Player.Instance.TanksAvailable + " still available\n";
         }
-        else if (!_settingGame && TerritoriesManagerGamePhaseUI.ReinforcePhase) {
+        else if (!_settingGame && _reinforcePhase) {
             allInfo.text += "\n<b>Reinforce Phase!</b>\nSelect your states and add " +
                             clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>().ArmyNumber + " tanks\n";
         }
-        else if (!_settingGame && TerritoriesManagerGamePhaseUI.Attackphase) {
+        else if (!_settingGame && _attackPhase) {
             allInfo.text += "\n<b>Attack Phase!</b>\nAttack the enemies or move your army\n";
         }
+        else
+            allInfo.text += "\nWaiting for other players\n";
 
         allInfo.text += "\n" + _territoryInfo;
+        
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            escMenu.SetActive(true);
+        }
     }
 
     public void ShowTerritoryInfo(Territory territory) {
         //territoryInfo.gameObject.SetActive(true);
         //Territory territory = GameManager.Instance.AllTerritories.Find(terr => terr.id.Equals(id));
         if (territory is not null) {
-            _territoryInfo = "\n" + territory.name + $": state of the continent {territory.continent}, owned by the player" +
+            _territoryInfo = "\n" + territory.name + $": state of the continent {territory.continent}, owned by the player " +
                              $"<color={GameManager.Instance.GetPlayerColor(territory.player_id)}>" +
                              $"{GameManager.Instance.getEnemyNameById(territory.player_id)}</color>.\n" +
                              $"On the territory there are {territory.num_tanks} army on it.\n";

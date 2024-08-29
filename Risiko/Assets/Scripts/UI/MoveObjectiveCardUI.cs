@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MoveObjectiveCardsUI : MoveCardsUI {
+public class MoveObjectiveCardUI : MoveCardsUI {
     public float flipDuration = 0.5f; // Durata del flip
     [SerializeField] public GameObject cardFront; // Oggetto fronte della carta
     [SerializeField] public GameObject cardBack; // Oggetto retro della carta
@@ -25,8 +25,6 @@ public class MoveObjectiveCardsUI : MoveCardsUI {
 
         //Carica la sprite della carta missione
         loadSprite("Objectives/" + Player.Instance.ObjectiveCard.id);
-        Debug.Log("Objective card: " + Player.Instance.ObjectiveCard.id);
-        //loadSprite("Objectives/obj3");
         cardFront.GetComponent<Image>().sprite = imgSprite;
         
         // Inizia la coroutine per muovere l'immagine

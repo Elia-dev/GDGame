@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using System.Threading;
 using System.Threading.Channels;
@@ -23,10 +25,54 @@ public class RequestHandler
             
             if(message.Contains("LOBBY_ID:")) // Manage lobby_id request
             {
-                Debug.Log("Ricevuta richiesta: LOBBY_ID " + message);
+                Debug.Log("Ricevuta richiesta: LOBBY_ID");
                 _request = RemoveRequest(message, "LOBBY_ID:");
-                //Debug.Log("INFO ESTRAPOLATA:" + _request);
                 GameManager.Instance.SetLobbyId(_request);
+            }
+            else if (message.Contains("SELECT_ALL_GAMES:"))
+            {
+                Debug.Log("Ricevuta richiesta: SELECT_ALL_GAMES");
+                _request = RemoveRequest(message, "SELECT_ALL_GAMES: ");
+                List<Lobby> lobbies = new List<Lobby>();
+
+                _request = _request.Trim('[', ']');
+                string[] parts = _request.Split(new string[] { ", " }, StringSplitOptions.None);
+
+                       
+                for (int i = 0; i < parts.Length; i++)
+                {
+                    parts[i] = parts[i].Trim('\''); 
+                }
+
+                        // 4. Assegna i valori alle variabili (puoi anche usare una lista o array)
+                Debug.Log("Parsing...");
+                for (int i = 0; i < parts.Length; i += 3)
+                {
+                    string lobbyId = parts[i];
+                    string hostName = parts[i + 1]; 
+                    int number = int.Parse(parts[i + 2]);
+                    Debug.Log("LobbyId " + lobbyId + " hostname " + hostName + " number " + number + "--i=" + i);
+                    lobbies.Add(new Lobby(lobbyId, hostName, number));
+                }
+                Debug.Log("Parsed");
+
+                for (int i = 0; i < lobbies.Count; i++)
+                {
+                    Debug.Log("LobbyId " + lobbies[i].getLobbyID() + " hostname " + lobbies[i].getHostName() + " number " + lobbies[i].getPlayersNum());
+                }
+                
+                /*
+                foreach (var lobby in lobbies)
+                {
+                    Debug.Log($"Lobby ID : {lobby.getLobbyID()}");
+                    Debug.Log($"Nome : {lobby.getHostName()}");
+                    Debug.Log($"Number : {lobby.getPlayersNum()}");
+                }*/
+                        // Stampa i valori per verifica
+                        
+                        
+                MatchmakingManager.LoadAvailableLobbies(lobbies);
+                
             }
             else if (message.Contains("GAME_STARTED_BY_HOST"))
             {
@@ -65,8 +111,7 @@ public class RequestHandler
                     GameManager.Instance.AddPlayerToLobbyDict(parts[0], parts[1]);
                 }
                 
-
-                Debug.Log("Aggiunti tutti i nomi al dizionario");
+                
 
             }
             else if (message.Contains("EXTRACTED_NUMBER:"))
@@ -106,9 +151,9 @@ public class RequestHandler
             {
                 Debug.Log("Server_Request: AVAILABLE_COLORS");
                 _request = RemoveRequest(message, "AVAILABLE_COLORS: ");
-                Debug.Log("RIMOSSA RICHIESTA:" + _request);
+                
                 string[] str= _request.Split(" ");
-                Debug.Log("ESEGUITO SPLIT: ");
+                
                 foreach (var stringa in str)
                 {
                     Debug.Log(stringa);
@@ -117,7 +162,7 @@ public class RequestHandler
                 foreach (var color in str)
                 {
                     string cleanedColor = color.Replace("[", "").Replace("]", "").Replace(",", "");
-                    Debug.Log("COLORE PULITO: " + cleanedColor);
+                    
                     GameManager.Instance.AddAvailableColor(cleanedColor);
                 }
             }
@@ -132,14 +177,14 @@ public class RequestHandler
                     string[] parts = pair.Split('-');
                     GameManager.Instance.AddPlayerColor(parts[0], parts[1]);
                 }
-                Debug.Log("Aggiunti tutti i colori al dizionario");
+                
             }
             else if (message.Contains("INITIAL_ARMY_NUMBER:"))
             {
                 Debug.Log("Server_Request: INITIAL_ARMY_NUMBER");
                 _request = RemoveRequest(message, "INITIAL_ARMY_NUMBER: ");
                 int armyNumber = int.Parse(_request);
-                Debug.Log("ArmyNumber parsed: " + armyNumber);
+                
                 Player.Instance.TanksNum = armyNumber;
                 Player.Instance.TanksPlaced = Player.Instance.Territories.Count;
                 Player.Instance.TanksAvailable = armyNumber - Player.Instance.TanksPlaced;
@@ -148,21 +193,21 @@ public class RequestHandler
             else if (message.Contains("OBJECTIVE_CARD_ASSIGNED:"))
             {
                 Debug.Log("Server_Request: OBJECTIVE_CARD_ASSIGNED");
-                Debug.Log("Message + JSON: " + message);
+                
                 _request = RemoveRequest(message, "OBJECTIVE_CARD_ASSIGNED: ");
-                Debug.Log("JSON ONLY: " + _request);
+                
                 
                 Player.Instance.ObjectiveCard = Objective.FromJson(_request);
-                Debug.Log("Json unpacked TOSTRING: " + Player.Instance.ObjectiveCard);
+                
             }
             else if (message.Contains("TERRITORIES_CARDS_ASSIGNED:"))
             {
                 Debug.Log("Server_Request: TERRITORIES_CARDS_ASSIGNED");
-                Debug.Log("Message + JSON: " + message);
+                
                 _request = RemoveRequest(message, "TERRITORIES_CARDS_ASSIGNED: ");
-                Debug.Log("JSON ONLY: " + _request);
+                
                 Player.Instance.Territories = JsonConvert.DeserializeObject<List<Territory>>(_request);
-                Debug.Log("Json unpacked TOSTRING: " + Player.Instance.Territories);
+                
             }
             else if (message.Contains("NUMBER_OF_ARMY_TO_ASSIGN_IN_THIS_TURN:"))
             {
@@ -189,76 +234,97 @@ public class RequestHandler
             {
                 //UNDER_ATTACK: attackerId, attacker_ter_id-defender_ter_id, attacker_army_num-defender_army_num
                 Debug.Log("Server_Request: UNDER_ATTACK");
-                GameManager.Instance.setImUnderAttack(true);
+                
                 _request = RemoveRequest(message, "UNDER_ATTACK: ");
-                Debug.Log("Richiesta pulita: " + _request);
+                
+                var matches = Regex.Matches(_request, @"\[(.*?)\]");
+        
+                
+                // Estrai i numeri dalla prima lista e mettili in un array
+                GameManager.Instance.setEnemyExtractedNumbers(
+                        matches[0].Groups[1].Value
+                        .Split(',')
+                        .Select(int.Parse)
+                        .ToArray()
+                        );
+            
+                    // Estrai i numeri dalla seconda lista e mettili in un array
+                GameManager.Instance.setMyExtractedNumbers(
+                    matches[1].Groups[1].Value
+                        .Split(',')
+                        .Select(int.Parse)
+                        .ToArray()
+                        );
                 
                 _request = _request.Replace(" ", "");
                 
                 string[] parts = _request.Split(',');
                 string attackerId = parts[0];
                 
-                Debug.Log("AttackerId: " + attackerId);
                 
                 string[] terIds = parts[1].Split('-');
                 string attacker_ter_id = terIds[0];
                 string defender_ter_id = terIds[1];
                 
-                Debug.Log("attacker_ter_id: " + attacker_ter_id);
-                Debug.Log("defender_ter_id: " + defender_ter_id);
-                
                 string[] armyNums = parts[2].Split('-');
                 int attacker_army_num = int.Parse(armyNums[0]);
                 int defender_army_num = int.Parse(armyNums[1]);
                 
-                Debug.Log("attacker_army_num: " + attacker_army_num);
-                Debug.Log("defender_army_num: " + defender_army_num);
                 
-                GameManager.Instance.setEnemyAttackerArmyNum(attacker_army_num);
-                GameManager.Instance.setMyArmyNumToDefende(defender_army_num);
-                // Mi salvo quale è lo stato che mi sta attaccando, e di chi è
-                foreach (var terr in GameManager.Instance.AllTerritories)
-                {
-                    if (attacker_ter_id == terr.id)
-                    {
-                        GameManager.Instance.getEnemyAttackerTerritory().id = attacker_ter_id;
-                        GameManager.Instance.getEnemyAttackerTerritory().name = terr.name;
-                        GameManager.Instance.getEnemyAttackerTerritory().continent = terr.continent;
-                        GameManager.Instance.getEnemyAttackerTerritory().node = terr.node;
-                        GameManager.Instance.getEnemyAttackerTerritory().num_tanks = terr.num_tanks;
-                        GameManager.Instance.getEnemyAttackerTerritory().description = terr.description;
-                        GameManager.Instance.getEnemyAttackerTerritory().function = terr.function;
-                        GameManager.Instance.getEnemyAttackerTerritory().image = terr.image;
-                        GameManager.Instance.getEnemyAttackerTerritory().player_id = terr.player_id;
-                    }
-                }
+                GameManager.Instance.setEnemyArmyNum(attacker_army_num);
+                GameManager.Instance.setMyArmyNum(defender_army_num);
+
+                GameManager.Instance.setEnemyTerritoy(GameManager.Instance.AllTerritories.Find(x => x.id == attacker_ter_id));
+                GameManager.Instance.setMyTerritory(Player.Instance.Territories.Find(x => x.id == defender_ter_id));
+               
+                Debug.Log("Territorio nemico che mi attacca: " +  GameManager.Instance.getEnemyTerritory().name);
+                Debug.Log("Il mio territorio sotto attacco: " + GameManager.Instance.getMyTerritory().name);
+                Debug.Log("Numero armate che il nemico sta usando: " + GameManager.Instance.GetEnemyArmyNum());
+                Debug.Log("Numero armate che uso per difendermi: " + GameManager.Instance.getMyArmyNum());
+                GameManager.Instance.setImUnderAttack(true);
+                GameManager.Instance.setImAttacking(false);
+            }
+            else if (message.Contains("ATTACKER_ALL_EXTRACTED_DICE"))
+            {
+                Debug.Log("Server_Request: ATTACKER_ALL_EXTRACTED_DICE");
+                _request = RemoveRequest(message, "ATTACKER_ALL_EXTRACTED_DICE: ");
+                var matches = Regex.Matches(_request, @"\[(.*?)\]");
+        
                 
-                // Mi salvo quale mio stato sta venendo attaccato
-                foreach (var terr in GameManager.Instance.AllTerritories)
+                // Estrai i numeri dalla prima lista e mettili in un array
+                GameManager.Instance.setMyExtractedNumbers(
+                    matches[0].Groups[1].Value
+                        .Split(',')
+                        .Select(int.Parse)
+                        .ToArray()
+                );
+            
+                // Estrai i numeri dalla seconda lista e mettili in un array
+                GameManager.Instance.setEnemyExtractedNumbers(
+                    matches[1].Groups[1].Value
+                        .Split(',')
+                        .Select(int.Parse)
+                        .ToArray()
+                );
+                
+                Debug.Log("Sono l'attaccante, ho estratto " + GameManager.Instance.getMyExtractedNumbers().ToString());
+                for (int i = 0; i < GameManager.Instance.getMyExtractedNumbers().Length; i++)
                 {
-                    if (defender_ter_id == terr.id)
-                    {
-                        GameManager.Instance.getMyTerritoryUnderAttack().id = defender_ter_id;
-                        GameManager.Instance.getMyTerritoryUnderAttack().name = terr.name;
-                        GameManager.Instance.getMyTerritoryUnderAttack().continent = terr.continent;
-                        GameManager.Instance.getMyTerritoryUnderAttack().node = terr.node;
-                        GameManager.Instance.getMyTerritoryUnderAttack().num_tanks = terr.num_tanks;
-                        GameManager.Instance.getMyTerritoryUnderAttack().description = terr.description;
-                        GameManager.Instance.getMyTerritoryUnderAttack().function = terr.function;
-                        GameManager.Instance.getMyTerritoryUnderAttack().image = terr.image;
-                        GameManager.Instance.getMyTerritoryUnderAttack().player_id = terr.player_id;
-                    }
+                    Debug.Log(GameManager.Instance.getMyExtractedNumbers()[i]);
                 }
-                Debug.Log("Territorio nemico che mi attacca: " +  GameManager.Instance.getEnemyAttackerTerritory().name);
-                Debug.Log("Il mio territorio sotto attacco: " + GameManager.Instance.getMyTerritoryUnderAttack().name);
-                Debug.Log("Numero armate che il nemico sta usando: " + GameManager.Instance.GetEnemyAttackerArmyNum());
-                Debug.Log("Numero armate che uso per difendermi: " + GameManager.Instance.getMyArmyNumToDefende());
+                Debug.Log("il difensore ha estratto " + GameManager.Instance.getEnemyExtractedNumbers().ToString());
+                for (int i = 0; i < GameManager.Instance.getEnemyExtractedNumbers().Length; i++)
+                {
+                    Debug.Log(GameManager.Instance.getEnemyExtractedNumbers()[i]);
+                }
+                GameManager.Instance.setImAttacking(true);
+                GameManager.Instance.setImUnderAttack(false);
             }
             else if (message.Contains("ATTACK_FINISHED_FORCE_UPDATE"))
             {
                 Debug.Log("Server_Request: ATTACK_FINISHED_FORCE_UPDATE");
-                Debug.Log("NOTA: IO SONO " + Player.Instance.Name + " con id=" + Player.Instance.PlayerId);
-                Debug.Log("Sto per scorrere " + GameManager.Instance.AllTerritories.Count + " territori");
+                //Debug.Log("NOTA: IO SONO " + Player.Instance.Name + " con id=" + Player.Instance.PlayerId);
+              //  Debug.Log("Sto per scorrere " + GameManager.Instance.AllTerritories.Count + " territori");
                 
                 try 
                 {
@@ -269,35 +335,38 @@ public class RequestHandler
                     for(int i = 0; i <  GameManager.Instance.AllTerritories.Count; i++)
                     {
                         Territory terr = GameManager.Instance.AllTerritories[i];
-                        Debug.Log("[ALL_TERRITORIES] Territorio numero " + i);
-                        Debug.Log("Controllo il terr " + terr.name + " che appartiene a " + GameManager.Instance.getEnemyNameById(terr.player_id) + " che ha player_id = " + terr.player_id);
-                        Debug.Log("Per il meme, la grandezza di player.territories è: " + Player.Instance.Territories.Count);
+                        //Debug.Log("[ALL_TERRITORIES] Territorio numero " + i);
+                        //Debug.Log("Controllo il terr " + terr.name + " che appartiene a " + GameManager.Instance.getEnemyNameById(terr.player_id) + " che ha player_id = " + terr.player_id);
+                        //Debug.Log("Per il meme, la grandezza di player.territories è: " + Player.Instance.Territories.Count);
                         Territory playerTerr = Player.Instance.Territories.Find(x => x.id == terr.id);
                             if (playerTerr is not null && terr.player_id != Player.Instance.PlayerId)
                             {
-                                Debug.Log("Il terr: " + terr.name + " è nella tua lista territori, ma appartiene a "
-                                          + GameManager.Instance.getEnemyNameById(terr.player_id));
+                               // Debug.Log("Il terr: " + terr.name + " è nella tua lista territori, ma appartiene a "
+                                //          + GameManager.Instance.getEnemyNameById(terr.player_id));
                                 toRemove.Add(playerTerr);
+                                GameManager.Instance.setWinnerBattleId(GameManager.Instance.getEnemyTerritory().player_id); // mi segno che ho perso la battaglia per il territorio
                             }
                             else if (playerTerr is null && terr.player_id == Player.Instance.PlayerId)
                             {
-                                Debug.Log("Il terr: " + terr.name + " non è nella tua lista territori ma in realtà ti appartiene");
+                             //   Debug.Log("Il terr: " + terr.name + " non è nella tua lista territori ma in realtà ti appartiene");
                                 toAdd.Add(terr);
+                                GameManager.Instance.setWinnerBattleId(Player.Instance.PlayerId); // mi segno che ho perso la battaglia per il territorio
+
                             }
                             else if (playerTerr is null && terr.player_id != Player.Instance.PlayerId)
                             {
-                                Debug.Log("Il territorio non è nella tua lista, non è nemmeno tuo, no work to do here");
+                                //Debug.Log("Il territorio non è nella tua lista, non è nemmeno tuo, no work to do here");
                             }
                             else // Quando il territorio c'è nella mia lista ed è effettivamente mio
                             {
-                                Debug.Log("Aggiornati numero di tank del territorio " + Player.Instance.Territories.Find(x => x.id == terr.id).name);
-                                Debug.Log("Passati da " + Player.Instance.Territories.Find(x => x.id == terr.id).num_tanks + " Carri");
+                                //Debug.Log("Aggiornati numero di tank del territorio " + Player.Instance.Territories.Find(x => x.id == terr.id).name);
+                                //Debug.Log("Passati da " + Player.Instance.Territories.Find(x => x.id == terr.id).num_tanks + " Carri");
                                 Player.Instance.Territories.Find(x => x.id == terr.id).num_tanks = terr.num_tanks;
-                                Debug.Log("ad adesso con " + Player.Instance.Territories.Find(x => x.id == terr.id).num_tanks + " carri!!!");
+                                //Debug.Log("ad adesso con " + Player.Instance.Territories.Find(x => x.id == terr.id).num_tanks + " carri!!!");
                             }
                     }
                     
-                    Debug.Log("Sto per rimuovere " + toRemove.Count + " territori dalla mia lista, e sto per aggiungerne " + toAdd.Count);
+                    //Debug.Log("Sto per rimuovere " + toRemove.Count + " territori dalla mia lista, e sto per aggiungerne " + toAdd.Count);
 
                     // Applica le modifiche dopo aver completato l'iterazione
                     foreach (var terrToRemove in toRemove)
@@ -309,20 +378,22 @@ public class RequestHandler
                     {
                         Player.Instance.Territories.Add(terrToAdd);
                     }
-                    Debug.Log("Done");
+                    //Debug.Log("Done");
                 }
                 catch (Exception ex)
                 {
                     Debug.LogError("Errore: " + ex.Message);
                 }
 
-                
-                GameManager.Instance.setImUnderAttack(false);
-                Debug.Log("Settato imunderattack");
-                GameManager.Instance.setImAttacking(false);
-                Debug.Log("Settato imattacking");
+                //GameManager.Instance.cleanAfterBattle();
                 GameManager.Instance.setForceUpdateAfterAttack(true);
                 Debug.Log("FORCED UPDATE FINISHED");
+            }
+            else if (message.Contains("WINNER"))
+            {
+                Debug.Log("Server_Request: WINNER");
+                _request = RemoveRequest(message, "WINNER: ");
+                GameManager.Instance.setWinnerGameId(_request);
             }
             else
             {

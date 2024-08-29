@@ -8,16 +8,13 @@ public class ExitMenuUI : MonoBehaviour
 {
     [SerializeField] private Button StayButton;
     [SerializeField] private Button QuitButton;
-    private string username;
 
     private void Awake() {
         StayButton.onClick.AddListener(() => {
             SceneManager.LoadScene("MainMenu");
         });
         
-        QuitButton.onClick.AddListener(() => {
-            Application.Quit();
-        });
+        QuitButton.onClick.AddListener(Application.Quit);
     }
 
 }

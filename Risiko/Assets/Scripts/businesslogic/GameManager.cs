@@ -7,15 +7,19 @@ public class GameManager
 {
     private static GameManager _instance;
     private static readonly object Lock = new object();
-    private Territory _enemyAttackerTerritory = null;
-    private Territory _myTerritoryUnderAttack = null;
+    private Territory _enemyTerritory = null;
+    private Territory _myTerritory = null;
     private Dictionary<string, string> _playersDict = new Dictionary<string, string>();
     private Dictionary<string, string> _colorsDict = new Dictionary<string, string>();
     public List<Territory> AllTerritories = new List<Territory>(); // Lista di tutti i territori della partita
     public List<string> PlayersName = new List<string>(); 
-    public List<string> AvailableColors = new List<string>(); 
+    public List<string> AvailableColors = new List<string>();
+    private string _winnerGameId = "";
+    private string _winnerBattleId = "";
     private string _gameOrder = "";
     private int _extractedNumber = 0;
+    private int[] _extractedEnemyNumbers = new int[3];
+    private int[] _extractedMyNumbers = new int[3];
     private string _gameOrderExtractedNumbers = "";
     private bool _gameWaitingToStart = true;
     private bool _gameRunning = true;
@@ -23,8 +27,8 @@ public class GameManager
     private bool _gamePhase = false;
     private bool _imUnderAttack = false;
     private string _idPlayingPlayer = "";
-    private int _enemyAttackerArmyNum = 0;
-    private int _myArmyNumToDefende = 0;
+    private int _enemyArmyNum = 0;
+    private int _myArmyNum = 0;
     private bool _forceUpdateAfterAttack = false;
     private string _lobbyID;
     private bool _imAttacking = false;
@@ -48,6 +52,61 @@ public class GameManager
         }
     }
 
+    public void setWinnerBattleId(string id)
+    {
+        _winnerBattleId = id;
+    }
+
+    public string getWinnerBattleId()
+    {
+        return _winnerBattleId;
+    }
+
+    public void resetWinnerBattleId()
+    {
+        _winnerBattleId = "";
+    }
+    
+    public void setWinnerGameId(string id)
+    {
+        _winnerGameId = id;
+    }
+
+    public string getWinnerGameId()
+    {
+        return _winnerGameId;
+    }
+    
+    public void setEnemyExtractedNumbers(int[] vet)
+    {
+        _extractedEnemyNumbers = vet;
+    }
+    
+    public int[] getEnemyExtractedNumbers()
+    {
+        return _extractedEnemyNumbers;
+    }
+    
+    public void resetEnemyExtractedNumbers()
+    {
+        _extractedEnemyNumbers = null;
+    }
+    
+    public void setMyExtractedNumbers(int[] vet)
+    {
+        _extractedMyNumbers = vet;
+    }
+
+    public int[] getMyExtractedNumbers()
+    {
+        return _extractedMyNumbers;
+    }
+    
+    public void resetMyExtractedNumbers()
+    {
+        _extractedMyNumbers = null;
+    }
+    
     public bool getForceUpdateAfterAttack()
     {
         return _forceUpdateAfterAttack;
@@ -57,35 +116,48 @@ public class GameManager
     {
         _forceUpdateAfterAttack = value;
     }
-    
-    public int getMyArmyNumToDefende()
-    {
-        return _myArmyNumToDefende;
-    }
 
-    public void setMyArmyNumToDefende(int numArmy)
+    public void cleanAfterBattle()
     {
-        _myArmyNumToDefende = numArmy;
-    }
-
-    public void resetMyArmyNumToDefende()
-    {
-        _myArmyNumToDefende = 0;
+        resetEnemyArmyNum();
+        resetMyArmyNum();
+        resetEnemyTerritory();
+        resetMyTerritory();
+        resetEnemyExtractedNumbers();
+        resetMyExtractedNumbers();
+        resetWinnerBattleId();
+        setImUnderAttack(false);
+        setImAttacking(false);
     }
     
-    public int GetEnemyAttackerArmyNum()
+    public int getMyArmyNum()
     {
-        return _enemyAttackerArmyNum;
+        return _myArmyNum;
     }
 
-    public void setEnemyAttackerArmyNum(int numArmy)
+    public void setMyArmyNum(int numArmy)
     {
-        _enemyAttackerArmyNum = numArmy;
+        _myArmyNum = numArmy;
     }
 
-    public void resetEnemyAttackerArmyNum()
+    public void resetMyArmyNum()
     {
-        _enemyAttackerArmyNum = 0;
+        _myArmyNum = 0;
+    }
+    
+    public int GetEnemyArmyNum()
+    {
+        return _enemyArmyNum;
+    }
+
+    public void setEnemyArmyNum(int numArmy)
+    {
+        _enemyArmyNum = numArmy;
+    }
+
+    public void resetEnemyArmyNum()
+    {
+        _enemyArmyNum = 0;
     }
     
     public void AddPlayerColor(string id, string color)
@@ -93,11 +165,11 @@ public class GameManager
         if (!_colorsDict.ContainsKey(id))
         {
             _colorsDict.Add(id, color);
-            Debug.Log($"Colore aggiunto: ID = {id}, Colore = {color}");
+            //Debug.Log($"Colore aggiunto: ID = {id}, Colore = {color}");
         }
         else
         {
-            Debug.Log($"Il colore con ID = {id} esiste già.");
+            //Debug.Log($"Il colore con ID = {id} esiste già.");
         }
     }
 
@@ -107,7 +179,7 @@ public class GameManager
         if (_colorsDict.ContainsKey(id))
         {
             _colorsDict.Remove(id);
-            Debug.Log($"Colore con ID = {id} rimosso.");
+            //Debug.Log($"Colore con ID = {id} rimosso.");
         }
         else
         {
@@ -158,7 +230,7 @@ public class GameManager
         if (!_playersDict.ContainsKey(playerId))
         {
             _playersDict.Add(playerId, name);
-            Debug.Log($"Player aggiunto: ID = {playerId}, Nome = {name}");
+            //Debug.Log($"Player aggiunto: ID = {playerId}, Nome = {name}");
         }
         else
         {
@@ -172,7 +244,7 @@ public class GameManager
         if (_playersDict.ContainsKey(playerId))
         {
             _playersDict.Remove(playerId);
-            Debug.Log($"Player con ID = {playerId} rimosso.");
+            //Debug.Log($"Player con ID = {playerId} rimosso.");
         }
         else
         {
@@ -180,34 +252,44 @@ public class GameManager
         }
     }
     
-    public Territory getMyTerritoryUnderAttack()
+    public Territory getMyTerritory()
     {
-        if (_myTerritoryUnderAttack is null)
+        if (_myTerritory is null)
         {
-            _myTerritoryUnderAttack = Territory.EmptyTerritory();
+            _myTerritory = Territory.EmptyTerritory();
         }
 
-        return _myTerritoryUnderAttack;
+        return _myTerritory;
+    }
+
+    public void setMyTerritory(Territory ter)
+    {
+        _myTerritory = ter;
     }
     
-    public void deleteMyTerritoryUnderAttack()
+    public void resetMyTerritory()
     {
-        _myTerritoryUnderAttack = null;
+        _myTerritory = null;
     }
     
-    public Territory getEnemyAttackerTerritory()
+    public Territory getEnemyTerritory()
     {
-        if (_enemyAttackerTerritory is null)
+        if (_enemyTerritory is null)
         {
-            _enemyAttackerTerritory = Territory.EmptyTerritory();
+            _enemyTerritory = Territory.EmptyTerritory();
         }
 
-        return _enemyAttackerTerritory;
+        return _enemyTerritory;
     }
 
-    public void deleteAttackerTerritory()
+    public void resetEnemyTerritory()
     {
-        _enemyAttackerTerritory = null;
+        _enemyTerritory = null;
+    }
+
+    public void setEnemyTerritoy(Territory ter)
+    {
+        _enemyTerritory = ter;
     }
     public void setImUnderAttack(bool value)
     {
@@ -326,7 +408,7 @@ public class GameManager
 
     public void setImAttacking(bool value)
     {
-        _imAttacking = true;
+        _imAttacking = value;
     }
     public bool getImAttacking()
     {

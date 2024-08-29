@@ -14,15 +14,17 @@ public class PopUpAttackUI : MonoBehaviour {
     [SerializeField] private Button plusButton;
     [SerializeField] private Button minusButton;
     [SerializeField] private Button attackButton;
+    [SerializeField] private GameObject popUpAttackResult;
     private int armyNumAttack = 0;
 
     private void Awake() {
         plusButton.onClick.AddListener(() => AddArmy());
         minusButton.onClick.AddListener(() => RemoveArmy());
-        attackButton.onClick.AddListener(() => {
+        attackButton.onClick.AddListener(async () => {
             ClientManager.Instance.AttackEnemyTerritory(myTerr, enemyTerr, armyNumAttack);
             //TerritoriesManagerGamePhaseUI.AttackFinished = true;
             this.gameObject.SetActive(false);
+            //await popUpAttackResult.GetComponent<PopUpAttackResultUI>().SetPupUp(myTerr, enemyTerr);
         });
     }
 

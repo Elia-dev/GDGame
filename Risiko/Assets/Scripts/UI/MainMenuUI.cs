@@ -12,6 +12,7 @@ public class MainMenuUI : MonoBehaviour {
     [SerializeField] private Button optionsButton;
     [SerializeField] private GameObject popUpConnection;
     [SerializeField] private Button x;
+    
     private bool _pressedButton = false;
     private float _delay = 12.0f; // Durata del ritardo in secondi
     private float _timer;
@@ -30,13 +31,21 @@ public class MainMenuUI : MonoBehaviour {
         exitButton.onClick.AddListener(() => { SceneManager.LoadScene("ExitMenu"); });
     }
 
+    void Start()
+    {
+        AudioListener.volume = PlayerPrefs.GetFloat("musicVolume", 1.0f);
+    }
+    
     private void Update() {
         if (_pressedButton) {
             ClientManager.Instance.StartClient();
             if (_timer > 0) {
                 _timer -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
                 if (ClientManager.Instance.IsConnected())
+                {
+                    ClientManager.Instance.RequestAllGames();
                     SceneManager.LoadScene("GameMenu");
+                }
             }
             else {
                 _pressedButton = false;

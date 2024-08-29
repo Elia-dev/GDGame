@@ -31,9 +31,10 @@ public class ClientManager
         }
     }
     private static readonly RequestHandler RequestHandler = new RequestHandler();
-    //private string _server = "ws://150.217.51.105:8766";
-    private string _server = "ws://93.57.245.63:12345";
-    //private string _server = "ws://101.58.64.113:12345";
+    //private string _server = "ws://150.217.51.105:8766"; // 105
+    //private string _server = "ws://93.57.245.63:12345"; // Elia
+    //private string _server = "ws://101.58.64.113:12345"; // Filo
+    private string _server = "ws://localhost:12345";
     private ClientWebSocket _webSocket = null;
     private CancellationToken _cancellationToken;
     
@@ -68,12 +69,14 @@ public class ClientManager
             try
             {
                 //await _webSocket.ConnectAsync(uri, cancellationTokenSource.Token);
+                _webSocket.Options.KeepAliveInterval = TimeSpan.FromMinutes(2.5); // invia un ping ogni 2.5 minuti
                 await _webSocket.ConnectAsync(uri, cancellationTokenSourceFirstConnection.Token);
             
                 if (_webSocket.State == WebSocketState.Open)
                 {
                     Debug.Log("Connected");
                     SetConnected(true);
+                    
                     var handlerTask = RequestHandler.HandleRequests(cancellationTokenSource.Token);
                     var receiveTask = ReceiveMessage(_webSocket, cancellationTokenSource.Token);
                     await Task.WhenAll(handlerTask, receiveTask);
@@ -123,7 +126,11 @@ public class ClientManager
         }
         Debug.Log("Uscito dal loop delle richieste");
     }
-    
+
+    public async void RequestAllGames()
+    {
+        await SendMessage(_webSocket, _cancellationToken, "SELECT_ALL_GAMES");
+    }
     public async void CreateLobbyAsHost()
     {
         await SendMessage(_webSocket, _cancellationToken, "HOST_GAME:"); // Telling the server that I will be the host
@@ -171,21 +178,27 @@ public class ClientManager
 
     public async void AttackEnemyTerritory(Territory myTerritory, Territory enemyTerritory, int myNumArmy)
     {
-        int enemyNumArmy;
+        int enemyArmyNum;
         if (enemyTerritory.num_tanks >= 3)
         {
-            enemyNumArmy = 3;
+            enemyArmyNum = 3;
         }
         else
         {
-            enemyNumArmy = enemyTerritory.num_tanks;
+            enemyArmyNum = enemyTerritory.num_tanks;
         }
+        
+        GameManager.Instance.setEnemyArmyNum(enemyArmyNum);
+        GameManager.Instance.setMyArmyNum(myNumArmy);
+        GameManager.Instance.setImUnderAttack(false);
+        GameManager.Instance.setMyTerritory(myTerritory);
+        GameManager.Instance.setEnemyTerritoy(enemyTerritory);
         
         await SendMessage(_webSocket, _cancellationToken, "ATTACK_TERRITORY: " + 
                                                           Player.Instance.PlayerId + "-" + enemyTerritory.player_id + ", " 
                                                           + myTerritory.id + "-" + enemyTerritory.id + ", " + 
-                                                          myNumArmy.ToString() + "-" + enemyNumArmy.ToString());
-        GameManager.Instance.setImAttacking(true);
+                                                          myNumArmy.ToString() + "-" + enemyArmyNum.ToString());
+        //GameManager.Instance.setImAttacking(true); SPOSTATO IN requestHandler
     }
     
     public async void RequestTerritoryInfo(string Terr_id)
