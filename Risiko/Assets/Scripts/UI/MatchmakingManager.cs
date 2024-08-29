@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MatchmakingManager : MonoBehaviour
@@ -32,7 +33,7 @@ public class MatchmakingManager : MonoBehaviour
             newRow.transform.Find("numPlayersText").GetComponent<TMP_Text>().text = lobby.getPlayersNum().ToString();
 
             // Aggiungi un listener al click del bottone per restituire l'idLobby
-            newRow.GetComponent<Button>().onClick.AddListener(() => SelectLobby(lobby.getLobbyID()));
+            newRow.GetComponent<Button>().onClick.AddListener(() => JoinLobby(lobby.getLobbyID()));
             
         });
         rowPrefab.SetActive(false);
@@ -60,10 +61,26 @@ public class MatchmakingManager : MonoBehaviour
         _lobbies = availableLobbies;
     }
 
-    private void SelectLobby(string idLobby)
+    /*private void SelectLobby(string idLobby)
     {
         // Azione da intraprendere quando una partita viene selezionata
         Debug.Log("Hai selezionato la partita con id: " + idLobby);
         // Puoi ora implementare il collegamento alla lobby o altro
+    }*/
+    
+    private void JoinLobby(string idLobby) {
+        GameManager.Instance.SetLobbyId(idLobby);
+        Debug.Log("Lobby ID: " + idLobby);
+        ClientManager.Instance.JoinLobbyAsClient(idLobby);
+        SceneManager.LoadScene("WaitingRoomClient");
+        /*if (idLobby.Equals(""))
+        {
+            popUpIdLobbyError.SetActive(true);
+        }
+        else
+        {
+            ClientManager.Instance.JoinLobbyAsClient(idLobby);
+            SceneManager.LoadScene("WaitingRoomClient");
+        }*/
     }
 }
