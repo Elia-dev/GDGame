@@ -26,9 +26,9 @@ async def handler(websocket):
         async for message in websocket:
             print(f"SERVER: Received message from {client_id}: {message}")
             for game in games:
-                if game.game_id is None: #Check if there are empty lobby and delete them
+                if game.game_id is None or len(game.players) == 0: #Check if there are empty lobby and delete them
                     games.remove(game)
-                print("Pulizia completata")
+            print("Pulizia completata")
 
             if "HOST_GAME" in message:
                 game_id = None
@@ -65,8 +65,7 @@ async def handler(websocket):
                             await client_task
                         else:
                             print("Lobby is full or the game is already started")
-                    else:
-                        print("Unable to find the lobby")
+                print("Unable to find the lobby")
             elif "SELECT_ALL_GAMES" in message:
                 response = []
                 #Voglio mandare id lobby, numPlayers, hostName
