@@ -100,8 +100,8 @@ public class BGMusic_selector : MonoBehaviour
 
     private IEnumerator FadeOutBackgroundMusic(AudioSource sound)
     {
-        float duration = 1.0f;
-        float targetVolume = 0;
+        float duration = 0.4f;
+        float targetVolume = 0.01f;
         float startVolume = AudioListener.volume;
 
         float time = 0;
@@ -109,11 +109,11 @@ public class BGMusic_selector : MonoBehaviour
         while (time < duration)
         {
             time += Time.deltaTime;
-            AudioListener.volume = Mathf.Lerp(startVolume, targetVolume, time / duration);
+            gameTrack.volume = Mathf.Lerp(startVolume, targetVolume, time / duration);
             yield return null;
         }
 
-        AudioListener.volume = targetVolume;
+        gameTrack.volume = targetVolume;
         sound.Play();
         
         yield return new WaitForSeconds(sound.clip.length);
@@ -123,17 +123,17 @@ public class BGMusic_selector : MonoBehaviour
 
     private IEnumerator FadeInBackgroundMusic(AudioSource sound)
     {
-        float duration = 1.0f;
+        float duration = 0.8f;
         float targetVolume = PlayerPrefs.GetFloat("musicVolume");
-        float startVolume = AudioListener.volume;
+        float startVolume = gameTrack.volume;
 
         float time = 0;
         while (time < duration)
         {
             time += Time.deltaTime;
-            AudioListener.volume = Mathf.Lerp(startVolume, targetVolume, time / duration);
+            gameTrack.volume = Mathf.Lerp(startVolume, targetVolume, time / duration);
             yield return null;
         }
-        AudioListener.volume = targetVolume;
+        gameTrack.volume = targetVolume;
     }
 }
