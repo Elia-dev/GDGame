@@ -8826,7 +8826,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Exit
+  m_text: Exit Game
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 09c340514d0c7ea4aa61cc3cd7b0ee89, type: 2}
   m_sharedMaterial: {fileID: 7153054792505107064, guid: 09c340514d0c7ea4aa61cc3cd7b0ee89, type: 2}
@@ -16998,7 +16998,6 @@ GameObject:
   - component: {fileID: 1390090841}
   - component: {fileID: 1390090839}
   - component: {fileID: 1390090838}
-  - component: {fileID: 1390090840}
   m_Layer: 5
   m_Name: ExitButton
   m_TagString: Untagged
@@ -17092,20 +17091,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1390090840
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1390090837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f78095a91124e49fea1fa9227c3e7bfa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StayButton: {fileID: 0}
-  QuitButton: {fileID: 0}
 --- !u!222 &1390090841
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -17132,7 +17117,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 815.5471, y: -50}
-  m_SizeDelta: {x: 400, y: 75}
+  m_SizeDelta: {x: 400, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1422525103
 GameObject:
@@ -18836,7 +18821,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Back
+  m_text: Continue to waste your time playing a beautiful game
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 09c340514d0c7ea4aa61cc3cd7b0ee89, type: 2}
   m_sharedMaterial: {fileID: 7153054792505107064, guid: 09c340514d0c7ea4aa61cc3cd7b0ee89, type: 2}
@@ -20779,7 +20764,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 291.84903, y: -50}
-  m_SizeDelta: {x: 400, y: 75}
+  m_SizeDelta: {x: 400, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1710307851
 MonoBehaviour:
@@ -24463,7 +24448,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Exit
+  m_text: Come back\n to study
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 09c340514d0c7ea4aa61cc3cd7b0ee89, type: 2}
   m_sharedMaterial: {fileID: 7153054792505107064, guid: 09c340514d0c7ea4aa61cc3cd7b0ee89, type: 2}
