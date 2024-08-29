@@ -22,7 +22,7 @@ public class MainMenuUI : MonoBehaviour {
             popUpConnection.SetActive(true);
             x.gameObject.SetActive(false);
             popUpConnection.GetComponentInChildren<PopUpBadNameUI>().SetErrorText("Connecting to server...");
-            Debug.Log("Trying to connect to database...");
+            //Debug.Log("Trying to connect to database...");
             _pressedButton = true;
             _timer = _delay;
             ClientManager.Instance.StartClient();
@@ -43,7 +43,6 @@ public class MainMenuUI : MonoBehaviour {
                 _timer -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
                 if (ClientManager.Instance.IsConnected())
                 {
-                    ClientManager.Instance.RequestAllGames();
                     SceneManager.LoadScene("GameMenu");
                 }
             }

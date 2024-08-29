@@ -11,12 +11,14 @@ public class JoinGameMenuUI : MonoBehaviour
 {
     
     [SerializeField] private Button backButton;
-    [SerializeField] private Button joinLobbyButton; 
+    [SerializeField] private Button joinLobbyButton;
+    [SerializeField] private Button browseLobbiesButton;
     [SerializeField] private TMP_InputField lobbyIdInputField;
     [SerializeField] private GameObject popUpIdLobbyError;
     private string _lobbyID;
     
     private void Awake() {
+        ClientManager.Instance.RequestAllGames();
         backButton.onClick.AddListener(() => {
             GameManager.Instance.ResetGameManager();
             Player.Instance.resetPlayer();
@@ -27,12 +29,14 @@ public class JoinGameMenuUI : MonoBehaviour
         {
             JoinLobby();
 		});
+        
+        browseLobbiesButton.onClick.AddListener(() => SceneManager.LoadScene("JoinAvailableGames"));
     }
 
     private void JoinLobby() {
         _lobbyID = lobbyIdInputField.text;
         GameManager.Instance.SetLobbyId(_lobbyID);
-        Debug.Log("Lobby ID: " + _lobbyID);
+        //Debug.Log("Lobby ID: " + _lobbyID);
         if (_lobbyID.Equals(""))
         {
             popUpIdLobbyError.SetActive(true);

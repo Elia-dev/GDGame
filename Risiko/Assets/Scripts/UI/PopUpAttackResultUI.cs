@@ -43,38 +43,6 @@ public class PopUpAttackResultUI : MonoBehaviour {
         }
     }
 
-    /*public async Task SetPupUp(Territory myTerritory, Territory enemyTerritory) { //, GameObject myTerritoryGObj, GameObject enemyTerritoryGObj) {
-        _dataArrived = false;
-        gameObject.SetActive(true);
-        //Attesa che vengano elaborati i dati dell'attacco
-        //StartCoroutine(WaitUntilTrue());
-        while (!GameManager.Instance.getImAttacking())
-        {
-            // Attende un frame prima di ricontrollare la condizione
-            await Task.Delay(100);
-        }
-        Debug.Log("ImAttacking: " + GameManager.Instance.getImAttacking());
-        Debug.Log("getMyExtractedNumber[0]: " + GameManager.Instance.getMyExtractedNumbers()[0]); //NullReferenceException
-        this.myTerritory = myTerritory;
-        this.enemyTerritory = enemyTerritory;
-        _attacking = true;
-        popUpAttackTitle.text = "You're attacking!";
-        InitializeAllElement(myTerritory, enemyTerritory);
-    }*/
-
-    /*public void SetPupUp() {
-        _dataArrived = false;
-        gameObject.SetActive(true);
-        //_attacking = false;
-        if(GameManager.Instance.getImAttacking())
-            popUpAttackTitle.text = "You're attacking!";
-        else
-            popUpAttackTitle.text = "You're under attack!";
-        this.enemyTerritory = GameManager.Instance.getEnemyTerritory();
-        this.myTerritory = GameManager.Instance.getMyTerritory();
-        InitializeAllElement(myTerritory, enemyTerritory);
-    }*/
-
     public void SetPupUp() {
         _dataArrived = false;
         gameObject.SetActive(true);

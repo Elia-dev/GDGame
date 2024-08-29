@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -10,20 +11,21 @@ public class MatchmakingManager : MonoBehaviour
     public GameObject rowPrefab; // Il prefab per la riga
     public Transform contentParent; // Il contenitore (Content) delle righe
     private static List<Lobby> _lobbies = new List<Lobby>();
-    void Start()
-    {
+    private float _delay = 7.0f; // Durata del ritardo in secondi
+    private float _timer;
+    void Start() {
+        _timer = _delay;
         /*
         foreach (Transform child in contentParent)
         {
             Destroy(child.gameObject);
         }*/
         // Per ogni partita disponibile, crea una riga nella lista
-        
         _lobbies.ForEach(lobby =>
         {
-            Debug.Log("Lobby: " + lobby.getLobbyID());
+            /*Debug.Log("Lobby: " + lobby.getLobbyID());
             Debug.Log("host: " + lobby.getHostName());
-            Debug.Log("players: " + lobby.getPlayersNum());
+            Debug.Log("players: " + lobby.getPlayersNum());*/
             GameObject newRow = Instantiate(rowPrefab, contentParent);
             //newRow.transform.SetParent(contentParent, false);
             newRow.transform.SetParent(contentParent);
@@ -56,6 +58,45 @@ public class MatchmakingManager : MonoBehaviour
         */
     }
 
+    private void Update() {
+        if (_timer > 0)
+        {
+            _timer -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
+        }
+        
+        if (_timer > 4) {
+            ClientManager.Instance.RequestAllGames();
+        }
+        
+        if(_timer > 6) {
+            foreach (Transform child in contentParent)
+            {
+                Destroy(child.gameObject);
+            }
+            _lobbies.ForEach(lobby =>
+            {
+                /*Debug.Log("Lobby: " + lobby.getLobbyID());
+                Debug.Log("host: " + lobby.getHostName());
+                Debug.Log("players: " + lobby.getPlayersNum());*/
+                GameObject newRow = Instantiate(rowPrefab, contentParent);
+                //newRow.transform.SetParent(contentParent, false);
+                newRow.transform.SetParent(contentParent);
+
+                newRow.transform.Find("idLobbyText").GetComponent<TMP_Text>().text = lobby.getLobbyID();
+                newRow.transform.Find("hostNameText").GetComponent<TMP_Text>().text = lobby.getHostName(); 
+                newRow.transform.Find("numPlayersText").GetComponent<TMP_Text>().text = lobby.getPlayersNum().ToString();
+
+                // Aggiungi un listener al click del bottone per restituire l'idLobby
+                newRow.GetComponent<Button>().onClick.AddListener(() => JoinLobby(lobby.getLobbyID()));
+            
+            });
+        }
+
+        if (_timer <= 0) {
+            _timer = _delay;
+        }
+    }
+
     public static void LoadAvailableLobbies(List<Lobby> availableLobbies)
     {
         _lobbies = availableLobbies;
@@ -70,7 +111,7 @@ public class MatchmakingManager : MonoBehaviour
     
     private void JoinLobby(string idLobby) {
         GameManager.Instance.SetLobbyId(idLobby);
-        Debug.Log("Lobby ID: " + idLobby);
+        //Debug.Log("Lobby ID: " + idLobby);
         ClientManager.Instance.JoinLobbyAsClient(idLobby);
         SceneManager.LoadScene("WaitingRoomClient");
         /*if (idLobby.Equals(""))

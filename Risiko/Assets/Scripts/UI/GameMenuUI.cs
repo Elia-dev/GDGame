@@ -51,8 +51,7 @@ public class GameMenuUI : MonoBehaviour
                 //Debug.Log("Username OK, changing scene from GameMenu to JoinLobbyMenu");
                 Player.Instance.Initialize();
                 Player.Instance.Name = username;
-                //SceneManager.LoadScene("JoinGameMenu");
-                SceneManager.LoadScene("JoinAvailableGames"); //Porta al nuovo matchmaking da implementare
+                SceneManager.LoadScene("JoinGameMenu");
             }
             else
             {
