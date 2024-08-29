@@ -7387,7 +7387,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Dice result  \n+\nAttack result"
+  m_text: "Dice result  \r\n+\r\nAttack result\r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 09c340514d0c7ea4aa61cc3cd7b0ee89, type: 2}
   m_sharedMaterial: {fileID: 7153054792505107064, guid: 09c340514d0c7ea4aa61cc3cd7b0ee89, type: 2}
