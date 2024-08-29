@@ -97,6 +97,18 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
         else if (_attackPhase && !IsPhaseGoing) {
             endTurnButton.interactable = true;
             if (Input.GetMouseButtonDown(0)) {
+                Canvas[] allCanvases = FindObjectsOfType<Canvas>();
+                foreach (Canvas canvas in allCanvases)
+                {
+                    // Controlla se il canvas è in modalità Screen Space - Overlay
+                    if (canvas.renderMode == RenderMode.ScreenSpaceOverlay)
+                    {
+                        // Controlla se il Canvas è attivo e se ha GameObject attivi
+                        if (canvas.gameObject.activeInHierarchy) {
+                            return;
+                        }
+                    }
+                }
                 Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 RaycastHit2D[] hits = Physics2D.RaycastAll(mousePosition, Vector2.zero);
                 RaycastHit2D hit = new RaycastHit2D();
@@ -129,6 +141,18 @@ public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
 
         if (!Player.Instance.IsMyTurn) {
             if (Input.GetMouseButtonDown(0)) {
+                Canvas[] allCanvases = FindObjectsOfType<Canvas>();
+                foreach (Canvas canvas in allCanvases)
+                {
+                    // Controlla se il canvas è in modalità Screen Space - Overlay
+                    if (canvas.renderMode == RenderMode.ScreenSpaceOverlay)
+                    {
+                        // Controlla se il Canvas è attivo e se ha GameObject attivi
+                        if (canvas.gameObject.activeInHierarchy) {
+                            return;
+                        }
+                    }
+                }
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
 
