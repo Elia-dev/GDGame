@@ -24,11 +24,12 @@ public class MatchmakingManager : MonoBehaviour
             Debug.Log("host: " + lobby.getHostName());
             Debug.Log("players: " + lobby.getPlayersNum());
             GameObject newRow = Instantiate(rowPrefab, contentParent);
-            newRow.transform.SetParent(contentParent, false);
+            //newRow.transform.SetParent(contentParent, false);
+            newRow.transform.SetParent(contentParent);
 
-            newRow.transform.Find("idLobbyText").GetComponent<TextMeshProUGUI>().text = lobby.getLobbyID();
-            newRow.transform.Find("hostNameText").GetComponent<TextMeshProUGUI>().text = lobby.getHostName(); 
-            newRow.transform.Find("numPlayersText").GetComponent<TextMeshProUGUI>().text = lobby.getPlayersNum().ToString();
+            newRow.transform.Find("idLobbyText").GetComponent<TMP_Text>().text = lobby.getLobbyID();
+            newRow.transform.Find("hostNameText").GetComponent<TMP_Text>().text = lobby.getHostName(); 
+            newRow.transform.Find("numPlayersText").GetComponent<TMP_Text>().text = lobby.getPlayersNum().ToString();
 
             // Aggiungi un listener al click del bottone per restituire l'idLobby
             newRow.GetComponent<Button>().onClick.AddListener(() => SelectLobby(lobby.getLobbyID()));
