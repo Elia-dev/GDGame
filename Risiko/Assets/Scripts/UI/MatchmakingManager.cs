@@ -35,7 +35,7 @@ public class MatchmakingManager : MonoBehaviour
             newRow.GetComponent<Button>().onClick.AddListener(() => SelectLobby(lobby.getLobbyID()));
             
         });
-        
+        rowPrefab.SetActive(false);
         /*
         for(int i = 0; i < _lobbies.Count; i++)
         {
