@@ -408,7 +408,7 @@ public class GameManager
 
     public void setImAttacking(bool value)
     {
-        _imAttacking = true;
+        _imAttacking = value;
     }
     public bool getImAttacking()
     {
