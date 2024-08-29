@@ -212,7 +212,6 @@ public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
                 if (hittedCollider is PolygonCollider2D)
                     hit = hitted;
             }
-
             if (hit.collider is PolygonCollider2D) {
                 TerritoryHandlerUI territoryHandlerUI = hit.transform.GetComponent<TerritoryHandlerUI>();
                 if (territoryHandlerUI is not null) {
