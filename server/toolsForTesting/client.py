@@ -29,7 +29,7 @@ async def main():
    # uri = "ws://localhost:8766" #150.217.51.105
     #uri = "ws://93.57.245.63:12345"
     #uri = "ws://localhost:12345"
-    uri = ws://101.58.64.113:12345
+    uri = "ws://101.58.64.113:12345"
     async with websockets.connect(uri) as websocket:
         send_task = asyncio.create_task(send_messages(websocket))
         receive_task = asyncio.create_task(receive_messages(websocket))
