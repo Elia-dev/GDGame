@@ -76,10 +76,10 @@ async def handler(websocket):
                 #Voglio mandare id lobby, numPlayers, hostName
                 for game in games:
                     response.append(game.game_id)
-                    response.append(game.host_player)
+                    response.append(game.host_player.name)
                     response.append(len(game.players))
                 print("Mi è stata chiesta la lista di tutte le lobby attive, rispondo con: " + response.__str__())
-                websocket.send("SELECT_ALL_GAMES: " + response.__str__())
+                await websocket.send("SELECT_ALL_GAMES: " + response.__str__())
 
 
     except websockets.exceptions.ConnectionClosed:

@@ -42,7 +42,10 @@ public class MainMenuUI : MonoBehaviour {
             if (_timer > 0) {
                 _timer -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
                 if (ClientManager.Instance.IsConnected())
+                {
+                    ClientManager.Instance.RequestAllGames();
                     SceneManager.LoadScene("GameMenu");
+                }
             }
             else {
                 _pressedButton = false;

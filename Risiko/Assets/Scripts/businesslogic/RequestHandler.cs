@@ -33,7 +33,46 @@ public class RequestHandler
             {
                 Debug.Log("Ricevuta richiesta: SELECT_ALL_GAMES");
                 _request = RemoveRequest(message, "SELECT_ALL_GAMES: ");
-                //TODO
+                List<Lobby> lobbies = new List<Lobby>();
+
+                _request = _request.Trim('[', ']');
+                string[] parts = _request.Split(new string[] { ", " }, StringSplitOptions.None);
+
+                       
+                for (int i = 0; i < parts.Length; i++)
+                {
+                    parts[i] = parts[i].Trim('\''); 
+                }
+
+                        // 4. Assegna i valori alle variabili (puoi anche usare una lista o array)
+                Debug.Log("Parsing...");
+                for (int i = 0; i < parts.Length; i += 3)
+                {
+                    string lobbyId = parts[i];
+                    string hostName = parts[i + 1]; 
+                    int number = int.Parse(parts[i + 2]);
+                    Debug.Log("LobbyId " + lobbyId + " hostname " + hostName + " number " + number + "--i=" + i);
+                    lobbies.Add(new Lobby(lobbyId, hostName, number));
+                }
+                Debug.Log("Parsed");
+
+                for (int i = 0; i < lobbies.Count; i++)
+                {
+                    Debug.Log("LobbyId " + lobbies[i].getLobbyID() + " hostname " + lobbies[i].getHostName() + " number " + lobbies[i].getPlayersNum());
+                }
+                
+                /*
+                foreach (var lobby in lobbies)
+                {
+                    Debug.Log($"Lobby ID : {lobby.getLobbyID()}");
+                    Debug.Log($"Nome : {lobby.getHostName()}");
+                    Debug.Log($"Number : {lobby.getPlayersNum()}");
+                }*/
+                        // Stampa i valori per verifica
+                        
+                        
+                MatchmakingManager.LoadAvailableLobbies(lobbies);
+                
             }
             else if (message.Contains("GAME_STARTED_BY_HOST"))
             {

@@ -52,6 +52,7 @@ public class GameMenuUI : MonoBehaviour
                 Player.Instance.Initialize();
                 Player.Instance.Name = username;
                 SceneManager.LoadScene("JoinGameMenu");
+                //SceneManager.LoadScene("JoinAvailableGames"); Porta al nuovo matchmaking da implementare
             }
             else
             {
