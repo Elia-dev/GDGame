@@ -97,6 +97,18 @@ public class GameManagerUI : MonoBehaviour {
         allInfo.text += "\n" + _territoryInfo;
         
         if (Input.GetKeyDown(KeyCode.Escape)) {
+            Canvas[] allCanvases = FindObjectsOfType<Canvas>();
+            foreach (Canvas canvas in allCanvases)
+            {
+                // Controlla se il canvas è in modalità Screen Space - Overlay
+                if (canvas.renderMode == RenderMode.ScreenSpaceOverlay)
+                {
+                    // Controlla se il Canvas è attivo e se ha GameObject attivi
+                    if (canvas.gameObject.activeInHierarchy) {
+                        return;
+                    }
+                }
+            }
             escMenu.SetActive(true);
         }
     }
