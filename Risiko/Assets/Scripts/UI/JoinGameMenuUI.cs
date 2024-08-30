@@ -7,16 +7,14 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class JoinGameMenuUI : MonoBehaviour
-{
-    
+public class JoinGameMenuUI : MonoBehaviour {
     [SerializeField] private Button backButton;
     [SerializeField] private Button joinLobbyButton;
     [SerializeField] private Button browseLobbiesButton;
     [SerializeField] private TMP_InputField lobbyIdInputField;
     [SerializeField] private GameObject popUpIdLobbyError;
     private string _lobbyID;
-    
+
     private void Awake() {
         ClientManager.Instance.RequestAllGames();
         backButton.onClick.AddListener(() => {
@@ -24,12 +22,9 @@ public class JoinGameMenuUI : MonoBehaviour
             Player.Instance.resetPlayer();
             SceneManager.LoadScene("GameMenu");
         });
-		
-        joinLobbyButton.onClick.AddListener(() =>
-        {
-            JoinLobby();
-		});
-        
+
+        joinLobbyButton.onClick.AddListener(() => { JoinLobby(); });
+
         browseLobbiesButton.onClick.AddListener(() => SceneManager.LoadScene("JoinAvailableGames"));
     }
 
@@ -37,17 +32,39 @@ public class JoinGameMenuUI : MonoBehaviour
         _lobbyID = lobbyIdInputField.text;
         GameManager.Instance.SetLobbyId(_lobbyID);
         //Debug.Log("Lobby ID: " + _lobbyID);
-        if (_lobbyID.Equals(""))
-        {
+        if (_lobbyID.Equals("")) {
             popUpIdLobbyError.SetActive(true);
+            GameObject.Find("PopUpContainer").GetComponent<PopUpBadNameUI>()
+                .SetErrorText("Insert a lobby ID");
         }
-        else
-        {
+        else {
             ClientManager.Instance.JoinLobbyAsClient(_lobbyID);
-            SceneManager.LoadScene("WaitingRoomClient");
+            popUpIdLobbyError.SetActive(true);
+            GameObject.Find("PopUpContainer").GetComponent<PopUpBadNameUI>()
+                .SetErrorText("Trying to join the lobby");
+            StartCoroutine(AttemptJoinLobby());
         }
     }
-    
+
+    private IEnumerator AttemptJoinLobby() {
+        float timerConnection = 5.0f;
+
+        while (timerConnection > 0) {
+            timerConnection -= Time.deltaTime; //DA COPIARE DI LA
+            if (ClientManager.Instance.IsConnectedToLobby()) {
+                SceneManager.LoadScene("WaitingRoomClient");
+                yield break; // Esci dalla coroutine se ci si connette alla lobby
+            }
+
+            yield return null; // Aspetta il prossimo frame e continua la coroutine
+        }
+
+        // Se il timer scade e non ci si è connessi alla lobby, mostra un errore
+        GameObject.Find("PopUpContainer").GetComponent<PopUpBadNameUI>()
+            .SetErrorText("Unable to join the lobby.\nTry again");
+    }
+
+
     private void Update() {
         if (Input.GetKeyDown(KeyCode.Return))
             JoinLobby();
