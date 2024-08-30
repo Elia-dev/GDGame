@@ -122,7 +122,7 @@ public class MatchmakingManager : MonoBehaviour {
 
         while (timerConnection > 0) {
             timerConnection -= Time.deltaTime;
-
+            Debug.Log("IsConnectedToLobby: " + ClientManager.Instance.IsConnectedToLobby());
             if (ClientManager.Instance.IsConnectedToLobby()) {
                 SceneManager.LoadScene("WaitingRoomClient");
                 yield break; // Esci dalla coroutine se ci si connette alla lobby
