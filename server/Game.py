@@ -44,14 +44,14 @@ class Game:
             self.remove_player(player)
 
     async def broadcast(self, message):
-        print(f"sending broadcast message: {message}")
+        #print(f"sending broadcast message: {message}")
         for player in self.players:
             await player.sock.send(message)
 
     async def create_game(self, player):
         self.host_player = player
         self.players.append(player)
-        print("Aggiunto nuovo HOST")
+        #print("Aggiunto nuovo HOST")
         tasks = [
             asyncio.create_task(self.listen_to_player_request(self.host_player)),
             asyncio.create_task(self.handle_requests()),
@@ -60,7 +60,7 @@ class Game:
         await asyncio.gather(*tasks)
 
     async def handle_game(self):
-        print("Aperto HANDLE_GAME\n")
+        #print("Aperto HANDLE_GAME\n")
         print("ASPETTANDO CHE SI COLLEGHINO TUTTI\n")
         while self.game_waiting_to_start is True:
             if self.game_id is None:
@@ -82,7 +82,7 @@ class Game:
         await self.broadcast("SEND_TERRITORIES_TO_ALL: " + json.dumps(territories_list, indent=4))
 
         initial_army_number = self.__army_start_num__(len(self.players))
-        print("Initial army number: " + str(initial_army_number))
+        #print("Initial army number: " + str(initial_army_number))
         for player in self.players:
             player.tanks_num = initial_army_number
             player.tanks_placed = len(player.territories)
@@ -92,7 +92,7 @@ class Game:
         await self.army_color_chose()
         dict_id_color = "ID_COLORS_DICT: "
         dict_id_color += ", ".join([f"{player.player_id}-{player.army_color}" for player in self.players])
-        print("DICT ID COLOR DA MANDARE: " + dict_id_color)
+        #print("DICT ID COLOR DA MANDARE: " + dict_id_color)
         await self.broadcast(dict_id_color)
         await self._give_objective_cards()
         await self._assignDefaultArmiesOnTerritories()
@@ -111,7 +111,7 @@ class Game:
                 # CheckContinents
                 # CheckArmy
                 num_army_to_send = self.calculateArmyForThisTurn(player)  #
-                print(f"Numero di armate ricevute nella fase di rinforzo: {num_army_to_send}")
+                #print(f"Numero di armate ricevute nella fase di rinforzo: {num_army_to_send}")
                 player.tanks_num += num_army_to_send
                 player.tanks_available += num_army_to_send
                 # SendArmy
@@ -212,8 +212,8 @@ class Game:
                     for player in self.players:
                         if player.player_id == id:
                             player.territories = territories
-                            print(f"Aggiornato lista stati del player con ID {player.player_id} con nome {player.name}")
-                    print("Fine aggiornamento territori su server")
+                            #print(f"Aggiornato lista stati del player con ID {player.player_id} con nome {player.name}")
+                    #print("Fine aggiornamento territori su server")
 
                     territories_list = []
                     for player in self.players:
@@ -224,7 +224,7 @@ class Game:
 
                     await self.broadcast("SEND_TERRITORIES_TO_ALL: " + json.dumps(territories_list, indent=4))
                     print("Fine aggiornamento territori, mandati al client")
-                    print("PASSATO ASSEGNAZIONE TERRITORI OPPURE MOVIMENTO STRATEGICO")
+                    #print("PASSATO ASSEGNAZIONE TERRITORI OPPURE MOVIMENTO STRATEGICO")
                     self.event_strategic_movement.set()  # Sfrutto la stessa funzione per controllare se il giocatore effettua il movimento strategico
                     # durante la fase di gioco
                     self.event.set()
@@ -263,8 +263,8 @@ class Game:
                             attacker_player = player
                         if player.player_id == defender_id:
                             defender_player = player
-                    print(f"!!!OH MY GOD, {attacker_player.name} IS TRYING TO FUCK {defender_player.name}")
-                    print(f"id attaccante: {attacker_player.player_id}  id difensore: {defender_player.player_id}")
+                   # print(f"!!!OH MY GOD, {attacker_player.name} IS TRYING TO FUCK {defender_player.name}")
+                    #print(f"id attaccante: {attacker_player.player_id}  id difensore: {defender_player.player_id}")
                     attacker_ter_id, defender_ter_id = clean_message[1].split("-")
                     for terr in attacker_player.territories:
                         if terr.id == attacker_ter_id:
@@ -280,8 +280,8 @@ class Game:
                     defender_army_num = int(defender_army_num)
                     print(
                         f"{attacker_player.name} WILL USE {str(attacker_army_num)} AGAINST {str(defender_army_num)} ARMY OWNED BY {defender_player.name}")
-                    print(f"Prima di attaccare {attacker_territory.name} aveva {attacker_territory.num_tanks} armate")
-                    print(f"Prima di essere attaccato {defender_territory.name} aveva {defender_territory.num_tanks} armate")
+                    #print(f"Prima di attaccare {attacker_territory.name} aveva {attacker_territory.num_tanks} armate")
+                    #print(f"Prima di essere attaccato {defender_territory.name} aveva {defender_territory.num_tanks} armate")
 
                     # genera n numeri casuali, con n numero di armate
                     extracted_numbers_attacker = [random.randint(1, 6) for _ in range(attacker_army_num)]
@@ -291,12 +291,12 @@ class Game:
 
                     await attacker_player.sock.send(
                         "ATTACKER_ALL_EXTRACTED_DICE: " + extracted_numbers_attacker.__str__() + ", " + extracted_numbers_defender.__str__())
-                    print("Server ha avvisato l'attaccante che sta per essere scassato")
+                    #print("Server ha avvisato l'attaccante che sta per essere scassato")
                     # Tell the defender it's under attack
                     await defender_player.sock.send(
                         "UNDER_ATTACK: " + attacker_id + ", " + attacker_ter_id + "-" + defender_ter_id + ", "
                         + str(attacker_army_num) + "-" + str(defender_army_num) + ", " + extracted_numbers_attacker.__str__() + ", " + extracted_numbers_defender.__str__())
-                    print("Server ha avvisato il difensore che sta per essere scassato")
+                    #print("Server ha avvisato il difensore che sta per essere scassato")
 
 
 
@@ -304,21 +304,21 @@ class Game:
 
                     attacker_wins = 0
                     defender_wins = 0
-                    print(
-                        f"Generati {len(extracted_numbers_attacker)} numeri per l'attaccante, {len(extracted_numbers_defender)} per il difensore")
+                    #print(
+                     #   f"Generati {len(extracted_numbers_attacker)} numeri per l'attaccante, {len(extracted_numbers_defender)} per il difensore")
                     print("Numeri dell'attaccante: ", extracted_numbers_attacker)
                     print("Numeri del difensore: ", extracted_numbers_defender)
-                    print("Inizio confronto:")
+                    #print("Inizio confronto:")
                     # Confronto, in ordine, del più grande dell'attaccante con il più piccolo dell'attaccante
                     for attacker_num, defender_num in zip(extracted_numbers_attacker, extracted_numbers_defender):
-                        print(f"Num att: {attacker_num} num def: {defender_num}")
+                        #print(f"Num att: {attacker_num} num def: {defender_num}")
                         if attacker_num > defender_num:
-                            print("L'attaccante vince il confronto")
+                           # print("L'attaccante vince il confronto")
                             attacker_wins += 1
                         else:
-                            print("Il difensore vince il confronto")
+                           # print("Il difensore vince il confronto")
                             defender_wins += 1
-                    print(f"ATTACCANTE VINCE {attacker_wins} CONFRONTI, DIFENSORE VINCE {defender_wins} CONFRONTI")
+                   # print(f"ATTACCANTE VINCE {attacker_wins} CONFRONTI, DIFENSORE VINCE {defender_wins} CONFRONTI")
                     # Rimuove i carri in funzione del risultato precedente
                     attacker_territory.num_tanks -= defender_wins
                     defender_territory.num_tanks -= attacker_wins
@@ -328,8 +328,8 @@ class Game:
                     print(
                         f"Armate rimaste per il difensore {defender_territory.name} posseduto da {defender_player.name}: {defender_territory.num_tanks}")
 
-                    print(f"Prima {attacker_player.name} aveva {len(attacker_player.territories)} territori")
-                    print(f"Sempre prima {defender_player.name} aveva {len(defender_player.territories)} territori")
+                    #print(f"Prima {attacker_player.name} aveva {len(attacker_player.territories)} territori")
+                    #print(f"Sempre prima {defender_player.name} aveva {len(defender_player.territories)} territori")
                     if defender_territory.num_tanks == 0:  # Capisce se il territorio attaccato è stato conquistato oppure no
                         print(f"OH NO! {defender_player.name} È STATO SCOPATO ED HA PERSO IL TERRITORIO!!")
                         defender_territory.player_id = attacker_id
@@ -339,8 +339,8 @@ class Game:
                         print(
                             f"Adesso {defender_territory.name} appartinene a {defender_territory.player_id} con {defender_territory.num_tanks} armate")
 
-                    print(f"Adesso {attacker_player.name} ha {len(attacker_player.territories)} territori")
-                    print(f"Sempre adesso {defender_player.name} ha {len(defender_player.territories)} territori")
+                    #print(f"Adesso {attacker_player.name} ha {len(attacker_player.territories)} territori")
+                    #print(f"Sempre adesso {defender_player.name} ha {len(defender_player.territories)} territori")
                     # updateAllTerritories in broadcast e controllo lato client della vittoria/sconfitta
                     territories_list = []
                     for player in self.players:
@@ -351,13 +351,14 @@ class Game:
                     #await attacker_player.sock.send("ATTACK_RESULT_ATTACKER: ")
                     #await defender_player.sock.send("ATTACK_RESULT_DEFENDER: ")
                     # Mandare un messaggio all'attaccante e all'attaccato per dirgli che l'attacco è finito?
-                    print("Aggiornati tutti i client sul risultato del combattimento")
+                    #print("Aggiornati tutti i client sul risultato del combattimento")
                     if len(defender_player.territories) == 0:
-                        print(f"Il brother {defender_player.name} è stato scopato così forte che è morto nell'atto e adesso verrà rimosso dalla lista dei players vivi per essere messo in quella dei players scassati...")
                         defender_player.killed_by = attacker_player
                         self.dead_players.append(defender_player)
                         self.players.remove(defender_player)
-                        print("done")
+                        print(
+                            f"Il brother {defender_player.name} è stato scopato così forte che è morto nell'atto e adesso verrà rimosso dalla lista dei players vivi per essere messo in quella dei players scassati...")
+                        #print("done")
                     await self.broadcast("ATTACK_FINISHED_FORCE_UPDATE")
                     self.event.set()
 
@@ -392,7 +393,7 @@ class Game:
 
     def end_game(self):
         self.game_running = False
-        print(f"Game {self.game_id} is ending.")
+        print(f"Game {self.game_id} is terminated.")
 
     async def __game_order__(self):
         response = {}
@@ -414,15 +415,15 @@ class Game:
             game_order.append(self.players[i].name + "-" + str(i) + ", ")
             game_order_extracted_numbers.append(self.players[i].name + "-" + str(response[self.players[i]]) + ", ")
 
-        print(f"Game order: {''.join(game_order)}")
+        #print(f"Game order: {''.join(game_order)}")
         fgame_order = {''.join(game_order)}
-        print(f"GAME_ORDER_EXTRACTED_NUMBERS: {str(game_order_extracted_numbers)}")
+        #print(f"GAME_ORDER_EXTRACTED_NUMBERS: {str(game_order_extracted_numbers)}")
         for player in self.players:
-            print(f"For player {player.name} extracted number {str(response[player])} ")
+            #print(f"For player {player.name} extracted number {str(response[player])} ")
             await player.sock.send("EXTRACTED_NUMBER: " + str(response[player]))
         await self.broadcast("GAME_ORDER: " + str(fgame_order))
         await self.broadcast("GAME_ORDER_EXTRACTED_NUMBERS: " + str(game_order_extracted_numbers))
-        print("done")
+        print("Game order terminated")
 
     def _remove_request(self, source, request):
         value = source.replace(request, "")
@@ -431,14 +432,15 @@ class Game:
     async def army_color_chose(self):
         for player in self.players:
             available_colors = [color for color, user_id in self.army_colors.items() if user_id is None]
-            print("Available color in this turn: " + available_colors.__str__())
+            #print("Available color in this turn: " + available_colors.__str__())
             await player.sock.send("AVAILABLE_COLORS: " + ", ".join(available_colors))
             await player.sock.send("IS_YOUR_TURN: TRUE")
-            print("TURNO DI " + player.name)
+            #print("TURNO DI " + player.name)
             await self.event.wait()  # Waiting for player choice
             await player.sock.send("IS_YOUR_TURN: FALSE")
             self.event = asyncio.Event()  # Event reset
-            print("Turn over for player " + player.name + "chosen color: " + player.army_color)
+            #print("Turn over for player " + player.name + "chosen color: " + player.army_color)
+        print("Color chose terminated")
 
     def __army_start_num__(self, num_player):
         switcher = {
@@ -455,7 +457,7 @@ class Game:
         card_drawn = None
         color_list = [player.army_color for player in self.players]
 
-        print("read all the objectives card from xml")
+        #print("read all the objectives card from xml")
         for player in self.players:
             control = True
             while control:
@@ -463,8 +465,8 @@ class Game:
                 if (player.army_color == "red" and card_drawn.id == "obj9") or (
                         player.army_color == "blue" and card_drawn.id == "obj10") or (
                         player.army_color == "green" and card_drawn.id == "obj11"):
-                    print("!!!!!CARTA OBIETTIVO ESTRATTA NON VALIDA!!!!!")
-                    print(f"Estratto {card_drawn.id} con colore armata  {player.army_color}")
+                     print("!!!!!CARTA OBIETTIVO ESTRATTA NON VALIDA!!!!!")
+                    #print(f"Estratto {card_drawn.id} con colore armata  {player.army_color}")
                 elif ("red" not in color_list and card_drawn.id == "obj9") or (
                         "blue" not in color_list and card_drawn.id == "obj10") or (
                         "green" not in color_list and card_drawn.id == "obj11"):
@@ -475,16 +477,16 @@ class Game:
             card_drawn.player_id = player.player_id
             player.objective_card = card_drawn
             cards.remove(card_drawn)
-            print("Extracted OBJECTIVE " + card_drawn.id + " for player " + player.name)
+            #print("Extracted OBJECTIVE " + card_drawn.id + " for player " + player.name)
             await player.sock.send("OBJECTIVE_CARD_ASSIGNED: " + json.dumps(Card.Card.to_dict(player.objective_card)))
-        print("SENT")
+        print("Objective cards distribuited")
         # Per ricevere dalla socket e trasformarlo in oggetto:
         # received_dict = json.loads(received_data)
         # received_card = Card.from_dict(received_dict)
 
     async def _give_territory_cards(self):
         cards = utils.read_territories_cards()
-        print("read all the territory card from xml")
+        #print("read all the territory card from xml")
         while cards:
             for player in self.players:
                 if cards:
@@ -492,26 +494,26 @@ class Game:
                     card_drawn.player_id = player.player_id
                     player.addTerritory(card_drawn)
                     cards.remove(card_drawn)
-                    print("Extracted TERRITORY card " + card_drawn.id + " for player " + player.name)
+                    #print("Extracted TERRITORY card " + card_drawn.id + " for player " + player.name)
 
         for player in self.players:
             territories_list = [terr.to_dict() for terr in player.territories]
             await player.sock.send("TERRITORIES_CARDS_ASSIGNED: " + json.dumps(territories_list,
                                                                                indent=4))  # Indent only for better readable
-        print("sent")
+        print("Territory cards distribuited")
 
     async def _assignDefaultArmiesOnTerritories(self):
-        print("Fase iniziale assegnazione armate default")
+        #print("Fase iniziale assegnazione armate default")
         control = 0
         while control < len(self.players):
             for player in self.players:
                 if player.tanks_available > 0:
                     await self.broadcast("PLAYER_TURN: " + player.player_id)
                     await player.sock.send("IS_YOUR_TURN: TRUE")
-                    print(f"Turno del player id: {player.player_id} con nome {player.name}")
-                    print(f"Armate totali: {player.tanks_num}")
-                    print(f"Armate piazzate: {player.tanks_placed}")
-                    print(f"Armate ancora da piazzare: {player.tanks_available}")
+                    #print(f"Turno del player id: {player.player_id} con nome {player.name}")
+                    #print(f"Armate totali: {player.tanks_num}")
+                    #print(f"Armate piazzate: {player.tanks_placed}")
+                   # print(f"Armate ancora da piazzare: {player.tanks_available}")
                     await self.event.wait()  # Waiting for player choice
                     await player.sock.send("IS_YOUR_TURN: FALSE")
                     if player.tanks_available >= 3:
@@ -524,6 +526,7 @@ class Game:
                     self.event = asyncio.Event()  # Event reset
                 else:
                     control += 1
+        print("Assign default armies terminated")
 
     def calculateArmyForThisTurn(self, player):  # TOBE TESTED
         # Continent name: NA SA EU AF AS OC
@@ -563,7 +566,7 @@ class Game:
             armyForContinent += 2
 
         totalArmyToAssing = armyForTerritories + armyForContinent
-        print("Armate bonus per questo turno: " + str(totalArmyToAssing))
+        #print("Armate bonus per questo turno: " + str(totalArmyToAssing))
         return totalArmyToAssing
 
     def check_for_victory(self, player):  # TOBE TESTED
