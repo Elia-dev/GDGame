@@ -8,16 +8,15 @@ games = []
 '''
 La logica è questa:
 Mi collego al server, il collegamento fa si che il client decida se joinare od hostare una lobby
-Il main del server avrà l'elenco di tutti i client connessi e di tutte le partite in corso
+Il main del server avrà l'elenco di tutte le partite in corso
 Ogni volta che il client hosta viene creato un game ed aggiunto alla lista
-Ogni game sarà un thread a sé che gestisce i messaggi tramite il proprio handler che andrà messo 
+Ogni game sarà un task a sé che gestisce i messaggi tramite il proprio handler che andrà messo 
 dentro la classe Game e lo stato del gioco, 
-La classe Game a sua volta avrà la lista dei giocatori che fanno parte di quella partita, ogni player avrà salvato la propria websocket
+La classe Game avrà la lista dei giocatori che fanno parte di quella partita, ogni player avrà salvato la propria websocket
 '''
 
 
 async def handler(websocket):
-    global message_counter
     client_id = websocket.remote_address
     player = Player(websocket)
     print(f"Client {client_id} connected")
@@ -65,7 +64,7 @@ async def handler(websocket):
                             game.add_player(player)
                             client_task = asyncio.create_task(game.listen_to_player_request(player))
                             joined = True
-                            player.sock.send("CONNECTED_TO_LOBBY")
+                            await player.sock.send("CONNECTED_TO_LOBBY")
                             await client_task
                         else:
                             joined = False
@@ -74,9 +73,9 @@ async def handler(websocket):
                         joined = False
                 if not foundGame:
                     print("Unable to find the lobby")
-                    player.sock.send("CONNECTION_REFUSED")
+                    await player.sock.send("CONNECTION_REFUSED")
                 if foundGame and not joined:
-                    player.sock.send("CONNECTION_REFUSED")
+                    await player.sock.send("CONNECTION_REFUSED")
             elif "SELECT_ALL_GAMES" in message:
                 response = []
                 #Voglio mandare id lobby, numPlayers, hostName
@@ -94,7 +93,7 @@ async def handler(websocket):
 
 
     except websockets.exceptions.ConnectionClosed:
-        print(f"Client {player} disconnected")
+        print(f"Client {player.name} disconnected")
     except Exception as e:
         print(f"Unexpected error: {e}")
 
