@@ -7,12 +7,20 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MatchmakingManager : MonoBehaviour {
+    [SerializeField] private Button backButton;
+    [SerializeField] private GameObject popupError;
     public GameObject rowPrefab; // Il prefab per la riga
     public Transform contentParent; // Il contenitore (Content) delle righe
     private static List<Lobby> _lobbies = new List<Lobby>();
     private float _delay = 8.0f; // Durata del ritardo in secondi
     private float _timer;
     private bool _reloadLobbies = false;
+
+
+    private void Awake() {
+        backButton.onClick.AddListener(() => SceneManager.LoadScene("JoinGameMenu"));
+    }
+
 
     void Start() {
         _timer = _delay;
@@ -99,26 +107,18 @@ public class MatchmakingManager : MonoBehaviour {
         _lobbies = availableLobbies;
     }
 
-    /*private void SelectLobby(string idLobby)
-    {
-        // Azione da intraprendere quando una partita viene selezionata
-        Debug.Log("Hai selezionato la partita con id: " + idLobby);
-        // Puoi ora implementare il collegamento alla lobby o altro
-    }*/
-
     private void JoinLobby(string idLobby) {
         GameManager.Instance.SetLobbyId(idLobby);
-        //Debug.Log("Lobby ID: " + idLobby);
         ClientManager.Instance.JoinLobbyAsClient(idLobby);
-        SceneManager.LoadScene("WaitingRoomClient");
-        /*if (idLobby.Equals(""))
-        {
-            popUpIdLobbyError.SetActive(true);
+        float timerConnection = 5.0f;
+        while (timerConnection > 0) {
+            timerConnection -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
+            if (ClientManager.Instance.IsConnectedToLobby())
+                SceneManager.LoadScene("WaitingRoomClient");
         }
-        else
-        {
-            ClientManager.Instance.JoinLobbyAsClient(idLobby);
-            SceneManager.LoadScene("WaitingRoomClient");
-        }*/
+
+        popupError.SetActive(true);
+        GameObject.Find("PopUpContainer").GetComponent<PopUpBadNameUI>()
+            .SetErrorText("Unable to join the lobby.\nTry another one.");
     }
 }
