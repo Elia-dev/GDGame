@@ -13,7 +13,7 @@ public class MatchmakingManager : MonoBehaviour {
     public GameObject rowPrefab; // Il prefab per la riga
     public Transform contentParent; // Il contenitore (Content) delle righe
     private static List<Lobby> _lobbies = new List<Lobby>();
-    private float _delay = 8.0f; // Durata del ritardo in secondi
+    private float _delay = 6.0f; // Durata del ritardo in secondi
     private float _timer;
     private bool _reloadLobbies = false;
 
@@ -121,8 +121,7 @@ public class MatchmakingManager : MonoBehaviour {
         float timerConnection = 5.0f;
 
         while (timerConnection > 0) {
-            timerConnection -= Time.deltaTime;
-            Debug.Log("IsConnectedToLobby: " + ClientManager.Instance.IsConnectedToLobby());
+            timerConnection -= Time.deltaTime; //DA COPIARE DI LA
             if (ClientManager.Instance.IsConnectedToLobby()) {
                 SceneManager.LoadScene("WaitingRoomClient");
                 yield break; // Esci dalla coroutine se ci si connette alla lobby
