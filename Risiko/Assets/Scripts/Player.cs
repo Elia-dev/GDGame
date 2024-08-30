@@ -6,7 +6,7 @@ public class Player
 {
 
 	private static Player _instance = null;
-    private static readonly object _lock = new object();
+    private static readonly object Lock = new object();
 
 	private Player() { }
     
@@ -50,7 +50,7 @@ public class Player
     {
         get
         {
-            lock (_lock)
+            lock (Lock)
             {
                 if (_instance == null)
                 {
@@ -61,7 +61,7 @@ public class Player
         }
     }
 
-    public void resetPlayer()
+    public void ResetPlayer()
     {
         _instance = null;
     }
@@ -76,10 +76,12 @@ public class Player
     public Objective ObjectiveCard { get; set; }
     public List<Territory> Territories { get; set; } = new List<Territory>();
 
+    /*
     public override string ToString()
     {
         return $"Player(name={Name}, socket={Sock}, player_id={PlayerId}, tanks_num={TanksNum}, tanks_available={TanksAvailable}, tanks_placed={TanksPlaced}, objective_card={ObjectiveCard}, territories={Territories})";
     }
+    
 
     public new string ToJson()
     {
@@ -90,7 +92,7 @@ public class Player
     {
         return JsonConvert.DeserializeObject<Player>(json);
     }
-    
+    */
     public void SetObjectiveCard(Objective goalCard)
     {
         ObjectiveCard = goalCard;

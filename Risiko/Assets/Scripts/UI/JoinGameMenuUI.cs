@@ -19,7 +19,7 @@ public class JoinGameMenuUI : MonoBehaviour {
         ClientManager.Instance.RequestAllGames();
         backButton.onClick.AddListener(() => {
             GameManager.Instance.ResetGameManager();
-            Player.Instance.resetPlayer();
+            Player.Instance.ResetPlayer();
             SceneManager.LoadScene("GameMenu");
         });
 

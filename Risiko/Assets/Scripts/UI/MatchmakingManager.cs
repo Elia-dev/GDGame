@@ -21,7 +21,7 @@ public class MatchmakingManager : MonoBehaviour {
     private void Awake() {
         backButton.onClick.AddListener(() => {
             GameManager.Instance.ResetGameManager();
-            Player.Instance.resetPlayer();
+            Player.Instance.ResetPlayer();
             SceneManager.LoadScene("GameMenu");
         });
     }
