@@ -67,6 +67,7 @@ namespace UI
         }
 
         private void Update() {
+            GameManagerUI.Debug("GamePhase script");
             if (Player.Instance.IsMyTurn && !_isTurnInitialized) {
                 StartTurn();
             }

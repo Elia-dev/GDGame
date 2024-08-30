@@ -14,8 +14,8 @@ namespace UI
         [SerializeField] private GameObject userSpace;
         [SerializeField] private GameObject escMenu;
         private string _territoryInfo;
-        /*[SerializeField] private TMP_Text territoryInfo;
-    [SerializeField] private TMP_Text objectiveInfo;*/
+        [SerializeField] private static TMP_Text debug;
+        //[SerializeField] private TMP_Text objectiveInfo;
         private static bool _settingGame = true;
         private bool _dimensionSetted = false;
 
@@ -127,6 +127,9 @@ namespace UI
         public void HideTerritoryInfo() {
             _territoryInfo = "";
         }
-    
+
+        public static void Debug(string debug) {
+            GameManagerUI.debug.text = debug;
+        }
     }
 }
