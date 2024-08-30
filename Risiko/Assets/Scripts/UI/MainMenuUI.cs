@@ -21,7 +21,7 @@ public class MainMenuUI : MonoBehaviour {
         startButton.onClick.AddListener(() => {
             popUpConnection.SetActive(true);
             x.gameObject.SetActive(false);
-            popUpConnection.GetComponentInChildren<PopUpDisplayMessageUI>().SetErrorText("Connecting to server...");
+            popUpConnection.GetComponentInChildren<DisplayMessageOnPopUpUI>().SetErrorText("Connecting to server...");
             //Debug.Log("Trying to connect to database...");
             _pressedButton = true;
             _timer = _delay;
@@ -48,7 +48,7 @@ public class MainMenuUI : MonoBehaviour {
             }
             else {
                 _pressedButton = false;
-                popUpConnection.GetComponentInChildren<PopUpDisplayMessageUI>()
+                popUpConnection.GetComponentInChildren<DisplayMessageOnPopUpUI>()
                     .SetErrorText("Unable to connect to server.\n Please check your internet connection!");
                 x.gameObject.SetActive(true);
                 _timer = _delay;

@@ -34,13 +34,13 @@ public class JoinGameMenuUI : MonoBehaviour {
         
         if (_lobbyID.Equals("")) {
             popUpIdLobbyError.SetActive(true);
-            GameObject.Find("PopUpContainer").GetComponent<PopUpDisplayMessageUI>()
+            GameObject.Find("PopUpContainer").GetComponent<DisplayMessageOnPopUpUI>()
                 .SetErrorText("Insert a lobby ID");
         }
         else {
             ClientManager.Instance.JoinLobbyAsClient(_lobbyID);
             popUpIdLobbyError.SetActive(true);
-            GameObject.Find("PopUpContainer").GetComponent<PopUpDisplayMessageUI>()
+            GameObject.Find("PopUpContainer").GetComponent<DisplayMessageOnPopUpUI>()
                 .SetErrorText("Trying to join the lobby");
             StartCoroutine(AttemptJoinLobby());
         }
@@ -60,7 +60,7 @@ public class JoinGameMenuUI : MonoBehaviour {
         }
 
         // Se il timer scade e non ci si è connessi alla lobby, mostra un errore
-        GameObject.Find("PopUpContainer").GetComponent<PopUpDisplayMessageUI>()
+        GameObject.Find("PopUpContainer").GetComponent<DisplayMessageOnPopUpUI>()
             .SetErrorText("Unable to join the lobby.\nTry again");
     }
 

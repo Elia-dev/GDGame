@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class PopUpDisplayMessageUI : MonoBehaviour {
+public class DisplayMessageOnPopUpUI : MonoBehaviour {
     
     [SerializeField] private TMP_Text errorText;
 
