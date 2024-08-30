@@ -19,11 +19,39 @@ public class HostMenuUI : MonoBehaviour
     [SerializeField] private TMP_Text playerList;
     [SerializeField] private TMP_Text lobbyID;
     [SerializeField] private GameObject popUpDiceHostMenu;
+    [SerializeField] private Button addBotButton;
+    [SerializeField] private Button removeBotButton;
     
     private float delay = 1.0f; // Durata del ritardo in secondi
     private float timer;
     private string stringa;
     
+    private void Awake()
+    {
+        backButton.onClick.AddListener(() =>
+        {
+            ClientManager.Instance.KillLobby();
+            Player.Instance.resetPlayer();
+            GameManager.Instance.ResetGameManager();
+            
+            SceneManager.LoadScene("GameMenu");
+        });
+        
+        runGameButton.onClick.AddListener(() =>
+        {
+            
+            ClientManager.Instance.StartHostGame();
+            popUpDiceHostMenu.SetActive(true);
+        });
+        
+        updateButton.onClick.AddListener(() =>
+        {
+            ClientManager.Instance.RequestNameUpdatePlayerList();
+        });
+        
+        //addBotButton.onClick.AddListener();
+        //removeBotButton.onClick.AddListener();
+    }
     void Start()
     {
         stringa = null;
@@ -67,29 +95,5 @@ public class HostMenuUI : MonoBehaviour
         }
         
     }
-    private void Awake()
-    {
-        backButton.onClick.AddListener(() =>
-        {
-            ClientManager.Instance.KillLobby();
-            Player.Instance.resetPlayer();
-            GameManager.Instance.ResetGameManager();
-            
-            SceneManager.LoadScene("GameMenu");
-        });
-        
-        runGameButton.onClick.AddListener(() =>
-        {
-            
-            ClientManager.Instance.StartHostGame();
-            popUpDiceHostMenu.SetActive(true);
-            //Invio messaggio per skip
-            //SceneManager.LoadScene("Main");
-        });
-        
-        updateButton.onClick.AddListener(() =>
-        {
-            ClientManager.Instance.RequestNameUpdatePlayerList();
-        });
-    }
+    
 }
