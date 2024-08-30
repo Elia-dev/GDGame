@@ -1,46 +1,46 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class EscMenuUI : MonoBehaviour {
-    [SerializeField] private GameObject volumeMenu;
-    [SerializeField] private GameObject exitMenu;
-    [SerializeField] private Button optionsButton;
-    [SerializeField] private Button backButton;
-    [SerializeField] private Button exitButton;
+namespace UI
+{
+    public class EscMenuUI : MonoBehaviour {
+        [SerializeField] private GameObject volumeMenu;
+        [SerializeField] private GameObject exitMenu;
+        [SerializeField] private Button optionsButton;
+        [SerializeField] private Button backButton;
+        [SerializeField] private Button exitButton;
 
-    private void Awake() {
-        backButton.onClick.AddListener(() => this.gameObject.SetActive(false));
-        optionsButton.onClick.AddListener(() => {
-            this.gameObject.SetActive(false);
-            volumeMenu.SetActive(true);
-        });
-        exitButton.onClick.AddListener(() => {
-            this.gameObject.SetActive(false);
-            exitMenu.SetActive(true);
-        });
-    }
-
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
-            gameObject.SetActive(false);
+        private void Awake() {
+            backButton.onClick.AddListener(() => this.gameObject.SetActive(false));
+            optionsButton.onClick.AddListener(() => {
+                this.gameObject.SetActive(false);
+                volumeMenu.SetActive(true);
+            });
+            exitButton.onClick.AddListener(() => {
+                this.gameObject.SetActive(false);
+                exitMenu.SetActive(true);
+            });
         }
-    }
 
-    public void BackForVolumeMenu() {
-        volumeMenu.SetActive(false);
-        this.gameObject.SetActive(true);
-    }
+        private void Update() {
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                gameObject.SetActive(false);
+            }
+        }
+
+        public void BackForVolumeMenu() {
+            volumeMenu.SetActive(false);
+            this.gameObject.SetActive(true);
+        }
     
-    public void BackButtonForExitMenu() {
-        exitMenu.SetActive(false);
-        this.gameObject.SetActive(true);
-    }
+        public void BackButtonForExitMenu() {
+            exitMenu.SetActive(false);
+            this.gameObject.SetActive(true);
+        }
 
-    public void ExitButtonForExitMenu() {
-        SceneManager.LoadScene("MainMenu");
+        public void ExitButtonForExitMenu() {
+            SceneManager.LoadScene("MainMenu");
+        }
     }
 }

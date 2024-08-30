@@ -1,38 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class VolumeManager : MonoBehaviour
+
+namespace Audio
 {
-    // Start is called before the first frame update
-    [SerializeField] private Slider volumeSlider;
-    public void Start()
+    public class VolumeManager : MonoBehaviour
     {
-        if (!PlayerPrefs.HasKey("musicVolume"))
+        // Start is called before the first frame update
+        [SerializeField] private Slider volumeSlider;
+        public void Start()
         {
-            PlayerPrefs.SetFloat("musicVolume", 1);
-            Load();
+            if (!PlayerPrefs.HasKey("musicVolume"))
+            {
+                PlayerPrefs.SetFloat("musicVolume", 1);
+                Load();
+            }
+            else
+            {
+                Load();
+            }
         }
-        else
-        {
-            Load();
-        }
-    }
     
-    public void ChangeVolume()
-    {
-        AudioListener.volume = volumeSlider.value; // Cambia volume globale
-        Save();
-    }
+        public void ChangeVolume()
+        {
+            AudioListener.volume = volumeSlider.value; // Cambia volume globale
+            Save();
+        }
 
-    private void Load()
-    {
-        volumeSlider.value = PlayerPrefs.GetFloat("musicVolume");
-    }
+        private void Load()
+        {
+            volumeSlider.value = PlayerPrefs.GetFloat("musicVolume");
+        }
 
-    private void Save()
-    {
-        PlayerPrefs.SetFloat("musicVolume", volumeSlider.value);
-        Debug.Log("Salvato libello volumen: " + PlayerPrefs.GetFloat("musicVolume"));
+        private void Save()
+        {
+            PlayerPrefs.SetFloat("musicVolume", volumeSlider.value);
+            Debug.Log("Salvato libello volumen: " + PlayerPrefs.GetFloat("musicVolume"));
+        }
     }
 }

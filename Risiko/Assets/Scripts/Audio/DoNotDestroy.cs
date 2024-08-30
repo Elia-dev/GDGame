@@ -1,14 +1,17 @@
 using UnityEngine;
 
-public class DoNotDestroy : MonoBehaviour
+namespace Audio
 {
-    private void Awake()
+    public class DoNotDestroy : MonoBehaviour
     {
-        GameObject[] musicObj = GameObject.FindGameObjectsWithTag("BGMusic");
-        if (musicObj.Length > 1)
+        private void Awake()
         {
-            Destroy(this.gameObject);
+            GameObject[] musicObj = GameObject.FindGameObjectsWithTag("BGMusic");
+            if (musicObj.Length > 1)
+            {
+                Destroy(this.gameObject);
+            }
+            DontDestroyOnLoad(this.gameObject);
         }
-        DontDestroyOnLoad(this.gameObject);
     }
 }

@@ -1,13 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class DisplayMessageOnPopUpUI : MonoBehaviour {
+namespace UI
+{
+    public class DisplayMessageOnPopUpUI : MonoBehaviour {
     
-    [SerializeField] private TMP_Text errorText;
+        [SerializeField] private TMP_Text errorText;
 
-    public void SetErrorText(string text) {
-        errorText.text = text;
+        public void SetErrorText(string text) {
+            errorText.text = text;
+        }
     }
 }

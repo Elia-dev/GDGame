@@ -1,13 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PopUpSettingsUI : MonoBehaviour
+namespace UI
 {
-    public void Open() {
-        gameObject.SetActive(true);
-    }
-    public void Close() {
-        gameObject.SetActive(false);
+    public class PopUpSettingsUI : MonoBehaviour
+    {
+        public void Open() {
+            gameObject.SetActive(true);
+        }
+        public void Close() {
+            gameObject.SetActive(false);
+        }
     }
 }
