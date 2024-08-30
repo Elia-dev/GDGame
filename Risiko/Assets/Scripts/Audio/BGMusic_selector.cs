@@ -12,7 +12,6 @@ public class BGMusic_selector : MonoBehaviour
     public AudioSource loseTrack;
     public AudioSource conqueredTerritory;
     public AudioSource lostTerritory;
-    private int i = 0;
     private int _countBattle = 0;
     void Start()
     {
@@ -79,7 +78,7 @@ public class BGMusic_selector : MonoBehaviour
         {
             if (GameManager.Instance.getWinnerGameId() == Player.Instance.PlayerId && !winTrack.isPlaying)
             {
-                Debug.Log("Main selected, I won the game, winTrack is not playing, ATTIVATA volte numero = " + i);
+                Debug.Log("Main selected, I won the game, winTrack is not playing, ATTIVATA volte numero = " );
                 loseTrack.Stop();
                 menuTrack.Stop();
                 gameTrack.Stop();
@@ -87,11 +86,10 @@ public class BGMusic_selector : MonoBehaviour
                 lostTerritory.Stop();
                 winTrack.Play();
                 Debug.Log("WinTrack.isPlaying = " + winTrack.isPlaying);
-                i++;
             }
             else if(GameManager.Instance.getWinnerGameId() != Player.Instance.PlayerId && !loseTrack.isPlaying)
             {
-                Debug.Log("Main selected, I Lose the game, loseTrack is not playing, ATTIVATA volte numero = " + i);
+                Debug.Log("Main selected, I Lose the game, loseTrack is not playing, ATTIVATA volte numero = ");
                 menuTrack.Stop();
                 gameTrack.Stop();
                 winTrack.Stop();
@@ -99,7 +97,6 @@ public class BGMusic_selector : MonoBehaviour
                 lostTerritory.Stop();
                 loseTrack.Play();
                 Debug.Log("LoseTrack.isPlaying = " + loseTrack.isPlaying);
-                i++;
             }
         }
     }
@@ -129,12 +126,12 @@ public class BGMusic_selector : MonoBehaviour
         
         yield return new WaitForSeconds(sound.clip.length);
         
-        StartCoroutine(FadeInBackgroundMusic(sound));
+        StartCoroutine(FadeInBackgroundMusic());
     }
 
-    private IEnumerator FadeInBackgroundMusic(AudioSource sound)
+    private IEnumerator FadeInBackgroundMusic()
     {
-        float duration = 1.5f;
+        float duration = 1.2f;
         float targetVolume = PlayerPrefs.GetFloat("musicVolume");
         float startVolume = gameTrack.volume;
 
