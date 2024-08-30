@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -113,12 +114,24 @@ public class MatchmakingManager : MonoBehaviour {
         popupError.SetActive(true);
         GameObject.Find("PopUpContainer").GetComponent<PopUpBadNameUI>()
             .SetErrorText("Trying to join the lobby");
+        StartCoroutine(AttemptJoinLobby());
+    }
+
+    private IEnumerator AttemptJoinLobby() {
         float timerConnection = 5.0f;
+
         while (timerConnection > 0) {
-            timerConnection -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
-            if (ClientManager.Instance.IsConnectedToLobby())
+            timerConnection -= Time.deltaTime;
+
+            if (ClientManager.Instance.IsConnectedToLobby()) {
                 SceneManager.LoadScene("WaitingRoomClient");
+                yield break; // Esci dalla coroutine se ci si connette alla lobby
+            }
+
+            yield return null; // Aspetta il prossimo frame e continua la coroutine
         }
+
+        // Se il timer scade e non ci si è connessi alla lobby, mostra un errore
         GameObject.Find("PopUpContainer").GetComponent<PopUpBadNameUI>()
             .SetErrorText("Unable to join the lobby.\nTry another one.");
     }
