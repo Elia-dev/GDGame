@@ -31,7 +31,7 @@ public class HostMenuUI : MonoBehaviour
         backButton.onClick.AddListener(() =>
         {
             ClientManager.Instance.KillLobby();
-            Player.Instance.resetPlayer();
+            Player.Instance.ResetPlayer();
             GameManager.Instance.ResetGameManager();
             
             SceneManager.LoadScene("GameMenu");

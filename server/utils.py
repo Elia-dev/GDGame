@@ -78,3 +78,34 @@ def get_neighbors_of(territory, all_terr):
     for node in nodes:
         territories.append(get_territory_from_node(node, all_terr))
     return territories
+
+
+def get_isolate_territory(my_terr, all_terr):
+    for terr in my_terr:
+        is_isolate = True
+        neighbors = get_neighbors_of(terr, all_terr)
+        for neighbor in neighbors:
+            if neighbor not in my_terr:
+                is_isolate = False
+        if is_isolate:
+            return terr
+
+
+def get_friends_neighbors(territory, my_terr, all_terr):
+    friends = []
+    neighbors = get_neighbors_of(territory, all_terr)
+    for neighbor in neighbors:
+        for my_terr in my_terr:
+            if neighbor.id == my_terr.id:
+                friends.append(neighbor)
+    return friends
+
+
+def get_enemy_neighbors_of(territory, my_terrs, all_terrs):
+    enemy = []
+    neighbors = get_neighbors_of(territory, all_terrs)
+    for neighbor in neighbors:
+        for my_terr in my_terrs:
+            if neighbor.id != my_terr.id:
+                enemy.append(neighbor)
+    return enemy

@@ -12,7 +12,6 @@ public class BGMusic_selector : MonoBehaviour
     public AudioSource loseTrack;
     public AudioSource conqueredTerritory;
     public AudioSource lostTerritory;
-    private int i = 0;
     private int _countBattle = 0;
     void Start()
     {
@@ -28,7 +27,7 @@ public class BGMusic_selector : MonoBehaviour
     void Update()
     {
         //Debug.Log("Update di volumeManager");
-        if (SceneManager.GetActiveScene().name == "MainMenu" && !menuTrack.isPlaying)
+        if (SceneManager.GetActiveScene().name.Equals("MainMenu") && !menuTrack.isPlaying)
         {
             Debug.Log("MainMenu selected, menuTrack is not playing, ATTIVATA!");
             gameTrack.Stop();
@@ -39,7 +38,7 @@ public class BGMusic_selector : MonoBehaviour
             menuTrack.Play();
         }
         //getWinnerBattleId
-        else if (SceneManager.GetActiveScene().name == "Main" && !gameTrack.isPlaying && !winTrack.isPlaying && !loseTrack.isPlaying)
+        else if (SceneManager.GetActiveScene().name.Equals("Main") && !gameTrack.isPlaying && !winTrack.isPlaying && !loseTrack.isPlaying && !conqueredTerritory.isPlaying && !lostTerritory.isPlaying)
         {
             Debug.Log("Main selected, GameTrack is not playing, ATTIVATA!");
             winTrack.Stop();
@@ -49,7 +48,32 @@ public class BGMusic_selector : MonoBehaviour
             lostTerritory.Stop();
             gameTrack.Play();
         }
-        else if (SceneManager.GetActiveScene().name == "Main" && gameTrack.isPlaying && !conqueredTerritory.isPlaying &&
+        else if (SceneManager.GetActiveScene().name.Equals("Main") && !GameManager.Instance.getWinnerGameId().Equals(""))
+        {
+            if (GameManager.Instance.getWinnerGameId().Equals(Player.Instance.PlayerId) && !winTrack.isPlaying)
+            {
+                Debug.Log("Main selected, I won the game, winTrack is not playing, ATTIVATA" );
+                loseTrack.Stop();
+                menuTrack.Stop();
+                gameTrack.Stop();
+                conqueredTerritory.Stop();
+                lostTerritory.Stop();
+                winTrack.Play();
+                Debug.Log("WinTrack.isPlaying = " + winTrack.isPlaying);
+            }
+            else if(!GameManager.Instance.getWinnerGameId().Equals(Player.Instance.PlayerId) && !loseTrack.isPlaying)
+            {
+                Debug.Log("Main selected, I Lose the game, loseTrack is not playing, ATTIVATA");
+                menuTrack.Stop();
+                gameTrack.Stop();
+                winTrack.Stop();
+                conqueredTerritory.Stop();
+                lostTerritory.Stop();
+                loseTrack.Play();
+                Debug.Log("LoseTrack.isPlaying = " + loseTrack.isPlaying);
+            }
+        }
+        else if (SceneManager.GetActiveScene().name.Equals("Main") && gameTrack.isPlaying && !conqueredTerritory.isPlaying &&
                  !lostTerritory.isPlaying)
         {
             if (_countBattle == 0)
@@ -73,35 +97,8 @@ public class BGMusic_selector : MonoBehaviour
             {
                 _countBattle = 0;
             }
-            
         }
-        else if (SceneManager.GetActiveScene().name == "Main" && !GameManager.Instance.getWinnerGameId().Equals(""))
-        {
-            if (GameManager.Instance.getWinnerGameId() == Player.Instance.PlayerId && !winTrack.isPlaying)
-            {
-                Debug.Log("Main selected, I won the game, winTrack is not playing, ATTIVATA volte numero = " + i);
-                loseTrack.Stop();
-                menuTrack.Stop();
-                gameTrack.Stop();
-                conqueredTerritory.Stop();
-                lostTerritory.Stop();
-                winTrack.Play();
-                Debug.Log("WinTrack.isPlaying = " + winTrack.isPlaying);
-                i++;
-            }
-            else if(GameManager.Instance.getWinnerGameId() != Player.Instance.PlayerId && !loseTrack.isPlaying)
-            {
-                Debug.Log("Main selected, I Lose the game, loseTrack is not playing, ATTIVATA volte numero = " + i);
-                menuTrack.Stop();
-                gameTrack.Stop();
-                winTrack.Stop();
-                conqueredTerritory.Stop();
-                lostTerritory.Stop();
-                loseTrack.Play();
-                Debug.Log("LoseTrack.isPlaying = " + loseTrack.isPlaying);
-                i++;
-            }
-        }
+        
     }
 
     private void PlaySoundWithFade(AudioSource sound)
@@ -129,12 +126,12 @@ public class BGMusic_selector : MonoBehaviour
         
         yield return new WaitForSeconds(sound.clip.length);
         
-        StartCoroutine(FadeInBackgroundMusic(sound));
+        StartCoroutine(FadeInBackgroundMusic());
     }
 
-    private IEnumerator FadeInBackgroundMusic(AudioSource sound)
+    private IEnumerator FadeInBackgroundMusic()
     {
-        float duration = 1.5f;
+        float duration = 1.2f;
         float targetVolume = PlayerPrefs.GetFloat("musicVolume");
         float startVolume = gameTrack.volume;
 
