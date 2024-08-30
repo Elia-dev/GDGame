@@ -147,11 +147,13 @@ public class ClientManager
 
     public async void KillLobby()
     {
+        setIsConnectedToLobby(false);
         await SendMessage(_webSocket, _cancellationToken, "LOBBY_KILLED_BY_HOST: " + Player.Instance.PlayerId);
     }
 
     public async void LeaveLobby()
     {
+        setIsConnectedToLobby(false);
         await SendMessage(_webSocket, _cancellationToken, "PLAYER_HAS_LEFT_THE_LOBBY: " + Player.Instance.PlayerId);
     }
     

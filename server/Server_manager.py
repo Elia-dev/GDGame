@@ -68,9 +68,8 @@ async def handler(websocket):
                             await client_task
                         else:
                             joined = False
+                            await player.sock.send("CONNECTION_REFUSED")
                             print("Lobby is full or the game is already started")
-                    else:
-                        joined = False
                 if not foundGame:
                     print("Unable to find the lobby")
                     await player.sock.send("CONNECTION_REFUSED")
