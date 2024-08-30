@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class MoveTerritoriesCardsUI : MoveCardsUI {
     [SerializeField] public GameObject imagePrefab; // Prefab dell'immagine da muovere
@@ -41,7 +42,21 @@ public class MoveTerritoriesCardsUI : MoveCardsUI {
                 .activateTerritories();
         }
     }
+    
+    public void MostraCarteConAnimazione() {
+        for (int i = 0; i < territories.Count; i++) {
+            GameObject nuovaCarta = Instantiate(imagePrefab, gridTransform);
+            loadSprite("Territories/" + territories[i].id);
+            nuovaCarta.GetComponent<Image>().sprite = imgSprite;
+        
+            // Nascondi inizialmente la carta (o scala piccola)
+            nuovaCarta.transform.localScale = Vector3.zero;
 
+            // Anima la carta in modo che appaia
+            nuovaCarta.transform.DOScale(Vector3.one, 0.5f).SetDelay(i * 0.2f); // Anima con ritardo progressivo
+        }
+    }
+    
     //METODI NON USATI MoveCards e MoveImage
     public override IEnumerator MoveCards() {
         {
