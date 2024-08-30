@@ -29,18 +29,10 @@ public class MatchmakingManager : MonoBehaviour {
 
     void Start() {
         _timer = _delay;
-        /*
-        foreach (Transform child in contentParent)
-        {
-            Destroy(child.gameObject);
-        }*/
+        
         // Per ogni partita disponibile, crea una riga nella lista
         _lobbies.ForEach(lobby => {
-            /*Debug.Log("Lobby: " + lobby.getLobbyID());
-            Debug.Log("host: " + lobby.getHostName());
-            Debug.Log("players: " + lobby.getPlayersNum());*/
             GameObject newRow = Instantiate(rowPrefab, contentParent);
-            //newRow.transform.SetParent(contentParent, false);
             newRow.transform.SetParent(contentParent);
 
             newRow.transform.Find("idLobbyText").GetComponent<TMP_Text>().text = lobby.getLobbyID();
@@ -51,23 +43,6 @@ public class MatchmakingManager : MonoBehaviour {
             newRow.GetComponent<Button>().onClick.AddListener(() => JoinLobby(lobby.getLobbyID()));
         });
         rowPrefab.SetActive(false);
-        /*
-        for(int i = 0; i < _lobbies.Count; i++)
-        {
-            Debug.Log("Lobby: " + _lobbies[i].getLobbyID() + " i = " + i);
-            Debug.Log("host: " + _lobbies[i].getHostName()+ " i = " + i);
-            Debug.Log("players: " + _lobbies[i].getPlayersNum().ToString()+ " i = " + i);
-            GameObject newRow = Instantiate(rowPrefab, contentParent);
-            newRow.transform.SetParent(contentParent, false);
-
-            newRow.transform.Find("idLobbyText").GetComponent<TextMeshProUGUI>().text = _lobbies[i].getLobbyID();
-            newRow.transform.Find("hostNameText").GetComponent<TextMeshProUGUI>().text = _lobbies[i].getHostName();
-            newRow.transform.Find("numPlayersText").GetComponent<TextMeshProUGUI>().text = _lobbies[i].getPlayersNum().ToString();
-
-            // Aggiungi un listener al click del bottone per restituire l'idLobby
-            newRow.GetComponent<Button>().onClick.AddListener(() => SelectLobby(_lobbies[i].getLobbyID()));
-        }
-        */
     }
 
     private void Update() {
@@ -116,7 +91,7 @@ public class MatchmakingManager : MonoBehaviour {
         GameManager.Instance.SetLobbyId(idLobby);
         ClientManager.Instance.JoinLobbyAsClient(idLobby);
         popupError.SetActive(true);
-        GameObject.Find("PopUpContainer").GetComponent<PopUpBadNameUI>()
+        GameObject.Find("PopUpContainer").GetComponent<PopUpDisplayMessageUI>()
             .SetErrorText("Trying to join the lobby");
         StartCoroutine(AttemptJoinLobby());
     }
@@ -135,7 +110,7 @@ public class MatchmakingManager : MonoBehaviour {
         }
 
         // Se il timer scade e non ci si è connessi alla lobby, mostra un errore
-        GameObject.Find("PopUpContainer").GetComponent<PopUpBadNameUI>()
+        GameObject.Find("PopUpContainer").GetComponent<PopUpDisplayMessageUI>()
             .SetErrorText("Unable to join the lobby.\nTry another one.");
     }
 }

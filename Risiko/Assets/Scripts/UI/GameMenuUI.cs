@@ -38,7 +38,7 @@ public class GameMenuUI : MonoBehaviour
             {
                 Debug.Log("Invalid username");
                 popupError.SetActive(true);
-                GameObject.Find("PopUpContainer").GetComponent<PopUpBadNameUI>()
+                GameObject.Find("PopUpContainer").GetComponent<PopUpDisplayMessageUI>()
                     .SetErrorText(Utils.CheckNickname(username));
             }
 		});
@@ -56,7 +56,7 @@ public class GameMenuUI : MonoBehaviour
             else
             {
                 popupError.SetActive(true);
-                GameObject.Find("PopUpContainer").GetComponent<PopUpBadNameUI>()
+                GameObject.Find("PopUpContainer").GetComponent<PopUpDisplayMessageUI>()
                     .SetErrorText(Utils.CheckNickname(username));
             }
         });
