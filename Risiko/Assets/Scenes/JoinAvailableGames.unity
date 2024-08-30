@@ -1796,13 +1796,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1388410468}
   - component: {fileID: 1388410469}
+  - component: {fileID: 1388410470}
   m_Layer: 5
   m_Name: PopUpContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1388410468
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1849,6 +1850,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1388410470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388410467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2759e6f8f82bea7489770dc9dcbeb440, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  errorText: {fileID: 1035106766}
 --- !u!1 &1490640778
 GameObject:
   m_ObjectHideFlags: 0
@@ -2086,6 +2100,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 773864393583f1d1b89605cffdc04c6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  backButton: {fileID: 1490640780}
+  popupError: {fileID: 1161172401}
   rowPrefab: {fileID: 1360780650}
   contentParent: {fileID: 672464940}
 --- !u!1 &1677635802
