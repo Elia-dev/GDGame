@@ -10,8 +10,8 @@ class GameManager:
         if GameManager._instance is not None:
             raise Exception("This class is a singleton!")
 
-        self._enemy_attacker_territory = None
-        self._my_territory_under_attack = None
+        self.enemy_attacker_territory = None
+        self.my_territory_under_attack = None
         self._players_dict = {}
         self._colors_dict = {}
         self.all_territories = []  # List of all territories in the game
@@ -30,6 +30,11 @@ class GameManager:
         self._my_army_num_to_defend = 0
         self._lobby_id = ""
         self._im_attacking = False
+        self.extracted_enemy_numbers = [0, 0, 0]
+        self.extracted_my_numbers = [0, 0, 0]
+        self.enemy_army_num = 0
+        self.my_army_num = 0
+        self.force_update_after_attack = False
 
     @classmethod
     def get_instance(cls):
@@ -200,3 +205,15 @@ class GameManager:
 
     def get_im_attacking(self):
         return self._im_attacking
+
+    def reset_enemy_extracted_numbers(self):
+        self.extracted_enemy_numbers = None
+
+    def reset_my_extracted_numbers(self):
+        self.extracted_my_numbers = None
+
+    def reset_enemy_army_num(self):
+        self.enemy_army_num = 0
+
+    def reset_my_army_num(self):
+        self.my_army_num = 0

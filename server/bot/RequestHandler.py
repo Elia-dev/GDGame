@@ -2,6 +2,7 @@ import json
 from Objective import Objective
 import websockets
 import asyncio
+import re
 from Territory import Territory
 
 
@@ -110,41 +111,49 @@ class RequestHandler:
 
                     elif 'UNDER_ATTACK' in message:
                         self.game_manager.set_im_under_attack(True)
-                        parts = message.replace('SEND_TERRITORIES_TO_ALL: ', '').replace(' ', '').strip()
+                        request = message.replace('UNDER_ATTACK: ', '').replace(' ', '')
+                        matches = re.findall(r'\[(.*?)]', request)
+
+                        self.game_manager.extracted_enemy_numbers = list(map(int, matches[0].split(',')))
+
+                        self.game_manager.extracted_my_numbers = list(map(int, matches[1].split(',')))
+
+                        request = request.replace(' ', '')
+                        parts = request.split(',')
                         attacker_id = parts[0]
 
-                        territory_ids = parts[1].split('-')
-                        attacker_ter_id = territory_ids[0]
-                        defender_ter_id = territory_ids[1]
+                        ter_ids = parts[1].split('-')
+                        attacker_ter_id = ter_ids[0]
+                        defender_ter_id = ter_ids[1]
 
                         army_nums = parts[2].split('-')
-                        attacker_army_num = army_nums[0]
-                        defender_army_num = army_nums[1]
+                        attacker_army_num = int(army_nums[0])
+                        defender_army_num = int(army_nums[1])
 
-                        self.game_manager.set_enemy_attacker_army_num(attacker_army_num)
-                        self.game_manager.set_my_army_num_to_defend(defender_army_num)
+                        self.game_manager.enemy_army_num = attacker_army_num
+                        self.game_manager.my_army_num = defender_army_num
 
-                        for territory in self.game_manager.all_territories:
-                            if attacker_ter_id == territory.id:
-                                self.game_manager.get_enemy_attacker_territory().id = territory.id
-                                self.game_manager.get_enemy_attacker_territory().name = territory.name
-                                self.game_manager.get_enemy_attacker_territory().continent = territory.continent
-                                self.game_manager.get_enemy_attacker_territory().node = territory.node
-                                self.game_manager.get_enemy_attacker_territory().num_tanks = territory.num_tanks
-                                self.game_manager.get_enemy_attacker_territory().description = territory.description
-                                self.game_manager.get_enemy_attacker_territory().function = territory.function
-                                self.game_manager.get_enemy_attacker_territory().image = territory.image
-                                self.game_manager.get_enemy_attacker_territory().player_id = attacker_id
-                            if defender_ter_id == territory.id:
-                                self.game_manager.get_my_territory_under_attack().id = territory.id
-                                self.game_manager.get_my_territory_under_attack().name = territory.name
-                                self.game_manager.get_my_territory_under_attack().continent = territory.continent
-                                self.game_manager.get_my_territory_under_attack().node = territory.node
-                                self.game_manager.get_my_territory_under_attack().num_tanks = territory.num_tanks
-                                self.game_manager.get_my_territory_under_attack().description = territory.description
-                                self.game_manager.get_my_territory_under_attack().function = territory.function
-                                self.game_manager.get_my_territory_under_attack().image = territory.image
-                                self.game_manager.get_my_territory_under_attack().player_id = territory.player_id
+                        attacker_territory = list(
+                            filter(lambda terr: terr.id == attacker_ter_id, self.game_manager.all_territories)
+                        ).pop()
+                        self.game_manager.enemy_attacker_territory = attacker_territory
+                        defender_territory = list(
+                            filter(lambda terr: terr.id == defender_ter_id, self.player.territories)
+                        ).pop()
+                        self.game_manager.my_territory_under_attack = defender_territory
+
+                        self.game_manager.set_im_under_attack(True)
+                        self.game_manager.set_im_attacking(False)
+
+                    elif 'ATTACKER_ALL_EXTRACTED_DICE' in message:
+                        request = message.replace('ATTACKER_ALL_EXTRACTED_DICE: ', '').strip()
+                        matches = re.findall(r'\[(.*?)]', request)
+
+                        self.game_manager.extracted_my_numbers = list(map(int, matches[0].split(',')))
+                        self.game_manager.extracted_enemy_numbers = list(map(int, matches[1].split(',')))
+
+                        print(f'EXTRACTED_MY_NUMBERS: {self.game_manager.extracted_my_numbers}')
+                        print(f'EXTRACTED_ENEMY_NUMBERS: {self.game_manager.extracted_enemy_numbers}')
 
                     elif 'ATTACK_FINISHED_FORCE_UPDATE' in message:
 
