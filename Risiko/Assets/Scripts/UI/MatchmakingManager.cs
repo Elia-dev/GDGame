@@ -110,14 +110,15 @@ public class MatchmakingManager : MonoBehaviour {
     private void JoinLobby(string idLobby) {
         GameManager.Instance.SetLobbyId(idLobby);
         ClientManager.Instance.JoinLobbyAsClient(idLobby);
+        popupError.SetActive(true);
+        GameObject.Find("PopUpContainer").GetComponent<PopUpBadNameUI>()
+            .SetErrorText("Trying to join the lobby");
         float timerConnection = 5.0f;
         while (timerConnection > 0) {
             timerConnection -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
             if (ClientManager.Instance.IsConnectedToLobby())
                 SceneManager.LoadScene("WaitingRoomClient");
         }
-
-        popupError.SetActive(true);
         GameObject.Find("PopUpContainer").GetComponent<PopUpBadNameUI>()
             .SetErrorText("Unable to join the lobby.\nTry another one.");
     }
