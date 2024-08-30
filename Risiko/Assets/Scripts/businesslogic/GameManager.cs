@@ -30,7 +30,7 @@ public class GameManager
     private int _enemyArmyNum = 0;
     private int _myArmyNum = 0;
     private bool _forceUpdateAfterAttack = false;
-    private string _lobbyID;
+    private string _lobbyID = "";
     private bool _imAttacking = false;
 
     private GameManager() // Private constructor to allow instantiation using singleton only

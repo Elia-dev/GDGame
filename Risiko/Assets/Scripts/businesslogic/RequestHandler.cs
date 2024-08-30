@@ -13,7 +13,6 @@ public class RequestHandler
 {
     private readonly Channel<(string, string)> _queue = Channel.CreateUnbounded<(string, string)>();
     private string _request;
-    
     public async Task HandleRequests(CancellationToken cancellationToken)
     {
         await foreach (var (clientId, message) in _queue.Reader.ReadAllAsync(cancellationToken))
@@ -22,12 +21,22 @@ public class RequestHandler
             {
                 return;
             }
-            
-            if(message.Contains("LOBBY_ID:")) // Manage lobby_id request
+
+            if (message.Contains("LOBBY_ID:")) // Manage lobby_id request
             {
                 Debug.Log("Ricevuta richiesta: LOBBY_ID");
                 _request = RemoveRequest(message, "LOBBY_ID:");
                 GameManager.Instance.SetLobbyId(_request);
+            }
+            else if (message.Contains("CONNECTED_TO_LOBBY"))
+            {
+                Debug.Log("Ricevuta richiesta: CONNECTED_TO_LOBBY");
+                ClientManager.Instance.setIsConnectedToLobby(true);
+            }
+            else if (message.Contains("CONNECTION_REFUSED"))
+            {
+                Debug.Log("Ricevuta richiesta: CONNECTION_REFUSED");
+                ClientManager.Instance.setIsConnectedToLobby(false);
             }
             else if (message.Contains("SELECT_ALL_GAMES:"))
             {

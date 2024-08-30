@@ -37,8 +37,17 @@ public class ClientManager
     //private string _server = "ws://localhost:12345";
     private ClientWebSocket _webSocket = null;
     private CancellationToken _cancellationToken;
-    
+    private bool _isConnectedToLobby = false;
 
+    public bool IsConnectedToLobby()
+    {
+        return _isConnectedToLobby;
+    }
+
+    public void setIsConnectedToLobby(bool isConnectedToLobby)
+    {
+        _isConnectedToLobby = isConnectedToLobby;
+    }
     public bool IsConnected()
     {
             return _connected;

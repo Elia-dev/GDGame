@@ -50,7 +50,8 @@ async def handler(websocket):
 
 
             elif "JOIN_GAME" in message:
-
+                joined = False
+                foundGame = False
                 #Prendo l'id della lobby, se esiste aggiungo il player alla lobby aggiungendolo alla lista contenuta in Game
 
                 player.player_id = utils.generate_player_id()
@@ -58,14 +59,24 @@ async def handler(websocket):
                 game_id = message.split(": ")[1]
                 for game in games:
                     if game.game_id == game_id:
+                        foundGame = True
                         if len(game.players) < 6 and game.game_waiting_to_start is True:
                             print(f"Added player {player} to lobby {game_id}")
                             game.add_player(player)
                             client_task = asyncio.create_task(game.listen_to_player_request(player))
+                            joined = True
+                            player.sock.send("CONNECTED_TO_LOBBY")
                             await client_task
                         else:
+                            joined = False
                             print("Lobby is full or the game is already started")
-                print("Unable to find the lobby")
+                    else:
+                        joined = False
+                if not foundGame:
+                    print("Unable to find the lobby")
+                    player.sock.send("CONNECTION_REFUSED")
+                if foundGame and not joined:
+                    player.sock.send("CONNECTION_REFUSED")
             elif "SELECT_ALL_GAMES" in message:
                 response = []
                 #Voglio mandare id lobby, numPlayers, hostName
