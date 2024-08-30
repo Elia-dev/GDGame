@@ -6,13 +6,14 @@ using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MatchmakingManager : MonoBehaviour
-{
+public class MatchmakingManager : MonoBehaviour {
     public GameObject rowPrefab; // Il prefab per la riga
     public Transform contentParent; // Il contenitore (Content) delle righe
     private static List<Lobby> _lobbies = new List<Lobby>();
-    private float _delay = 7.0f; // Durata del ritardo in secondi
+    private float _delay = 8.0f; // Durata del ritardo in secondi
     private float _timer;
+    private bool _reloadLobbies = false;
+
     void Start() {
         _timer = _delay;
         /*
@@ -21,8 +22,7 @@ public class MatchmakingManager : MonoBehaviour
             Destroy(child.gameObject);
         }*/
         // Per ogni partita disponibile, crea una riga nella lista
-        _lobbies.ForEach(lobby =>
-        {
+        _lobbies.ForEach(lobby => {
             /*Debug.Log("Lobby: " + lobby.getLobbyID());
             Debug.Log("host: " + lobby.getHostName());
             Debug.Log("players: " + lobby.getPlayersNum());*/
@@ -31,12 +31,11 @@ public class MatchmakingManager : MonoBehaviour
             newRow.transform.SetParent(contentParent);
 
             newRow.transform.Find("idLobbyText").GetComponent<TMP_Text>().text = lobby.getLobbyID();
-            newRow.transform.Find("hostNameText").GetComponent<TMP_Text>().text = lobby.getHostName(); 
+            newRow.transform.Find("hostNameText").GetComponent<TMP_Text>().text = lobby.getHostName();
             newRow.transform.Find("numPlayersText").GetComponent<TMP_Text>().text = lobby.getPlayersNum().ToString();
 
             // Aggiungi un listener al click del bottone per restituire l'idLobby
             newRow.GetComponent<Button>().onClick.AddListener(() => JoinLobby(lobby.getLobbyID()));
-            
         });
         rowPrefab.SetActive(false);
         /*
@@ -49,7 +48,7 @@ public class MatchmakingManager : MonoBehaviour
             newRow.transform.SetParent(contentParent, false);
 
             newRow.transform.Find("idLobbyText").GetComponent<TextMeshProUGUI>().text = _lobbies[i].getLobbyID();
-            newRow.transform.Find("hostNameText").GetComponent<TextMeshProUGUI>().text = _lobbies[i].getHostName(); 
+            newRow.transform.Find("hostNameText").GetComponent<TextMeshProUGUI>().text = _lobbies[i].getHostName();
             newRow.transform.Find("numPlayersText").GetComponent<TextMeshProUGUI>().text = _lobbies[i].getPlayersNum().ToString();
 
             // Aggiungi un listener al click del bottone per restituire l'idLobby
@@ -59,22 +58,18 @@ public class MatchmakingManager : MonoBehaviour
     }
 
     private void Update() {
-        if (_timer > 0)
-        {
+        if (_timer > 0) {
             _timer -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
         }
-        
-        if (_timer > 4) {
-            ClientManager.Instance.RequestAllGames();
-        }
-        
-        if(_timer > 6) {
-            foreach (Transform child in contentParent)
-            {
+
+        if (_timer > 3 && !_reloadLobbies) {
+            _reloadLobbies = true;
+            rowPrefab.SetActive(true);
+            foreach (Transform child in contentParent) {
                 Destroy(child.gameObject);
             }
-            _lobbies.ForEach(lobby =>
-            {
+
+            _lobbies.ForEach(lobby => {
                 /*Debug.Log("Lobby: " + lobby.getLobbyID());
                 Debug.Log("host: " + lobby.getHostName());
                 Debug.Log("players: " + lobby.getPlayersNum());*/
@@ -83,22 +78,24 @@ public class MatchmakingManager : MonoBehaviour
                 newRow.transform.SetParent(contentParent);
 
                 newRow.transform.Find("idLobbyText").GetComponent<TMP_Text>().text = lobby.getLobbyID();
-                newRow.transform.Find("hostNameText").GetComponent<TMP_Text>().text = lobby.getHostName(); 
-                newRow.transform.Find("numPlayersText").GetComponent<TMP_Text>().text = lobby.getPlayersNum().ToString();
+                newRow.transform.Find("hostNameText").GetComponent<TMP_Text>().text = lobby.getHostName();
+                newRow.transform.Find("numPlayersText").GetComponent<TMP_Text>().text =
+                    lobby.getPlayersNum().ToString();
 
                 // Aggiungi un listener al click del bottone per restituire l'idLobby
                 newRow.GetComponent<Button>().onClick.AddListener(() => JoinLobby(lobby.getLobbyID()));
-            
             });
+            rowPrefab.SetActive(false);
         }
 
         if (_timer <= 0) {
             _timer = _delay;
+            ClientManager.Instance.RequestAllGames();
+            _reloadLobbies = false;
         }
     }
 
-    public static void LoadAvailableLobbies(List<Lobby> availableLobbies)
-    {
+    public static void LoadAvailableLobbies(List<Lobby> availableLobbies) {
         _lobbies = availableLobbies;
     }
 
@@ -108,7 +105,7 @@ public class MatchmakingManager : MonoBehaviour
         Debug.Log("Hai selezionato la partita con id: " + idLobby);
         // Puoi ora implementare il collegamento alla lobby o altro
     }*/
-    
+
     private void JoinLobby(string idLobby) {
         GameManager.Instance.SetLobbyId(idLobby);
         //Debug.Log("Lobby ID: " + idLobby);
