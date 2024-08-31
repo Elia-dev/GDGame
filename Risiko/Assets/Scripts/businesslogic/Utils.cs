@@ -47,13 +47,9 @@ namespace businesslogic
         static int[,] LoadAdjMatrix(string filePath, int n)
         {
             // Carica il file come TextAsset
-            TextAsset textAsset = Resources.Load<TextAsset>(filePath);
-    
-            if (textAsset == null)
-            {
-                Debug.LogError("File non trovato in Resources: " + filePath);
-                return null; // Evita il NullReferenceException restituendo null
-            }
+            Object fileObject = Resources.Load(filePath);
+            TextAsset textAsset = fileObject as TextAsset;
+            
             int[,] adjMatrix = new int[n, n];
             // Crea un MemoryStream dal byte array del TextAsset
             using (MemoryStream memoryStream = new MemoryStream(textAsset.bytes)) {
