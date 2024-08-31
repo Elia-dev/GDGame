@@ -73,7 +73,7 @@ namespace businesslogic
         public static List<int> GetNeighborsNodeOf(int territoryNode)
         {
             //string filePath = Path.Combine(Directory.GetCurrentDirectory(), "adj_matrix.bin");
-            string filePath = "adj_matrix";
+            string filePath = "BusinessLogic/adj_matrix";
             int[,] adjMatrix = LoadAdjMatrix(filePath, 42);
             List<int> neighbors = new List<int>();
             int n = adjMatrix.GetLength(0);  // Get the number of rows (or columns) in the matrix
