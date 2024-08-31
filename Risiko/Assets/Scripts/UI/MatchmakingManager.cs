@@ -36,9 +36,9 @@ namespace UI
                 GameObject newRow = Instantiate(rowPrefab, contentParent);
                 newRow.transform.SetParent(contentParent);
 
-                newRow.transform.Find("idLobbyText").GetComponent<TMP_Text>().text = lobby.getLobbyID();
-                newRow.transform.Find("hostNameText").GetComponent<TMP_Text>().text = lobby.getHostName();
-                newRow.transform.Find("numPlayersText").GetComponent<TMP_Text>().text = lobby.getPlayersNum().ToString();
+                newRow.transform.Find("idLobbyText").GetComponent<TMP_Text>().text = "Lobby: " + lobby.getLobbyID();
+                newRow.transform.Find("hostNameText").GetComponent<TMP_Text>().text = "Host: " + lobby.getHostName();
+                newRow.transform.Find("numPlayersText").GetComponent<TMP_Text>().text = "Players: " +lobby.getPlayersNum();
 
                 // Aggiungi un listener al click del bottone per restituire l'idLobby
                 newRow.GetComponent<Button>().onClick.AddListener(() => JoinLobby(lobby.getLobbyID()));
