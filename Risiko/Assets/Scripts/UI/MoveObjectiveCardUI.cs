@@ -42,7 +42,7 @@ namespace UI
         
         }
 
-        public override IEnumerator MoveCards() {
+        private IEnumerator MoveCards() {
             // Movimento della carta
             float elapsedTime = 0f;
             while (elapsedTime < moveDuration) {

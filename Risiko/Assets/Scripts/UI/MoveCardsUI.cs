@@ -12,7 +12,5 @@ namespace UI
         public void loadSprite(string spriteName) {
             imgSprite = Resources.Load<Sprite>(spriteName);
         }
-
-        public abstract IEnumerator MoveCards();
     }
 }
