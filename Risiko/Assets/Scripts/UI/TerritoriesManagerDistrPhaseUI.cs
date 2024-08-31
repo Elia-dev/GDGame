@@ -328,7 +328,7 @@ namespace UI
                 popUpAddTank.SetActive(true);
             }
             else {
-                gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
+                //gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
                 popUpAddTank.SetActive(false);
                 selectedTerritory.Deselect();
                 selectedTerritory = null;
