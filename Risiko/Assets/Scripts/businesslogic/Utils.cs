@@ -46,23 +46,28 @@ namespace businesslogic
     
         static int[,] LoadAdjMatrix(string filePath, int n)
         {
+            // Carica il file come TextAsset
+            TextAsset textAsset = Resources.Load<TextAsset>(filePath);
             int[,] adjMatrix = new int[n, n];
-            using (BinaryReader reader = new BinaryReader(File.Open(filePath, FileMode.Open)))
-            {
-                for (int i = 0; i < n; i++)
-                {
-                    for (int j = 0; j < n; j++)
-                    {
-                        adjMatrix[i, j] = reader.ReadInt32();
+            // Crea un MemoryStream dal byte array del TextAsset
+            using (MemoryStream memoryStream = new MemoryStream(textAsset.bytes)) {
+                // Usa il MemoryStream per creare un BinaryReader
+                using (BinaryReader reader = new BinaryReader(memoryStream)) {
+                    for (int i = 0; i < n; i++) {
+                        for (int j = 0; j < n; j++) {
+                            adjMatrix[i, j] = reader.ReadInt32();
+                        }
                     }
                 }
             }
+
             return adjMatrix;
         }
     
         public static List<int> GetNeighborsNodeOf(int territoryNode)
         {
-            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "adj_matrix.bin");
+            //string filePath = Path.Combine(Directory.GetCurrentDirectory(), "adj_matrix.bin");
+            string filePath = "adj_matrix";
             int[,] adjMatrix = LoadAdjMatrix(filePath, 42);
             List<int> neighbors = new List<int>();
             int n = adjMatrix.GetLength(0);  // Get the number of rows (or columns) in the matrix
