@@ -59,11 +59,7 @@ namespace UI
                 }
 
                 _lobbies.ForEach(lobby => {
-                    /*Debug.Log("Lobby: " + lobby.getLobbyID());
-                Debug.Log("host: " + lobby.getHostName());
-                Debug.Log("players: " + lobby.getPlayersNum());*/
                     GameObject newRow = Instantiate(rowPrefab, contentParent);
-                    //newRow.transform.SetParent(contentParent, false);
                     newRow.transform.SetParent(contentParent);
 
                     newRow.transform.Find("idLobbyText").GetComponent<TMP_Text>().text = "Lobby: " + lobby.getLobbyID();
