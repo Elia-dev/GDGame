@@ -216,35 +216,24 @@ namespace UI
                     string color = GameManager.Instance.GetPlayerColor(territory.player_id);
                     terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 50);
                     terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 50);
-                    GameObject flag = Instantiate(tenArmyFlag, terr.GetComponent<Transform>());
-                    flag.GetComponent<SpriteRenderer>().sprite =
-                        loadSprite("Army/TenArmy" + GameManager.Instance.GetPlayerColor(territory.player_id));
-                    /*// Mantieni l'aspect ratio originale del rettangolo dell'immagine
-                    RectTransform rectTransform = flag.GetComponent<RectTransform>();
-                    float currentWidth = rectTransform.rect.width;
-                    float currentHeight = rectTransform.rect.height;
 
-                    // Calcola l'aspect ratio della nuova Sprite
-                    float spriteAspect = flag.GetComponent<SpriteRenderer>().sprite.rect.width / flag.GetComponent<SpriteRenderer>().sprite.rect.height;
-
-                    // Regola il RectTransform dell'Image mantenendo le sue dimensioni
-                    if (currentWidth / currentHeight > spriteAspect)
-                    {
-                        // L'immagine è più larga rispetto alla sprite
-                        float newHeight = currentWidth / spriteAspect;
-                        rectTransform.sizeDelta = new Vector2(currentWidth, newHeight);
+                    foreach (Transform child in terr.GetComponent<Transform>()) {
+                        Destroy(child.gameObject);
                     }
-                    else
-                    {
-                        // L'immagine è più alta rispetto alla sprite
-                        float newWidth = currentHeight * spriteAspect;
-                        rectTransform.sizeDelta = new Vector2(newWidth, currentHeight);
-                    }*/
-                    flag.GetComponent<RectTransform>().localScale = new Vector3(0.25f, 0.25f, flag.GetComponent<RectTransform>().localScale.z);
-                    flag.transform.position = terr.transform.position;
-                    flag.transform.position = CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>());
-                    flag.transform.position = new Vector3(flag.transform.position.x, flag.transform.position.y, 0);
-                    Debug.Log("Flag z: " + flag.transform.position);
+                    
+                    for(int i = 0; i < territory.num_tanks/10; i++) {
+                        GameObject flag = Instantiate(tenArmyFlag, terr.GetComponent<Transform>());
+                        flag.GetComponent<SpriteRenderer>().sprite =
+                            loadSprite("Army/TenArmy" + GameManager.Instance.GetPlayerColor(territory.player_id));
+
+                        // Ridimensiona l'oggetto flag
+                        flag.transform.localScale = new Vector3(0.25f, 0.25f, flag.transform.localScale.z);
+
+                        // Imposta la posizione del flag al centro del territorio
+                        flag.transform.position = CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>());
+                        flag.transform.position = new Vector3(flag.transform.position.x, flag.transform.position.y,
+                            terr.transform.position.z);
+                    }
                 }
             }
         }
