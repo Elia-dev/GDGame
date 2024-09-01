@@ -210,11 +210,32 @@ namespace UI
                     string color = GameManager.Instance.GetPlayerColor(territory.player_id);
                     terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 50);
                     terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 50);
-                    GameObject flag = Instantiate(tenArmyFlag, terr.GetComponent<Transform>());
-                    flag.GetComponent<Image>().sprite =
+                    /*GameObject flag = Instantiate(tenArmyFlag, terr.GetComponent<Transform>());
+                    flag.GetComponent<SpriteRenderer>().sprite =
                         loadSprite("Army/TenArmy" + GameManager.Instance.GetPlayerColor(territory.player_id));
+                    // Mantieni l'aspect ratio originale del rettangolo dell'immagine
+                    RectTransform rectTransform = flag.GetComponent<RectTransform>();
+                    float currentWidth = rectTransform.rect.width;
+                    float currentHeight = rectTransform.rect.height;
+
+                    // Calcola l'aspect ratio della nuova Sprite
+                    float spriteAspect = flag.GetComponent<Image>().sprite.rect.width / flag.GetComponent<Image>().sprite.rect.height;
+
+                    // Regola il RectTransform dell'Image mantenendo le sue dimensioni
+                    if (currentWidth / currentHeight > spriteAspect)
+                    {
+                        // L'immagine è più larga rispetto alla sprite
+                        float newHeight = currentWidth / spriteAspect;
+                        rectTransform.sizeDelta = new Vector2(currentWidth, newHeight);
+                    }
+                    else
+                    {
+                        // L'immagine è più alta rispetto alla sprite
+                        float newWidth = currentHeight * spriteAspect;
+                        rectTransform.sizeDelta = new Vector2(newWidth, currentHeight);
+                    }
                     flag.transform.position = terr.transform.position;
-                    flag.transform.position = CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>());
+                    flag.transform.position = CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>());*/
                 }
             }
         }
