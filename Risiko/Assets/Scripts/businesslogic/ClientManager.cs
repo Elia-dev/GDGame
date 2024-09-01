@@ -158,6 +158,11 @@ namespace businesslogic
             await SendMessage(_webSocket, _cancellationToken, "PLAYER_HAS_LEFT_THE_LOBBY: " + Player.Instance.PlayerId);
         }
     
+        public async void LeaveGame()
+        {
+            await SendMessage(_webSocket, _cancellationToken, "PLAYER_HAS_LEFT_THE_GAME: " + Player.Instance.PlayerId);
+            // Sicuramente qualcosa da metterci per ripulire tutto tornando al menu principale
+        }
         public async void JoinLobbyAsClient(string lobbyID)
         {
             await SendMessage(_webSocket, _cancellationToken, "JOIN_GAME: " + lobbyID);

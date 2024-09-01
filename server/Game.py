@@ -31,7 +31,7 @@ class Game:
         self.firstRound = True
 
     def add_player(self, player):
-        if player.name == None:
+        if player.name is None:
             player.name = "Computer"
         self.players.append(player)
         print(f"Player {player.player_id} with name {player.name} added to game {self.game_id}")
@@ -174,6 +174,14 @@ class Game:
                     self.game_id = None
                     self.remove_all_players()
                     return
+                if "PLAYER_HAS_LEFT_THE_GAME" in message:
+                    # TODO: IMPLEMENTARE RIMPIAZZO CON BOT
+                    # Implementazione temporanea sotto, chiude la partita
+                    print("Ricevuto PLAYER_HAS_LEFT_THE_GAME, chiusura della partita in corso...")
+                    id = self._remove_request(message, "PLAYER_HAS_LEFT_THE_GAME: ")
+                    await self.broadcast("LOBBY_KILLED_BY_HOST")
+                    self.remove_all_players()
+                    self.game_id = None
 
                 if "PLAYER_HAS_LEFT_THE_LOBBY" in message:
                     id = self._remove_request(message, "PLAYER_HAS_LEFT_THE_LOBBY: ")
