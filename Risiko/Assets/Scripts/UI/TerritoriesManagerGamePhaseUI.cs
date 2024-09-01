@@ -240,16 +240,14 @@ namespace UI
                         float newWidth = currentHeight * spriteAspect;
                         rectTransform.sizeDelta = new Vector2(newWidth, currentHeight);
                     }*/
-                    rectTransform.localScale = new Vector3(flag.GetComponent<RectTransform>().localScale.x,
-                        flag.GetComponent<RectTransform>().localScale.y,
-                        flag.GetComponent<RectTransform>().localScale.z);
+                    rectTransform.localScale = new Vector3(0.25f, 0.25f, flag.GetComponent<RectTransform>().localScale.z);
                     flag.transform.position = terr.transform.position;
                     flag.transform.position = CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>());
                 }
             }
         }
         
-        Vector2 CalculatePolygonCenter(PolygonCollider2D polygonCollider)
+        Vector3 CalculatePolygonCenter(PolygonCollider2D polygonCollider)
         {
             Vector2[] points = polygonCollider.points;
             Vector2 sum = Vector2.zero;
@@ -259,11 +257,11 @@ namespace UI
                 sum += point;
             }
 
-            Vector2 center = sum / points.Length;
+            Vector3 center = sum / points.Length;
         
             // Trasformare il centro nello spazio del mondo
             center = polygonCollider.transform.TransformPoint(center);
-
+            center.z = 0;
             return center;
         }
         
