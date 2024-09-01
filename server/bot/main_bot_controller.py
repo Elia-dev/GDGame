@@ -50,11 +50,12 @@ async def game(client_manager):
     # Start game and attack
     want_to_attack = 0.5
     want_to_move = 0.5
+    not_first_round = False
     while True:
         if client_manager.player.is_my_turn:
             await asyncio.sleep(1)
             # REINFORCE PHASE
-            if client_manager.player.tanks_available > 0:
+            if client_manager.player.tanks_available > 0 and not not_first_round:
                 await reinforce_phase(client_manager, False)
             await asyncio.sleep(1)
 
@@ -69,6 +70,7 @@ async def game(client_manager):
             await client_manager.update_territories_state()
             client_manager.player.is_my_turn = False
             print('Passo il turno')
+            not_first_round = True
         else:
             await asyncio.sleep(1)
 
