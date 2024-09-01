@@ -217,11 +217,29 @@ namespace UI
                     terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 50);
                     terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 50);
 
+                    //Distruggo tutte le precedenti bandierine
                     foreach (Transform child in terr.GetComponent<Transform>()) {
                         Destroy(child.gameObject);
                     }
+                    //Posizioni una bandierina ogni 10 armate
+                    for (int i = 0; i < territory.num_tanks / 10; i++) {
+                        GameObject flag = Instantiate(tenArmyFlag, terr.GetComponent<Transform>());
+                        flag.GetComponent<SpriteRenderer>().sprite =
+                            loadSprite("Army/TenArmy" + GameManager.Instance.GetPlayerColor(territory.player_id));
 
-                    if (territory.num_tanks >= 10) {
+                        // Ridimensiona l'oggetto flag
+                        flag.transform.localScale = new Vector3(0.25f, 0.25f, flag.transform.localScale.z);
+                        // Calcola un offset circolare attorno al centroide
+                        float angle = i * Mathf.PI * 2 / (int)territory.num_tanks / 10;
+                        Vector2 offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 0.5f;
+
+                        // Posiziona la bandierina
+                        Vector2 flagPosition = CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>()) + offset;
+                        flag.transform.position = new Vector3(flagPosition.x, flagPosition.y, 0);//CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>());
+                        //flag.transform.position = new Vector3(flag.transform.position.x, flag.transform.position.y,
+                            //terr.transform.position.z);
+                    }
+                    /*if (territory.num_tanks >= 10) {
                         Vector2[] flagPositions =
                             CalculateCentroids(terr.GetComponent<PolygonCollider2D>(), territory.num_tanks / 10);
                         for (int i = 0; i < flagPositions.Length; i++) {
@@ -237,7 +255,7 @@ namespace UI
                             flag.transform.position = new Vector3(flag.transform.position.x, flag.transform.position.y,
                                 terr.transform.position.z);
                         }
-                    }
+                    }*/
                 }
             }
         }
@@ -255,9 +273,7 @@ namespace UI
             Vector2 center = sum / points.Length;
         
             // Trasformare il centro nello spazio del mondo
-            center = polygonCollider.transform.TransformPoint(center);
-
-            return center;
+            return polygonCollider.transform.TransformPoint(center);
         }
         
         Vector2[] CalculateCentroids(PolygonCollider2D polygonCollider, int n)
