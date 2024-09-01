@@ -220,19 +220,23 @@ namespace UI
                     foreach (Transform child in terr.GetComponent<Transform>()) {
                         Destroy(child.gameObject);
                     }
-                    
-                    for(int i = 0; i < territory.num_tanks/10; i++) {
-                        GameObject flag = Instantiate(tenArmyFlag, terr.GetComponent<Transform>());
-                        flag.GetComponent<SpriteRenderer>().sprite =
-                            loadSprite("Army/TenArmy" + GameManager.Instance.GetPlayerColor(territory.player_id));
 
-                        // Ridimensiona l'oggetto flag
-                        flag.transform.localScale = new Vector3(0.25f, 0.25f, flag.transform.localScale.z);
+                    if (territory.num_tanks > 10) {
+                        Vector2[] centroids =
+                            CalculateCentroids(terr.GetComponent<PolygonCollider2D>(), territory.num_tanks / 10);
+                        for (int i = 0; i < centroids.Length; i++) {
+                            GameObject flag = Instantiate(tenArmyFlag, terr.GetComponent<Transform>());
+                            flag.GetComponent<SpriteRenderer>().sprite =
+                                loadSprite("Army/TenArmy" + GameManager.Instance.GetPlayerColor(territory.player_id));
 
-                        // Imposta la posizione del flag al centro del territorio
-                        flag.transform.position = CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>());
-                        flag.transform.position = new Vector3(flag.transform.position.x, flag.transform.position.y,
-                            terr.transform.position.z);
+                            // Ridimensiona l'oggetto flag
+                            flag.transform.localScale = new Vector3(0.25f, 0.25f, flag.transform.localScale.z);
+
+                            // Imposta la posizione del flag al centro del territorio
+                            flag.transform.position = CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>());
+                            flag.transform.position = new Vector3(flag.transform.position.x, flag.transform.position.y,
+                                terr.transform.position.z);
+                        }
                     }
                 }
             }
@@ -254,6 +258,41 @@ namespace UI
             center = polygonCollider.transform.TransformPoint(center);
 
             return center;
+        }
+        
+        Vector2[] CalculateCentroids(PolygonCollider2D polygonCollider, int n)
+        {
+            Vector2[] points = polygonCollider.points;
+            int totalPoints = points.Length;
+
+            // Assicurati che n non superi 3 e che ci siano abbastanza punti per ogni gruppo
+            n = Mathf.Min(n, 3);
+            if (totalPoints < n)
+            {
+                Debug.LogWarning("Non ci sono abbastanza punti per calcolare i centroidi.");
+                return new Vector2[0];
+            }
+
+            Vector2[] centroids = new Vector2[n];
+
+            // Dividi i punti in gruppi e calcola i centroidi
+            for (int i = 0; i < n; i++)
+            {
+                Vector2 sum = Vector2.zero;
+                int count = 0;
+
+                // Assegna i punti al gruppo i-esimo
+                for (int j = i; j < totalPoints; j += n)
+                {
+                    sum += points[j];
+                    count++;
+                }
+
+                centroids[i] = sum / count;
+                centroids[i] = polygonCollider.transform.TransformPoint(centroids[i]);
+            }
+
+            return centroids;
         }
         
         public Sprite loadSprite(string spriteName) {
