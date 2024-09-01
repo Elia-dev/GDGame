@@ -19,7 +19,7 @@ namespace UI
         private List<GameObject> _neighborhoodGameObj = new List<GameObject>();
         private List<Territory> _neighborhoodTerritories = new List<Territory>();
         public TerritoryHandlerUI enemyTerritory;
-        private static bool _reinforcePhase = true;
+        private static bool _reinforcePhase = false;
         private static bool _attackPhase = false;
         private static bool _isTurnInitialized = false;
         private static bool _strategicMove = false;
@@ -289,9 +289,10 @@ namespace UI
             _isTurnInitialized = true;
             if (_firstTurn)
                 _attackPhase = true;
-            else
+            else {
                 _reinforcePhase = true;
-            endTurnButton.GetComponentInChildren<TMP_Text>().text = "Next Phase!";
+                endTurnButton.GetComponentInChildren<TMP_Text>().text = "Next Phase!";
+            }
         }
 
         public void SelectState(TerritoryHandlerUI newTerritory) {
