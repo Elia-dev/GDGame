@@ -221,10 +221,10 @@ namespace UI
                         Destroy(child.gameObject);
                     }
 
-                    if (territory.num_tanks > 10) {
-                        Vector2[] centroids =
+                    if (territory.num_tanks >= 10) {
+                        Vector2[] flagPositions =
                             CalculateCentroids(terr.GetComponent<PolygonCollider2D>(), territory.num_tanks / 10);
-                        for (int i = 0; i < centroids.Length; i++) {
+                        for (int i = 0; i < flagPositions.Length; i++) {
                             GameObject flag = Instantiate(tenArmyFlag, terr.GetComponent<Transform>());
                             flag.GetComponent<SpriteRenderer>().sprite =
                                 loadSprite("Army/TenArmy" + GameManager.Instance.GetPlayerColor(territory.player_id));
@@ -233,7 +233,7 @@ namespace UI
                             flag.transform.localScale = new Vector3(0.25f, 0.25f, flag.transform.localScale.z);
 
                             // Imposta la posizione del flag al centro del territorio
-                            flag.transform.position = CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>());
+                            flag.transform.position = flagPositions[i];//CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>());
                             flag.transform.position = new Vector3(flag.transform.position.x, flag.transform.position.y,
                                 terr.transform.position.z);
                         }
