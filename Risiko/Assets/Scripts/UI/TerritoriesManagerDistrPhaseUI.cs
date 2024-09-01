@@ -86,6 +86,8 @@ namespace UI
                 else if (TerritoriesManagerGamePhaseUI.AttackPhase) {
                     TerritoriesManagerGamePhaseUI.AttackPhase = false;
                     GameManagerUI.AttackPhase = false;
+                    if (TerritoriesManagerGamePhaseUI.FirstTurn)
+                        TerritoriesManagerGamePhaseUI.FirstTurn = false;
                     ClientManager.Instance.UpdateTerritoriesState();
                     endTurnButton.interactable = false;
                     TerritoriesManagerGamePhaseUI.IsTurnInitialized = false;

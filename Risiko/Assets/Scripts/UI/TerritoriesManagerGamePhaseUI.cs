@@ -24,6 +24,12 @@ namespace UI
         private static bool _isTurnInitialized = false;
         private static bool _strategicMove = false;
         private static bool _underAttack = false;
+        private static bool _firstTurn = true;
+
+        public static bool FirstTurn {
+            get => _firstTurn;
+            set => _firstTurn = value;
+        }
 
         public static bool UnderAttack {
             get => _underAttack;
@@ -210,16 +216,16 @@ namespace UI
                     string color = GameManager.Instance.GetPlayerColor(territory.player_id);
                     terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 50);
                     terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 50);
-                    /*GameObject flag = Instantiate(tenArmyFlag, terr.GetComponent<Transform>());
+                    GameObject flag = Instantiate(tenArmyFlag, terr.GetComponent<Transform>());
                     flag.GetComponent<SpriteRenderer>().sprite =
                         loadSprite("Army/TenArmy" + GameManager.Instance.GetPlayerColor(territory.player_id));
                     // Mantieni l'aspect ratio originale del rettangolo dell'immagine
                     RectTransform rectTransform = flag.GetComponent<RectTransform>();
-                    float currentWidth = rectTransform.rect.width;
+                    /*float currentWidth = rectTransform.rect.width;
                     float currentHeight = rectTransform.rect.height;
 
                     // Calcola l'aspect ratio della nuova Sprite
-                    float spriteAspect = flag.GetComponent<Image>().sprite.rect.width / flag.GetComponent<Image>().sprite.rect.height;
+                    float spriteAspect = flag.GetComponent<SpriteRenderer>().sprite.rect.width / flag.GetComponent<SpriteRenderer>().sprite.rect.height;
 
                     // Regola il RectTransform dell'Image mantenendo le sue dimensioni
                     if (currentWidth / currentHeight > spriteAspect)
@@ -233,9 +239,12 @@ namespace UI
                         // L'immagine è più alta rispetto alla sprite
                         float newWidth = currentHeight * spriteAspect;
                         rectTransform.sizeDelta = new Vector2(newWidth, currentHeight);
-                    }
+                    }*/
+                    rectTransform.localScale = new Vector3(flag.GetComponent<RectTransform>().localScale.x,
+                        flag.GetComponent<RectTransform>().localScale.y,
+                        flag.GetComponent<RectTransform>().localScale.z);
                     flag.transform.position = terr.transform.position;
-                    flag.transform.position = CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>());*/
+                    flag.transform.position = CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>());
                 }
             }
         }
@@ -278,10 +287,11 @@ namespace UI
 
         private void StartTurn() {
             _isTurnInitialized = true;
-            _reinforcePhase = true;
-            //_timer = _delay;
+            if (_firstTurn)
+                _attackPhase = true;
+            else
+                _reinforcePhase = true;
             endTurnButton.GetComponentInChildren<TMP_Text>().text = "Next Phase!";
-            //TODO
         }
 
         public void SelectState(TerritoryHandlerUI newTerritory) {
