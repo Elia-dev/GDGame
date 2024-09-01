@@ -240,9 +240,7 @@ namespace UI
                         float newWidth = currentHeight * spriteAspect;
                         rectTransform.sizeDelta = new Vector2(newWidth, currentHeight);
                     }*/
-                    rectTransform.localScale = new Vector3(flag.GetComponent<RectTransform>().localScale.x,
-                        flag.GetComponent<RectTransform>().localScale.y,
-                        flag.GetComponent<RectTransform>().localScale.z);
+                    rectTransform.localScale = new Vector3(0.25f, 0.25f, flag.GetComponent<RectTransform>().localScale.z);
                     flag.transform.position = terr.transform.position;
                     flag.transform.position = CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>());
                 }
