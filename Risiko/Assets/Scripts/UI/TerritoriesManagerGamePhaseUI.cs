@@ -247,7 +247,7 @@ namespace UI
             }
         }
         
-        Vector2 CalculatePolygonCenter(PolygonCollider2D polygonCollider)
+        Vector3 CalculatePolygonCenter(PolygonCollider2D polygonCollider)
         {
             Vector2[] points = polygonCollider.points;
             Vector2 sum = Vector2.zero;
@@ -257,11 +257,11 @@ namespace UI
                 sum += point;
             }
 
-            Vector2 center = sum / points.Length;
+            Vector3 center = sum / points.Length;
         
             // Trasformare il centro nello spazio del mondo
             center = polygonCollider.transform.TransformPoint(center);
-
+            center.z = 0;
             return center;
         }
         
