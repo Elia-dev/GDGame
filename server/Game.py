@@ -28,6 +28,7 @@ class Game:
         }
         self.event = asyncio.Event()
         self.event_strategic_movement = asyncio.Event()
+        self.firstRound = True
 
     def add_player(self, player):
         if player.name == None:
@@ -106,30 +107,33 @@ class Game:
             for player in self.players:
                 await self.broadcast("PLAYER_TURN: " + player.player_id)
                 print(f"Turno del player id: {player.player_id} con nome {player.name}")
-                print("REINFORCE PHASE")
-                # REINFORCE PHASE
-                # CheckContinents
-                # CheckArmy
-                num_army_to_send = self.calculateArmyForThisTurn(player)  #
-                #print(f"Numero di armate ricevute nella fase di rinforzo: {num_army_to_send}")
-                player.tanks_num += num_army_to_send
-                player.tanks_available += num_army_to_send
-                # SendArmy
-                await player.sock.send("NUMBER_OF_ARMY_TO_ASSIGN_IN_THIS_TURN: " + str(num_army_to_send))
-                # UnlockTurn
-                await player.sock.send("IS_YOUR_TURN: TRUE")
-                # Waiting for player to finish the turn and send updated territories
-                print("Waiting for player to end the reinforce phase")
-                await self.event.wait()  # Aggiorna lo stato di tutti i territori ai client
-                self.event = asyncio.Event()  # Event reset
-                self.event_strategic_movement = asyncio.Event()
-                player.tanks_available = 0
-                player.tanks_placed += num_army_to_send
-                print("Reinforced phase terminated")
-                # REINFORCE PHASE TERMINATED
+                if not self.firstRound:
+                    print("REINFORCE PHASE")
+                    # REINFORCE PHASE
+                    # CheckContinents
+                    # CheckArmy
+                    num_army_to_send = self.calculateArmyForThisTurn(player)  #
+                    #print(f"Numero di armate ricevute nella fase di rinforzo: {num_army_to_send}")
+                    player.tanks_num += num_army_to_send
+                    player.tanks_available += num_army_to_send
+                    # SendArmy
+                    await player.sock.send("NUMBER_OF_ARMY_TO_ASSIGN_IN_THIS_TURN: " + str(num_army_to_send))
+                    # UnlockTurn
+                    await player.sock.send("IS_YOUR_TURN: TRUE")
+                    # Waiting for player to finish the turn and send updated territories
+                    print("Waiting for player to end the reinforce phase")
+                    await self.event.wait()  # Aggiorna lo stato di tutti i territori ai client
+                    self.event = asyncio.Event()  # Event reset
+                    player.tanks_available = 0
+                    player.tanks_placed += num_army_to_send
+                    print("Reinforced phase terminated")
+                    # REINFORCE PHASE TERMINATED
+                else:
+                    await player.sock.send("IS_YOUR_TURN: TRUE")
 
                 # FIGHT PHASE OR STRATEGIC MOVEMENT PHASE
                 print("Fight phase started")
+                self.event_strategic_movement = asyncio.Event()
                 '''
                  Finché non fa il movimento strategico aspetto che attacchi
                  appena attacca eseguo l'attacco e mi rimetto in attesa di un nuovo attacco
@@ -152,6 +156,7 @@ class Game:
                     print(f"Il player {player.name} ha vinto")
                     self.game_running = False
                 print(" Check objective card terminated")
+            self.firstRound = False
 
 
     async def handle_requests(self):
