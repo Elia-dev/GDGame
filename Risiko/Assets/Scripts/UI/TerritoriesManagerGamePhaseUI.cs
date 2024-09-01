@@ -219,9 +219,9 @@ namespace UI
                     GameObject flag = Instantiate(tenArmyFlag, terr.GetComponent<Transform>());
                     flag.GetComponent<SpriteRenderer>().sprite =
                         loadSprite("Army/TenArmy" + GameManager.Instance.GetPlayerColor(territory.player_id));
-                    // Mantieni l'aspect ratio originale del rettangolo dell'immagine
+                    /*// Mantieni l'aspect ratio originale del rettangolo dell'immagine
                     RectTransform rectTransform = flag.GetComponent<RectTransform>();
-                    /*float currentWidth = rectTransform.rect.width;
+                    float currentWidth = rectTransform.rect.width;
                     float currentHeight = rectTransform.rect.height;
 
                     // Calcola l'aspect ratio della nuova Sprite
@@ -240,14 +240,16 @@ namespace UI
                         float newWidth = currentHeight * spriteAspect;
                         rectTransform.sizeDelta = new Vector2(newWidth, currentHeight);
                     }*/
-                    rectTransform.localScale = new Vector3(0.25f, 0.25f, flag.GetComponent<RectTransform>().localScale.z);
+                    flag.GetComponent<RectTransform>().localScale = new Vector3(0.25f, 0.25f, flag.GetComponent<RectTransform>().localScale.z);
                     flag.transform.position = terr.transform.position;
                     flag.transform.position = CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>());
+                    flag.transform.position = new Vector3(flag.transform.position.x, flag.transform.position.y, 0);
+                    Debug.Log("Flag z: " + flag.transform.position);
                 }
             }
         }
         
-        Vector3 CalculatePolygonCenter(PolygonCollider2D polygonCollider)
+        Vector2 CalculatePolygonCenter(PolygonCollider2D polygonCollider)
         {
             Vector2[] points = polygonCollider.points;
             Vector2 sum = Vector2.zero;
@@ -257,11 +259,11 @@ namespace UI
                 sum += point;
             }
 
-            Vector3 center = sum / points.Length;
+            Vector2 center = sum / points.Length;
         
             // Trasformare il centro nello spazio del mondo
             center = polygonCollider.transform.TransformPoint(center);
-            center.z = 0;
+
             return center;
         }
         
