@@ -235,9 +235,10 @@ namespace UI
 
                         // Posiziona la bandierina
                         Vector2 flagPosition = CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>()) + offset;
-                        flag.transform.position = new Vector3(flagPosition.x, flagPosition.y, 0);//CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>());
-                        //flag.transform.position = new Vector3(flag.transform.position.x, flag.transform.position.y,
-                            //terr.transform.position.z);
+                        flag.transform.position =
+                            CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>()) + offset;//CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>());
+                        flag.transform.position = new Vector3(flag.transform.position.x, flag.transform.position.y,
+                            terr.transform.position.z);
                     }
                     /*if (territory.num_tanks >= 10) {
                         Vector2[] flagPositions =
