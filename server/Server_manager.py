@@ -4,6 +4,9 @@ import utils
 from Player import Player
 from Game import Game
 
+# 01/09/2024 gioco funzionante con fase di rinforzo eseguibile singolarmente in funzione del turno (NO SIMULTANEO)
+#Creazione di un nuovo branch per migrare su quella versione del gioco
+
 games = []
 '''
 La logica è questa:
