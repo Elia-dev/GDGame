@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using businesslogic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Debug = UnityEngine.Debug;
+using Image = UnityEngine.UI.Image;
 
 namespace UI
 {
@@ -13,6 +15,7 @@ namespace UI
         [SerializeField] private GameObject gameManager;
         [SerializeField] private GameObject popUpAttackResult;
         [SerializeField] private GameObject endGame;
+        [SerializeField] private GameObject tenArmyFlag;
         private List<GameObject> _neighborhoodGameObj = new List<GameObject>();
         private List<Territory> _neighborhoodTerritories = new List<Territory>();
         public TerritoryHandlerUI enemyTerritory;
@@ -207,8 +210,35 @@ namespace UI
                     string color = GameManager.Instance.GetPlayerColor(territory.player_id);
                     terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 50);
                     terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 50);
+                    GameObject flag = Instantiate(tenArmyFlag, terr.GetComponent<Transform>());
+                    flag.GetComponent<Image>().sprite =
+                        loadSprite("Army/TenArmy" + GameManager.Instance.GetPlayerColor(territory.player_id));
+                    flag.transform.position = terr.transform.position;
+                    flag.transform.position = CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>());
                 }
             }
+        }
+        
+        Vector2 CalculatePolygonCenter(PolygonCollider2D polygonCollider)
+        {
+            Vector2[] points = polygonCollider.points;
+            Vector2 sum = Vector2.zero;
+
+            foreach (Vector2 point in points)
+            {
+                sum += point;
+            }
+
+            Vector2 center = sum / points.Length;
+        
+            // Trasformare il centro nello spazio del mondo
+            center = polygonCollider.transform.TransformPoint(center);
+
+            return center;
+        }
+        
+        public Sprite loadSprite(string spriteName) {
+            return Resources.Load<Sprite>(spriteName);
         }
 
         public void ActivateOtherPlayersTerritories() {
