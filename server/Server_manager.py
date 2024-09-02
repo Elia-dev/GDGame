@@ -1,5 +1,6 @@
 import asyncio
 import websockets
+import signal
 import utils
 from Player import Player
 from Game import Game
@@ -27,9 +28,9 @@ async def handler(websocket):
     try:
         async for message in websocket:
             print(f"SERVER: Received message from {client_id}: {message}")
-            for game in games:
-                if game.game_id is None or len(game.players) == 0: #Check if there are empty lobby and delete them
-                    games.remove(game)
+            games_to_remove = [game for game in games if game.game_id is None or len(game.players) == 0] #Check if there are empty lobby and delete them
+            for game in games_to_remove:
+                games.remove(game)
             print("Pulizia completata")
 
             if "HOST_GAME" in message:
@@ -48,7 +49,10 @@ async def handler(websocket):
                 print(f"Game {game_id} created")
                 game_task = asyncio.create_task(game.create_game(player))
 
-                await game_task
+                try:
+                    await game_task
+                except Exception as e:
+                    print(f"Errore durante l'esecuzione del task del gioco: {e}")
 
 
             elif "JOIN_GAME" in message:
@@ -94,18 +98,29 @@ async def handler(websocket):
                 
 
 
-    except websockets.exceptions.ConnectionClosed:
+    except websockets.exceptions.ConnectionClosed as e:
         print(f"Client {player.name} disconnected")
+        print(f"Connection closed: {e}")
+    except asyncio.CancelledError as e:
+        print(f"Task cancellato {e}")
     except Exception as e:
         print(f"Unexpected error: {e}")
+    finally:
+        await websocket.close()  # Chiusura esplicita della WebSocket
+        print("WebSocket chiusa e risorse liberate")
 
+async def shutdown(server):
+    server.close()
+    await server.wait_closed()
 
 async def main():
     print("server started")
-    async with websockets.serve(handler, "0.0.0.0", 12345, ping_interval=300, ping_timeout=300):
-        # Gestisce il timeout della connessione mandando ogni 5 minuti un ping e aspettando il pong di risposta entro altri 5 minuti
-    #async with websockets.serve(handler, "localhost", 8766):
-        await asyncio.Future()  # Run forever
+    async with websockets.serve(handler, "0.0.0.0", 12345, ping_interval=300, ping_timeout=300) as server:
+        loop = asyncio.get_event_loop()
+        for sig in (signal.SIGINT, signal.SIGTERM):
+            loop.add_signal_handler(sig, lambda: asyncio.create_task(shutdown(server)))
+
+        await asyncio.Future()  # Mantieni il server in esecuzione
 
 
 if __name__ == "__main__":
