@@ -115,12 +115,10 @@ async def shutdown(server):
 
 async def main():
     print("server started")
-    async with websockets.serve(handler, "0.0.0.0", 12345, ping_interval=300, ping_timeout=300) as server:
-        loop = asyncio.get_event_loop()
-        for sig in (signal.SIGINT, signal.SIGTERM):
-            loop.add_signal_handler(sig, lambda: asyncio.create_task(shutdown(server)))
-
-        await asyncio.Future()  # Mantieni il server in esecuzione
+    async with websockets.serve(handler, "0.0.0.0", 12345, ping_interval=300, ping_timeout=300):
+        # Gestisce il timeout della connessione mandando ogni 5 minuti un ping e aspettando il pong di risposta entro altri 5 minuti
+    #async with websockets.serve(handler, "localhost", 8766):
+        await asyncio.Future()  # Run forever
 
 
 if __name__ == "__main__":
