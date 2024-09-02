@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using businesslogic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,6 +10,7 @@ namespace UI
         [SerializeField] private Button startButton;
         [SerializeField] private Button exitButton;
         [SerializeField] private Button optionsButton;
+        [SerializeField] private Button serverListButton;
         [SerializeField] private GameObject popUpConnection;
         [SerializeField] private Button x;
     
@@ -28,11 +30,13 @@ namespace UI
             });
             optionsButton.onClick.AddListener(() => { SceneManager.LoadScene("OptionsMenu"); });
             exitButton.onClick.AddListener(() => { SceneManager.LoadScene("ExitMenu"); });
+            serverListButton.onClick.AddListener(() => { SceneManager.LoadScene("ServerListMenu"); });
         }
 
-        void Start()
+        async void Start()
         {
             AudioListener.volume = PlayerPrefs.GetFloat("musicVolume", 1.0f);
+            await ClientManager.Instance.FetchOnlineServers();
         }
     
         private void Update() {
