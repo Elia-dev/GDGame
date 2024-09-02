@@ -8,13 +8,12 @@ using UnityEngine.UI;
 namespace UI
 {
     public class ArmySelectionManagerUI : MonoBehaviour {
-        private static ArmySelectionManagerUI Instance { get; set; }
-        private ArmySelectionHandlerUI selectedArmy;
+        private ArmySelectionHandlerUI _selectedArmy;
 
-        private GraphicRaycaster raycaster;
-        private PointerEventData pointerEventData;
-        private EventSystem eventSystem;
-        private bool turn = false;
+        private GraphicRaycaster _raycaster;
+        private PointerEventData _pointerEventData;
+        private EventSystem _eventSystem;
+        private bool _turn = false;
 
         [SerializeField] private GameObject redArmy;
         [SerializeField] private GameObject greenArmy;
@@ -29,23 +28,15 @@ namespace UI
         [SerializeField] private Button chooseButton;
 
         private void Awake() {
-            if (Instance is null) {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else {
-                Destroy(gameObject);
-            }
-        
             chooseButton.onClick.AddListener( () => ChooseArmy());
         }
 
         private void Start() {
             // Trova il GraphicRaycaster sul Canvas
-            raycaster = GetComponent<GraphicRaycaster>();
+            _raycaster = GetComponent<GraphicRaycaster>();
 
             // Trova l'EventSystem nella scena
-            eventSystem = EventSystem.current;
+            _eventSystem = EventSystem.current;
         }
         //Disattivazione di tutti i raycast
         private void DeactivateRaycastTargetArmy() {
@@ -87,8 +78,8 @@ namespace UI
 
         private void Update() {
             //Start del turno
-            if (Player.Instance.IsMyTurn && !turn) {
-                turn = true;
+            if (Player.Instance.IsMyTurn && !_turn) {
+                _turn = true;
                 ActivateRaycastTargetArmy();
             }
 
@@ -97,14 +88,14 @@ namespace UI
             else 
                 waitingLabel.gameObject.SetActive(true);
         
-            if (Input.GetMouseButtonDown(0) && turn) {
-                pointerEventData = new PointerEventData(eventSystem)
+            if (Input.GetMouseButtonDown(0) && _turn) {
+                _pointerEventData = new PointerEventData(_eventSystem)
                 {
                     position = Input.mousePosition
                 };
 
                 List<RaycastResult> results = new List<RaycastResult>();
-                raycaster.Raycast(pointerEventData, results);
+                _raycaster.Raycast(_pointerEventData, results);
 
                 if (results.Count > 0) {
                     foreach (RaycastResult result in results) {
@@ -126,21 +117,21 @@ namespace UI
         }
 
         public void SelectArmy(ArmySelectionHandlerUI newArmy) {
-            if (selectedArmy is not null && newArmy != selectedArmy) {
-                selectedArmy.Deselect();
+            if (_selectedArmy is not null && newArmy != _selectedArmy) {
+                _selectedArmy.Deselect();
             }
 
-            selectedArmy = newArmy;
-            selectedArmy.Select();
+            _selectedArmy = newArmy;
+            _selectedArmy.Select();
             errorMessage.gameObject.SetActive(false);
             title.color = Color.black;
         }
 
         public void ChooseArmy() {
-            if (selectedArmy is not null) {
+            if (_selectedArmy is not null) {
                 //Tasto non più interagibile
                 chooseButton.interactable = false;
-                Player.Instance.ArmyColor = selectedArmy.gameObject.name.Substring(7);
+                Player.Instance.ArmyColor = _selectedArmy.gameObject.name.Substring(7);
                 //COMUNICA AL SERVER L'ARMATA
                 ClientManager.Instance.SendChosenArmyColor();
                 //Disattivo i raycast dei carriarmati

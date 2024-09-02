@@ -16,6 +16,7 @@ namespace UI
         [SerializeField] private GameObject popUpAttackResult;
         [SerializeField] private GameObject endGame;
         [SerializeField] private GameObject tenArmyFlag;
+        [SerializeField] private GameObject escMenu;
         private List<GameObject> _neighborhoodGameObj = new List<GameObject>();
         private List<Territory> _neighborhoodTerritories = new List<Territory>();
         public TerritoryHandlerUI enemyTerritory;
@@ -101,6 +102,7 @@ namespace UI
                 }
             }
             else if (_attackPhase && !IsPhaseGoing) {
+                RefreshTerritories();
                 endTurnButton.interactable = true;
                 if (Input.GetMouseButtonDown(0)) {
                     Canvas[] allCanvases = FindObjectsOfType<Canvas>();
@@ -178,12 +180,10 @@ namespace UI
             }
 
             if (GameManager.Instance.getForceUpdateAfterAttack()) {
-                Debug.Log("REFRESH");
                 RefreshTerritories();
                 DeselectState();
                 GameManager.Instance.setForceUpdateAfterAttack(false);
                 gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
-                //ALTRO
             }
 
             if (_strategicMove) {
@@ -194,6 +194,7 @@ namespace UI
                 _isTurnInitialized = false;
                 DeselectState();
                 gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
+                RefreshTerritories();
             }
 
             if ((GameManager.Instance.getImUnderAttack() || GameManager.Instance.getImAttacking()) && !_underAttack) {
@@ -209,9 +210,26 @@ namespace UI
             }
 
             if (Input.GetKeyDown(KeyCode.Escape)) {
-                // Disattiva tutti i popup attivi
-                popUpAttack.SetActive(false);
-                popUpMoveTanks.SetActive(false);
+                Canvas[] allCanvases = FindObjectsOfType<Canvas>();
+                foreach (Canvas canvas in allCanvases)
+                {
+                    // Controlla se il canvas è in modalità Screen Space - Overlay
+                    if (canvas.renderMode == RenderMode.ScreenSpaceOverlay)
+                    {
+                        // Controlla se il Canvas è attivo e se ha GameObject attivi
+                        if (canvas.gameObject.activeInHierarchy) {
+                            return;
+                        }
+                    }
+                }
+                
+                if(popUpAttack.activeInHierarchy || popUpMoveTanks.activeInHierarchy) {
+                    popUpAttack.SetActive(false);
+                    popUpMoveTanks.SetActive(false);
+                } else if (selectedTerritory is not null) {
+                    DeselectState();
+                } else
+                    escMenu.SetActive(true);
             }
         }
 
@@ -227,121 +245,55 @@ namespace UI
                     foreach (Transform child in terr.GetComponent<Transform>()) {
                         Destroy(child.gameObject);
                     }
-                    //Posizioni una bandierina ogni 10 armate
-                    for (int i = 0; i < territory.num_tanks / 10; i++) {
-                        GameObject flag = Instantiate(tenArmyFlag, terr.GetComponent<Transform>());
-                        flag.GetComponent<SpriteRenderer>().sprite =
-                            loadSprite("Army/TenArmy" + GameManager.Instance.GetPlayerColor(territory.player_id));
-
-                        // Ridimensiona l'oggetto flag
-                        flag.transform.localScale = new Vector3(0.25f, 0.25f, flag.transform.localScale.z);
-                        // Calcola un offset circolare attorno al centroide
-                        //float angle = i * Mathf.PI * 2 / (int)territory.num_tanks / 10;
-                        //Vector2 offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 0.5f;
-
-                        // Posiziona la bandierina
-                        //Vector2 flagPosition = CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>()) + offset;
-                        flag.transform.position = CalculateCentroid(terr.GetComponent<PolygonCollider2D>().points);
-                            //CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>()) + offset;//CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>());
-                        flag.transform.position = new Vector3(flag.transform.position.x, flag.transform.position.y,
-                            terr.transform.position.z);
-                    }
-                    /*if (territory.num_tanks >= 10) {
-                        Vector2[] flagPositions =
-                            CalculateCentroids(terr.GetComponent<PolygonCollider2D>(), territory.num_tanks / 10);
-                        for (int i = 0; i < flagPositions.Length; i++) {
-                            GameObject flag = Instantiate(tenArmyFlag, terr.GetComponent<Transform>());
-                            flag.GetComponent<SpriteRenderer>().sprite =
-                                loadSprite("Army/TenArmy" + GameManager.Instance.GetPlayerColor(territory.player_id));
-
-                            // Ridimensiona l'oggetto flag
-                            flag.transform.localScale = new Vector3(0.25f, 0.25f, flag.transform.localScale.z);
-
-                            // Imposta la posizione del flag al centro del territorio
-                            flag.transform.position = flagPositions[i];//CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>());
-                            flag.transform.position = new Vector3(flag.transform.position.x, flag.transform.position.y,
-                                terr.transform.position.z);
-                        }
-                    }*/
+                    PlaceFlags(terr.GetComponent<PolygonCollider2D>(), territory);
                 }
             }
         }
-        
-        Vector2 CalculatePolygonCenter(PolygonCollider2D polygonCollider)
+        public void PlaceFlags(PolygonCollider2D polygonCollider, Territory territory)
         {
+            int numFlags = Mathf.Min(territory.num_tanks / 10, 3); // Calcola il numero di bandierine (massimo 3)
+            Vector2[] flagPositions = CalculateFlagPositions(polygonCollider, numFlags);
+
+            for (int i = 0; i < numFlags; i++)
+            {
+                GameObject flag = Instantiate(tenArmyFlag, polygonCollider.transform);
+                flag.GetComponent<SpriteRenderer>().sprite = LoadSprite("Army/TenArmy" + 
+                                                                        GameManager.Instance.GetPlayerColor(territory.player_id));
+                flag.transform.localScale = new Vector3(0.15f, 0.15f, flag.transform.localScale.z);
+                flag.transform.position = flagPositions[i];
+                flag.transform.position = new Vector3(flag.transform.position.x, flag.transform.position.y, polygonCollider.transform.position.z);
+            }
+        }
+
+        private Vector2[] CalculateFlagPositions(PolygonCollider2D polygonCollider, int numFlags)
+        {
+            Vector2 center = CalculatePolygonCenter(polygonCollider);
+            Vector2[] positions = new Vector2[numFlags];
+
+            float angleStep = 360f / numFlags;
+            for (int i = 0; i < numFlags; i++)
+            {
+                float angle = i * angleStep * Mathf.Deg2Rad;
+                Vector2 offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 0.5f; // Offset per posizionare le bandierine attorno al centro
+                positions[i] = center + offset;
+                positions[i] = polygonCollider.transform.TransformPoint(positions[i]);
+            }
+
+            return positions;
+        }
+
+        private Vector2 CalculatePolygonCenter(PolygonCollider2D polygonCollider) {
             Vector2[] points = polygonCollider.points;
             Vector2 sum = Vector2.zero;
 
-            foreach (Vector2 point in points)
-            {
+            foreach (Vector2 point in points) {
                 sum += point;
             }
 
-            Vector2 center = sum / points.Length;
-        
-            // Trasformare il centro nello spazio del mondo
-            return polygonCollider.transform.TransformPoint(center);
+            return sum / points.Length;
         }
-        
-        Vector2 CalculateCentroid(Vector2[] points)
-        {
-            float xSum = 0, ySum = 0;
-            float area = 0;
-            int count = points.Length;
 
-            for (int i = 0; i < count; i++)
-            {
-                Vector2 current = points[i];
-                Vector2 next = points[(i + 1) % count];
-
-                float a = current.x * next.y - next.x * current.y;
-                xSum += (current.x + next.x) * a;
-                ySum += (current.y + next.y) * a;
-                area += a;
-            }
-
-            area *= 0.5f;
-            /*xSum /= (6 * area);
-            ySum /= (6 * area);*/
-
-            return new Vector2(xSum / (6 * area), ySum / (6 * area));
-        }
-        Vector2[] CalculateCentroids(PolygonCollider2D polygonCollider, int n)
-        {
-            Vector2[] points = polygonCollider.points;
-            int totalPoints = points.Length;
-
-            // Assicurati che n non superi 3 e che ci siano abbastanza punti per ogni gruppo
-            n = Mathf.Min(n, 3);
-            if (totalPoints < n)
-            {
-                Debug.LogWarning("Non ci sono abbastanza punti per calcolare i centroidi.");
-                return new Vector2[0];
-            }
-
-            Vector2[] centroids = new Vector2[n];
-
-            // Dividi i punti in gruppi e calcola i centroidi
-            for (int i = 0; i < n; i++)
-            {
-                Vector2 sum = Vector2.zero;
-                int count = 0;
-
-                // Assegna i punti al gruppo i-esimo
-                for (int j = i; j < totalPoints; j += n)
-                {
-                    sum += points[j];
-                    count++;
-                }
-
-                centroids[i] = sum / count;
-                centroids[i] = polygonCollider.transform.TransformPoint(centroids[i]);
-            }
-
-            return centroids;
-        }
-        
-        public Sprite loadSprite(string spriteName) {
+        public Sprite LoadSprite(string spriteName) {
             return Resources.Load<Sprite>(spriteName);
         }
 
@@ -360,6 +312,7 @@ namespace UI
         }
 
         private void StartTurn() {
+            RefreshTerritories();
             _isTurnInitialized = true;
             if (_firstTurn)
                 _attackPhase = true;
@@ -388,10 +341,6 @@ namespace UI
                 else {
                     //Altrimenti ho selezionato un nuovo stato e quindi vado alla ricerca dei vicini
                     //BRILLO I VICINI e debrillo quelli  di prima
-                    /*if (selectedTerritory is not null) {
-                    Debug.Log("DESELECT AMICI");
-                    selectedTerritory.Deselect();
-                }*/
                     popUpMoveTanks.SetActive(false);
                     popUpAttack.SetActive(false);
                     DeselectState();
@@ -431,16 +380,6 @@ namespace UI
                     DeselectState();
                     popUpMoveTanks.SetActive(false);
                     popUpAttack.SetActive(false);
-                    /*if (selectedTerritory is not null) {
-                    Debug.Log("DESELECT AMICI");
-                    selectedTerritory.Deselect();
-                    selectedTerritory = null;
-                }*/
-                    /*if (enemyTerritory is not null) {
-                    Debug.Log("DESELECT NEMICO");
-                    enemyTerritory.Deselect();
-                    enemyTerritory = null;
-                }*/
                     _neighborhoodGameObj = new List<GameObject>();
                     _neighborhoodTerritories = new List<Territory>();
                     enemyTerritory = newTerritory;

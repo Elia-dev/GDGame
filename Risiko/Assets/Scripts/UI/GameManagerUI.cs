@@ -12,7 +12,6 @@ namespace UI
         [SerializeField] private GameObject clickHandler;
         [SerializeField] private TMP_Text allInfo;
         [SerializeField] private GameObject userSpace;
-        [SerializeField] private GameObject escMenu;
         private string _territoryInfo;
         //[SerializeField] private TMP_Text objectiveInfo;
         private static bool _settingGame = true;
@@ -94,7 +93,7 @@ namespace UI
 
             allInfo.text += "\n" + _territoryInfo;
         
-            if (Input.GetKeyDown(KeyCode.Escape)) {
+            /*if (Input.GetKeyDown(KeyCode.Escape)) {
                 Canvas[] allCanvases = FindObjectsOfType<Canvas>();
                 foreach (Canvas canvas in allCanvases)
                 {
@@ -108,7 +107,7 @@ namespace UI
                     }
                 }
                 escMenu.SetActive(true);
-            }
+            }*/
         }
 
         public void ShowTerritoryInfo(Territory territory) {

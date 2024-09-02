@@ -820,7 +820,6 @@ MonoBehaviour:
   clickHandler: {fileID: 2029590054}
   allInfo: {fileID: 104593349}
   userSpace: {fileID: 741143792}
-  escMenu: {fileID: 1601001035}
 --- !u!1 &64526168
 GameObject:
   m_ObjectHideFlags: 0
@@ -25885,6 +25884,7 @@ MonoBehaviour:
   popUpAttackResult: {fileID: 1718548842}
   endGame: {fileID: 1255752440}
   tenArmyFlag: {fileID: 58386152}
+  escMenu: {fileID: 1601001035}
   enemyTerritory: {fileID: 0}
 --- !u!114 &2029590057
 MonoBehaviour:
