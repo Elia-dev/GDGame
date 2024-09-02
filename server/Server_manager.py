@@ -1,6 +1,5 @@
 import asyncio
 import websockets
-import signal
 import utils
 from Player import Player
 from Game import Game
