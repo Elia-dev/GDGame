@@ -44,9 +44,6 @@ async def game(client_manager):
         await asyncio.sleep(1)
     print('Card received')
 
-    # Format end summarize objective
-    await choose_what_to_do(client_manager)
-
     # Start placing first tanks
     await reinforce_phase(client_manager, True)
 
@@ -63,13 +60,15 @@ async def game(client_manager):
             await asyncio.sleep(1)
 
             # ATTACK OR MOVE PHASE
+            """
             if random.random() > want_to_attack:
                 print('I want to attack')
                 await attack_phase(client_manager)
             if random.random() > want_to_move:
                 print('I want to move')
                 await strategic_move_phase(client_manager)
-
+            """
+            await choose_what_to_do(client_manager)
             await client_manager.update_territories_state()
             client_manager.player.is_my_turn = False
             print('Passo il turno')
