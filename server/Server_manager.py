@@ -93,7 +93,7 @@ async def handler(websocket):
                 if response:
                     await websocket.send("SELECT_ALL_GAMES: " + response.__str__())
                 else:
-                    print("Non mando niente tanto non c'è nessuna partita");
+                    print("Non mando niente tanto non c'è nessuna partita")
                 
 
 

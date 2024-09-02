@@ -91,3 +91,6 @@ class ClientManager:
 
     async def request_territory_info(self, terr_id):
         await self.send_message(f"REQUEST_TERRITORY_INFO: {self.player.player_id}-{terr_id}")
+
+    async def request_shortest_path(self, from_terr, to_terr):
+        await self.send_message(f"REQUEST_SHORTEST_PATH: {self.player.player_id}-{from_terr.node}-{to_terr.node}")

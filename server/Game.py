@@ -3,6 +3,7 @@ import json
 import random
 import time
 import websockets
+import os
 
 import Card
 import Territory
@@ -17,6 +18,7 @@ class Game:
         self.game_running = True
         self.game_waiting_to_start = True
         self.host_player = None
+        self.adj_matrix = utils.get_adj_matrix(os.path.join(os.getcwd(), os.pardir, 'assets/adj_matrix.npy'))
         self.queue = asyncio.Queue()
         self.army_colors = {
             'red': None,
@@ -158,7 +160,6 @@ class Game:
                 print(" Check objective card terminated")
             self.firstRound = False
 
-
     async def handle_requests(self):
         while self.game_running:
             try:
@@ -241,6 +242,8 @@ class Game:
                     self.event_strategic_movement.set()  # Sfrutto la stessa funzione per controllare se il giocatore effettua il movimento strategico
                     # durante la fase di gioco
                     self.event.set()
+                    # Aggiorno la matrice di adiacenza
+                    utils.update_adjacent_matrix(self.players, self.adj_matrix)
 
                 if "REQUEST_TERRITORY_INFO:" in message:  # TOBE TESTED
                     message = self._remove_request(message, "REQUEST_TERRITORY_INFO: ")
@@ -276,7 +279,7 @@ class Game:
                             attacker_player = player
                         if player.player_id == defender_id:
                             defender_player = player
-                   # print(f"!!!OH MY GOD, {attacker_player.name} IS TRYING TO FUCK {defender_player.name}")
+                    # print(f"!!!OH MY GOD, {attacker_player.name} IS TRYING TO FUCK {defender_player.name}")
                     #print(f"id attaccante: {attacker_player.player_id}  id difensore: {defender_player.player_id}")
                     attacker_ter_id, defender_ter_id = clean_message[1].split("-")
                     for terr in attacker_player.territories:
@@ -308,17 +311,16 @@ class Game:
                     # Tell the defender it's under attack
                     await defender_player.sock.send(
                         "UNDER_ATTACK: " + attacker_id + ", " + attacker_ter_id + "-" + defender_ter_id + ", "
-                        + str(attacker_army_num) + "-" + str(defender_army_num) + ", " + extracted_numbers_attacker.__str__() + ", " + extracted_numbers_defender.__str__())
+                        + str(attacker_army_num) + "-" + str(
+                            defender_army_num) + ", " + extracted_numbers_attacker.__str__() + ", " + extracted_numbers_defender.__str__())
                     #print("Server ha avvisato il difensore che sta per essere scassato")
-
-
 
                     #await asyncio.sleep(0.5) # Diamo il tempo di fare "l'animazione" al client
 
                     attacker_wins = 0
                     defender_wins = 0
                     #print(
-                     #   f"Generati {len(extracted_numbers_attacker)} numeri per l'attaccante, {len(extracted_numbers_defender)} per il difensore")
+                    #   f"Generati {len(extracted_numbers_attacker)} numeri per l'attaccante, {len(extracted_numbers_defender)} per il difensore")
                     print("Numeri dell'attaccante: ", extracted_numbers_attacker)
                     print("Numeri del difensore: ", extracted_numbers_defender)
                     #print("Inizio confronto:")
@@ -326,12 +328,12 @@ class Game:
                     for attacker_num, defender_num in zip(extracted_numbers_attacker, extracted_numbers_defender):
                         #print(f"Num att: {attacker_num} num def: {defender_num}")
                         if attacker_num > defender_num:
-                           # print("L'attaccante vince il confronto")
+                            # print("L'attaccante vince il confronto")
                             attacker_wins += 1
                         else:
-                           # print("Il difensore vince il confronto")
+                            # print("Il difensore vince il confronto")
                             defender_wins += 1
-                   # print(f"ATTACCANTE VINCE {attacker_wins} CONFRONTI, DIFENSORE VINCE {defender_wins} CONFRONTI")
+                    # print(f"ATTACCANTE VINCE {attacker_wins} CONFRONTI, DIFENSORE VINCE {defender_wins} CONFRONTI")
                     # Rimuove i carri in funzione del risultato precedente
                     attacker_territory.num_tanks -= defender_wins
                     defender_territory.num_tanks -= attacker_wins
@@ -374,6 +376,20 @@ class Game:
                         #print("done")
                     await self.broadcast("ATTACK_FINISHED_FORCE_UPDATE")
                     self.event.set()
+
+                if 'REQUEST_SHORTEST_PATH' in message:
+                    message = self._remove_request(message, "REQUEST_SHORTEST_PATH: ")
+                    playerId, from_terr_node, to_terr_node = message.split("-")
+                    shortest_path = utils.get_shortest_path(from_terr_node, to_terr_node, self.adj_matrix)
+                    shortest_path_to_string = ''
+                    for node in shortest_path:
+                        shortest_path_to_string += str(node) + "-"
+                    requesting_player = None
+                    for player in self.players:
+                        if player.player_id == playerId:
+                            requesting_player = player
+                    if requesting_player:
+                        requesting_player.sock.send(f"SHORTEST_PATH: " + shortest_path_to_string)
 
                 self.queue.task_done()
             except Exception as e:
@@ -478,8 +494,8 @@ class Game:
                 if (player.army_color == "red" and card_drawn.id == "obj9") or (
                         player.army_color == "blue" and card_drawn.id == "obj10") or (
                         player.army_color == "green" and card_drawn.id == "obj11"):
-                     print("!!!!!CARTA OBIETTIVO ESTRATTA NON VALIDA!!!!!")
-                    #print(f"Estratto {card_drawn.id} con colore armata  {player.army_color}")
+                    print("!!!!!CARTA OBIETTIVO ESTRATTA NON VALIDA!!!!!")
+                #print(f"Estratto {card_drawn.id} con colore armata  {player.army_color}")
                 elif ("red" not in color_list and card_drawn.id == "obj9") or (
                         "blue" not in color_list and card_drawn.id == "obj10") or (
                         "green" not in color_list and card_drawn.id == "obj11"):
@@ -526,7 +542,7 @@ class Game:
                     #print(f"Turno del player id: {player.player_id} con nome {player.name}")
                     #print(f"Armate totali: {player.tanks_num}")
                     #print(f"Armate piazzate: {player.tanks_placed}")
-                   # print(f"Armate ancora da piazzare: {player.tanks_available}")
+                    # print(f"Armate ancora da piazzare: {player.tanks_available}")
                     await self.event.wait()  # Waiting for player choice
                     await player.sock.send("IS_YOUR_TURN: FALSE")
                     if player.tanks_available >= 3:
@@ -708,7 +724,8 @@ class Game:
                 return False
             while control < (len(self.players) + len(self.dead_players)):
                 if killer in self.players:
-                    print("Il fratello deve ancora uccidere il king con l'armata rossa o quello che gli ha rubato la kill")
+                    print(
+                        "Il fratello deve ancora uccidere il king con l'armata rossa o quello che gli ha rubato la kill")
                     return False
                 else:
                     if killer.killed_by.player_id == player.player_id:

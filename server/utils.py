@@ -1,5 +1,6 @@
 import random
 import os
+import heapq
 import xml.etree.ElementTree as ET
 from Card import Card
 from Territory import Territory
@@ -109,3 +110,64 @@ def get_enemy_neighbors_of(territory, my_terrs, all_terrs):
             if neighbor.id != my_terr.id:
                 enemy.append(neighbor)
     return enemy
+
+
+def update_adjacent_matrix(players, adj_matrix):
+    for player in players:
+        for territory in player.territories:
+            node = territory.node
+            neighbors_node = get_neighbors_node_of(node)
+            for neighbor in neighbors_node:
+                adj_matrix[neighbor][node] = territory.num_tanks
+
+
+def get_shortest_path(from_node, to_node, adj_matrix):
+    # Number of nodes in the graph
+    num_nodes = adj_matrix.shape[0]
+
+    # Distance array - Initialize all distances to infinity
+    distances = [float('inf')] * num_nodes
+    # Previous node array - To reconstruct the path
+    previous_nodes = [None] * num_nodes
+
+    # Distance to the start node is 0
+    distances[from_node] = 0
+
+    # Priority queue to explore the nodes with the smallest distance
+    priority_queue = [(0, from_node)]
+
+    while priority_queue:
+        # Get the node with the smallest distance
+        current_distance, current_node = heapq.heappop(priority_queue)
+
+        # If we have already reached the target node, we can stop
+        if current_node == to_node:
+            break
+
+        # Explore neighbors
+        for neighbor in range(num_nodes):
+            if adj_matrix[current_node][neighbor] != 0:
+                distance = adj_matrix[current_node][neighbor]
+                new_distance = current_distance + distance
+
+                # If a shorter path is found
+                if new_distance < distances[neighbor]:
+                    distances[neighbor] = new_distance
+                    previous_nodes[neighbor] = current_node
+                    heapq.heappush(priority_queue, (new_distance, neighbor))
+
+    # Reconstruct the path
+    path = []
+    current_node = to_node
+    while current_node is not None:
+        path.append(current_node)
+        current_node = previous_nodes[current_node]
+
+    # If the path is not empty and the last node is the start node, return the path
+    if path[-1] == from_node:
+        path.reverse()
+        return path
+    else:
+        # If there is no path from from_node to to_node
+        return []
+

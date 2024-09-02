@@ -44,6 +44,9 @@ async def game(client_manager):
         await asyncio.sleep(1)
     print('Card received')
 
+    # Format end summarize objective
+    await choose_what_to_do(client_manager)
+
     # Start placing first tanks
     await reinforce_phase(client_manager, True)
 
@@ -93,6 +96,68 @@ async def strategic_move_phase(client_manager):
         attempt += 1
 
 
+async def choose_what_to_do(client_manager):
+    # Function that understand where is better to move or attack based on objective
+    all_territories = client_manager.game_manager.all_territories
+    my_territories = client_manager.player.territories
+    objective = client_manager.player.objective_card
+    objective_id = objective.id.replace('obj', '')
+    objective_id = int(objective_id)
+    if objective_id == 1 or objective_id == 2:
+        # Attack where is more simple
+        for territory in client_manager.player.territories:
+            enemies = utils.get_enemy_neighbors_of(territory, client_manager.player.territories, client_manager.game_manager.all_territories)
+            for enemy in enemies:
+                while territory.num_tanks - enemy.num_tanks > 0:
+                    tanks_attacker = territory.num_tanks - 1
+                    if tanks_attacker > 3:
+                        tanks_attacker = 3
+                    await client_manager.attack_enemy_territory(territory, enemy, tanks_attacker)
+                    print(f'{territory.name} is attacking {enemy.name} with {tanks_attacker} tanks')
+                    await asyncio.sleep(2)
+
+    if objective_id == 3:
+        # Move forward North America or Africa
+        terr_of_interest = list(
+            filter(lambda terr: terr.id[0:2] == 'NA' or terr.id[0:2] == 'AF', all_territories)
+        )
+
+    if objective_id == 4:
+        terr_of_interest = list(
+            filter(lambda terr: terr.id[0:2] == 'NA' or terr.id[0:2] == 'OC', all_territories)
+        )
+
+    if objective_id == 5:
+        terr_of_interest = list(
+            filter(lambda terr: terr.id[0:2] == 'AS' or terr.id[0:2] == 'OC', all_territories)
+        )
+
+    if objective_id == 6:
+        terr_of_interest = list(
+            filter(lambda terr: terr.id[0:2] == 'AS' or terr.id[0:2] == 'AF', all_territories)
+        )
+
+    if objective_id == 7 or objective_id == 8:
+        terr_of_interest = list(
+            filter(lambda terr: terr.id[0:2] == 'EU' or terr.id[0:2] == 'SA' or terr.id[0:2] == 'OC',
+                   all_territories)
+        )
+
+    if objective_id == 9:
+        # TODO
+        pass
+
+
+    """
+    from_terr = START_TERRITORY
+    to_terr = END_TERRITORY
+    client_manager.request_name_update_player_list(from_terr, to_terr)
+    while not client_manager.game_manager.shortest_path:    # wait for the shortest path
+        await asyncio.sleep(1)
+
+    """
+
+
 async def attack_phase(client_manager):
     terr_attackers = list(
         filter(lambda terr: terr.num_tanks > 1, client_manager.player.territories)
@@ -131,6 +196,7 @@ async def reinforce_phase(client_manager, setup):
 
     if not setup:
         await client_manager.update_territories_state()
+
 
 
 async def main():

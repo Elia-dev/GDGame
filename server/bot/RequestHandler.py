@@ -177,6 +177,11 @@ class RequestHandler:
                         self.game_manager.set_im_under_attack(False)
                         self.game_manager.set_im_attacking(True)
 
+                    if "SHORTEST_PATH" in message:
+                        request = message.replace('SHORTEST_PATH: ', '').strip()
+                        nodes = request.split('-')
+                        self.game_manager.shortest_path = nodes
+
                     else:
                         print(f'HANDLER: request not manageable: {message}')
 
