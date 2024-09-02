@@ -183,7 +183,7 @@ namespace businesslogic
             }
             else
             {
-                Debug.Log($"Il colore con ID = {id} non esiste.");
+                //Debug.Log($"Il colore con ID = {id} non esiste.");
             }
         }
 
@@ -195,7 +195,7 @@ namespace businesslogic
                 //Debug.Log($"Colore trovato: ID = {id}, Colore = {color}");
                 return color;
             }
-            Debug.Log($"Il colore con ID = {id} non è stato trovato.");
+            //Debug.Log($"Il colore con ID = {id} non è stato trovato.");
             return "Player non trovato";
         }
     
@@ -234,7 +234,7 @@ namespace businesslogic
             }
             else
             {
-                Debug.Log($"Il player con ID = {playerId} esiste già.");
+                //Debug.Log($"Il player con ID = {playerId} esiste già.");
             }
         }
 
@@ -248,7 +248,7 @@ namespace businesslogic
             }
             else
             {
-                Debug.Log($"Il player con ID = {playerId} non esiste.");
+                //Debug.Log($"Il player con ID = {playerId} non esiste.");
             }
         }
     
