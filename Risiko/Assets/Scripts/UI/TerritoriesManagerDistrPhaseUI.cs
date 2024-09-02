@@ -59,8 +59,11 @@ namespace UI
                 GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
                 if (terr is not null) {
                     terr.GetComponent<PolygonCollider2D>().enabled = true;
-                    terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(Player.Instance.ArmyColor, 50);
-                    terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(Player.Instance.ArmyColor, 50);
+                    /*terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(Player.Instance.ArmyColor, 50);
+                    terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(Player.Instance.ArmyColor, 50);*/
+                    string color = GameManager.Instance.GetPlayerColor(territory.player_id);
+                    terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 50);
+                    terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 50);
                 }
             }
         }
