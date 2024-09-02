@@ -73,7 +73,7 @@ namespace UI
             if (animationDone && Input.GetMouseButtonDown(0)) {
                 GameObject.Find("TerritoryCardsCanvas").SetActive(false);
                 GameObject.Find("ClickHandler").GetComponent<TerritoriesManagerDistrPhaseUI>()
-                    .activateTerritories();
+                    .ActivateTerritories();
             }
         }
     }

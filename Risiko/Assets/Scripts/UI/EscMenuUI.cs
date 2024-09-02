@@ -1,3 +1,4 @@
+using businesslogic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -40,6 +41,7 @@ namespace UI
         }
 
         public void ExitButtonForExitMenu() {
+            ClientManager.Instance.LeaveGame();
             SceneManager.LoadScene("MainMenu");
         }
     }

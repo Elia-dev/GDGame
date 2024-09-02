@@ -52,16 +52,13 @@ namespace UI
         // Trova il corrispondente territorio sulla mappa ed:
         //  attiva il collider così che sia interagibile
         //  imposta il colore dello stato come quello dell'armata scelta
-        public void activateTerritories() {
-            //TerritoryHandlerUI.ArmyDistributionPhase();
+        public void ActivateTerritories() {
             popUpAddTank.GetComponent<Image>().color =
                 Utils.ColorCode(Player.Instance.ArmyColor, 255); //TerritoryHandlerUI.UserColor;
-            foreach (var territory in Player.Instance.Territories) {
+            foreach (var territory in GameManager.Instance.AllTerritories) {
                 GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
                 if (terr is not null) {
                     terr.GetComponent<PolygonCollider2D>().enabled = true;
-                    //Color32 color = TerritoryHandlerUI.userColor;
-                    //color.a = 50;
                     terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(Player.Instance.ArmyColor, 50);
                     terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(Player.Instance.ArmyColor, 50);
                 }
@@ -69,14 +66,6 @@ namespace UI
         }
 
         private void Awake() {
-            /*if (Instance is null) {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else {
-            Destroy(gameObject);
-        }*/
-
             plusButton.onClick.AddListener(() => AddArmy());
             minusButton.onClick.AddListener(() => RemoveArmy());
             endTurnButton.onClick.AddListener(() => {
@@ -157,8 +146,8 @@ namespace UI
                     if (_selectedTerritories.territories[i] is not null &&
                         terr.id.Equals(_selectedTerritories.territories[i].id)) {
                         terr.num_tanks += _selectedTerritories.count[i];
-                        base.territories.Find(obj => obj.name.Equals(terr.id)).GetComponent<TerritoryHandlerUI>()
-                            .Deselect();
+                        base.territories.Find(obj => obj.name.Equals(terr.id))
+                            .GetComponent<TerritoryHandlerUI>().Deselect();
                     }
                 });
             }
@@ -174,10 +163,9 @@ namespace UI
             if (!distributionPhase) {
                 this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = false;
                 TerritoriesManagerGamePhaseUI.ReinforcePhase = false;
-                //Per barra dx
-                GameManagerUI.ReinforcePhase = false;
+                GameManagerUI.ReinforcePhase = false; // Per barra dx
                 TerritoriesManagerGamePhaseUI.AttackPhase = true;
-                GameManagerUI.AttackPhase = true;
+                GameManagerUI.AttackPhase = true; // Per barra dx
                 this.GetComponent<TerritoriesManagerGamePhaseUI>().IsPhaseGoing = false;
                 endTurnButton.GetComponentInChildren<TMP_Text>().text = "End Turn!";
                 endTurnButton.interactable = true;
@@ -282,6 +270,8 @@ namespace UI
                 this.GetComponent<TerritoriesManagerGamePhaseUI>().enabled = true;
                 this.GetComponent<TerritoriesManagerGamePhaseUI>().ActivateOtherPlayersTerritories();
             }
+            
+            
         }
 
         //Metodo che inizializza la struct per la selezione dei territori e attiva il turno

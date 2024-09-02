@@ -187,13 +187,13 @@ namespace UI
             }
 
             if (_strategicMove) {
+                endTurnButton.interactable = false;
                 _strategicMove = false;
                 _attackPhase = false;
                 GameManagerUI.AttackPhase = false;
                 _isTurnInitialized = false;
                 DeselectState();
                 gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
-                endTurnButton.interactable = false;
             }
 
             if ((GameManager.Instance.getImUnderAttack() || GameManager.Instance.getImAttacking()) && !_underAttack) {
@@ -206,6 +206,12 @@ namespace UI
             if (!GameManager.Instance.getWinnerGameId().Equals("")) {
                 gameObject.GetComponent<TerritoriesManagerGamePhaseUI>().enabled = false;
                 endGame.GetComponent<EndGameUI>().SetPopUp(GameManager.Instance.getWinnerGameId());
+            }
+
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                // Disattiva tutti i popup attivi
+                popUpAttack.SetActive(false);
+                popUpMoveTanks.SetActive(false);
             }
         }
 
@@ -230,13 +236,13 @@ namespace UI
                         // Ridimensiona l'oggetto flag
                         flag.transform.localScale = new Vector3(0.25f, 0.25f, flag.transform.localScale.z);
                         // Calcola un offset circolare attorno al centroide
-                        float angle = i * Mathf.PI * 2 / (int)territory.num_tanks / 10;
-                        Vector2 offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 0.5f;
+                        //float angle = i * Mathf.PI * 2 / (int)territory.num_tanks / 10;
+                        //Vector2 offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 0.5f;
 
                         // Posiziona la bandierina
-                        Vector2 flagPosition = CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>()) + offset;
-                        flag.transform.position =
-                            CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>()) + offset;//CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>());
+                        //Vector2 flagPosition = CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>()) + offset;
+                        flag.transform.position = CalculateCentroid(terr.GetComponent<PolygonCollider2D>().points);
+                            //CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>()) + offset;//CalculatePolygonCenter(terr.GetComponent<PolygonCollider2D>());
                         flag.transform.position = new Vector3(flag.transform.position.x, flag.transform.position.y,
                             terr.transform.position.z);
                     }
@@ -277,6 +283,29 @@ namespace UI
             return polygonCollider.transform.TransformPoint(center);
         }
         
+        Vector2 CalculateCentroid(Vector2[] points)
+        {
+            float xSum = 0, ySum = 0;
+            float area = 0;
+            int count = points.Length;
+
+            for (int i = 0; i < count; i++)
+            {
+                Vector2 current = points[i];
+                Vector2 next = points[(i + 1) % count];
+
+                float a = current.x * next.y - next.x * current.y;
+                xSum += (current.x + next.x) * a;
+                ySum += (current.y + next.y) * a;
+                area += a;
+            }
+
+            area *= 0.5f;
+            /*xSum /= (6 * area);
+            ySum /= (6 * area);*/
+
+            return new Vector2(xSum / (6 * area), ySum / (6 * area));
+        }
         Vector2[] CalculateCentroids(PolygonCollider2D polygonCollider, int n)
         {
             Vector2[] points = polygonCollider.points;
