@@ -175,7 +175,7 @@ class RequestHandler:
                                 player_terr.num_tanks = territory.num_tanks
 
                         self.game_manager.set_im_under_attack(False)
-                        self.game_manager.set_im_attacking(True)
+                        self.game_manager.set_im_attacking(False)
 
                     if "SHORTEST_PATH" in message:
                         request = message.replace('SHORTEST_PATH: ', '').strip()

@@ -112,6 +112,18 @@ def get_enemy_neighbors_of(territory, my_terrs, all_terrs):
     return enemy
 
 
+def get_all_enemies_neighbors_of(my_terrs, all_terrs):
+    enemy = []
+    neighbors = []
+    for my_terr in my_terrs:
+        neighbors += get_neighbors_of(my_terr, all_terrs)
+    for neighbor in neighbors:
+        for my_terr in my_terrs:
+            if neighbor.id != my_terr.id:
+                enemy.append(neighbor)
+    return enemy
+
+
 def update_adjacent_matrix(players, adj_matrix):
     for player in players:
         for territory in player.territories:
