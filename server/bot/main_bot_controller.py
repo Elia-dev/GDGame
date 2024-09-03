@@ -15,7 +15,7 @@ async def game(client_manager):
 
     await client_manager.request_name_update_player_list()
     await client_manager.send_name()
-    await client_manager.join_lobby_as_client('202 861')
+    await client_manager.join_lobby_as_client('924 593')
 
     while client_manager.game_manager.get_extracted_number() == 0:
         await client_manager.request_name_update_player_list()
@@ -353,7 +353,7 @@ async def _manage_attack(my_strong_territories, terr_of_interest, client_manager
 
 
 async def _attack(attacker, defender, client_manager):
-    while attacker.num_tanks - defender.num_tanks > 0:
+    while attacker.num_tanks > 1 and attacker.num_tanks - defender.num_tanks > 0 and defender.player_id != attacker.player_id:
         tanks_attacker = attacker.num_tanks - 1
         if tanks_attacker > 3:
             tanks_attacker = 3
@@ -385,7 +385,7 @@ async def attack_phase(client_manager):
 async def main():
     print('Client started!')
     client_manager = ClientManager()
-    await asyncio.gather(client_manager.start_client(), game(client_manager))
+    await asyncio.gather(client_manager.start_client('localhost', '12345'), game(client_manager))
 
 
 if __name__ == '__main__':
