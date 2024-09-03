@@ -42,6 +42,9 @@ namespace UI
 
         public void ExitButtonForExitMenu() {
             ClientManager.Instance.LeaveGame();
+            Player.Instance.ResetPlayer();
+            ClientManager.Instance.LeaveLobby();
+            GameManager.Instance.ResetGameManager();
             ClientManager.Instance.ResetConnection();
             SceneManager.LoadScene("MainMenu");
         }

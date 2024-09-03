@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -11,21 +12,53 @@ namespace UI
         [SerializeField] public Transform gridTransform; // Transform del Grid Layout Group
         [SerializeField] private GameObject territoryCardsCanvas;
         [SerializeField] private GameObject clickHandler;
+        private float _animationTime = 15f;
         
         private bool animationDone = false;
         private List<Territory> territories;
 
         void Start() {
+            if (clickHandler == null) {
+                Debug.LogError("clickHandler is not assigned in the Inspector");
+            } else {
+                Debug.Log("clickHandler is assigned correctly");
+            }
+            
             territories = Player.Instance.Territories;
             AdjustCellsSize();
             CardAnimation();
             imagePrefab.SetActive(false);
-            animationDone = true;
         }
 
         private void AdjustCellsSize()
         {
             RectTransform cardContainer = gridTransform.GetComponent<RectTransform>();
+            GridLayoutGroup gridLayoutGroup = gridTransform.GetComponent<GridLayoutGroup>();
+            float aspectRatio = 4f / 3f; // Rapporto di aspetto originale delle carte
+
+            // Ottieni le dimensioni del contenitore
+            float containerWidth = cardContainer.rect.width - gridLayoutGroup.padding.left - gridLayoutGroup.padding.right;
+            float containerHeight = cardContainer.rect.height - gridLayoutGroup.padding.top - gridLayoutGroup.padding.bottom;
+
+            // Calcola il numero di carte
+            int cardNumber = territories.Count;
+
+            // Definisci il numero massimo di righe
+            int maxRows = Mathf.CeilToInt(Mathf.Sqrt(cardNumber));
+            int maxColumns = Mathf.CeilToInt((float)cardNumber / maxRows);
+
+            // Calcola la dimensione massima delle celle che mantenga il rapporto di aspetto
+            float availableWidth = (containerWidth - gridLayoutGroup.spacing.x * (maxColumns - 1)) / maxColumns;
+            float availableHeight = (containerHeight - gridLayoutGroup.spacing.y * (maxRows - 1)) / maxRows;
+
+            // Calcola la dimensione delle celle mantenendo il rapporto di aspetto
+            float cellWidth = Mathf.Min(availableWidth, availableHeight * aspectRatio);
+            float cellHeight = cellWidth / aspectRatio;
+
+            // Imposta la dimensione delle celle nel GridLayoutGroup
+            gridLayoutGroup.cellSize = new Vector2(cellWidth, cellHeight);
+            
+            /*RectTransform cardContainer = gridTransform.GetComponent<RectTransform>();
             GridLayoutGroup gridLayoutGroup = gridTransform.GetComponent<GridLayoutGroup>();
             float rapportoAspetto = 4f / 3f; // Rapporto di aspetto originale delle carte
             
@@ -56,7 +89,7 @@ namespace UI
             float cellDimension = Mathf.Min(cellLengthDimension, cellHeightDimension);
 
             // Imposta la dimensione delle celle nel GridLayoutGroup
-            gridLayoutGroup.cellSize = new Vector2(cellDimension / rapportoAspetto, cellDimension);
+            gridLayoutGroup.cellSize = new Vector2(cellDimension / rapportoAspetto, cellDimension);*/
         }
 
         private void CardAnimation() {
@@ -71,13 +104,31 @@ namespace UI
                 // Anima la carta in modo che appaia
                 nuovaCarta.transform.DOScale(Vector3.one, 0.5f).SetDelay(i * 0.2f); // Anima con ritardo progressivo
             }
+            _animationTime = territories.Count * 0.2f + 0.5f;
         }
         private void Update() {
-            if (animationDone && Input.GetMouseButtonDown(0)) {
-                territoryCardsCanvas.SetActive(false);
-                clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>()
-                    .ActivateTerritories();
-            }
+           if (_animationTime > 0) {
+                _animationTime -= Time.deltaTime;
+           }  else {
+               animationDone = true;
+           }
+
+           if (clickHandler == null) {
+               Debug.LogError("clickHandler is null");
+               return;
+           }
+
+           var territoriesManager = clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>();
+           if (territoriesManager == null) {
+               Debug.LogError("TerritoriesManagerDistrPhaseUI component not found on clickHandler");
+               return;
+           }
+
+           try {
+               territoriesManager.ActivateTerritories();
+           } catch (Exception ex) {
+               Debug.LogError("Exception in ActivateTerritories: " + ex.Message);
+           }
         }
     }
 }
