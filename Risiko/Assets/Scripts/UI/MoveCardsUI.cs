@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -5,10 +6,7 @@ namespace UI
 {
     public abstract class MoveCardsUI : MonoBehaviour
     {
-        public Sprite imgSprite;
-        public Vector2 startPosition;
-        public Vector2 targetPosition;
-        public float moveDuration = 2f; // Durata del movimento in secondi
+        [NonSerialized] public Sprite imgSprite;
         public void loadSprite(string spriteName) {
             imgSprite = Resources.Load<Sprite>(spriteName);
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using businesslogic;
 using TMPro;
@@ -17,9 +18,10 @@ namespace UI
         [SerializeField] private GameObject endGame;
         [SerializeField] private GameObject tenArmyFlag;
         [SerializeField] private GameObject escMenu;
+        
         private List<GameObject> _neighborhoodGameObj = new List<GameObject>();
         private List<Territory> _neighborhoodTerritories = new List<Territory>();
-        public TerritoryHandlerUI enemyTerritory;
+        [NonSerialized] private TerritoryHandlerUI _enemyTerritory;
         private static bool _reinforcePhase = false;
         private static bool _attackPhase = false;
         private static bool _isTurnInitialized = false;
@@ -102,7 +104,6 @@ namespace UI
                 }
             }
             else if (_attackPhase && !IsPhaseGoing) {
-                RefreshTerritories();
                 endTurnButton.interactable = true;
                 if (Input.GetMouseButtonDown(0)) {
                     Canvas[] allCanvases = FindObjectsOfType<Canvas>();
@@ -365,15 +366,15 @@ namespace UI
                 //Se è nei dintorni del mio stato selezionato
                 if (_neighborhoodGameObj.Contains(newTerritory.gameObject)) {
                     //_readyToAttack &&
-                    enemyTerritory = newTerritory;
+                    _enemyTerritory = newTerritory;
                 
                     if(popUpMoveTanks.activeInHierarchy)
                         popUpMoveTanks.SetActive(false);
                 
                     popUpAttack.GetComponent<PopUpAttackUI>().SetPupUp(
                         TerritoryInformationsPlayer(selectedTerritory.gameObject.name),
-                        TerritoryInformationsAllPlayers(enemyTerritory.gameObject.name),
-                        enemyTerritory.gameObject);
+                        TerritoryInformationsAllPlayers(_enemyTerritory.gameObject.name),
+                        _enemyTerritory.gameObject);
                 }
                 else {
                     //Se invece non è nei dintorni 
@@ -382,8 +383,8 @@ namespace UI
                     popUpAttack.SetActive(false);
                     _neighborhoodGameObj = new List<GameObject>();
                     _neighborhoodTerritories = new List<Territory>();
-                    enemyTerritory = newTerritory;
-                    enemyTerritory.Select();
+                    _enemyTerritory = newTerritory;
+                    _enemyTerritory.Select();
                 }
             }
             /*
@@ -425,7 +426,7 @@ namespace UI
             return GameManager.Instance.AllTerritories.Find(terr => terr.id.Equals(id));
         }
 
-        public void DeselectState() {
+        private void DeselectState() {
             if (selectedTerritory is not null) {
                 selectedTerritory.Deselect();
                 foreach (var terr in _neighborhoodGameObj) {
@@ -440,9 +441,9 @@ namespace UI
                 _neighborhoodTerritories = new List<Territory>();
             }
 
-            if (enemyTerritory is not null) {
-                enemyTerritory.Deselect();
-                enemyTerritory = null;
+            if (_enemyTerritory is not null) {
+                _enemyTerritory.Deselect();
+                _enemyTerritory = null;
             }
         }
     }

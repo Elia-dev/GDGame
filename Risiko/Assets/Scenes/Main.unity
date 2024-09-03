@@ -8808,12 +8808,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 251a9fcadbf55b64d88a4d8eb69803e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  imgSprite: {fileID: 0}
-  startPosition: {x: 0, y: 0}
-  targetPosition: {x: 0, y: 0}
-  moveDuration: 2
   imagePrefab: {fileID: 978968071}
   gridTransform: {fileID: 774017361}
+  territoryCardsCanvas: {fileID: 891500868}
+  clickHandler: {fileID: 2029590054}
 --- !u!1 &778965737
 GameObject:
   m_ObjectHideFlags: 0
@@ -20337,11 +20335,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac431e090e8fc8840bcfe69ca452a230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  imgSprite: {fileID: 0}
-  startPosition: {x: 0, y: 0}
-  targetPosition: {x: 0, y: 0}
-  moveDuration: 2
-  flipDuration: 0.5
   cardFront: {fileID: 1216257487}
   cardBack: {fileID: 1699224103}
   territoriesCardCanvas: {fileID: 891500868}
@@ -25833,7 +25826,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82fd44b17a6ed1844861bd1f38fcd78f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedTerritory: {fileID: 0}
   territories:
   - {fileID: 1788652703}
   - {fileID: 1746119601}
@@ -25885,7 +25877,6 @@ MonoBehaviour:
   endGame: {fileID: 1255752440}
   tenArmyFlag: {fileID: 58386152}
   escMenu: {fileID: 1601001035}
-  enemyTerritory: {fileID: 0}
 --- !u!114 &2029590057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25898,7 +25889,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 940aa8c4552cc12488d82385c3ae866c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedTerritory: {fileID: 0}
   territories:
   - {fileID: 1788652703}
   - {fileID: 1746119601}
@@ -25950,6 +25940,7 @@ MonoBehaviour:
   plusButton: {fileID: 134849052}
   minusButton: {fileID: 801302892}
   gameManager: {fileID: 64225033}
+  escMenu: {fileID: 1601001035}
 --- !u!114 &2029590058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25962,7 +25953,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cf7d24a58ca5b34284af349b8f3eb05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedTerritory: {fileID: 0}
   territories:
   - {fileID: 1788652703}
   - {fileID: 1746119601}

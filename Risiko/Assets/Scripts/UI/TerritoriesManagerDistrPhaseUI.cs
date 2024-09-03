@@ -1,18 +1,17 @@
+using System;
 using System.Linq;
 using businesslogic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI
-{
+namespace UI {
     public struct SelectedTerritories {
         public Territory[] territories;
         public int[] count;
     }
 
     public class TerritoriesManagerDistrPhaseUI : TerritoriesManagerUI {
-        //public static TerritoriesManagerDistrPhaseUI Instance { get; private set; }
         [SerializeField] private GameObject popUpAddTank;
         [SerializeField] private TMP_Text stateNameAddTank;
         [SerializeField] private TMP_Text tankNumber;
@@ -20,10 +19,9 @@ namespace UI
         [SerializeField] private Button plusButton;
         [SerializeField] private Button minusButton;
         [SerializeField] private GameObject gameManager;
-        private SelectedTerritories _selectedTerritories;
-        //private Dictionary<string, int> selectedTerritories;
+        [SerializeField] private GameObject escMenu;
 
-        //private bool _isTurnActive = false; // Variabile per tracciare il turno attivo
+        private SelectedTerritories _selectedTerritories;
         private bool _isTurnInitialized = false; // Variabile per tracciare se il turno è stato inizializzato
         private int _armyNumber;
 
@@ -31,21 +29,6 @@ namespace UI
 
         public void Start() {
             GameManagerUI.DistributionPhase = true;
-            //TUTTA ROBA DI DEBUG
-            /*TerritoryHandlerUI.userColor = new Color32(0, 0, 255, 200);
-        List<Territory> terr = new List<Territory>();
-        terr.Add(new Territory("SA_ter1", "SA_ter1.png", "boh", "eh", "lo", "fa", "SA", 7));
-        terr.Add(new Territory("SA_ter2", "SA_ter2.png", "boh", "eh", "lo", "fa", "SA", 5));
-        terr.Add(new Territory("SA_ter3", "SA_ter3.png", "boh", "eh", "lo", "fa", "SA", 6));
-        terr.Add(new Territory("SA_ter4", "SA_ter4.png", "boh", "eh", "lo", "fa", "SA", 1));
-        Player.Instance.Territories = terr;
-        //TerritoryHandlerUI.ArmyDistributionPhase();
-        Player.Instance.IsMyTurn = true;
-        Player.Instance.TanksAvailable = 4;
-
-        //TerritoryHandlerUI.ArmyDistributionPhase();
-        popUpAddTank.GetComponent<Image>().color = TerritoryHandlerUI.userColor;
-        activateTerritories();*/
         }
 
         //Scorre la lista dei territori territori assegnati al giocatori per ognuno di questi:
@@ -170,6 +153,7 @@ namespace UI
                 TerritoriesManagerGamePhaseUI.AttackPhase = true;
                 GameManagerUI.AttackPhase = true; // Per barra dx
                 this.GetComponent<TerritoriesManagerGamePhaseUI>().IsPhaseGoing = false;
+                this.GetComponent<TerritoriesManagerGamePhaseUI>().RefreshTerritories();
                 endTurnButton.GetComponentInChildren<TMP_Text>().text = "End Turn!";
                 endTurnButton.interactable = true;
             }
@@ -193,17 +177,16 @@ namespace UI
 
             if (Input.GetMouseButtonDown(0) && Player.Instance.IsMyTurn) {
                 Canvas[] allCanvases = FindObjectsOfType<Canvas>();
-                foreach (Canvas canvas in allCanvases)
-                {
+                foreach (Canvas canvas in allCanvases) {
                     // Controlla se il canvas è in modalità Screen Space - Overlay
-                    if (canvas.renderMode == RenderMode.ScreenSpaceOverlay)
-                    {
+                    if (canvas.renderMode == RenderMode.ScreenSpaceOverlay) {
                         // Controlla se il Canvas è attivo e se ha GameObject attivi
                         if (canvas.gameObject.activeInHierarchy) {
                             return;
                         }
                     }
                 }
+
                 Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 RaycastHit2D[] hits = Physics2D.RaycastAll(mousePosition, Vector2.zero);
                 RaycastHit2D hit = new RaycastHit2D();
@@ -211,51 +194,52 @@ namespace UI
                 foreach (RaycastHit2D hitted in hits) {
                     Collider2D hittedCollider = hitted.collider;
                     if (hittedCollider is BoxCollider2D) {
-                        hit = hitted;//new RaycastHit2D();
+                        hit = hitted; //new RaycastHit2D();
                         break;
                     }
 
                     if (hittedCollider is PolygonCollider2D)
                         hit = hitted;
                 }
+
                 if (hit.collider is PolygonCollider2D) {
                     TerritoryHandlerUI territoryHandlerUI = hit.transform.GetComponent<TerritoryHandlerUI>();
                     if (territoryHandlerUI is not null) {
                         selectedTerritory = territoryHandlerUI;
                         SelectState(selectedTerritory);
                     }
-                } else if (hit.collider is null) {
+                }
+                else if (hit.collider is null) {
                     gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
                     popUpAddTank.SetActive(false);
-                    if(selectedTerritory is not null) {
-                        selectedTerritory.Deselect();
+                    if (selectedTerritory is not null) {
+                        //selectedTerritory.Deselect();
                         selectedTerritory = null;
                     }
                 }
             }
-        
+
             if (!Player.Instance.IsMyTurn) {
                 if (Input.GetMouseButtonDown(0)) {
                     Canvas[] allCanvases = FindObjectsOfType<Canvas>();
-                    foreach (Canvas canvas in allCanvases)
-                    {
+                    foreach (Canvas canvas in allCanvases) {
                         // Controlla se il canvas è in modalità Screen Space - Overlay
-                        if (canvas.renderMode == RenderMode.ScreenSpaceOverlay)
-                        {
+                        if (canvas.renderMode == RenderMode.ScreenSpaceOverlay) {
                             // Controlla se il Canvas è attivo e se ha GameObject attivi
                             if (canvas.gameObject.activeInHierarchy) {
                                 return;
                             }
                         }
                     }
+
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
 
                     if (hit.collider is not null) {
                         TerritoryHandlerUI territoryHandlerUI = hit.transform.GetComponent<TerritoryHandlerUI>();
                         if (territoryHandlerUI is not null) {
-                            gameManager.GetComponent<GameManagerUI>().
-                                ShowTerritoryInfo(TerritoryInformationsAllPlayers(territoryHandlerUI.gameObject.name));
+                            gameManager.GetComponent<GameManagerUI>()
+                                .ShowTerritoryInfo(TerritoryInformationsAllPlayers(territoryHandlerUI.gameObject.name));
                             //selectedTerritory = territoryHandlerUI;
                             //SelectState(territoryHandlerUI);
                         }
@@ -273,8 +257,30 @@ namespace UI
                 this.GetComponent<TerritoriesManagerGamePhaseUI>().enabled = true;
                 this.GetComponent<TerritoriesManagerGamePhaseUI>().ActivateOtherPlayersTerritories();
             }
-            
-            
+
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                Canvas[] allCanvases = FindObjectsOfType<Canvas>();
+                foreach (Canvas canvas in allCanvases) {
+                    // Controlla se il canvas è in modalità Screen Space - Overlay
+                    if (canvas.renderMode == RenderMode.ScreenSpaceOverlay) {
+                        // Controlla se il Canvas è attivo e se ha GameObject attivi
+                        if (canvas.gameObject.activeInHierarchy) {
+                            return;
+                        }
+                    }
+                }
+
+                if (popUpAddTank.activeInHierarchy) {
+                    popUpAddTank.SetActive(false);
+                    if (selectedTerritory is not null) selectedTerritory = null;
+                }
+                /*else if (selectedTerritory is not null) {
+                    //selectedTerritory.Deselect();
+                    selectedTerritory = null;
+                }*/
+                else
+                    escMenu.SetActive(true);
+            }
         }
 
         //Metodo che inizializza la struct per la selezione dei territori e attiva il turno
@@ -285,6 +291,7 @@ namespace UI
             if (_armyNumber > 3 && distributionPhase) {
                 _armyNumber = 3;
             }
+
             _selectedTerritories.territories = new Territory[_armyNumber];
             _selectedTerritories.count = new int[_armyNumber];
         }
@@ -293,14 +300,15 @@ namespace UI
         private Territory TerritoryInformationsPlayer(string id) {
             return Player.Instance.Territories.Find(x => x.id.Equals(id));
         }
-    
+
         private Territory TerritoryInformationsAllPlayers(string id) {
             return GameManager.Instance.AllTerritories.Find(terr => terr.id.Equals(id));
         }
 
         //Mostra il popup per aggiungere o togliere armate
         public void SelectState(TerritoryHandlerUI newTerritory) {
-            gameManager.GetComponent<GameManagerUI>().ShowTerritoryInfo(TerritoryInformationsAllPlayers(newTerritory.name));
+            gameManager.GetComponent<GameManagerUI>()
+                .ShowTerritoryInfo(TerritoryInformationsAllPlayers(newTerritory.name));
             if (Player.Instance.ArmyColor.Equals("black") || Player.Instance.ArmyColor.Equals("blue")) {
                 stateNameAddTank.color = Color.white;
                 tankNumber.color = Color.white;
@@ -330,15 +338,17 @@ namespace UI
             }
         }
 
-        /*public void DeselectState() {
-        if (distributionPhase)
+        public void DeselectState() {
             selectedTerritory.Deselect();
-        else {
-            if (selectedTerritory is not null) {
+            selectedTerritory = null;
+            /*if (distributionPhase)
                 selectedTerritory.Deselect();
-                selectedTerritory = null;
-            }
+            else {
+                if (selectedTerritory is not null) {
+                    selectedTerritory.Deselect();
+                    selectedTerritory = null;
+                }
+            }*/
         }
-    }*/
     }
 }

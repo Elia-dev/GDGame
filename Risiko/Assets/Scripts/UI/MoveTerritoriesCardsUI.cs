@@ -9,6 +9,9 @@ namespace UI
     public class MoveTerritoriesCardsUI : MoveCardsUI {
         [SerializeField] public GameObject imagePrefab; // Prefab dell'immagine da muovere
         [SerializeField] public Transform gridTransform; // Transform del Grid Layout Group
+        [SerializeField] private GameObject territoryCardsCanvas;
+        [SerializeField] private GameObject clickHandler;
+        
         private bool animationDone = false;
         private List<Territory> territories;
 
@@ -71,8 +74,8 @@ namespace UI
         }
         private void Update() {
             if (animationDone && Input.GetMouseButtonDown(0)) {
-                GameObject.Find("TerritoryCardsCanvas").SetActive(false);
-                GameObject.Find("ClickHandler").GetComponent<TerritoriesManagerDistrPhaseUI>()
+                territoryCardsCanvas.SetActive(false);
+                clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>()
                     .ActivateTerritories();
             }
         }
