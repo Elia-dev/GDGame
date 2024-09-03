@@ -16,9 +16,9 @@ class ClientManager:
         self._websocket = None
         self.game_manager = GameManager()
 
-    async def start_client(self):
+    async def start_client(self, ip, port):
         print("Try to connect...")
-        async with websockets.connect('ws://101.58.64.113:12345') as websocket:
+        async with websockets.connect(f'ws://{ip}:{port}') as websocket:
             try:
                 print("debug")
                 self._connected = True
@@ -92,5 +92,5 @@ class ClientManager:
     async def request_territory_info(self, terr_id):
         await self.send_message(f"REQUEST_TERRITORY_INFO: {self.player.player_id}-{terr_id}")
 
-    async def request_shortest_path(self, from_terr, to_terr):
-        await self.send_message(f"REQUEST_SHORTEST_PATH: {self.player.player_id}-{from_terr.node}-{to_terr.node}")
+    async def request_shortest_path(self, from_terr_node, to_terr_node):
+        await self.send_message(f"REQUEST_SHORTEST_PATH: {self.player.player_id}-{from_terr_node}-{to_terr_node}")
