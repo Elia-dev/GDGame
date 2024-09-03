@@ -44,36 +44,30 @@ async def game(client_manager):
         await asyncio.sleep(1)
     print('Card received')
 
-    # Format end summarize objective
-    await choose_what_to_do(client_manager)
-
     # Start placing first tanks
-    await reinforce_phase(client_manager, True)
+    await setup(client_manager)
 
     # Start game and attack
     want_to_attack = 0.5
     want_to_move = 0.5
-    not_first_round = False
+    first_round = True
     while True:
         if client_manager.player.is_my_turn:
             await asyncio.sleep(1)
+
             # REINFORCE PHASE
-            if client_manager.player.tanks_available > 0 and not not_first_round:
-                await reinforce_phase(client_manager, False)
+            if client_manager.player.tanks_available > 0 and not first_round:
+                await reinforce_phase(client_manager)
             await asyncio.sleep(1)
 
             # ATTACK OR MOVE PHASE
-            if random.random() > want_to_attack:
-                print('I want to attack')
-                await attack_phase(client_manager)
-            if random.random() > want_to_move:
-                print('I want to move')
-                await strategic_move_phase(client_manager)
+            await choose_what_to_do(client_manager)
+            await strategic_move_phase(client_manager)
 
             await client_manager.update_territories_state()
             client_manager.player.is_my_turn = False
             print('Passo il turno')
-            not_first_round = True
+            first_round = False
         else:
             await asyncio.sleep(1)
 
@@ -81,6 +75,11 @@ async def game(client_manager):
 
 
 async def strategic_move_phase(client_manager):
+    objective = client_manager.player.objective_card
+    objective_id = objective.id.replace('obj', '')
+    objective_id = int(objective_id)
+    if objective_id == 1 or objective_id == 2:
+        return
     # Check if I have isolated territories and move away its thanks
     isolate_terr = utils.get_isolate_territory(client_manager.player.territories, client_manager.game_manager.all_territories)
     attempt = 0
@@ -105,57 +104,266 @@ async def choose_what_to_do(client_manager):
     objective_id = int(objective_id)
     if objective_id == 1 or objective_id == 2:
         # Attack where is more simple
-        for territory in client_manager.player.territories:
-            enemies = utils.get_enemy_neighbors_of(territory, client_manager.player.territories, client_manager.game_manager.all_territories)
+        for territory in my_territories:
+            enemies = utils.get_enemy_neighbors_of(territory, my_territories, all_territories)
             for enemy in enemies:
-                while territory.num_tanks - enemy.num_tanks > 0:
-                    tanks_attacker = territory.num_tanks - 1
-                    if tanks_attacker > 3:
-                        tanks_attacker = 3
-                    await client_manager.attack_enemy_territory(territory, enemy, tanks_attacker)
-                    print(f'{territory.name} is attacking {enemy.name} with {tanks_attacker} tanks')
-                    await asyncio.sleep(2)
+                await _attack(territory, enemy, client_manager)
 
     if objective_id == 3:
         # Move forward North America or Africa
         terr_of_interest = list(
             filter(lambda terr: terr.id[0:2] == 'NA' or terr.id[0:2] == 'AF', all_territories)
         )
+        my_strong_territories = list(
+            filter(lambda terr: terr.num_tanks > 2, my_territories)
+        )
+        if not my_strong_territories:
+            return
+        await _manage_attack(my_strong_territories, terr_of_interest, client_manager)
 
     if objective_id == 4:
         terr_of_interest = list(
             filter(lambda terr: terr.id[0:2] == 'NA' or terr.id[0:2] == 'OC', all_territories)
         )
+        my_strong_territories = list(
+            filter(lambda terr: terr.num_tanks > 2, my_territories)
+        )
+        if not my_strong_territories:
+            return
+        await _manage_attack(my_strong_territories, terr_of_interest, client_manager)
 
     if objective_id == 5:
         terr_of_interest = list(
             filter(lambda terr: terr.id[0:2] == 'AS' or terr.id[0:2] == 'OC', all_territories)
         )
+        my_strong_territories = list(
+            filter(lambda terr: terr.num_tanks > 2, my_territories)
+        )
+        if not my_strong_territories:
+            return
+        await _manage_attack(my_strong_territories, terr_of_interest, client_manager)
 
     if objective_id == 6:
         terr_of_interest = list(
             filter(lambda terr: terr.id[0:2] == 'AS' or terr.id[0:2] == 'AF', all_territories)
         )
+        my_strong_territories = list(
+            filter(lambda terr: terr.num_tanks > 2, my_territories)
+        )
+        if not my_strong_territories:
+            return
+        await _manage_attack(my_strong_territories, terr_of_interest, client_manager)
 
     if objective_id == 7 or objective_id == 8:
         terr_of_interest = list(
             filter(lambda terr: terr.id[0:2] == 'EU' or terr.id[0:2] == 'SA' or terr.id[0:2] == 'OC',
                    all_territories)
         )
+        my_strong_territories = list(
+            filter(lambda terr: terr.num_tanks > 2, my_territories)
+        )
+        if not my_strong_territories:
+            return
+        await _manage_attack(my_strong_territories, terr_of_interest, client_manager)
 
     if objective_id == 9:
-        # TODO
-        pass
+        terr_of_interest = list(
+            filter(lambda terr: client_manager.game_manager.get_player_color(terr.player_id) == 'red', all_territories)
+        )
+        my_strong_territories = list(
+            filter(lambda terr: terr.num_tanks > 2, my_territories)
+        )
+        if not my_strong_territories:
+            return
+        await _manage_attack(my_strong_territories, terr_of_interest, client_manager)
+
+    if objective_id == 10:
+        terr_of_interest = list(
+            filter(lambda terr: client_manager.game_manager.get_player_color(terr.player_id) == 'blue', all_territories)
+        )
+        my_strong_territories = list(
+            filter(lambda terr: terr.num_tanks > 2, my_territories)
+        )
+        if not my_strong_territories:
+            return
+        await _manage_attack(my_strong_territories, terr_of_interest, client_manager)
+
+    if objective_id == 11:
+        terr_of_interest = list(
+            filter(lambda terr: client_manager.game_manager.get_player_color(terr.player_id) == 'green', all_territories)
+        )
+        my_strong_territories = list(
+            filter(lambda terr: terr.num_tanks > 2, my_territories)
+        )
+        if not my_strong_territories:
+            return
+        await _manage_attack(my_strong_territories, terr_of_interest, client_manager)
 
 
-    """
-    from_terr = START_TERRITORY
-    to_terr = END_TERRITORY
-    client_manager.request_name_update_player_list(from_terr, to_terr)
-    while not client_manager.game_manager.shortest_path:    # wait for the shortest path
+async def _reinforce(client_manager, terr_of_interest, my_territories):
+    paths = []
+    for my_terr in my_territories:
+        for enemy in terr_of_interest:
+            await client_manager.request_shortest_path(my_terr.node, enemy.node)
+            while not client_manager.game_manager.shortest_path:
+                await asyncio.sleep(1)
+            paths.append(client_manager.game_manager.shortest_path)
+            client_manager.game_manager.shortest_path = []
+    paths = sorted(paths, key=len)
+    while client_manager.player.tanks_available > 0:
+        for path in paths:
+            my_territory = path[0]
+            enemy = path[1]
+            if client_manager.player.tanks_available > (
+                    enemy.num_tank - 1) and my_territory.num_tanks <= enemy.num_tanks:
+                my_territory.num_tanks += enemy.num_tanks
+                client_manager.player.tanks_available -= enemy.num_tanks
+            elif my_territory.num_tanks <= enemy.num_tanks:
+                my_territory.num_tanks = client_manager.player.tanks_available
+                client_manager.player.tanks_available = 0
+            else:
+                # Territory already strong
+                pass
+
+
+async def reinforce_phase(client_manager):
+    all_territories = client_manager.game_manager.all_territories
+    my_territories = client_manager.player.territories
+    objective = client_manager.player.objective_card
+    objective_id = objective.id.replace('obj', '')
+    objective_id = int(objective_id)
+
+    if client_manager.player.is_my_turn:
+        if objective_id == 1 or objective_id == 2:
+            necessary_tanks = {}
+            for my_territory in my_territories:
+                enemies = utils.get_enemy_neighbors_of(my_territory, my_territories, all_territories)
+                enemies_tanks = 0
+                for enemy in enemies:
+                    enemies_tanks += enemy.num_tanks
+                necessary_tanks[my_territory.id] = enemies_tanks - my_territory.num_tanks
+
+            necessary_tanks = dict(sorted(necessary_tanks.items(), key=lambda item: item[1], reverse=True))
+            while client_manager.player.tanks_available > 0:
+                for terr, tanks in necessary_tanks.items():
+                    if client_manager.player.tanks_available > (tanks - 1):
+                        terr.num_tanks += tanks
+                        client_manager.player.tanks_available -= tanks
+                    else:
+                        terr.num_tanks += client_manager.player.tanks_available
+                        client_manager.player.tanks_available = 0
+
+        if objective_id == 3:
+            # Place near North America or Africa
+            terr_of_interest = list(
+                filter(lambda terr: terr.id[0:2] == 'NA' or terr.id[0:2] == 'AF', all_territories)
+            )
+            await _reinforce(client_manager, terr_of_interest, my_territories)
+
+        if objective_id == 4:
+            # Place near North America or Africa
+            terr_of_interest = list(
+                filter(lambda terr: terr.id[0:2] == 'NA' or terr.id[0:2] == 'OC', all_territories)
+            )
+            await _reinforce(client_manager, terr_of_interest, my_territories)
+
+        if objective_id == 5:
+            # Place near North America or Africa
+            terr_of_interest = list(
+                filter(lambda terr: terr.id[0:2] == 'AS' or terr.id[0:2] == 'OC', all_territories)
+            )
+            await _reinforce(client_manager, terr_of_interest, my_territories)
+
+        if objective_id == 6:
+            # Place near North America or Africa
+            terr_of_interest = list(
+                filter(lambda terr: terr.id[0:2] == 'AS' or terr.id[0:2] == 'AF', all_territories)
+            )
+            await _reinforce(client_manager, terr_of_interest, my_territories)
+
+        if objective_id == 7 or objective_id == 8:
+            # Place near North America or Africa
+            terr_of_interest = list(
+                filter(lambda terr: terr.id[0:2] == 'EU' or terr.id[0:2] == 'SA' or terr.id[0:2] == 'OC',
+                       all_territories)
+            )
+            await _reinforce(client_manager, terr_of_interest, my_territories)
+
+        if objective_id == 9:
+            terr_of_interest = list(
+                filter(lambda terr: client_manager.game_manager.get_player_color(terr.player_id) == 'red',
+                       all_territories)
+            )
+            await _reinforce(client_manager, terr_of_interest, my_territories)
+
+        if objective_id == 10:
+            terr_of_interest = list(
+                filter(lambda terr: client_manager.game_manager.get_player_color(terr.player_id) == 'blue',
+                       all_territories)
+            )
+            await _reinforce(client_manager, terr_of_interest, my_territories)
+
+        if objective_id == 11:
+            terr_of_interest = list(
+                filter(lambda terr: client_manager.game_manager.get_player_color(terr.player_id) == 'green',
+                       all_territories)
+            )
+            await _reinforce(client_manager, terr_of_interest, my_territories)
+
+        await client_manager.update_territories_state()
+    else:
         await asyncio.sleep(1)
 
-    """
+
+async def setup(client_manager):
+    territories_len = len(client_manager.player.territories)
+    while client_manager.player.tanks_available > 0:
+        print('Wait to place tanks')
+        if client_manager.player.is_my_turn:
+            territory = client_manager.player.territories[random.randint(0, territories_len - 1)]
+            if client_manager.player.tanks_available > 3:
+                tank_to_place = 3
+            else:
+                tank_to_place = client_manager.player.tanks_available
+            territory.num_tanks += tank_to_place
+            client_manager.player.tanks_available -= tank_to_place
+            client_manager.player.tanks_placed += tank_to_place
+            print(f"Placed {tank_to_place} tanks in {territory.name}")
+            await client_manager.update_territories_state()
+            client_manager.player.is_my_turn = False
+        else:
+            await asyncio.sleep(1)
+
+
+async def _manage_attack(my_strong_territories, terr_of_interest, client_manager):
+    my_territories = client_manager.player.territories
+    paths = []
+    for my_terr in my_strong_territories:
+        for enemy in terr_of_interest:
+            await client_manager.request_shortest_path(my_terr.node, enemy.node)
+            while not client_manager.game_manager.shortest_path:
+                await asyncio.sleep(1)
+            paths.append(client_manager.game_manager.shortest_path)
+            client_manager.game_manager.shortest_path = []
+    paths = sorted(paths, key=len)
+    for path in paths:
+        attacker = list(filter(lambda terr: terr.node == path[0], my_territories)).pop()
+        defender = list(filter(lambda terr: terr.node == path[1], terr_of_interest)).pop()
+        await _attack(attacker, defender, client_manager)
+
+
+async def _attack(attacker, defender, client_manager):
+    while attacker.num_tanks - defender.num_tanks > 0:
+        tanks_attacker = attacker.num_tanks - 1
+        if tanks_attacker > 3:
+            tanks_attacker = 3
+        client_manager.game_manager.set_im_attacking(True)
+        await client_manager.attack_enemy_territory(attacker, defender, tanks_attacker)
+        print(f'{attacker.name} is attacking {defender.name} with {tanks_attacker} tanks')
+        await asyncio.sleep(2)
+        while client_manager.game_manager.get_im_attacking():
+            await asyncio.sleep(1)
+        await asyncio.sleep(2)
 
 
 async def attack_phase(client_manager):
@@ -172,31 +380,6 @@ async def attack_phase(client_manager):
                 tanks_attacker = 3
             print(f'{terr_attacker} is attacking {terr_to_attack} with {tanks_attacker} tanks')
             await client_manager.attack_enemy_territory(terr_attacker, terr_to_attack, tanks_attacker)
-
-
-async def reinforce_phase(client_manager, setup):
-    territories_len = len(client_manager.player.territories)
-    while client_manager.player.tanks_available > 0:
-        print('Wait to place tanks')
-        if client_manager.player.is_my_turn:
-            territory = client_manager.player.territories[random.randint(0, territories_len - 1)]
-            if client_manager.player.tanks_available > 3:
-                tank_to_place = 3
-            else:
-                tank_to_place = client_manager.player.tanks_available
-            territory.num_tanks += tank_to_place
-            client_manager.player.tanks_available -= tank_to_place
-            client_manager.player.tanks_placed += tank_to_place
-            print(f"Placed {tank_to_place} tanks in {territory.name}")
-            if setup:
-                await client_manager.update_territories_state()
-                client_manager.player.is_my_turn = False
-        else:
-            await asyncio.sleep(1)
-
-    if not setup:
-        await client_manager.update_territories_state()
-
 
 
 async def main():
