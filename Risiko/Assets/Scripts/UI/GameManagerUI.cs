@@ -49,7 +49,7 @@ namespace UI
         void Update() {
             allInfo.text = "";
             if (Player.Instance.IsMyTurn) {
-                turn.color = Color.black;
+                turn.color = new Color32(255, 216, 0, 255);
                 turn.text = "Is your turn!\n";
             }
             else {
