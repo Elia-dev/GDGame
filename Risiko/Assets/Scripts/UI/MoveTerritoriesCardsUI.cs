@@ -51,9 +51,9 @@ namespace UI
             float availableWidth = (containerWidth - gridLayoutGroup.spacing.x * (maxColumns - 1)) / maxColumns;
             float availableHeight = (containerHeight - gridLayoutGroup.spacing.y * (maxRows - 1)) / maxRows;
 
-            // Calcola la dimensione delle celle mantenendo il rapporto di aspetto
-            float cellWidth = Mathf.Min(availableWidth, availableHeight * aspectRatio);
-            float cellHeight = cellWidth / aspectRatio;
+            // Calcola la dimensione delle celle mantenendo il rapporto di aspetto 4:3
+            float cellHeight = Mathf.Min(availableHeight, availableWidth * aspectRatio);
+            float cellWidth = cellHeight / aspectRatio;
 
             // Imposta la dimensione delle celle nel GridLayoutGroup
             gridLayoutGroup.cellSize = new Vector2(cellWidth, cellHeight);
@@ -128,6 +128,12 @@ namespace UI
                territoriesManager.ActivateTerritories();
            } catch (Exception ex) {
                Debug.LogError("Exception in ActivateTerritories: " + ex.Message);
+           }
+           
+           if (animationDone && Input.GetMouseButtonDown(0)) {
+               territoryCardsCanvas.SetActive(false);
+               clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>()
+                   .ActivateTerritories();
            }
         }
     }
