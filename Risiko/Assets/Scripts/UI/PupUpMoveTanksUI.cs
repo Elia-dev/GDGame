@@ -13,16 +13,16 @@ namespace UI
         [SerializeField] private Button plusButton;
         [SerializeField] private Button minusButton;
         [SerializeField] private Button moveButton;
-        private Territory fromTerritory;
-        private Territory toTerritory;
-        private int armyToMove = 0;
+        private Territory _fromTerritory;
+        private Territory _toTerritory;
+        private int _armyToMove = 0;
     
         private void Awake() {
             plusButton.onClick.AddListener(() => AddArmy());
             minusButton.onClick.AddListener(() => RemoveArmy());
             moveButton.onClick.AddListener(() => {
-                fromTerritory.num_tanks -= armyToMove;
-                toTerritory.num_tanks += armyToMove;
+                _fromTerritory.num_tanks -= _armyToMove;
+                _toTerritory.num_tanks += _armyToMove;
                 TerritoriesManagerGamePhaseUI.StategicMove = true;
                 ClientManager.Instance.UpdateTerritoriesState();
                 this.gameObject.SetActive(false);
@@ -30,34 +30,34 @@ namespace UI
         }
 
         private void AddArmy() {
-            if(armyToMove < fromTerritory.num_tanks-1){
-                armyToMove++;
-                tankToAdd.text = armyToMove + "";
+            if(_armyToMove < _fromTerritory.num_tanks-1){
+                _armyToMove++;
+                tankToAdd.text = _armyToMove + "";
             }
 
-            if (armyToMove > 0)
+            if (_armyToMove > 0)
                 moveButton.interactable = true;
             else
                 moveButton.interactable = false;
         }
     
         private void RemoveArmy() {
-            if (armyToMove > 0) {
-                armyToMove--;
-                tankToAdd.text = armyToMove + "";
+            if (_armyToMove > 0) {
+                _armyToMove--;
+                tankToAdd.text = _armyToMove + "";
             }
 
-            if (armyToMove > 0)
+            if (_armyToMove > 0)
                 moveButton.interactable = true;
             else
                 moveButton.interactable = false;
         }
 
         public void SetPupUp(Territory fromTerritory, Territory toTerritory, GameObject gameObjTerritory) {
-            this.fromTerritory = fromTerritory;
-            this.toTerritory = toTerritory;
+            this._fromTerritory = fromTerritory;
+            this._toTerritory = toTerritory;
             Debug.Log("SPOSTO DAL TERRITORIO " + fromTerritory +" AL TERRITORIO " + toTerritory);
-            armyToMove = 0;
+            _armyToMove = 0;
             moveButton.interactable = false;
             string color = Player.Instance.ArmyColor;
             if (color.Equals("black") || color.Equals("blue")) {
@@ -71,7 +71,7 @@ namespace UI
                 tankToAdd.color = Color.black;
             }
             gameObject.GetComponent<Image>().color = Utils.ColorCode(color, 255);
-            tankToAdd.text = armyToMove + "";
+            tankToAdd.text = _armyToMove + "";
             stateNameMove.text = toTerritory.name;
             this.gameObject.transform.position = gameObjTerritory.gameObject.transform.position;
             this.gameObject.transform.position = new Vector3(this.gameObject.transform.position.x,
