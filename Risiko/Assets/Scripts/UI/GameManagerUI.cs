@@ -114,10 +114,34 @@ namespace UI
             //territoryInfo.gameObject.SetActive(true);
             //Territory territory = GameManager.Instance.AllTerritories.Find(terr => terr.id.Equals(id));
             if (territory is not null) {
-                _territoryInfo = "\n" + territory.name + $": state of the continent {territory.continent}, owned by the player " +
+                string continent = territory.continent;
+                switch (continent) {
+                    case "AF":
+                        continent = "Africa";
+                        break;
+                    case "AS": 
+                        continent = "Asia";
+                        break;
+                    case "EU":
+                        continent = "Europe";
+                        break;
+                    case "NA":
+                        continent = "North America";
+                        break;
+                    case "OC":
+                        continent = "Oceania";
+                        break;
+                    case "SA":
+                        continent = "South America";
+                        break;
+                    default:
+                        continent = "Unknown";
+                        break;
+                }
+                _territoryInfo = "\n<b>" + territory.name + $"</b>: state of the continent {continent}, owned by the player " +
                                  $"<color={GameManager.Instance.GetPlayerColor(territory.player_id)}>" +
                                  $"{GameManager.Instance.getEnemyNameById(territory.player_id)}</color>.\n" +
-                                 $"On the territory there are {territory.num_tanks} army on it.\n";
+                                 $"On the territory there are <b>{territory.num_tanks}</b> army on it.\n";
             
             }
         }
