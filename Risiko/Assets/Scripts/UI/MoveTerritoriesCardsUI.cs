@@ -36,10 +36,8 @@ namespace UI {
             float aspectRatio = 4f / 3f; // Rapporto di aspetto originale delle carte
 
             // Ottieni le dimensioni del contenitore
-            float containerWidth =
-                cardContainer.rect.width - gridLayoutGroup.padding.left - gridLayoutGroup.padding.right;
-            float containerHeight = cardContainer.rect.height - gridLayoutGroup.padding.top -
-                                    gridLayoutGroup.padding.bottom;
+            float containerWidth = Screen.width - gridLayoutGroup.padding.left - gridLayoutGroup.padding.right;
+            float containerHeight = Screen.height - 60;
 
             // Calcola il numero di carte
             int cardNumber = territories.Count;
@@ -57,7 +55,8 @@ namespace UI {
             float cellWidth = cellHeight / aspectRatio;
 
             // Aumenta il numero di righe e colonne per massimizzare la dimensione delle celle
-            while (cellHeight * maxRows < containerHeight && cellWidth * maxColumns < containerWidth) {
+            while ((cellHeight * maxRows < containerHeight && cellWidth * maxColumns < containerWidth) &&
+                   (maxRows * maxColumns <= 21)) {
                 if (maxColumns * cellWidth < containerWidth) {
                     maxColumns++;
                 }
@@ -77,15 +76,18 @@ namespace UI {
 
             // Imposta la dimensione delle celle nel GridLayoutGroup
             gridLayoutGroup.cellSize = new Vector2(cellWidth, cellHeight);
-            /*COPILOT
-             RectTransform cardContainer = gridTransform.GetComponent<RectTransform>();
+
+            // Imposta la dimensione delle celle nel GridLayoutGroup
+            gridLayoutGroup.cellSize = new Vector2(cellWidth, cellHeight);
+            /*RectTransform cardContainer = gridTransform.GetComponent<RectTransform>();
             GridLayoutGroup gridLayoutGroup = gridTransform.GetComponent<GridLayoutGroup>();
             float aspectRatio = 4f / 3f; // Rapporto di aspetto originale delle carte
 
             // Ottieni le dimensioni del contenitore
-            float containerWidth = cardContainer.rect.width - gridLayoutGroup.padding.left - gridLayoutGroup.padding.right;
-            float containerHeight = cardContainer.rect.height - gridLayoutGroup.padding.top - gridLayoutGroup.padding.bottom;
-
+            float containerWidth =
+                Screen.width - gridLayoutGroup.padding.left - gridLayoutGroup.padding.right;
+            float containerHeight = Screen.height - 60;
+            Debug.Log("Screen width: " + Screen.width + " Screen height: " + Screen.height);
             // Calcola il numero di carte
             int cardNumber = territories.Count;
 
