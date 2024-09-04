@@ -5,34 +5,80 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI
-{
+namespace UI {
     public class MoveTerritoriesCardsUI : MoveCardsUI {
         [SerializeField] public GameObject imagePrefab; // Prefab dell'immagine da muovere
         [SerializeField] public Transform gridTransform; // Transform del Grid Layout Group
         [SerializeField] private GameObject territoryCardsCanvas;
         [SerializeField] private GameObject clickHandler;
         private float _animationTime = 15f;
-        
+
         private bool animationDone = false;
         private List<Territory> territories;
 
         void Start() {
             if (clickHandler == null) {
                 Debug.LogError("clickHandler is not assigned in the Inspector");
-            } else {
+            }
+            else {
                 Debug.Log("clickHandler is assigned correctly");
             }
-            
+
             territories = Player.Instance.Territories;
             AdjustCellsSize();
             CardAnimation();
             imagePrefab.SetActive(false);
         }
 
-        private void AdjustCellsSize()
-        {
+        private void AdjustCellsSize() {
             RectTransform cardContainer = gridTransform.GetComponent<RectTransform>();
+            GridLayoutGroup gridLayoutGroup = gridTransform.GetComponent<GridLayoutGroup>();
+            float aspectRatio = 4f / 3f; // Rapporto di aspetto originale delle carte
+
+            // Ottieni le dimensioni del contenitore
+            float containerWidth =
+                cardContainer.rect.width - gridLayoutGroup.padding.left - gridLayoutGroup.padding.right;
+            float containerHeight = cardContainer.rect.height - gridLayoutGroup.padding.top -
+                                    gridLayoutGroup.padding.bottom;
+
+            // Calcola il numero di carte
+            int cardNumber = territories.Count;
+
+            // Definisci il numero massimo di righe e colonne
+            int maxRows = Mathf.CeilToInt(Mathf.Sqrt(cardNumber));
+            int maxColumns = Mathf.CeilToInt((float)cardNumber / maxRows);
+
+            // Calcola la dimensione massima delle celle che mantenga il rapporto di aspetto
+            float availableWidth = (containerWidth - gridLayoutGroup.spacing.x * (maxColumns - 1)) / maxColumns;
+            float availableHeight = (containerHeight - gridLayoutGroup.spacing.y * (maxRows - 1)) / maxRows;
+
+            // Calcola la dimensione delle celle mantenendo il rapporto di aspetto 4:3
+            float cellHeight = Mathf.Min(availableHeight, availableWidth * aspectRatio);
+            float cellWidth = cellHeight / aspectRatio;
+
+            // Aumenta il numero di righe e colonne per massimizzare la dimensione delle celle
+            while (cellHeight * maxRows < containerHeight && cellWidth * maxColumns < containerWidth) {
+                if (maxColumns * cellWidth < containerWidth) {
+                    maxColumns++;
+                }
+                else if (maxRows * cellHeight < containerHeight) {
+                    maxRows++;
+                }
+                else {
+                    break;
+                }
+
+                availableWidth = (containerWidth - gridLayoutGroup.spacing.x * (maxColumns - 1)) / maxColumns;
+                availableHeight = (containerHeight - gridLayoutGroup.spacing.y * (maxRows - 1)) / maxRows;
+
+                cellHeight = Mathf.Min(availableHeight, availableWidth * aspectRatio);
+                cellWidth = cellHeight / aspectRatio;
+            }
+
+            // Imposta la dimensione delle celle nel GridLayoutGroup
+            gridLayoutGroup.cellSize = new Vector2(cellWidth, cellHeight);
+            /*COPILOT
+             RectTransform cardContainer = gridTransform.GetComponent<RectTransform>();
             GridLayoutGroup gridLayoutGroup = gridTransform.GetComponent<GridLayoutGroup>();
             float aspectRatio = 4f / 3f; // Rapporto di aspetto originale delle carte
 
@@ -56,12 +102,13 @@ namespace UI
             float cellWidth = cellHeight / aspectRatio;
 
             // Imposta la dimensione delle celle nel GridLayoutGroup
-            gridLayoutGroup.cellSize = new Vector2(cellWidth, cellHeight);
-            
-            /*RectTransform cardContainer = gridTransform.GetComponent<RectTransform>();
+            gridLayoutGroup.cellSize = new Vector2(cellWidth, cellHeight);*/
+
+            /* CHATGPT
+             RectTransform cardContainer = gridTransform.GetComponent<RectTransform>();
             GridLayoutGroup gridLayoutGroup = gridTransform.GetComponent<GridLayoutGroup>();
             float rapportoAspetto = 4f / 3f; // Rapporto di aspetto originale delle carte
-            
+
             // Ottieni le dimensioni del contenitore
             float containerlength = cardContainer.rect.width - gridLayoutGroup.padding.left - gridLayoutGroup.padding.right;
             float containerHeight = cardContainer.rect.height - gridLayoutGroup.padding.top - gridLayoutGroup.padding.bottom;
@@ -97,44 +144,48 @@ namespace UI
                 GameObject nuovaCarta = Instantiate(imagePrefab, gridTransform);
                 loadSprite("Territories/" + territories[i].id);
                 nuovaCarta.GetComponent<Image>().sprite = imgSprite;
-        
+
                 // Nascondi inizialmente la carta (o scala piccola)
                 nuovaCarta.transform.localScale = Vector3.zero;
 
                 // Anima la carta in modo che appaia
                 nuovaCarta.transform.DOScale(Vector3.one, 0.5f).SetDelay(i * 0.2f); // Anima con ritardo progressivo
             }
+
             _animationTime = territories.Count * 0.2f + 0.5f;
         }
+
         private void Update() {
-           if (_animationTime > 0) {
+            if (_animationTime > 0) {
                 _animationTime -= Time.deltaTime;
-           }  else {
-               animationDone = true;
-           }
+            }
+            else {
+                animationDone = true;
+            }
 
-           if (clickHandler == null) {
-               Debug.LogError("clickHandler is null");
-               return;
-           }
+            if (clickHandler == null) {
+                Debug.LogError("clickHandler is null");
+                return;
+            }
 
-           var territoriesManager = clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>();
-           if (territoriesManager == null) {
-               Debug.LogError("TerritoriesManagerDistrPhaseUI component not found on clickHandler");
-               return;
-           }
+            var territoriesManager = clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>();
+            if (territoriesManager == null) {
+                Debug.LogError("TerritoriesManagerDistrPhaseUI component not found on clickHandler");
+                return;
+            }
 
-           try {
-               territoriesManager.ActivateTerritories();
-           } catch (Exception ex) {
-               Debug.LogError("Exception in ActivateTerritories: " + ex.Message);
-           }
-           
-           if (animationDone && Input.GetMouseButtonDown(0)) {
-               territoryCardsCanvas.SetActive(false);
-               clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>()
-                   .ActivateTerritories();
-           }
+            try {
+                territoriesManager.ActivateTerritories();
+            }
+            catch (Exception ex) {
+                Debug.LogError("Exception in ActivateTerritories: " + ex.Message);
+            }
+
+            if (animationDone && Input.GetMouseButtonDown(0)) {
+                territoryCardsCanvas.SetActive(false);
+                clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>()
+                    .ActivateTerritories();
+            }
         }
     }
 }
