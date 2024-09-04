@@ -1435,7 +1435,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1c2f748d472a94d468d6b8b070e0db0a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 042d60bfc2040e94385c0166f49b446f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1707,7 +1707,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: a5f43ea0839cd364b924426674f95b52, type: 3}
-  m_Type: 1
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -2143,7 +2143,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 101636235823366903, guid: e6dd6d45cfe0b57b193a1aa3b74f8ef8, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 101636235823366903, guid: e6dd6d45cfe0b57b193a1aa3b74f8ef8, type: 3}
       propertyPath: m_AnchorMin.x
@@ -2151,7 +2151,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 101636235823366903, guid: e6dd6d45cfe0b57b193a1aa3b74f8ef8, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 101636235823366903, guid: e6dd6d45cfe0b57b193a1aa3b74f8ef8, type: 3}
       propertyPath: m_SizeDelta.x
@@ -2163,11 +2163,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 101636235823366903, guid: e6dd6d45cfe0b57b193a1aa3b74f8ef8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 241.5
       objectReference: {fileID: 0}
     - target: {fileID: 101636235823366903, guid: e6dd6d45cfe0b57b193a1aa3b74f8ef8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -14.33
       objectReference: {fileID: 0}
     - target: {fileID: 2075312638805154113, guid: e6dd6d45cfe0b57b193a1aa3b74f8ef8, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2227,7 +2227,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4686828178786520905, guid: e6dd6d45cfe0b57b193a1aa3b74f8ef8, type: 3}
       propertyPath: m_HorizontalAlignment
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6370319090980322655, guid: e6dd6d45cfe0b57b193a1aa3b74f8ef8, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2376,6 +2376,10 @@ PrefabInstance:
     - target: {fileID: 9146138993916694357, guid: e6dd6d45cfe0b57b193a1aa3b74f8ef8, type: 3}
       propertyPath: m_Name
       value: MatchmakingRowPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 9146138993916694357, guid: e6dd6d45cfe0b57b193a1aa3b74f8ef8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -2757,13 +2761,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dabcd4bcaba4c8187abab0276076d72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rowPrefab: {fileID: 1360780650}
+  contentParent: {fileID: 672464940}
   backButton: {fileID: 1490640780}
   popupError: {fileID: 1161172401}
   refreshButton: {fileID: 743080068}
   serverIPInput: {fileID: 1722185795}
   selectButton: {fileID: 1773174440}
-  rowPrefab: {fileID: 1360780650}
-  contentParent: {fileID: 672464940}
 --- !u!1 &1677635802
 GameObject:
   m_ObjectHideFlags: 0
@@ -2851,7 +2855,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1710810222}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
   m_Name: 
@@ -3716,8 +3720,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 41769865}
   m_HandleRect: {fileID: 41769864}
   m_Direction: 2
-  m_Value: 0.99999756
-  m_Size: 0.9584332
+  m_Value: 1
+  m_Size: 0.95843345
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

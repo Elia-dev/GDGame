@@ -56,6 +56,7 @@ namespace businesslogic
 
         public async Task<List<string>> FetchOnlineServers()
         {
+            onlineServers = new List<string>();
             foreach (var server in ServersToCheck)
             {
                 if (await IsServerOnline(server))

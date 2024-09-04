@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using businesslogic;
 using TMPro;
 using UnityEngine;
@@ -10,13 +11,13 @@ namespace UI
 {
     public class ServerListManager : MonoBehaviour
     {
+        [SerializeField] public GameObject rowPrefab; // Il prefab per la riga
+        [SerializeField] public Transform contentParent; // Il contenitore (Content) delle righe
         [SerializeField] private Button backButton;
         [SerializeField] private GameObject popupError;
         [SerializeField] private Button refreshButton;
         [SerializeField] private TMP_InputField serverIPInput;
         [SerializeField] private Button selectButton;
-        public GameObject rowPrefab; // Il prefab per la riga
-        public Transform contentParent; // Il contenitore (Content) delle righe
         private List<string> _servers = new List<string>();
 
 
@@ -25,9 +26,11 @@ namespace UI
             backButton.onClick.AddListener(() => { SceneManager.LoadScene("MainMenu"); });
             refreshButton.onClick.AddListener(async () =>
             {
-                await ClientManager.Instance.FetchOnlineServers();
+                /*await ClientManager.Instance.FetchOnlineServers();
                 _servers = ClientManager.Instance.GetOnlineServersList();
-                RefreshServerList();
+                RefreshServerList();*/
+                retrieveServers();
+                serverIPInput.text = "";
             });
             
             selectButton.onClick.AddListener(() =>
@@ -45,9 +48,18 @@ namespace UI
             });
         }
 
+        private async Task retrieveServers()
+        {
+            refreshButton.interactable = false;
+            await ClientManager.Instance.FetchOnlineServers();
+            _servers = ClientManager.Instance.GetOnlineServersList();
+            RefreshServerList();
+        }
 
         void Start()
         {
+            //retrieveServers();
+            refreshButton.interactable = false;
             _servers = ClientManager.Instance.GetOnlineServersList();
             // Per ogni partita disponibile, crea una riga nella lista
             RefreshServerList();
@@ -58,11 +70,9 @@ namespace UI
             rowPrefab.SetActive(true);
             foreach (Transform child in contentParent)
             {
-                Debug.Log("SCASSO TUTTO ZIO PERA");
-                Debug.Log(child.gameObject);
                 Destroy(child.gameObject);
             }
-
+            
             _servers.ForEach(server =>
             {
                 GameObject newRow = Instantiate(rowPrefab, contentParent);
@@ -74,6 +84,7 @@ namespace UI
                 newRow.GetComponent<Button>().onClick.AddListener(() => FillInputField(server));
             });
             rowPrefab.SetActive(false);
+            refreshButton.interactable = true;
         }
         
         private void FillInputField(string server)
