@@ -177,13 +177,13 @@ class RequestHandler:
                         self.game_manager.set_im_under_attack(False)
                         self.game_manager.set_im_attacking(False)
 
-                    if "SHORTEST_PATH" in message:
+                    elif "SHORTEST_PATH" in message:
                         request = message.replace('SHORTEST_PATH: ', '').strip()
                         nodes = request.split('-')
                         self.game_manager.shortest_path = nodes
 
                     else:
-                        print(f'HANDLER: request not manageable: {message}')
+                        print(f'HANDLER: request not manageable {message}')
 
             except websockets.exceptions.ConnectionClosed:
                 print(f'PLAYER: Connection closed')
