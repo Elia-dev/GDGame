@@ -38,12 +38,12 @@ namespace UI
             _lobbyID = lobbyIdInputField.text;
             GameManager.Instance.SetLobbyId(_lobbyID);
         
+            // Se il campo è vuoto, mostra un errore
             if (_lobbyID.Equals("")) {
                 popUpIdLobbyError.SetActive(true);
                 GameObject.Find("PopUpContainer").GetComponent<DisplayMessageOnPopUpUI>()
                     .SetErrorText("Insert a lobby ID");
-            }
-            else {
+            } else { // Altrimenti, prova a connettersi alla lobby
                 ClientManager.Instance.JoinLobbyAsClient(_lobbyID);
                 popUpIdLobbyError.SetActive(true);
                 GameObject.Find("PopUpContainer").GetComponent<DisplayMessageOnPopUpUI>()
@@ -51,8 +51,8 @@ namespace UI
                 StartCoroutine(AttemptJoinLobby());
             }
         }
-
-        private IEnumerator AttemptJoinLobby() {
+        // Coroutine che prova a connettersi alla lobby
+        private IEnumerator AttemptJoinLobby() {        
             float timerConnection = 5.0f;
 
             while (timerConnection > 0) {

@@ -17,13 +17,11 @@ namespace UI {
             backButton.onClick.AddListener(() => {
                 SceneManager.LoadScene("MainMenu");
                 ClientManager.Instance.ResetConnection();
-                Debug.Log("Back to Main Menu, connection reset");
             });
 
             createLobbyButton.onClick.AddListener(() => {
                 string username = usernameInputField.text;
                 if (Utils.CheckNickname(username).Equals("OK")) {
-                    Debug.Log("Username OK, changing scene from GameMenu to HostMenu");
                     Player.Instance.Initialize();
                     Player.Instance.Name = username;
 
@@ -40,7 +38,6 @@ namespace UI {
             joinLobbyButton.onClick.AddListener(() => {
                 string username = usernameInputField.text;
                 if (Utils.CheckNickname(username).Equals("OK")) {
-                    //Debug.Log("Username OK, changing scene from GameMenu to JoinLobbyMenu");
                     Player.Instance.Initialize();
                     Player.Instance.Name = username;
                     SceneManager.LoadScene("JoinGameMenu");
@@ -54,6 +51,7 @@ namespace UI {
         }
 
         private void Start() {
+            // Imposta il focus sull'input field
             usernameInputField.Select();
             usernameInputField.ActivateInputField();
         }

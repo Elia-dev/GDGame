@@ -36,5 +36,10 @@ namespace Audio
             PlayerPrefs.SetFloat("musicVolume", volumeSlider.value);
             Debug.Log("Salvato libello volumen: " + PlayerPrefs.GetFloat("musicVolume"));
         }
+
+        public void ChangeFXVolume()
+        {
+            
+        }
     }
 }

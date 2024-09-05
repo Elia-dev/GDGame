@@ -5,16 +5,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace UI
-{
+namespace UI {
     public class ArmySelectionManagerUI : MonoBehaviour {
-        private ArmySelectionHandlerUI _selectedArmy;
-
-        private GraphicRaycaster _raycaster;
-        private PointerEventData _pointerEventData;
-        private EventSystem _eventSystem;
-        private bool _turn = false;
-
         [SerializeField] private GameObject redArmy;
         [SerializeField] private GameObject greenArmy;
         [SerializeField] private GameObject blueArmy;
@@ -27,8 +19,15 @@ namespace UI
         [SerializeField] private TMP_Text waitingLabel;
         [SerializeField] private Button chooseButton;
 
+        private ArmySelectionHandlerUI _selectedArmy;
+
+        private GraphicRaycaster _raycaster;
+        private PointerEventData _pointerEventData;
+        private EventSystem _eventSystem;
+        private bool _turn = false;
+
         private void Awake() {
-            chooseButton.onClick.AddListener( () => ChooseArmy());
+            chooseButton.onClick.AddListener(() => ChooseArmy());
         }
 
         private void Start() {
@@ -38,6 +37,7 @@ namespace UI
             // Trova l'EventSystem nella scena
             _eventSystem = EventSystem.current;
         }
+
         //Disattivazione di tutti i raycast
         private void DeactivateRaycastTargetArmy() {
             redArmy.GetComponent<Image>().raycastTarget = false;
@@ -47,10 +47,11 @@ namespace UI
             purpleArmy.GetComponent<Image>().raycastTarget = false;
             blackArmy.GetComponent<Image>().raycastTarget = false;
         }
+
         //Metodo che attiva solo i reaycast delle armate disponibili
         private void ActivateRaycastTargetArmy() {
-            List<string>
-                AvailableColors = GameManager.Instance.GetAvailableColors(); // Per prendere la lista dei colori disponibili
+            List<string> AvailableColors =
+                GameManager.Instance.GetAvailableColors(); // Per prendere la lista dei colori disponibili
 
             foreach (var color in AvailableColors) {
                 switch (color) {
@@ -85,9 +86,9 @@ namespace UI
 
             if (Player.Instance.IsMyTurn)
                 waitingLabel.gameObject.SetActive(false);
-            else 
+            else
                 waitingLabel.gameObject.SetActive(true);
-        
+
             if (Input.GetMouseButtonDown(0) && _turn) {
                 _pointerEventData = new PointerEventData(_eventSystem)
                 {
@@ -107,6 +108,7 @@ namespace UI
                     }
                 }
             }
+
             //Lancio fase successiva quando vengono rivenute le carte obiettivo
             if (Player.Instance.ObjectiveCard is not null) {
                 //TerritoryHandlerUI.ArmyDistributionPhase();
@@ -138,14 +140,12 @@ namespace UI
                 DeactivateRaycastTargetArmy();
 
                 //Preparazione prossima fase
-                //Color32 color = selectedArmy.ArmyColor;
-                //color.a = 200;
-                //TerritoryHandlerUI.userColor = color;
                 TerritoryHandlerUI.UserColor = Utils.ColorCode(Player.Instance.ArmyColor, 200);
                 waitingLabel.gameObject.SetActive(true);
                 //gameObject.GetComponent<Renderer>().enabled = false;
             }
-            else {//Se non è stata selezionata un'armata mostra errore
+            else {
+                //Se non è stata selezionata un'armata mostra errore
                 title.color = Color.red;
                 errorMessage.gameObject.SetActive(true);
             }

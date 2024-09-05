@@ -8,20 +8,12 @@ namespace UI
         public Color32 startColor = new Color32(0, 0, 0, 0);
         private Color32 _hoverColor = new Color32(205, 185, 52, 100);
         private static Color32 _selectionColor = new Color32(205, 185, 52, 100);
-        //private static Color32 distributionPhaseColor = new Color32(205, 185, 52, 100);
         public bool Selected { get; set; } = false;
         public static Color32 UserColor { get; set; }
         public Color32 StartColor {
             set => startColor = value;
         }
 
-        /*public static void ArmyDistributionPhase() {
-        selectionColor = distributionPhaseColor;
-    }*/
-
-        public static void gamePhase() {
-            _selectionColor = UserColor;
-        }
         void Awake() {
             _sprite = GetComponent<SpriteRenderer>();
             //sprite.color = startColor;
@@ -41,15 +33,8 @@ namespace UI
             }
         }
 
-        /*void OnMouseDown() {
-        if (!selected) {
-            Select();
-        }
-    }*/
-
         public void Select() {
             Selected = true;
-            /// CARICARE DATI STATO
             _sprite.color = _selectionColor;
         }
 

@@ -15,6 +15,7 @@ namespace UI
 
         private void Awake() {
             diceButton.onClick.AddListener(() => {
+                // Inizio animazione dei dadi
                 diceAnimator.SetBool("Roll", true);
                 ThrowDice();
             });
@@ -34,7 +35,7 @@ namespace UI
 
         public void ThrowDice() {
             diceButton.interactable = false;
-            StartCoroutine(Wait(1f)); ///ERA 4
+            StartCoroutine(Wait(4f));
         }
 
         IEnumerator Wait(float delay) {

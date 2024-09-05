@@ -13,7 +13,6 @@ namespace UI
         [SerializeField] private TMP_Text allInfo;
         [SerializeField] private GameObject userSpace;
         private string _territoryInfo;
-        //[SerializeField] private TMP_Text objectiveInfo;
         private static bool _settingGame = true;
         private bool _dimensionSetted = false;
 
@@ -59,9 +58,9 @@ namespace UI
             }
 
             if (!_settingGame) {
-                //Debug.Log("DIM " + userSpace.GetComponent<RectTransform>().rect.width );
                 if(!_dimensionSetted) {
                     _dimensionSetted = true;
+                    //Impostazione dimensioni text
                     allInfo.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(
                         userSpace.GetComponent<RectTransform>().rect.width - 30,
                         allInfo.gameObject.GetComponent<RectTransform>().sizeDelta.y);
@@ -70,9 +69,8 @@ namespace UI
                         turn.gameObject.GetComponent<RectTransform>().sizeDelta.y);
                 }
                 circlePlayerColor.gameObject.SetActive(true);
+                //Colore giocaore
                 circlePlayerColor.GetComponent<Image>().color = Utils.ColorCode(Player.Instance.ArmyColor, 255);
-                //objectiveInfo.gameObject.SetActive(true);
-                //objectiveInfo.text = "Ojective: " + Player.Instance.ObjectiveCard.description;
                 allInfo.text += "\n<b>Objective</b>: " + Player.Instance.ObjectiveCard.description + "\n";
             }
         
@@ -92,27 +90,10 @@ namespace UI
                 allInfo.text += "\nWaiting for other players\n";
 
             allInfo.text += "\n" + _territoryInfo;
-        
-            /*if (Input.GetKeyDown(KeyCode.Escape)) {
-                Canvas[] allCanvases = FindObjectsOfType<Canvas>();
-                foreach (Canvas canvas in allCanvases)
-                {
-                    // Controlla se il canvas è in modalità Screen Space - Overlay
-                    if (canvas.renderMode == RenderMode.ScreenSpaceOverlay)
-                    {
-                        // Controlla se il Canvas è attivo e se ha GameObject attivi
-                        if (canvas.gameObject.activeInHierarchy) {
-                            return;
-                        }
-                    }
-                }
-                escMenu.SetActive(true);
-            }*/
         }
 
         public void ShowTerritoryInfo(Territory territory) {
-            //territoryInfo.gameObject.SetActive(true);
-            //Territory territory = GameManager.Instance.AllTerritories.Find(terr => terr.id.Equals(id));
+            //Sostituzione sigla continente con nome
             if (territory is not null) {
                 string continent = territory.continent;
                 switch (continent) {

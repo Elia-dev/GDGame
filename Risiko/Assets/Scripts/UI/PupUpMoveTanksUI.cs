@@ -13,6 +13,7 @@ namespace UI
         [SerializeField] private Button plusButton;
         [SerializeField] private Button minusButton;
         [SerializeField] private Button moveButton;
+        
         private Territory _fromTerritory;
         private Territory _toTerritory;
         private int _armyToMove = 0;
@@ -30,6 +31,8 @@ namespace UI
         }
 
         private void AddArmy() {
+            // Se il numero di truppe da spostare è minore del numero di truppe presenti
+            // nel territorio incremento il numero di truppe da spostare
             if(_armyToMove < _fromTerritory.num_tanks-1){
                 _armyToMove++;
                 tankToAdd.text = _armyToMove + "";
@@ -42,6 +45,7 @@ namespace UI
         }
     
         private void RemoveArmy() {
+            // Se il numero di truppe da spostare è maggiore di 0 decremento il numero di truppe da spostare
             if (_armyToMove > 0) {
                 _armyToMove--;
                 tankToAdd.text = _armyToMove + "";
@@ -56,10 +60,10 @@ namespace UI
         public void SetPupUp(Territory fromTerritory, Territory toTerritory, GameObject gameObjTerritory) {
             this._fromTerritory = fromTerritory;
             this._toTerritory = toTerritory;
-            Debug.Log("SPOSTO DAL TERRITORIO " + fromTerritory +" AL TERRITORIO " + toTerritory);
             _armyToMove = 0;
             moveButton.interactable = false;
             string color = Player.Instance.ArmyColor;
+            // Cambio colore del testo in base al colore dell'armata per migliorare la leggibilità
             if (color.Equals("black") || color.Equals("blue")) {
                 stateNameMove.color = Color.white;
                 tankNumText.color = Color.white;
@@ -70,6 +74,7 @@ namespace UI
                 tankNumText.color = Color.black;
                 tankToAdd.color = Color.black;
             }
+            // Cambio colore del bottone in base al colore dell'armata
             gameObject.GetComponent<Image>().color = Utils.ColorCode(color, 255);
             tankToAdd.text = _armyToMove + "";
             stateNameMove.text = toTerritory.name;

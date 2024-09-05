@@ -1,0 +1,106 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using businesslogic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
+namespace UI
+{
+    public class ServerListManager : MonoBehaviour
+    {
+        [SerializeField] public GameObject rowPrefab; // Il prefab per la riga
+        [SerializeField] public Transform contentParent; // Il contenitore (Content) delle righe
+        [SerializeField] private Button backButton;
+        [SerializeField] private GameObject popupError;
+        [SerializeField] private Button refreshButton;
+        [SerializeField] private TMP_InputField serverIPInput;
+        [SerializeField] private Button selectButton;
+        [SerializeField] private Button x;
+        private List<string> _servers = new List<string>();
+
+
+        private void Awake()
+        {
+            backButton.onClick.AddListener(() => { SceneManager.LoadScene("MainMenu"); });
+            refreshButton.onClick.AddListener(async () =>
+            {
+                /*await ClientManager.Instance.FetchOnlineServers();
+                _servers = ClientManager.Instance.GetOnlineServersList();
+                RefreshServerList();*/
+                RetrieveServers();
+                serverIPInput.text = "";
+            });
+            
+            selectButton.onClick.AddListener(() =>
+            {
+                if (!serverIPInput.text.Equals(""))
+                {
+                    SetActiveServer(serverIPInput.text);
+                }
+                else
+                {
+                    popupError.SetActive(true);
+                    GameObject.Find("PopUpContainer").GetComponent<DisplayMessageOnPopUpUI>()
+                        .SetErrorText("Please insert a server IP");
+                }
+            });
+            
+            x.onClick.AddListener(() =>
+            {
+                popupError.SetActive(false);
+                SceneManager.LoadScene("MainMenu");
+            });
+        }
+
+        private async Task RetrieveServers()
+        {
+            refreshButton.interactable = false;
+            await ClientManager.Instance.FetchOnlineServers();
+            _servers = ClientManager.Instance.GetOnlineServersList();
+            RefreshServerList();
+        }
+
+        void Start()
+        {
+            RetrieveServers();
+        }
+
+        private void RefreshServerList()
+        {
+            rowPrefab.SetActive(true);
+            foreach (Transform child in contentParent)
+            {
+                Destroy(child.gameObject);
+            }
+            
+            _servers.ForEach(server =>
+            {
+                GameObject newRow = Instantiate(rowPrefab, contentParent);
+                newRow.transform.SetParent(contentParent);
+
+                newRow.transform.Find("serverIP").GetComponent<TMP_Text>().text = "Server: " + server;
+
+                // Aggiungi un listener al click del bottone per restituire l'idLobby
+                newRow.GetComponent<Button>().onClick.AddListener(() => FillInputField(server));
+            });
+            rowPrefab.SetActive(false);
+            refreshButton.interactable = true;
+        }
+        
+        private void FillInputField(string server)
+        {
+            serverIPInput.text = server;
+        }
+        
+        private void SetActiveServer(string server)
+        {
+            ClientManager.Instance.SetActiveServer(server);
+            popupError.SetActive(true);
+            GameObject.Find("PopUpContainer").GetComponent<DisplayMessageOnPopUpUI>()
+                .SetErrorText("Server selected");
+        }
+    }
+}

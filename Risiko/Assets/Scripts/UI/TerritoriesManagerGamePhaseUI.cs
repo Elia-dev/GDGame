@@ -10,7 +10,6 @@ using Image = UnityEngine.UI.Image;
 namespace UI
 {
     public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
-        //public static TerritoriesManagerGamePhaseUI Instance { get; private set; }
         [SerializeField] private GameObject popUpAttack;
         [SerializeField] private GameObject popUpMoveTanks;
         [SerializeField] private GameObject gameManager;
@@ -61,49 +60,27 @@ namespace UI
             set => _strategicMove = value;
         }
 
-        private void Awake() {
-            /*if (Instance is null) {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else {
-                Destroy(gameObject);
-            }*/
-
-            //endTurnButton.onClick.AddListener( () => ClientManager.Instance.UpdateTerritoriesState());
-        }
-
-        private void Start() {
-            /*Player.Instance.IsMyTurn = true;
-        distributionPhase = false;*/
-        }
-
         private void Update() {
             if (Player.Instance.IsMyTurn && !_isTurnInitialized) {
                 StartTurn();
             }
-
+            //Se è il mio turno e non è in corso nessuna fase e ho dei carri armati da piazzare
+            //Inizio la fase di rinforzo abilitando lo script TerritoriesManagerDistrPhaseUI
             if (_reinforcePhase && !IsPhaseGoing && Player.Instance.TanksAvailable > 0) {
                 if (Player.Instance.Territories.Count >= 3) {
                     GameManagerUI.ReinforcePhase = true;
-                    //if (_timer > 0) 
-                    //_timer -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
-                    //else {
-                    //_timer = _delay;
                     IsPhaseGoing = true;
                     this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = true;
-                    //Debug.Log("Avvio altro script");
                     GetComponent<TerritoriesManagerDistrPhaseUI>().StartTurn();
-                    //}
                 }
-                else {
+                else { //Se invece non ho carri da piazzare paso direttamente alla fase di attacco
                     _reinforcePhase = false;
                     GameManagerUI.ReinforcePhase = false;
                     _attackPhase = true;
                     GameManagerUI.AttackPhase = true;
                 }
-            }
-            else if (_attackPhase && !IsPhaseGoing) {
+            } else if (_attackPhase && !IsPhaseGoing) { 
+                // Se sono in fase di attacco catturo i click sugli stati e mostro le informazioni
                 endTurnButton.interactable = true;
                 if (Input.GetMouseButtonDown(0)) {
                     Canvas[] allCanvases = FindObjectsOfType<Canvas>();
@@ -140,6 +117,7 @@ namespace UI
                             SelectState(territoryHandlerUI);
                         }
                     } else if (hit.collider is null) {
+                        //Se clicco fuori da uno stato deseleziono tutto e nascondo le informazioni
                         DeselectState();
                         gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
                         popUpMoveTanks.SetActive(false);
@@ -147,7 +125,7 @@ namespace UI
                     }
                 }
             }
-
+            // Se non è il mio turno mostro SOLO le informazioni degli stati
             if (!Player.Instance.IsMyTurn) {
                 if (Input.GetMouseButtonDown(0)) {
                     Canvas[] allCanvases = FindObjectsOfType<Canvas>();
@@ -170,8 +148,6 @@ namespace UI
                         if (territoryHandlerUI is not null) {
                             gameManager.GetComponent<GameManagerUI>().
                                 ShowTerritoryInfo(TerritoryInformationsAllPlayers(territoryHandlerUI.gameObject.name));
-                            //selectedTerritory = territoryHandlerUI;
-                            //SelectState(territoryHandlerUI);
                         }
                     }
                     else {
@@ -179,14 +155,14 @@ namespace UI
                     }
                 }
             }
-
+            // Refresh necessario dopo attacco
             if (GameManager.Instance.getForceUpdateAfterAttack()) {
                 RefreshTerritories();
                 DeselectState();
                 GameManager.Instance.setForceUpdateAfterAttack(false);
                 gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
             }
-
+            //Dpopo aver effettuato uno spostamento strategico fa finire il turno e aggiorna stato e  informazioni
             if (_strategicMove) {
                 endTurnButton.interactable = false;
                 _strategicMove = false;
@@ -197,19 +173,17 @@ namespace UI
                 gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
                 RefreshTerritories();
             }
-
+            //Se sono sotto attacco o sto attaccando mostro il popup
             if ((GameManager.Instance.getImUnderAttack() || GameManager.Instance.getImAttacking()) && !_underAttack) {
                 _underAttack = true;
-                Debug.Log("getImAttacking: " + GameManager.Instance.getImAttacking() + " getImUnderAttack: " 
-                          + GameManager.Instance.getImUnderAttack() + " _underAttack: " + _underAttack);
                 popUpAttackResult.GetComponent<PopUpAttackResultUI>().SetPupUp();
             }
-
+            // Se il gioco è finito mostro il popup con vincitore/perdente
             if (!GameManager.Instance.getWinnerGameId().Equals("")) {
                 gameObject.GetComponent<TerritoriesManagerGamePhaseUI>().enabled = false;
                 endGame.GetComponent<EndGameUI>().SetPopUp(GameManager.Instance.getWinnerGameId());
             }
-
+            // Se premo ESC mostro il menu di pausa o chiudo i popup o deseleziono gli stati
             if (Input.GetKeyDown(KeyCode.Escape)) {
                 Canvas[] allCanvases = FindObjectsOfType<Canvas>();
                 foreach (Canvas canvas in allCanvases)
@@ -233,7 +207,7 @@ namespace UI
                     escMenu.SetActive(true);
             }
         }
-
+        //Funzione che aggiorna i colori degli stati e le bandierine
         public void RefreshTerritories() {
             foreach (var territory in GameManager.Instance.AllTerritories) {
                 GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
@@ -250,6 +224,7 @@ namespace UI
                 }
             }
         }
+        //Posiziona le bandierine negli stati
         public void PlaceFlags(PolygonCollider2D polygonCollider, Territory territory)
         {
             int numFlags = Mathf.Min(territory.num_tanks / 10, 3); // Calcola il numero di bandierine (massimo 3)
@@ -265,7 +240,7 @@ namespace UI
                 flag.transform.position = new Vector3(flag.transform.position.x, flag.transform.position.y, polygonCollider.transform.position.z);
             }
         }
-
+        //Calcola le posizioni delle bandierine
         private Vector2[] CalculateFlagPositions(PolygonCollider2D polygonCollider, int numFlags)
         {
             Vector2 center = CalculatePolygonCenter(polygonCollider);
@@ -282,7 +257,7 @@ namespace UI
 
             return positions;
         }
-
+        //Calcola il centro dello stato basandosi sul PolygonCollider2D
         private Vector2 CalculatePolygonCenter(PolygonCollider2D polygonCollider) {
             Vector2[] points = polygonCollider.points;
             Vector2 sum = Vector2.zero;
@@ -293,11 +268,11 @@ namespace UI
 
             return sum / points.Length;
         }
-
+        
         public Sprite LoadSprite(string spriteName) {
             return Resources.Load<Sprite>(spriteName);
         }
-
+        //Attiva i territori degli altri giocatori
         public void ActivateOtherPlayersTerritories() {
             foreach (var territory in GameManager.Instance.AllTerritories) {
                 if (!territory.player_id.Equals(Player.Instance.PlayerId)) {
@@ -311,7 +286,7 @@ namespace UI
                 }
             }
         }
-
+        //Setta le impostazioni iniziali del turno
         private void StartTurn() {
             RefreshTerritories();
             _isTurnInitialized = true;
@@ -322,7 +297,7 @@ namespace UI
                 endTurnButton.GetComponentInChildren<TMP_Text>().text = "Next Phase!";
             }
         }
-
+        
         public void SelectState(TerritoryHandlerUI newTerritory) {
             //Info stato
             gameManager.GetComponent<GameManagerUI>().
@@ -387,45 +362,16 @@ namespace UI
                     _enemyTerritory.Select();
                 }
             }
-            /*
-        if (selectedTerritory is not null) {
-            selectedTerritory.Deselect();
         }
-        if(TerritoryInformationsPlayer(selectedTerritory.gameObject.name) is not null) {
-            selectedTerritory = newTerritory;
-            selectedTerritory.Select();
-        }
-        //Faccio apparire informazioni stato barra dx
-        if (TerritoryInformationsPlayer(selectedTerritory.name) is not null) {
-            //Interrogazione server per ricevere la lista dei territori vicini
-            _neighborhoodTerritories =
-                Utils.GetNeighborsOf(TerritoryInformationsPlayer(selectedTerritory.gameObject.name));
-            foreach (var terr in _neighborhoodTerritories) {
-            }
-            _neighborhoodGameObj = new List<GameObject>();
-            foreach (var territory in _neighborhoodTerritories) {
-                _readyToAttack = true;
-                GameObject terr = base.territories.Find(obj => obj.name.Equals(territory.id));
-                if (terr is not null) {
-                    _neighborhoodGameObj.Add(terr);
-                    string color = GameManager.Instance.GetPlayerColor(territory.player_id);
-                    terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 120);
-                    terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 120);
-                }
-            }
-        } else if (TerritoryInformationsAllPlayers(selectedTerritory.name) is not null && _readyToAttack) {
-            //popUpAttack.GetComponent<PopUpAttackUI>().SetPupUp(selectedTerritory, );
-        }*/
-        }
-
+        //Funzione che ritorna le informazioni di uno stato del giocatore
         private Territory TerritoryInformationsPlayer(string id) {
             return Player.Instance.Territories.Find(terr => terr.id.Equals(id));
         }
-
+        //Funzione che ritorna le informazioni di uno stato di tutti i giocatori
         private Territory TerritoryInformationsAllPlayers(string id) {
             return GameManager.Instance.AllTerritories.Find(terr => terr.id.Equals(id));
         }
-
+        //Deseleziona gli stati
         private void DeselectState() {
             if (selectedTerritory is not null) {
                 selectedTerritory.Deselect();
