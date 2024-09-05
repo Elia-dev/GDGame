@@ -25,7 +25,7 @@ def read_objects_cards():
 
 
 def read_territories_cards():
-    tree = ET.parse('../assets/config.xml')
+    tree = ET.parse('assets/config.xml')
     root = tree.getroot()
     cards = []
 
