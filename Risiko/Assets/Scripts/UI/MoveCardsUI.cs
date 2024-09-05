@@ -7,7 +7,7 @@ namespace UI
     public abstract class MoveCardsUI : MonoBehaviour
     {
         [NonSerialized] public Sprite imgSprite;
-        public void loadSprite(string spriteName) {
+        public void LoadSprite(string spriteName) {
             imgSprite = Resources.Load<Sprite>(spriteName);
         }
     }

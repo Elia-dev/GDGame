@@ -11,10 +11,11 @@ namespace UI
     public class MatchmakingManager : MonoBehaviour {
         [SerializeField] private Button backButton;
         [SerializeField] private GameObject popupError;
-        public GameObject rowPrefab; // Il prefab per la riga
-        public Transform contentParent; // Il contenitore (Content) delle righe
+        [SerializeField] public GameObject rowPrefab; // Il prefab per la riga
+        [SerializeField] public Transform contentParent; // Il contenitore (Content) delle righe
+        
         private static List<Lobby> _lobbies = new List<Lobby>();
-        private float _delay = 6.0f; // Durata del ritardo in secondi
+        private readonly float _delay = 6.0f; // Durata del ritardo in secondi
         private float _timer;
         private bool _reloadLobbies = false;
 
@@ -54,6 +55,8 @@ namespace UI
             if (_timer > 3 && !_reloadLobbies) {
                 _reloadLobbies = true;
                 rowPrefab.SetActive(true);
+                
+                //Elimina tutte le righe esistenti
                 foreach (Transform child in contentParent) {
                     Destroy(child.gameObject);
                 }
@@ -71,7 +74,7 @@ namespace UI
                 });
                 rowPrefab.SetActive(false);
             }
-
+            // Se il timer scade, richiedi nuovamente la lista delle partite disponibili
             if (_timer <= 0) {
                 _timer = _delay;
                 ClientManager.Instance.RequestAllGames();
@@ -96,7 +99,7 @@ namespace UI
             float timerConnection = 5.0f;
 
             while (timerConnection > 0) {
-                timerConnection -= Time.deltaTime; //DA COPIARE DI LA
+                timerConnection -= Time.deltaTime;
                 if (ClientManager.Instance.IsConnectedToLobby()) {
                     SceneManager.LoadScene("WaitingRoomClient");
                     yield break; // Esci dalla coroutine se ci si connette alla lobby

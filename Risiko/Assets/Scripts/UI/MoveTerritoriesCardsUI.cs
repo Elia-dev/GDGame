@@ -79,72 +79,12 @@ namespace UI {
 
             // Imposta la dimensione delle celle nel GridLayoutGroup
             gridLayoutGroup.cellSize = new Vector2(cellWidth, cellHeight);
-            /*RectTransform cardContainer = gridTransform.GetComponent<RectTransform>();
-            GridLayoutGroup gridLayoutGroup = gridTransform.GetComponent<GridLayoutGroup>();
-            float aspectRatio = 4f / 3f; // Rapporto di aspetto originale delle carte
-
-            // Ottieni le dimensioni del contenitore
-            float containerWidth =
-                Screen.width - gridLayoutGroup.padding.left - gridLayoutGroup.padding.right;
-            float containerHeight = Screen.height - 60;
-            Debug.Log("Screen width: " + Screen.width + " Screen height: " + Screen.height);
-            // Calcola il numero di carte
-            int cardNumber = territories.Count;
-
-            // Definisci il numero massimo di righe
-            int maxRows = Mathf.CeilToInt(Mathf.Sqrt(cardNumber));
-            int maxColumns = Mathf.CeilToInt((float)cardNumber / maxRows);
-
-            // Calcola la dimensione massima delle celle che mantenga il rapporto di aspetto
-            float availableWidth = (containerWidth - gridLayoutGroup.spacing.x * (maxColumns - 1)) / maxColumns;
-            float availableHeight = (containerHeight - gridLayoutGroup.spacing.y * (maxRows - 1)) / maxRows;
-
-            // Calcola la dimensione delle celle mantenendo il rapporto di aspetto 4:3
-            float cellHeight = Mathf.Min(availableHeight, availableWidth * aspectRatio);
-            float cellWidth = cellHeight / aspectRatio;
-
-            // Imposta la dimensione delle celle nel GridLayoutGroup
-            gridLayoutGroup.cellSize = new Vector2(cellWidth, cellHeight);*/
-
-            /* CHATGPT
-             RectTransform cardContainer = gridTransform.GetComponent<RectTransform>();
-            GridLayoutGroup gridLayoutGroup = gridTransform.GetComponent<GridLayoutGroup>();
-            float rapportoAspetto = 4f / 3f; // Rapporto di aspetto originale delle carte
-
-            // Ottieni le dimensioni del contenitore
-            float containerlength = cardContainer.rect.width - gridLayoutGroup.padding.left - gridLayoutGroup.padding.right;
-            float containerHeight = cardContainer.rect.height - gridLayoutGroup.padding.top - gridLayoutGroup.padding.bottom;
-
-            // Calcola il numero di carte
-            int cardNumber = territories.Count;
-
-            // Definisci il numero massimo di righe
-            int maxRow = 3;
-
-            // Calcola il numero di righe
-            int row = Mathf.Min(maxRow, Mathf.CeilToInt((float)cardNumber / 3));
-
-            // Calcola il numero di colonne
-            int column = Mathf.CeilToInt((float)cardNumber / row);
-
-            // Calcola la dimensione massima delle celle che mantenga il rapporto di aspetto
-            float availableLength = (containerlength - gridLayoutGroup.spacing.x * (column - 1)) / column;
-            float availableHeight = (containerHeight - gridLayoutGroup.spacing.y * (row - 1)) / row;
-
-            // Calcola la dimensione delle celle mantenendo il rapporto di aspetto
-            float cellLengthDimension = Mathf.Min(availableLength, availableLength * rapportoAspetto);
-            float cellHeightDimension = Mathf.Min(availableHeight, availableHeight * rapportoAspetto);
-
-            float cellDimension = Mathf.Min(cellLengthDimension, cellHeightDimension);
-
-            // Imposta la dimensione delle celle nel GridLayoutGroup
-            gridLayoutGroup.cellSize = new Vector2(cellDimension / rapportoAspetto, cellDimension);*/
         }
 
         private void CardAnimation() {
             for (int i = 0; i < territories.Count; i++) {
                 GameObject nuovaCarta = Instantiate(imagePrefab, gridTransform);
-                loadSprite("Territories/" + territories[i].id);
+                LoadSprite("Territories/" + territories[i].id);
                 nuovaCarta.GetComponent<Image>().sprite = imgSprite;
 
                 // Nascondi inizialmente la carta (o scala piccola)
@@ -153,7 +93,7 @@ namespace UI {
                 // Anima la carta in modo che appaia
                 nuovaCarta.transform.DOScale(Vector3.one, 0.5f).SetDelay(i * 0.2f); // Anima con ritardo progressivo
             }
-
+            // Calcola la durata totale dell'animazione
             _animationTime = territories.Count * 0.2f + 0.5f;
         }
 
@@ -164,12 +104,13 @@ namespace UI {
             else {
                 animationDone = true;
             }
-
+            
+            //CONTROLLI DA TOGLIERE SE L'ERRORE NON SI RIPRESENTA
             if (clickHandler == null) {
                 Debug.LogError("clickHandler is null");
                 return;
             }
-
+        
             var territoriesManager = clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>();
             if (territoriesManager == null) {
                 Debug.LogError("TerritoriesManagerDistrPhaseUI component not found on clickHandler");

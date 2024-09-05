@@ -11,8 +11,8 @@ namespace UI
         
         private Vector2 _startPosition;
         private Vector2 _targetPosition;
-        private float _moveDuration = 2f; // Durata del movimento in secondi
-        private float _flipDuration = 0.5f; // Durata del flip
+        private readonly float _moveDuration = 2f; // Durata del movimento in secondi
+        private readonly float _flipDuration = 0.5f; // Durata del flip
         private RectTransform _rectTransform;
         private bool _flipped = false;
 
@@ -27,7 +27,7 @@ namespace UI
             _rectTransform.anchoredPosition = _startPosition;
 
             //Carica la sprite della carta missione
-            loadSprite("Objectives/" + Player.Instance.ObjectiveCard.id);
+            LoadSprite("Objectives/" + Player.Instance.ObjectiveCard.id);
             cardFront.GetComponent<Image>().sprite = imgSprite;
         
             // Inizia la coroutine per muovere l'immagine

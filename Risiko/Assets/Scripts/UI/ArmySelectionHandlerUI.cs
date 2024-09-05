@@ -7,22 +7,14 @@ namespace UI
     {
         [SerializeField] private GameObject frame;
         [SerializeField] private Color32 armyColor;
+        private bool _selected = false;
 
         public Color32 ArmyColor {
             get => armyColor;
         }
-
-        private bool selected = false;
-    
-        void Awake() {
-            //sprite = GetComponent<SpriteRenderer>();
-            //sprite.color = startColor;
-        }
-
         public void OnPointerEnter(PointerEventData eventData)
         {
-            //Debug.Log("Entra OnPoint?!");
-            if (!selected) {
+            if (!_selected) {
                 /*oldColor = sprite.color;
             sprite.color = hoverColor;*/
                 frame.SetActive(true);
@@ -31,8 +23,7 @@ namespace UI
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            //Debug.Log("Non può entrare!");
-            if (!selected) {
+            if (!_selected) {
                 //sprite.color = oldColor;
                 frame.SetActive(false);
             }
@@ -41,16 +32,10 @@ namespace UI
         public void OnPointerClick(PointerEventData eventData)
         {
             Select();
-            //selected = true;
-            //Debug.Log("Select");
-            /// CARICARE DATI STATO
-        
-            //sprite.color = hoverColor;
-            //frame.SetActive(true);
         }
     
         public void Select() {
-            selected = true;
+            _selected = true;
             //Debug.Log("Select");
             /// CARICARE DATI STATO
             //sprite.color = hoverColor;
@@ -58,8 +43,7 @@ namespace UI
         }
 
         public void Deselect() {
-            //Debug.Log("Deselect");
-            selected = false;
+            _selected = false;
             frame.SetActive(false);
             //sprite.color = startColor;
         }

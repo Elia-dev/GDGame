@@ -15,6 +15,7 @@ namespace UI {
         [SerializeField] private GameObject popUpContainer;
         [SerializeField] private GameObject popUpContainerResult;
         [SerializeField] private TMP_Text attackResult;
+        
         private bool _dataArrived = false;
         private Territory _enemyTerritory;
         private Territory _myTerritory;
@@ -28,6 +29,7 @@ namespace UI {
         }
 
         private void Update() {
+            //Se i dati riguardanti la vittoria sono arrivati li mostro
             if (!GameManager.Instance.getWinnerBattleId().Equals("") && !_dataArrived) {
                 _dataArrived = true;
                 if (GameManager.Instance.getWinnerBattleId().Equals(Player.Instance.PlayerId)) {
@@ -53,9 +55,10 @@ namespace UI {
             myInfo.text = Player.Instance.Name + "\n" +
                           "<b>" + _myTerritory.name + "</b>" + "\nWith " + GameManager.Instance.getMyArmyNum() +
                           " army";
-            myState.sprite = loadSprite("TerritoriesSprite/" + _myTerritory.id);
+            myState.sprite = LoadSprite("TerritoriesSprite/" + _myTerritory.id);
             myState.color = Utils.ColorCode(Player.Instance.ArmyColor, 150);
-
+            
+            //Risultati dadi
             int[] myExtractedNumbers = GameManager.Instance.getMyExtractedNumbers();
             int[] enemyExtractedNumbers = GameManager.Instance.getEnemyExtractedNumbers();
             diceResult.text = "\n<b>Dice results</b>\n";
@@ -67,7 +70,7 @@ namespace UI {
                         diceResult.text += "        " + enemyExtractedNumbers[i];
                     diceResult.text += "\n";
                 }
-
+                //Aggiungo righe vuote per evitare sovrapposizione tr la scritta vittoria/perdita e gli stati a dx e sx
                 switch (enemyExtractedNumbers.Length) {
                     case 1:
                         diceResult.text += "\n\n";
@@ -85,7 +88,7 @@ namespace UI {
                         diceResult.text += myExtractedNumbers[i] + "<color=#FFFFFF00> - 0</color>";
                     diceResult.text += "\n";
                 }
-
+                //Aggiungo righe vuote per evitare sovrapposizione tr la scritta vittoria/perdita e gli stati a dx e sx
                 switch (myExtractedNumbers.Length) {
                     case 1:
                         diceResult.text += "\n\n";
@@ -101,11 +104,11 @@ namespace UI {
             enemyInfo.text = GameManager.Instance.getEnemyNameById(_enemyTerritory.player_id) + "\n" +
                              "<b>" + _enemyTerritory.name + "</b>" + "\nWith " +
                              GameManager.Instance.GetEnemyArmyNum() + " army";
-            enemyState.sprite = loadSprite("TerritoriesSprite/" + _enemyTerritory.id);
+            enemyState.sprite = LoadSprite("TerritoriesSprite/" + _enemyTerritory.id);
             enemyState.color = Utils.ColorCode(GameManager.Instance.GetPlayerColor(_enemyTerritory.player_id), 150);
         }
 
-        public Sprite loadSprite(string spriteName) {
+        public Sprite LoadSprite(string spriteName) {
             return Resources.Load<Sprite>(spriteName);
         }
     }

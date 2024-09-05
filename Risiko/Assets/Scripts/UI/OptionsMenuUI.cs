@@ -10,11 +10,8 @@ namespace UI
         private void Awake() 
         {
             backButton.onClick.AddListener(() => {
-                Debug.Log("Exiting options menu...");
                 SceneManager.LoadScene("MainMenu");
             });
-
-        
         }
     }
 }

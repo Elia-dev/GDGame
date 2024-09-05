@@ -4,10 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace UI
-{
-    public class HostMenuUI : MonoBehaviour
-    {
+namespace UI {
+    public class HostMenuUI : MonoBehaviour {
         [SerializeField] private Button backButton;
         [SerializeField] private Button updateButton;
         [SerializeField] private Button runGameButton;
@@ -16,80 +14,60 @@ namespace UI
         [SerializeField] private GameObject popUpDiceHostMenu;
         [SerializeField] private Button addBotButton;
         [SerializeField] private Button removeBotButton;
-    
-        private float delay = 1.0f; // Durata del ritardo in secondi
-        private float timer;
-        private string stringa;
-    
-        private void Awake()
-        {
-            backButton.onClick.AddListener(() =>
-            {
+
+        private readonly float _delay = 1.0f; // Durata del ritardo in secondi
+        private float _timer;
+        private string _playerListFromServer;
+
+        private void Awake() {
+            backButton.onClick.AddListener(() => {
                 ClientManager.Instance.KillLobby();
                 Player.Instance.ResetPlayer();
                 GameManager.Instance.ResetGameManager();
-            
+
                 SceneManager.LoadScene("GameMenu");
             });
-        
-            runGameButton.onClick.AddListener(() =>
-            {
-            
+
+            runGameButton.onClick.AddListener(() => {
                 ClientManager.Instance.StartHostGame();
                 popUpDiceHostMenu.SetActive(true);
             });
-        
-            updateButton.onClick.AddListener(() =>
-            {
-                ClientManager.Instance.RequestNameUpdatePlayerList();
-            });
-        
-            //addBotButton.onClick.AddListener();
-            //removeBotButton.onClick.AddListener();
+
+            updateButton.onClick.AddListener(() => { ClientManager.Instance.RequestNameUpdatePlayerList(); });
         }
-        void Start()
-        {
-            stringa = null;
+
+        void Start() {
+            _playerListFromServer = null;
             ClientManager.Instance.CreateLobbyAsHost();
-            timer = delay;
+            _timer = _delay;
         }
-    
-        private void Update()
-        {
-            //Debug.Log("LOBBY ID LETTA: " + cm.getLobbyId());
+
+        private void Update() {
             lobbyID.text = GameManager.Instance.GetLobbyId();
-        
-            if (timer > 0)
-            {
-                timer -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
-            }
-            else
-            { 
-                ClientManager.Instance.SendName(); // Da vedere, se si potesse fare soltanto la prima volta sarebbe meglio
+
+            if (_timer > 0) {
+                _timer -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
+            } else {
+                ClientManager.Instance
+                    .SendName(); // Da vedere, se si potesse fare soltanto la prima volta sarebbe meglio
                 ClientManager.Instance.RequestNameUpdatePlayerList();
-            
+
                 // Reset del timer
-                timer = delay;
+                _timer = _delay;
                 Debug.Log("HOSTMENU - playerList:" + playerList.text);
             }
-        
-            //Aggiornamento lista giocatori
-            stringa = string.Join(", ", GameManager.Instance.PlayersName);
-            playerList.text = "Players: " + stringa;
-       
 
-        
+            //Aggiornamento lista giocatori
+            _playerListFromServer = string.Join(", ", GameManager.Instance.PlayersName);
+            playerList.text = "Players: " + _playerListFromServer;
+
+
             //Quando i giocatori saranno 3+
-            if (GameManager.Instance.GetPlayersNumber() >= 2)
-            {
+            if (GameManager.Instance.GetPlayersNumber() >= 2) {
                 runGameButton.interactable = true;
-            }
-            else
-            {
+            } else {
                 runGameButton.interactable = false;
             }
-        
         }
-    
     }
 }
