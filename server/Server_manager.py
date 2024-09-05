@@ -112,12 +112,32 @@ async def shutdown(server):
     server.close()
     await server.wait_closed()
 
+async def handle_input():
+    while True:
+        user_input = await asyncio.get_event_loop().run_in_executor(None, input, "Enter command: ")
+        print(f"Received input: {user_input}")
+        # Gestisci l'input dell'utente qui
+
 async def main():
     print("server started")
+
+    # Gestisce il timeout della connessione mandando ogni 5 minuti un ping e aspettando il pong di risposta entro altri 5 minuti
     async with websockets.serve(handler, "0.0.0.0", 12345, ping_interval=300, ping_timeout=300):
-        # Gestisce il timeout della connessione mandando ogni 5 minuti un ping e aspettando il pong di risposta entro altri 5 minuti
-    #async with websockets.serve(handler, "localhost", 8766):
+
         await asyncio.Future()  # Run forever
+
+        '''
+        Da commentare l'await subito sopra e scommentare tutto soto, ANCORA DA PROVARE
+        SICURAMENTE NON DA PROVARE IN TRENO
+        input_task = asyncio.create_task(handle_input())
+
+        try:
+            await asyncio.Future()  # Run forever
+        except asyncio.CancelledError:
+            await shutdown(server)
+            input_task.cancel()
+            await input_task
+        '''
 
 
 if __name__ == "__main__":
