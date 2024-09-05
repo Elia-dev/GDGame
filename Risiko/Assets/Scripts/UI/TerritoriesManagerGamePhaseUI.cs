@@ -76,8 +76,9 @@ namespace UI
                 popUpPlayerLeftGame.SetActive(true);
                 GameObject.Find("PopUpContainer").GetComponent<DisplayMessageOnPopUpUI>()
                     .SetErrorText("Player left the game\nyou will be redirected to the main menu...");
-
-                System.Threading.Thread.Sleep(5000);
+                
+                //Bisogna mettere una X per chiudere il popup e tornare al menu principale
+                
                 Player.Instance.ResetPlayer();
                 GameManager.Instance.ResetGameManager();
                 ClientManager.Instance.ResetConnection();
