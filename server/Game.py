@@ -388,10 +388,10 @@ class Game:
                     for node in shortest_path:
                         shortest_path_to_string += str(node) + "-"
 
-                    print('SERVER: Path found ' + shortest_path_to_string)
+                    print('SERVER: Path found ' + shortest_path_to_string.rstrip("-"))
                     for player in self.players:
                         if player.player_id == playerId:
-                            player.sock.send(f"SHORTEST_PATH: " + shortest_path_to_string)
+                            await player.sock.send(f"SHORTEST_PATH: " + shortest_path_to_string.rstrip("-"))
 
                 self.queue.task_done()
             except Exception as e:
