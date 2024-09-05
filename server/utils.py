@@ -56,7 +56,7 @@ def get_adj_matrix(path):
 
 
 def get_neighbors_node_of(territory_node):
-    file_path = os.path.join(os.getcwd(), os.pardir, 'assets/adj_matrix.npy')
+    file_path = os.path.join(os.getcwd(), 'assets/adj_matrix.npy')
     adj_matrix = get_adj_matrix(file_path)
     neighbors = []
     row = adj_matrix[territory_node]

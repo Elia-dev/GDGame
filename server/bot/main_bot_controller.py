@@ -385,7 +385,7 @@ async def attack_phase(client_manager):
 async def main():
     print('Client started!')
     client_manager = ClientManager()
-    await asyncio.gather(client_manager.start_client('150.217.51.105'), game(client_manager, '251 105'))
+    await asyncio.gather(client_manager.start_client('150.217.51.105'), game(client_manager, '847 568'))
 
 
 if __name__ == '__main__':
