@@ -3,8 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI
-{
+namespace UI {
     public class PopUpAttackResultUI : MonoBehaviour {
         [SerializeField] private Button x;
         [SerializeField] private TMP_Text popUpAttackTitle;
@@ -29,7 +28,7 @@ namespace UI
         }
 
         private void Update() {
-            if (!GameManager.Instance.getWinnerBattleId().Equals("")  && !_dataArrived) {
+            if (!GameManager.Instance.getWinnerBattleId().Equals("") && !_dataArrived) {
                 _dataArrived = true;
                 if (GameManager.Instance.getWinnerBattleId().Equals(Player.Instance.PlayerId)) {
                     diceResult.text += "<color=green>You WIN!\n" + _enemyTerritory.name + " now is yours!</color>";
@@ -44,7 +43,7 @@ namespace UI
         public void SetPupUp() {
             _dataArrived = false;
             gameObject.SetActive(true);
-            if(GameManager.Instance.getImAttacking())
+            if (GameManager.Instance.getImAttacking())
                 popUpAttackTitle.text = "You're attacking!";
             else
                 popUpAttackTitle.text = "You're under attack!";
@@ -52,7 +51,8 @@ namespace UI
             this._myTerritory = GameManager.Instance.getMyTerritory();
             //Tu
             myInfo.text = Player.Instance.Name + "\n" +
-                          "<b>" + _myTerritory.name + "</b>" + "\nWith " + GameManager.Instance.getMyArmyNum() +" army";
+                          "<b>" + _myTerritory.name + "</b>" + "\nWith " + GameManager.Instance.getMyArmyNum() +
+                          " army";
             myState.sprite = loadSprite("TerritoriesSprite/" + _myTerritory.id);
             myState.color = Utils.ColorCode(Player.Instance.ArmyColor, 150);
 
@@ -67,7 +67,17 @@ namespace UI
                         diceResult.text += "        " + enemyExtractedNumbers[i];
                     diceResult.text += "\n";
                 }
-            } else {
+
+                switch (enemyExtractedNumbers.Length) {
+                    case 1:
+                        diceResult.text += "\n\n";
+                        break;
+                    case 2:
+                        diceResult.text += "\n";
+                        break;
+                }
+            }
+            else {
                 for (int i = 0; i < myExtractedNumbers.Length; i++) {
                     if (enemyExtractedNumbers.Length > i)
                         diceResult.text += myExtractedNumbers[i] + " - " + enemyExtractedNumbers[i];
@@ -75,16 +85,26 @@ namespace UI
                         diceResult.text += myExtractedNumbers[i] + "<color=#FFFFFF00> - 0</color>";
                     diceResult.text += "\n";
                 }
+
+                switch (myExtractedNumbers.Length) {
+                    case 1:
+                        diceResult.text += "\n\n";
+                        break;
+                    case 2:
+                        diceResult.text += "\n";
+                        break;
+                }
             }
             diceResult.text += "\n";
-        
+
             //Altro giocatore
-            enemyInfo.text = GameManager.Instance.getEnemyNameById(_enemyTerritory.player_id)+ "\n" +
-                             "<b>" + _enemyTerritory.name + "</b>" + "\nWith " + GameManager.Instance.GetEnemyArmyNum() +" army";
+            enemyInfo.text = GameManager.Instance.getEnemyNameById(_enemyTerritory.player_id) + "\n" +
+                             "<b>" + _enemyTerritory.name + "</b>" + "\nWith " +
+                             GameManager.Instance.GetEnemyArmyNum() + " army";
             enemyState.sprite = loadSprite("TerritoriesSprite/" + _enemyTerritory.id);
             enemyState.color = Utils.ColorCode(GameManager.Instance.GetPlayerColor(_enemyTerritory.player_id), 150);
         }
-    
+
         public Sprite loadSprite(string spriteName) {
             return Resources.Load<Sprite>(spriteName);
         }

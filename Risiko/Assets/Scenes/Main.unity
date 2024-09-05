@@ -756,7 +756,7 @@ GameObject:
   - component: {fileID: 64225034}
   - component: {fileID: 64225036}
   - component: {fileID: 64225035}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25818,7 +25818,7 @@ GameObject:
   - component: {fileID: 2029590056}
   - component: {fileID: 2029590057}
   - component: {fileID: 2029590058}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: ClickHandler
   m_TagString: Untagged
   m_Icon: {fileID: 0}

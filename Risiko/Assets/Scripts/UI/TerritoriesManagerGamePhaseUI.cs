@@ -10,7 +10,7 @@ using Image = UnityEngine.UI.Image;
 namespace UI
 {
     public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI {
-        public static TerritoriesManagerGamePhaseUI Instance { get; private set; }
+        //public static TerritoriesManagerGamePhaseUI Instance { get; private set; }
         [SerializeField] private GameObject popUpAttack;
         [SerializeField] private GameObject popUpMoveTanks;
         [SerializeField] private GameObject gameManager;
@@ -62,13 +62,13 @@ namespace UI
         }
 
         private void Awake() {
-            if (Instance is null) {
+            /*if (Instance is null) {
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
             }
             else {
                 Destroy(gameObject);
-            }
+            }*/
 
             //endTurnButton.onClick.AddListener( () => ClientManager.Instance.UpdateTerritoriesState());
         }

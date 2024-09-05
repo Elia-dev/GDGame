@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using businesslogic;
 using TMPro;
@@ -26,6 +27,11 @@ namespace UI
             joinLobbyButton.onClick.AddListener(() => { JoinLobby(); });
 
             browseLobbiesButton.onClick.AddListener(() => SceneManager.LoadScene("JoinAvailableGames"));
+        }
+
+        private void Start() {
+            lobbyIdInputField.Select();
+            lobbyIdInputField.ActivateInputField();
         }
 
         private void JoinLobby() {

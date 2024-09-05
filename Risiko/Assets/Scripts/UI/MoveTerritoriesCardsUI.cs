@@ -56,7 +56,7 @@ namespace UI {
 
             // Aumenta il numero di righe e colonne per massimizzare la dimensione delle celle
             while ((cellHeight * maxRows < containerHeight && cellWidth * maxColumns < containerWidth) &&
-                   (maxRows * maxColumns <= 21)) {
+                   (maxRows * maxColumns <= 14)) {
                 if (maxColumns * cellWidth < containerWidth) {
                     maxColumns++;
                 }
