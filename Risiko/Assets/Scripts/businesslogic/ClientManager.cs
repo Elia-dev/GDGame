@@ -62,8 +62,8 @@ namespace businesslogic
             {
                 if (await IsServerOnline(server))
                 {
-                    string clean_server = server.Replace("ws://", "").Replace(":12345", "");
-                    onlineServers.Add(clean_server);
+                    string cleanServer = server.Replace("ws://", "").Replace(":12345", "");
+                    onlineServers.Add(cleanServer);
                 }
             }
             
@@ -220,8 +220,8 @@ namespace businesslogic
     
         public async void LeaveGame()
         {
+            setIsConnectedToLobby(false);
             await SendMessage(_webSocket, _cancellationToken, "PLAYER_HAS_LEFT_THE_GAME: " + Player.Instance.PlayerId);
-            // Sicuramente qualcosa da metterci per ripulire tutto tornando al menu principale
         }
         public async void JoinLobbyAsClient(string lobbyID)
         {

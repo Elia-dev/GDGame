@@ -181,9 +181,10 @@ class Game:
                     # Implementazione temporanea sotto, chiude la partita
                     print("Ricevuto PLAYER_HAS_LEFT_THE_GAME, chiusura della partita in corso...")
                     id = self._remove_request(message, "PLAYER_HAS_LEFT_THE_GAME: ")
-                    await self.broadcast("LOBBY_KILLED_BY_HOST")
+                    await self.broadcast("GAME_KILLED_BY_HOST")
                     self.remove_all_players()
                     self.game_id = None
+                    self.game_running = False
 
                 if "PLAYER_HAS_LEFT_THE_LOBBY" in message:
                     id = self._remove_request(message, "PLAYER_HAS_LEFT_THE_LOBBY: ")
