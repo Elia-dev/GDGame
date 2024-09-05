@@ -1,4 +1,4 @@
-from Client_manager import ClientManager
+from bot.Client_manager import ClientManager
 import utils
 import asyncio
 import random
@@ -385,7 +385,7 @@ async def attack_phase(client_manager):
 async def main():
     print('Client started!')
     client_manager = ClientManager()
-    await asyncio.gather(client_manager.start_client('150.217.51.105'), game(client_manager, '377 084'))
+    await asyncio.gather(client_manager.start_client('150.217.51.105'), game(client_manager, '536 353'))
 
 
 if __name__ == '__main__':

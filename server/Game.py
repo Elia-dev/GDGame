@@ -381,6 +381,8 @@ class Game:
                 if 'REQUEST_SHORTEST_PATH' in message:
                     message = self._remove_request(message, "REQUEST_SHORTEST_PATH: ")
                     playerId, from_terr_node, to_terr_node = message.split("-")
+                    from_terr_node = int(from_terr_node)
+                    to_terr_node = int(to_terr_node)
                     shortest_path = utils.get_shortest_path(from_terr_node, to_terr_node, self.adj_matrix)
                     shortest_path_to_string = ''
                     for node in shortest_path:
