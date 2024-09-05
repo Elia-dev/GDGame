@@ -13,7 +13,7 @@ namespace Audio
         public AudioSource gameTrack;
         public AudioSource winTrack;
         public AudioSource loseTrack;
-        private int _countBattle = 0;
+        
 
         private void Awake()
         {
@@ -73,48 +73,6 @@ namespace Audio
             }
         }
 
-        private void PlaySoundWithFade(AudioSource sound)
-        {
-            StartCoroutine(FadeOutBackgroundMusic(sound));
-        }
-
-        private IEnumerator FadeOutBackgroundMusic(AudioSource sound)
-        {
-            float duration = 0.2f;
-            float targetVolume = 0.05f;
-            float startVolume = AudioListener.volume;
-
-            float time = 0;
-
-            while (time < duration)
-            {
-                time += Time.deltaTime;
-                gameTrack.volume = Mathf.Lerp(startVolume, targetVolume, time / duration);
-                yield return null;
-            }
-
-            gameTrack.volume = targetVolume;
-            sound.Play();
-
-            yield return new WaitForSeconds(sound.clip.length);
-
-            StartCoroutine(FadeInBackgroundMusic());
-        }
-
-        private IEnumerator FadeInBackgroundMusic()
-        {
-            float duration = 1.2f;
-            float targetVolume = PlayerPrefs.GetFloat("musicVolume");
-            float startVolume = gameTrack.volume;
-
-            float time = 0;
-            while (time < duration)
-            {
-                time += Time.deltaTime;
-                gameTrack.volume = Mathf.Lerp(startVolume, targetVolume, time / duration);
-                yield return null;
-            }
-            gameTrack.volume = targetVolume;
-        }
+        
     }
 }
