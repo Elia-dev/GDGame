@@ -130,6 +130,7 @@ def update_adjacent_matrix(players, adj_matrix):
             neighbors_node = get_neighbors_node_of(node, os.path.join(os.getcwd(), 'assets/adj_matrix.npy'))
             for neighbor in neighbors_node:
                 adj_matrix[neighbor][node] = territory.num_tanks
+    return adj_matrix
 
 
 def get_shortest_path(from_node, to_node, adj_matrix):
