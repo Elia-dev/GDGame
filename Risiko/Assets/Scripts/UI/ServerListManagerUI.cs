@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public class ServerListManager : MonoBehaviour
+    public class ServerListManagerUI : MonoBehaviour
     {
         [SerializeField] public GameObject rowPrefab; // Il prefab per la riga
         [SerializeField] public Transform contentParent; // Il contenitore (Content) delle righe
