@@ -28,3 +28,15 @@ class Territory(Card):
         return (
             f"Territory(id={self.id}, image={self.image}, function={self.function}, description={self.description}, "
             f"player_id={self.player_id}, name={self.name}, num_tanks={self.num_tanks}, continent={self.continent}, node={self.node})")
+
+    def __eq__(self, other):
+        if not isinstance(other, Territory):
+            return False
+        return (super().__eq__(other) and
+                self.name == other.name and
+                self.continent == other.continent and
+                self.node == other.node)
+
+    def __hash__(self):
+        # Ensure the class is hashable if you need to use it in sets or as dictionary keys
+        return hash((super.__hash__(self), self.name, self.continent, self.node))
