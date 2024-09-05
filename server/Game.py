@@ -244,7 +244,7 @@ class Game:
                     # durante la fase di gioco
                     self.event.set()
                     # Aggiorno la matrice di adiacenza
-                    utils.update_adjacent_matrix(self.players, self.adj_matrix)
+                    self.adj_matrix = utils.update_adjacent_matrix(self.players, self.adj_matrix)
 
                 if "REQUEST_TERRITORY_INFO:" in message:  # TOBE TESTED
                     message = self._remove_request(message, "REQUEST_TERRITORY_INFO: ")
@@ -387,12 +387,11 @@ class Game:
                     shortest_path_to_string = ''
                     for node in shortest_path:
                         shortest_path_to_string += str(node) + "-"
-                    requesting_player = None
+
+                    print('SERVER: Path found ' + shortest_path_to_string)
                     for player in self.players:
                         if player.player_id == playerId:
-                            requesting_player = player
-                    if requesting_player:
-                        requesting_player.sock.send(f"SHORTEST_PATH: " + shortest_path_to_string)
+                            player.sock.send(f"SHORTEST_PATH: " + shortest_path_to_string)
 
                 self.queue.task_done()
             except Exception as e:
