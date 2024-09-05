@@ -80,15 +80,17 @@ def get_neighbors_of(territory, all_terr):
     return territories
 
 
-def get_isolate_territory(my_terr, all_terr):
-    for terr in my_terr:
+def get_isolate_territory(my_territories, all_territories):
+    isolate_territories = []
+    for terr in my_territories:
         is_isolate = True
-        neighbors = get_neighbors_of(terr, all_terr)
+        neighbors = get_neighbors_of(terr, all_territories)
         for neighbor in neighbors:
-            if neighbor not in my_terr:
+            if neighbor not in my_territories:
                 is_isolate = False
         if is_isolate:
-            return terr
+            isolate_territories.append(terr)
+    return isolate_territories
 
 
 def get_friends_neighbors(territory, my_terr, all_terr):
@@ -102,12 +104,10 @@ def get_friends_neighbors(territory, my_terr, all_terr):
 
 
 def get_enemy_neighbors_of(territory, my_terrs, all_terrs):
-    enemy = []
     neighbors = get_neighbors_of(territory, all_terrs)
-    for neighbor in neighbors:
-        for my_terr in my_terrs:
-            if neighbor.id != my_terr.id:
-                enemy.append(neighbor)
+    enemy = list(
+        filter(lambda neighbor: neighbor not in my_terrs, neighbors)
+    )
     return enemy
 
 
