@@ -23,3 +23,9 @@ class Card:
     def __repr__(self):
         return (f"Card(id={self.id}, image={self.image}, function={self.function}, "
                 f"description={self.description}, player_id={self.player_id})")
+
+    def __eq__(self, other):
+        return self.id == other.id
+
+    def __hash__(self):
+        return hash(self.id)
