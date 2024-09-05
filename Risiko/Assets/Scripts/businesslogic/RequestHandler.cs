@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace businesslogic
 {
@@ -39,6 +40,10 @@ namespace businesslogic
                 {
                     Debug.Log("Ricevuta richiesta: CONNECTION_REFUSED");
                     ClientManager.Instance.setIsConnectedToLobby(false);
+                }
+                else if (message.Contains("GAME_KILLED_BY_HOST"))
+                {
+                    GameManager.Instance.SetGameRunning(false);
                 }
                 else if (message.Contains("SELECT_ALL_GAMES:"))
                 {

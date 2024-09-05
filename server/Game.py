@@ -181,7 +181,7 @@ class Game:
                     # Implementazione temporanea sotto, chiude la partita
                     print("Ricevuto PLAYER_HAS_LEFT_THE_GAME, chiusura della partita in corso...")
                     id = self._remove_request(message, "PLAYER_HAS_LEFT_THE_GAME: ")
-                    await self.broadcast("LOBBY_KILLED_BY_HOST")
+                    await self.broadcast("GAME_KILLED_BY_HOST")
                     self.remove_all_players()
                     self.game_id = None
                     self.game_running = False
@@ -245,7 +245,7 @@ class Game:
                     # durante la fase di gioco
                     self.event.set()
                     # Aggiorno la matrice di adiacenza
-                    self.adj_matrix = utils.update_adjacent_matrix(self.players, self.adj_matrix)
+                    utils.update_adjacent_matrix(self.players, self.adj_matrix)
 
                 if "REQUEST_TERRITORY_INFO:" in message:  # TOBE TESTED
                     message = self._remove_request(message, "REQUEST_TERRITORY_INFO: ")
@@ -388,11 +388,12 @@ class Game:
                     shortest_path_to_string = ''
                     for node in shortest_path:
                         shortest_path_to_string += str(node) + "-"
-
-                    print('SERVER: Path found ' + shortest_path_to_string.rstrip("-"))
+                    requesting_player = None
                     for player in self.players:
                         if player.player_id == playerId:
-                            await player.sock.send(f"SHORTEST_PATH: " + shortest_path_to_string.rstrip("-"))
+                            requesting_player = player
+                    if requesting_player:
+                        requesting_player.sock.send(f"SHORTEST_PATH: " + shortest_path_to_string)
 
                 self.queue.task_done()
             except Exception as e:
