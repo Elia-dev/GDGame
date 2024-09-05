@@ -179,8 +179,8 @@ class RequestHandler:
 
                     elif "SHORTEST_PATH" in message:
                         request = message.replace('SHORTEST_PATH: ', '').strip()
-                        nodes = request.split('-')
-                        self.game_manager.shortest_path = nodes
+                        paths = json.loads(request)
+                        self.game_manager.shortest_path = paths
 
                     else:
                         print(f'HANDLER: request not manageable {message}')

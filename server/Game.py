@@ -381,19 +381,26 @@ class Game:
 
                 if 'REQUEST_SHORTEST_PATH' in message:
                     message = self._remove_request(message, "REQUEST_SHORTEST_PATH: ")
-                    playerId, from_terr_node, to_terr_node = message.split("-")
-                    from_terr_node = int(from_terr_node)
-                    to_terr_node = int(to_terr_node)
-                    shortest_path = utils.get_shortest_path(from_terr_node, to_terr_node, self.adj_matrix)
-                    shortest_path_to_string = ''
-                    for node in shortest_path:
-                        shortest_path_to_string += str(node) + "-"
+                    player_id, territories_json = message.split("-")
+                    territories_list_dict = json.loads(territories_json)
+                    territories = [Territory.Territory.from_dict(data) for data in territories_list_dict]
+                    friends_territories = list(
+                        filter(lambda terr: terr.player_id == int(player_id), territories)
+                    )
+                    enemies_territories = list(
+                        filter(lambda terr: terr.player_id != int(player_id), territories)
+                    )
+                    paths = []
+                    for friend in friends_territories:
+                        for enemy in enemies_territories:
+                            path = utils.get_shortest_path(friend.node, enemy.node, self.adj_matrix)
+                            paths.append(path)
                     requesting_player = None
                     for player in self.players:
-                        if player.player_id == playerId:
+                        if player.player_id == player_id:
                             requesting_player = player
                     if requesting_player:
-                        await requesting_player.sock.send(f"SHORTEST_PATH: " + shortest_path_to_string.rstrip("-"))
+                        await requesting_player.sock.send(f"SHORTEST_PATH: " + json.dumps(paths))
 
                 self.queue.task_done()
             except Exception as e:

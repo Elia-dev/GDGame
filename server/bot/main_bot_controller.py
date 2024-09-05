@@ -118,7 +118,8 @@ async def choose_what_to_do(client_manager):
     elif objective_id == 3:
         # Move forward North America or Africa
         terr_of_interest = list(
-            filter(lambda terr: terr.id[0:2] == 'NA' or terr.id[0:2] == 'AF', all_territories)
+            filter(lambda terr: (terr.id[0:2] == 'NA' or terr.id[0:2] == 'AF')
+                   and terr not in my_territories, all_territories)
         )
         if not my_strong_territories:
             return
@@ -126,7 +127,8 @@ async def choose_what_to_do(client_manager):
 
     elif objective_id == 4:
         terr_of_interest = list(
-            filter(lambda terr: terr.id[0:2] == 'NA' or terr.id[0:2] == 'OC', all_territories)
+            filter(lambda terr: (terr.id[0:2] == 'NA' or terr.id[0:2] == 'OC')
+                   and terr not in my_territories, all_territories)
         )
         if not my_strong_territories:
             return
@@ -134,7 +136,8 @@ async def choose_what_to_do(client_manager):
 
     elif objective_id == 5:
         terr_of_interest = list(
-            filter(lambda terr: terr.id[0:2] == 'AS' or terr.id[0:2] == 'OC', all_territories)
+            filter(lambda terr: (terr.id[0:2] == 'AS' or terr.id[0:2] == 'OC')
+                   and terr not in my_territories, all_territories)
         )
         if not my_strong_territories:
             return
@@ -142,7 +145,8 @@ async def choose_what_to_do(client_manager):
 
     elif objective_id == 6:
         terr_of_interest = list(
-            filter(lambda terr: terr.id[0:2] == 'AS' or terr.id[0:2] == 'AF', all_territories)
+            filter(lambda terr: (terr.id[0:2] == 'AS' or terr.id[0:2] == 'AF')
+                   and terr not in my_territories, all_territories)
         )
         if not my_strong_territories:
             return
@@ -150,8 +154,8 @@ async def choose_what_to_do(client_manager):
 
     elif objective_id == 7 or objective_id == 8:
         terr_of_interest = list(
-            filter(lambda terr: terr.id[0:2] == 'EU' or terr.id[0:2] == 'SA' or terr.id[0:2] == 'OC',
-                   all_territories)
+            filter(lambda terr: (terr.id[0:2] == 'EU' or terr.id[0:2] == 'SA' or terr.id[0:2] == 'OC')
+                   and terr not in my_territories, all_territories)
         )
         if not my_strong_territories:
             return
@@ -188,16 +192,12 @@ async def choose_what_to_do(client_manager):
 
 
 async def _reinforce(client_manager, terr_of_interest, my_territories):
-    paths = []
     # Reinforce territories forward enemy (not neighbor)
-    for my_terr in my_territories:
-        for enemy in terr_of_interest:
-            await client_manager.request_shortest_path(my_terr.node, enemy.node)
-            while not client_manager.game_manager.shortest_path:
-                await asyncio.sleep(0.5)
-            paths.append(client_manager.game_manager.shortest_path)
-            client_manager.game_manager.shortest_path = []
-    paths = sorted(paths, key=len)
+    await client_manager.request_shortest_path(my_territories, terr_of_interest)
+    while not client_manager.game_manager.shortest_paths:
+        await asyncio.sleep(0.5)
+    paths = sorted(client_manager.game_manager.shortest_paths, key=len)
+    client_manager.game_manager.shortest_paths = []
     for path in paths:
         index_of_terr_to_reinforce = 0
         for node in path:
@@ -355,15 +355,11 @@ async def setup(client_manager):
 
 async def _manage_attack(my_strong_territories, terr_of_interest, client_manager):
     my_territories = client_manager.player.territories
-    paths = []
-    for my_terr in my_strong_territories:
-        for enemy in terr_of_interest:
-            await client_manager.request_shortest_path(my_terr.node, enemy.node)
-            while not client_manager.game_manager.shortest_path:
-                await asyncio.sleep(1)
-            paths.append(client_manager.game_manager.shortest_path)
-            client_manager.game_manager.shortest_path = []
-    paths = sorted(paths, key=len)
+    await client_manager.request_shortest_path(my_strong_territories, terr_of_interest)
+    while not client_manager.game_manager.shortest_paths:
+        await asyncio.sleep(0.5)
+    paths = sorted(client_manager.game_manager.shortest_paths, key=len)
+    client_manager.game_manager.shortest_paths = []
     for path in paths:
         attacker = list(filter(lambda terr: terr.node == int(path[0]), my_territories)).pop()
         defender = list(filter(lambda terr: terr.node == int(path[1]), terr_of_interest))
@@ -403,7 +399,7 @@ async def attack_phase(client_manager):
 async def main():
     print('Client started!')
     client_manager = ClientManager()
-    await asyncio.gather(client_manager.start_client('128.116.252.173'), game(client_manager, '350 752'))
+    await asyncio.gather(client_manager.start_client('128.116.252.173'), game(client_manager, '645 768'))
     # await asyncio.gather(client_manager.start_client('150.217.51.105'), game(client_manager, '601 763'))
 
 

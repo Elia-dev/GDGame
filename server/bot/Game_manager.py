@@ -35,7 +35,7 @@ class GameManager:
         self.enemy_army_num = 0
         self.my_army_num = 0
         self.force_update_after_attack = False
-        self.shortest_path = []
+        self.shortest_paths = []
 
     @classmethod
     def get_instance(cls):
