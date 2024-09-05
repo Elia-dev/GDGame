@@ -16,9 +16,9 @@ class ClientManager:
         self._websocket = None
         self.game_manager = GameManager()
 
-    async def start_client(self, ip, port):
+    async def start_client(self, ip):
         print("Try to connect...")
-        async with websockets.connect(f'ws://{ip}:{port}') as websocket:
+        async with websockets.connect(f'ws://{ip}:12345') as websocket:
             try:
                 print("debug")
                 self._connected = True

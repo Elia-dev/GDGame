@@ -6,7 +6,7 @@ import random
 from Territory import Territory
 
 
-async def game(client_manager):
+async def game(client_manager, host_id):
     print('Function game')
     while not client_manager.is_connected():
         await asyncio.sleep(1)
@@ -15,7 +15,7 @@ async def game(client_manager):
 
     await client_manager.request_name_update_player_list()
     await client_manager.send_name()
-    await client_manager.join_lobby_as_client('924 593')
+    await client_manager.join_lobby_as_client(host_id)
 
     while client_manager.game_manager.get_extracted_number() == 0:
         await client_manager.request_name_update_player_list()
@@ -385,7 +385,7 @@ async def attack_phase(client_manager):
 async def main():
     print('Client started!')
     client_manager = ClientManager()
-    await asyncio.gather(client_manager.start_client('localhost', '12345'), game(client_manager))
+    await asyncio.gather(client_manager.start_client('150.217.51.105'), game(client_manager, '536 353'))
 
 
 if __name__ == '__main__':

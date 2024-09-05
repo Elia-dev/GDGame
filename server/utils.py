@@ -55,8 +55,7 @@ def get_adj_matrix(path):
     return np.load(path)
 
 
-def get_neighbors_node_of(territory_node):
-    file_path = os.path.join(os.getcwd(), os.pardir, 'assets/adj_matrix.npy')
+def get_neighbors_node_of(territory_node, file_path):
     adj_matrix = get_adj_matrix(file_path)
     neighbors = []
     row = adj_matrix[territory_node]
@@ -75,7 +74,7 @@ def get_territory_from_node(node, all_territories):
 
 def get_neighbors_of(territory, all_terr):
     territories = []
-    nodes = get_neighbors_node_of(territory.node)
+    nodes = get_neighbors_node_of(territory.node, os.path.join(os.getcwd(), os.pardir, 'assets/adj_matrix.npy'))
     for node in nodes:
         territories.append(get_territory_from_node(node, all_terr))
     return territories
@@ -128,7 +127,7 @@ def update_adjacent_matrix(players, adj_matrix):
     for player in players:
         for territory in player.territories:
             node = territory.node
-            neighbors_node = get_neighbors_node_of(node)
+            neighbors_node = get_neighbors_node_of(node, os.path.join(os.getcwd(), 'assets/adj_matrix.npy'))
             for neighbor in neighbors_node:
                 adj_matrix[neighbor][node] = territory.num_tanks
 
