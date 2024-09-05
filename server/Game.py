@@ -19,6 +19,7 @@ class Game:
         self.game_waiting_to_start = True
         self.host_player = None
         self.adj_matrix = utils.get_adj_matrix(os.getcwd() + '/assets/adj_matrix.npy')
+        print('SERVER: ' + os.getcwd() + '/assets/adj_matrix.npy')
         self.queue = asyncio.Queue()
         self.army_colors = {
             'red': None,
