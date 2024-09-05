@@ -2,11 +2,32 @@ using System.Collections;
 using businesslogic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 namespace Audio {
     public class SFX_selector : MonoBehaviour {
         public static SFX_selector Instance { get; private set; }
+        public AudioSource startedTurn;
+        public AudioSource conqueredTerritory;
+        public AudioSource lostTerritory;
+        
+        private int _countBattle = 0;
+        private bool _myTurnSoundActivated = false;
+        private void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+        }
+
+        public void SetVolume(float volume)
+        {
+            startedTurn.volume = volume;
+            conqueredTerritory.volume = volume;
+            lostTerritory.volume = volume;
+        }
+        /*public static SFX_selector Instance { get; private set; }
 
         public AudioSource startedTurn;
         public AudioSource conqueredTerritory;
@@ -22,8 +43,8 @@ namespace Audio {
             /*else
             {
                 Destroy(gameObject);
-            }*/
-        }
+            }
+        }*/
 
         void Start() {
             conqueredTerritory.Stop();

@@ -6,6 +6,28 @@ using UnityEngine.SceneManagement;
 namespace Audio {
     public class BGMusic_selector : MonoBehaviour {
         public static BGMusic_selector Instance { get; private set; }
+        public AudioSource gameTrack;
+        public AudioSource menuTrack;
+        public AudioSource winTrack;
+        public AudioSource loseTrack;
+
+        private void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+        }
+
+        public void SetVolume(float volume)
+        {
+            gameTrack.volume = volume;
+            menuTrack.volume = volume;
+            winTrack.volume = volume;
+            loseTrack.volume = volume;
+        }
+        /*public static BGMusic_selector Instance { get; private set; }
 
         public AudioSource menuTrack;
         public AudioSource gameTrack;
@@ -18,11 +40,11 @@ namespace Audio {
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
             }
-            /*else
+            else
             {
                 Destroy(gameObject);
-            }*/
-        }
+            }
+        }*/
 
         void Start() {
             menuTrack.Play();
@@ -38,7 +60,6 @@ namespace Audio {
                 winTrack.Stop();
                 loseTrack.Stop();
                 menuTrack.Play();
-                AudioListener.volume = PlayerPrefs.GetFloat("musicVolume", 1.0f);
             } else if (SceneManager.GetActiveScene().name.Equals("Main") && !gameTrack.isPlaying && !winTrack.isPlaying &&
                      !loseTrack.isPlaying) {
                 Debug.Log("Gioco Mia si da foho");
@@ -46,7 +67,6 @@ namespace Audio {
                 loseTrack.Stop();
                 menuTrack.Stop();
                 gameTrack.Play();
-                gameTrack.volume = 0.5f;
             }
             else if (SceneManager.GetActiveScene().name.Equals("Main") &&
                      !GameManager.Instance.getWinnerGameId().Equals("")) {
