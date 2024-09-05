@@ -121,7 +121,7 @@ namespace businesslogic
 
         public async void ResetConnection()
         {
-            await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
+            //await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
             _connected = false;
             _webSocket = null;
         }

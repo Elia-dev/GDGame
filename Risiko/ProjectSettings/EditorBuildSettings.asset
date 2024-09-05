@@ -35,4 +35,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/JoinAvailableGames.unity
     guid: 6678e0285da7797d597adcc9959f9488
+  - enabled: 1
+    path: Assets/Scenes/ServerListMenu.unity
+    guid: 6dea7fffb9ea566bd910691134ab50aa
   m_configObjects: {}
