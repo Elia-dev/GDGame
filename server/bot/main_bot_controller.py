@@ -194,7 +194,7 @@ async def _reinforce(client_manager, terr_of_interest, my_territories):
         for enemy in terr_of_interest:
             await client_manager.request_shortest_path(my_terr.node, enemy.node)
             while not client_manager.game_manager.shortest_path:
-                await asyncio.sleep(1)
+                await asyncio.sleep(0.5)
             paths.append(client_manager.game_manager.shortest_path)
             client_manager.game_manager.shortest_path = []
     paths = sorted(paths, key=len)
@@ -272,35 +272,40 @@ async def reinforce_phase(client_manager):
     if objective_id == 3:
         # Place near North America or Africa
         terr_of_interest = list(
-            filter(lambda terr: terr.id[0:2] == 'NA' or terr.id[0:2] == 'AF', all_territories)
+            filter(lambda terr: (terr.id[0:2] == 'NA' or terr.id[0:2] == 'AF')
+                   and terr not in my_territories, all_territories)
         )
         await _reinforce(client_manager, terr_of_interest, my_territories)
 
     if objective_id == 4:
         # Place near North America or Africa
         terr_of_interest = list(
-            filter(lambda terr: terr.id[0:2] == 'NA' or terr.id[0:2] == 'OC', all_territories)
+            filter(lambda terr: (terr.id[0:2] == 'NA' or terr.id[0:2] == 'OC')
+                   and terr not in my_territories, all_territories)
         )
         await _reinforce(client_manager, terr_of_interest, my_territories)
 
     if objective_id == 5:
         # Place near North America or Africa
         terr_of_interest = list(
-            filter(lambda terr: terr.id[0:2] == 'AS' or terr.id[0:2] == 'OC', all_territories)
+            filter(lambda terr: (terr.id[0:2] == 'AS' or terr.id[0:2] == 'OC')
+                   and terr not in my_territories, all_territories)
         )
         await _reinforce(client_manager, terr_of_interest, my_territories)
 
     if objective_id == 6:
         # Place near North America or Africa
         terr_of_interest = list(
-            filter(lambda terr: terr.id[0:2] == 'AS' or terr.id[0:2] == 'AF', all_territories)
+            filter(lambda terr: (terr.id[0:2] == 'AS' or terr.id[0:2] == 'AF')
+                   and terr not in my_territories, all_territories)
         )
         await _reinforce(client_manager, terr_of_interest, my_territories)
 
     if objective_id == 7 or objective_id == 8:
         # Place near North America or Africa
         terr_of_interest = list(
-            filter(lambda terr: terr.id[0:2] == 'EU' or terr.id[0:2] == 'SA' or terr.id[0:2] == 'OC',
+            filter(lambda terr: (terr.id[0:2] == 'EU' or terr.id[0:2] == 'SA' or terr.id[0:2] == 'OC')
+                   and terr not in my_territories,
                    all_territories)
         )
         await _reinforce(client_manager, terr_of_interest, my_territories)
@@ -361,9 +366,9 @@ async def _manage_attack(my_strong_territories, terr_of_interest, client_manager
     paths = sorted(paths, key=len)
     for path in paths:
         attacker = list(filter(lambda terr: terr.node == int(path[0]), my_territories)).pop()
-        defender = list(filter(lambda terr: terr.node == int(path[1]), terr_of_interest)).pop()
+        defender = list(filter(lambda terr: terr.node == int(path[1]), terr_of_interest))
         if defender:
-            await _attack(attacker, defender, client_manager)
+            await _attack(attacker, defender.pop(), client_manager)
 
 
 async def _attack(attacker, defender, client_manager):
@@ -398,7 +403,7 @@ async def attack_phase(client_manager):
 async def main():
     print('Client started!')
     client_manager = ClientManager()
-    await asyncio.gather(client_manager.start_client('128.116.252.173'), game(client_manager, '773 785'))
+    await asyncio.gather(client_manager.start_client('128.116.252.173'), game(client_manager, '350 752'))
     # await asyncio.gather(client_manager.start_client('150.217.51.105'), game(client_manager, '601 763'))
 
 

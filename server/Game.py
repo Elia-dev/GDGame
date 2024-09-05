@@ -393,7 +393,7 @@ class Game:
                         if player.player_id == playerId:
                             requesting_player = player
                     if requesting_player:
-                        await requesting_player.sock.send(f"SHORTEST_PATH: " + shortest_path_to_string)
+                        await requesting_player.sock.send(f"SHORTEST_PATH: " + shortest_path_to_string.rstrip("-"))
 
                 self.queue.task_done()
             except Exception as e:
