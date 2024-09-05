@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
@@ -40,6 +41,64 @@ namespace businesslogic
         private ClientWebSocket _webSocket = null;
         private CancellationToken _cancellationToken;
         private bool _isConnectedToLobby = false;
+        private List<string> onlineServers = new List<string>();
+        public List<string> GetOnlineServersList()
+        {
+            return onlineServers;
+        }
+        
+        private static readonly List<string> ServersToCheck = new List<string>
+        {
+            "ws://150.217.51.105:12345", // 105
+            "ws://93.57.245.63:12345", // Elia
+            "ws://101.58.64.113:12345", // Filo
+            "ws://localhost:12345"
+        };
+
+        public async Task<List<string>> FetchOnlineServers()
+        {
+            onlineServers = new List<string>();
+            foreach (var server in ServersToCheck)
+            {
+                if (await IsServerOnline(server))
+                {
+                    string clean_server = server.Replace("ws://", "").Replace(":12345", "");
+                    onlineServers.Add(clean_server);
+                }
+            }
+            
+            return onlineServers;
+        }
+
+        private async Task<bool> IsServerOnline(string serverUri)
+        {
+            using ClientWebSocket webSocket = new ClientWebSocket();
+            var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            try
+            {
+                await webSocket.ConnectAsync(new Uri(serverUri), cancellationTokenSource.Token);
+                if (webSocket.State == WebSocketState.Open)
+                {
+                    await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.Log($"Failed to connect to {serverUri}: {ex.Message}");
+            }
+
+            return false;
+        }
+        public void SetActiveServer(string server)
+        {
+            _server = "ws://" + server + ":12345";
+        }
+
+        public string GetActiveServer()
+        {
+            return _server;
+        }
 
         public bool IsConnectedToLobby()
         {
@@ -224,5 +283,6 @@ namespace businesslogic
             await SendMessage(_webSocket, _cancellationToken, "REQUEST_TERRITORY_INFO: " + Player.Instance.PlayerId + "-" + Terr_id);
     
         }
+        
     }
 }
