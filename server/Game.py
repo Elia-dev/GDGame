@@ -184,6 +184,7 @@ class Game:
                     await self.broadcast("LOBBY_KILLED_BY_HOST")
                     self.remove_all_players()
                     self.game_id = None
+                    self.game_running = False
 
                 if "PLAYER_HAS_LEFT_THE_LOBBY" in message:
                     id = self._remove_request(message, "PLAYER_HAS_LEFT_THE_LOBBY: ")
