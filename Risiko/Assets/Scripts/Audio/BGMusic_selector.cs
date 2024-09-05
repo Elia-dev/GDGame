@@ -38,6 +38,7 @@ namespace Audio {
                 winTrack.Stop();
                 loseTrack.Stop();
                 menuTrack.Play();
+                AudioListener.volume = PlayerPrefs.GetFloat("musicVolume", 1.0f);
             } else if (SceneManager.GetActiveScene().name.Equals("Main") && !gameTrack.isPlaying && !winTrack.isPlaying &&
                      !loseTrack.isPlaying) {
                 Debug.Log("Gioco Mia si da foho");
@@ -45,6 +46,7 @@ namespace Audio {
                 loseTrack.Stop();
                 menuTrack.Stop();
                 gameTrack.Play();
+                gameTrack.volume = 0.5f;
             }
             else if (SceneManager.GetActiveScene().name.Equals("Main") &&
                      !GameManager.Instance.getWinnerGameId().Equals("")) {
