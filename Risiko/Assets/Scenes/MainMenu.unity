@@ -2408,9 +2408,9 @@ GameObject:
   - component: {fileID: 1920287645}
   - component: {fileID: 1920287644}
   - component: {fileID: 1920287654}
+  - component: {fileID: 1920287653}
   - component: {fileID: 1920287652}
   - component: {fileID: 1920287651}
-  - component: {fileID: 1920287653}
   - component: {fileID: 1920287650}
   m_Layer: 0
   m_Name: BackgroundMusic
@@ -3146,9 +3146,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caa5af97d14f4ceb968de6cfb1908859, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startedTurn: {fileID: 0}
-  conqueredTerritory: {fileID: 0}
-  lostTerritory: {fileID: 0}
+  startedTurn: {fileID: 1920287653}
+  conqueredTerritory: {fileID: 1920287652}
+  lostTerritory: {fileID: 1920287651}
 --- !u!1 &1972626553
 GameObject:
   m_ObjectHideFlags: 0

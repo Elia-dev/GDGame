@@ -18,6 +18,7 @@ namespace UI
         [SerializeField] private Button refreshButton;
         [SerializeField] private TMP_InputField serverIPInput;
         [SerializeField] private Button selectButton;
+        [SerializeField] private Button x;
         private List<string> _servers = new List<string>();
 
 
@@ -29,7 +30,7 @@ namespace UI
                 /*await ClientManager.Instance.FetchOnlineServers();
                 _servers = ClientManager.Instance.GetOnlineServersList();
                 RefreshServerList();*/
-                retrieveServers();
+                RetrieveServers();
                 serverIPInput.text = "";
             });
             
@@ -46,9 +47,15 @@ namespace UI
                         .SetErrorText("Please insert a server IP");
                 }
             });
+            
+            x.onClick.AddListener(() =>
+            {
+                popupError.SetActive(false);
+                SceneManager.LoadScene("MainMenu");
+            });
         }
 
-        private async Task retrieveServers()
+        private async Task RetrieveServers()
         {
             refreshButton.interactable = false;
             await ClientManager.Instance.FetchOnlineServers();
@@ -58,11 +65,7 @@ namespace UI
 
         void Start()
         {
-            //retrieveServers();
-            refreshButton.interactable = false;
-            _servers = ClientManager.Instance.GetOnlineServersList();
-            // Per ogni partita disponibile, crea una riga nella lista
-            RefreshServerList();
+            RetrieveServers();
         }
 
         private void RefreshServerList()

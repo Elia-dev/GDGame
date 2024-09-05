@@ -36,7 +36,6 @@ namespace UI
         async void Start()
         {
             AudioListener.volume = PlayerPrefs.GetFloat("musicVolume", 1.0f);
-            await ClientManager.Instance.FetchOnlineServers();
         }
     
         private void Update() {
