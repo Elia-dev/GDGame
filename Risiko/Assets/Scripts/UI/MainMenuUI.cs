@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Audio;
 using businesslogic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -34,8 +35,10 @@ namespace UI
 
         async void Start()
         {
-            AudioListener.volume = PlayerPrefs.GetFloat("musicVolume", 1.0f);
-            AudioListener.volume = PlayerPrefs.GetFloat("SFXVolume", 1.0f);
+            BGMusic_selector.Instance.SetVolume(PlayerPrefs.GetFloat("musicVolume", 1.0f));
+            SFX_selector.Instance.SetVolume(PlayerPrefs.GetFloat("SFXVolume", 1.0f));
+            /*AudioListener.volume = PlayerPrefs.GetFloat("musicVolume", 1.0f);
+            AudioListener.volume = PlayerPrefs.GetFloat("SFXVolume", 1.0f);*/
         }
     
         private void Update() {

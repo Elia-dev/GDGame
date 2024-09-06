@@ -46,6 +46,10 @@ namespace UI
         }
 
         void Update() {
+            if (Player.Instance is null) {
+                return;
+                
+            }
             allInfo.text = "";
             if (Player.Instance.IsMyTurn) {
                 turn.color = new Color32(255, 216, 0, 255);

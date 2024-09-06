@@ -73,11 +73,11 @@ namespace UI
         private void Awake() {
             xPopUpLeftGame.onClick.AddListener(() =>
             {
-                SceneManager.LoadScene("MainMenu");
                 Player.Instance.ResetPlayer();
                 GameManager.Instance.ResetGameManager();
                 ClientManager.Instance.ResetConnection();
                 popUpPlayerLeftGame.SetActive(false);
+                SceneManager.LoadScene("MainMenu");
             });
         }
 
