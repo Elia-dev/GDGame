@@ -41,10 +41,12 @@ class Game:
 
     def remove_player(self, player):
         self.players.remove(player)
+        player.lobby_id = None
         print(f"Player {player.player_id} with name {player.name} removed from game {self.game_id}")
 
     def remove_all_players(self):
         for player in self.players:
+            player.lobby_id = None
             self.remove_player(player)
 
     async def broadcast(self, message):
