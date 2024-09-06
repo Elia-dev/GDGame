@@ -426,7 +426,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 362550732}
         m_TargetAssemblyTypeName: Audio.VolumeManager, Assembly-CSharp
-        m_MethodName: ChangeSFXVolume
+        m_MethodName: ChangeSfxVolume
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

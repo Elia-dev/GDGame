@@ -10,7 +10,12 @@ namespace UI
         [SerializeField] private Button exitButton;
         [SerializeField] private TMP_Text endGameResult;
         private void Awake() {
-            exitButton.onClick.AddListener(() => SceneManager.LoadScene("MainMenu"));
+            exitButton.onClick.AddListener(() => {
+                Player.Instance.ResetPlayer();
+                GameManager.Instance.ResetGameManager();
+                ClientManager.Instance.ResetConnection();
+                SceneManager.LoadScene("MainMenu");
+            });
         }
 
         public void SetPopUp(string playerId) {
