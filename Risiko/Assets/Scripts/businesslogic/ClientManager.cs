@@ -210,7 +210,7 @@ namespace businesslogic
         public async void KillLobby()
         {
             setIsConnectedToLobby(false);
-            await SendMessage(_webSocket, _cancellationToken, "LOBBY_KILLED_BY_HOST: " + Player.Instance.PlayerId);
+            await SendMessage(_webSocket, _cancellationToken, "GAME_KILLED_BY_HOST: " + Player.Instance.PlayerId);
         }
 
         public async void LeaveLobby()

@@ -172,6 +172,11 @@ class Game:
                 #print(
                 #    f"GAME: handling request from client id - : {player.player_id} with name {player.name}: {message}")
 
+                if "LOBBY_KILLED_BY_HOST" in message:
+                    self.game_id = None
+                    self.game_running = False
+                    self.remove_all_players()
+                    return
                 if "GAME_KILLED_BY_HOST" in message:
                     id = self._remove_request(message, "GAME_KILLED_BY_HOST: ")
                     for player in self.players:

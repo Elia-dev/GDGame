@@ -19,7 +19,6 @@ dentro la classe Game e lo stato del gioco,
 La classe Game avrà la lista dei giocatori che fanno parte di quella partita, ogni player avrà salvato la propria websocket
 '''
 
-
 async def handler(websocket):
     client_id = websocket.remote_address
     player = Player(websocket)
@@ -28,10 +27,7 @@ async def handler(websocket):
     try:
         async for message in websocket:
             print(f"SERVER: Received message from {client_id}: {message}")
-            games_to_remove = [game for game in games if game.game_id is None or len(game.players) == 0] #Check if there are empty lobby and delete them
-            for game in games_to_remove:
-                games.remove(game)
-            print("Pulizia completata")
+            remove_empty_games()
 
             if "HOST_GAME" in message:
                 game_id = None
@@ -108,6 +104,12 @@ async def handler(websocket):
     finally:
         await websocket.close()  # Chiusura esplicita della WebSocket
         print("WebSocket chiusa e risorse liberate")
+
+def remove_empty_games():
+    games_to_remove = [game for game in games if game.game_id is None or len(game.players) == 0] #Check if there are empty lobby and delete them
+    for game in games_to_remove:
+        games.remove(game)
+    print("Pulizia completata")
 
 async def shutdown(server):
     server.close()
