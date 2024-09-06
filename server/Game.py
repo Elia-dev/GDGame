@@ -40,9 +40,11 @@ class Game:
         print(f"Player {player.player_id} with name {player.name} added to game {self.game_id}")
 
     def remove_player(self, player):
-        self.players.remove(player)
         player.lobby_id = None
         print(f"Player {player.player_id} with name {player.name} removed from game {self.game_id}")
+        self.players.remove(player)
+
+
 
     def remove_all_players(self):
         for player in self.players:

@@ -1,5 +1,7 @@
 import asyncio
 import websockets
+from quodlibet.cli import is_running
+
 import utils
 from Player import Player
 from Game import Game
@@ -136,12 +138,13 @@ async def shutdown_all(server, input_task):
 
 
 async def handle_input(server, input_task):
-    while True:
+    is_running = True
+    while is_running:
         user_input = await asyncio.get_event_loop().run_in_executor(None, input, "Enter command: ")
         print(f"Received input: {user_input}")
         if user_input == "quit":
             await shutdown_all(server, input_task)
-            break
+            is_running = False
 
         elif user_input == "list":
             print("Games:")
@@ -170,7 +173,8 @@ async def handle_input(server, input_task):
             for game in games:
                 for player in game.players:
                     if player.player_id == player_id:
-                        await player.sock.send("GAME_KILLED_BY_HOST")
+                        await player.sock.send("KICKED_FROM_GAME")
+                        game.remove_player()
                         game.remove_player(player)
 
         else:
