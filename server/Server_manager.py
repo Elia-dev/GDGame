@@ -112,11 +112,13 @@ def remove_empty_games():
     print("Pulizia completata")
 
 async def shutdown(server):
+    print("Shutting down server...")
     server.close()
     await server.wait_closed()
     print("Server has been shut down.")
 
 async def shutdown_all_games():
+    print("Shutting down all games...")
     for game in games:
         game.end_game()
         for player in game.players:
@@ -125,6 +127,7 @@ async def shutdown_all_games():
     print("All games have been shut down.")
 
 async def shutdown_all_clients():
+    print("Shutting down all clients...")
     for game in games:
         for player in game.players:
             await player.sock.close()
@@ -137,7 +140,7 @@ async def shutdown_all(server, input_task):
     await shutdown(server)
     input_task.cancel()
     await input_task
-    print("Server and all tasks have been shut down.")
+    print("Quit.")
 
 
 async def handle_input(server, input_task):
@@ -149,7 +152,7 @@ async def handle_input(server, input_task):
             await shutdown_all(server, input_task)
             is_running = False
 
-        elif user_input == "list":
+        elif user_input == "games":
             print("Games:")
             for game in games:
                 print(game.game_id)
@@ -158,12 +161,32 @@ async def handle_input(server, input_task):
             for game in games:
                 for player in game.players:
                     print(f"{player.name}-{player.lobby_id}-{player.player_id}")
-        elif user_input == "remove":
+        elif user_input == "force_remove_empty_games":
             for game in games:
-                if len(game.players) == 0:
+                if len(game.players) == 0 or game.lobby_id is None:
                     games.remove(game)
         elif user_input == "help":
-            print("Commands: list, players, remove, exit, help, test, kill_lobby <lobby_id>, kick_player <player_id>")
+            print("Commands: games, players, force_remove_empty_games, quit, help, test, kill_lobby <lobby_id>, kick_player <player_id>")
+        elif "help" in user_input:
+            command = user_input.split(" ")[1]
+            if command == "games":
+                print("Prints all the games")
+            elif command == "players":
+                print("Prints all the players")
+            elif command == "force_remove_empty_games":
+                print("Force the server to remove all the empty games")
+            elif command == "quit":
+                print("Shuts down the server and disconnects all the clients, all the games will be ended")
+            elif command == "help":
+                print("Prints all the commands")
+            elif command == "test":
+                print("This is a test, it will print 'This is a test'")
+            elif command == "kill_lobby":
+                print("Kills a lobby with the specified id, all the players will be disconnected")
+            elif command == "kick_player":
+                print("Kicks a player with the specified id from the game, the player will be disconnected")
+            else:
+                print("Unknown command")
         elif user_input == "test":
             print("This is a test")
         elif "kill_lobby" in user_input:
@@ -177,9 +200,7 @@ async def handle_input(server, input_task):
                 for player in game.players:
                     if player.player_id == player_id:
                         await player.sock.send("KICKED_FROM_GAME")
-                        game.remove_player()
                         game.remove_player(player)
-
         else:
             print("Unknown command")
 

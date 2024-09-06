@@ -44,8 +44,6 @@ class Game:
         print(f"Player {player.player_id} with name {player.name} removed from game {self.game_id}")
         self.players.remove(player)
 
-
-
     def remove_all_players(self):
         for player in self.players:
             player.lobby_id = None
