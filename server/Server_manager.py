@@ -116,28 +116,64 @@ async def handle_input():
     while True:
         user_input = await asyncio.get_event_loop().run_in_executor(None, input, "Enter command: ")
         print(f"Received input: {user_input}")
-        # Gestisci l'input dell'utente qui
+        if user_input == "exit":
+            break
+        elif user_input == "list":
+            print("Games:")
+            for game in games:
+                print(game.game_id)
+        elif user_input == "players":
+            print("Players:")
+            for game in games:
+                for player in game.players:
+                    print(f"{player.name}-{player.lobby_id}-{player.player_id}")
+        elif user_input == "start":
+            for game in games:
+                if len(game.players) > 1:
+                    game.game_waiting_to_start = False
+                    game.start_game()
+        elif user_input == "end":
+            for game in games:
+                game.end_game() #Chiude la partita e rimuove i giocatori
+        elif user_input == "remove":
+            for game in games:
+                if len(game.players) == 0:
+                    games.remove(game)
+        elif user_input == "help":
+            print("Commands: list, players, start, end, remove, exit, help, test, kill_lobby <lobby_id>, kick_player <player_id>")
+        elif user_input == "test":
+            print("Test")
+        elif "kill_lobby" in user_input:
+            lobby_id = user_input.split(" ")[1]
+            for game in games:
+                if game.game_id == lobby_id:
+                    game.end_game()
+        elif "kick_player" in user_input:
+            player_id = user_input.split(" ")[1]
+            for game in games:
+                for player in game.players:
+                    if player.player_id == player_id:
+                        await player.sock.send("LOBBY_KILLED_BY_HOST")
+                        game.remove_player(player)
+
+        else:
+            print("Unknown command")
 
 async def main():
     print("server started")
 
     # Gestisce il timeout della connessione mandando ogni 5 minuti un ping e aspettando il pong di risposta entro altri 5 minuti
-    async with websockets.serve(handler, "0.0.0.0", 12345, ping_interval=300, ping_timeout=300):
+    async with websockets.serve(handler, "0.0.0.0", 12345, ping_interval=300, ping_timeout=300) as server:
 
-        await asyncio.Future()  # Run forever
+      # await asyncio.Future()  # Run forever
+      input_task = asyncio.create_task(handle_input())
 
-        '''
-        Da commentare l'await subito sopra e scommentare tutto soto, ANCORA DA PROVARE
-        SICURAMENTE NON DA PROVARE IN TRENO
-        input_task = asyncio.create_task(handle_input())
-
-        try:
-            await asyncio.Future()  # Run forever
-        except asyncio.CancelledError:
-            await shutdown(server)
-            input_task.cancel()
-            await input_task
-        '''
+      try:
+          await asyncio.Future()  # Run forever
+      except asyncio.CancelledError:
+          await shutdown(server)
+          input_task.cancel()
+          await input_task
 
 
 if __name__ == "__main__":
