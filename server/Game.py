@@ -170,11 +170,11 @@ class Game:
                 #print(
                 #    f"GAME: handling request from client id - : {player.player_id} with name {player.name}: {message}")
 
-                if "LOBBY_KILLED_BY_HOST" in message:
-                    id = self._remove_request(message, "LOBBY_KILLED_BY_HOST: ")
+                if "GAME_KILLED_BY_HOST" in message:
+                    id = self._remove_request(message, "GAME_KILLED_BY_HOST: ")
                     for player in self.players:
                         if player.player_id != id:
-                            await player.sock.send("LOBBY_KILLED_BY_HOST")
+                            await player.sock.send("GAME_KILLED_BY_HOST")
                     self.game_id = None
                     self.remove_all_players()
                     return
@@ -414,7 +414,7 @@ class Game:
                 try:
                     async for message in player.sock:
                         await self.queue.put((player, message))
-                        if "LOBBY_KILLED_BY_HOST" in message:
+                        if "GAME_KILLED_BY_HOST" in message:
                             return
                 except websockets.exceptions.ConnectionClosed:
                     print(f"Client {player.player_id} disconnected")
@@ -425,7 +425,7 @@ class Game:
             try:
                 async for message in player.sock:
                     await self.queue.put((player, message))
-                    if "LOBBY_KILLED_BY_HOST" in message:
+                    if "GAME_KILLED_BY_HOST" in message:
                         return
                     if "PLAYER_HAS_LEFT_THE_LOBBY" in message:
                         return
@@ -435,7 +435,7 @@ class Game:
 
     async def end_game(self):
         self.game_running = False
-        await self.broadcast("LOBBY_KILLED_BY_HOST")
+        await self.broadcast("GAME_KILLED_BY_HOST")
         self.remove_all_players()
         print(f"Game {self.game_id} is terminated.")
 
