@@ -189,17 +189,13 @@ async def main():
 
       # await asyncio.Future()  # Run forever
       input_task = asyncio.create_task(handle_input(server, asyncio.current_task()))
-      await asyncio.Future()
-      '''
-            try:
-            # Run forever
+      try:
+        await asyncio.Future()
       except asyncio.CancelledError:
-          
-          pass
-          #await shutdown(server)
-          #input_task.cancel()
-          #await input_task
-      '''
+        print("Server has been shut down.")
+      except Exception as e:
+        print(f"Unexpected error: {e}")
+
 
 
 
