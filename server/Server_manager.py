@@ -145,6 +145,7 @@ async def shutdown_all(server, input_task):
 
 async def handle_input(server, input_task):
     is_running = True
+    print("Type 'help' for a list of commands")
     while is_running:
         user_input = await asyncio.get_event_loop().run_in_executor(None, input, "Enter command: ")
         print(f"Received input: {user_input}")
