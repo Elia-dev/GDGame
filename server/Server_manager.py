@@ -189,14 +189,18 @@ async def main():
 
       # await asyncio.Future()  # Run forever
       input_task = asyncio.create_task(handle_input(server, asyncio.current_task()))
-
-      try:
-          await asyncio.Future()  # Run forever
+      await asyncio.Future()
+      '''
+            try:
+            # Run forever
       except asyncio.CancelledError:
+          
           pass
           #await shutdown(server)
           #input_task.cancel()
           #await input_task
+      '''
+
 
 
 if __name__ == "__main__":
