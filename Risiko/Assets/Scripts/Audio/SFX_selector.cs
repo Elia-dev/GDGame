@@ -27,24 +27,6 @@ namespace Audio {
             conqueredTerritory.volume = volume;
             lostTerritory.volume = volume;
         }
-        /*public static SFX_selector Instance { get; private set; }
-
-        public AudioSource startedTurn;
-        public AudioSource conqueredTerritory;
-        public AudioSource lostTerritory;
-        private int _countBattle = 0;
-        private bool _myTurnSoundActivated = false;
-
-        private void Awake() {
-            if (Instance == null) {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            /*else
-            {
-                Destroy(gameObject);
-            }
-        }*/
 
         void Start() {
             conqueredTerritory.Stop();
