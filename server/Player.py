@@ -21,7 +21,7 @@ class Player:
     def to_dict(self):
         return {
             "name": self.name,
-            "sock": "sock",  # How to rapresent socket ?
+            "sock": "sock",  # How to represent socket ?
             "lobby_id": self.lobby_id,
             "player_id": self.player_id,
             "tanks_num": self.tanks_num,

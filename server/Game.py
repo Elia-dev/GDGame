@@ -245,7 +245,7 @@ class Game:
                     # durante la fase di gioco
                     self.event.set()
                     # Aggiorno la matrice di adiacenza
-                    utils.update_adjacent_matrix(self.players, self.adj_matrix)
+                    self.adj_matrix = utils.update_adjacent_matrix(self.players, self.adj_matrix)
 
                 if "REQUEST_TERRITORY_INFO:" in message:  # TOBE TESTED
                     message = self._remove_request(message, "REQUEST_TERRITORY_INFO: ")

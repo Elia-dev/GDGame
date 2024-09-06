@@ -30,8 +30,8 @@ class GameManager:
         self._my_army_num_to_defend = 0
         self._lobby_id = ""
         self._im_attacking = False
-        self.extracted_enemy_numbers = [0, 0, 0]
-        self.extracted_my_numbers = [0, 0, 0]
+        self.extracted_enemy_numbers = None
+        self.extracted_my_numbers = None
         self.enemy_army_num = 0
         self.my_army_num = 0
         self.force_update_after_attack = False
