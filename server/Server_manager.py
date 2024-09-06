@@ -112,6 +112,7 @@ async def handler(websocket):
 async def shutdown(server):
     server.close()
     await server.wait_closed()
+    print("Server has been shut down.")
 
 async def shutdown_all_games():
     for game in games:
@@ -130,6 +131,7 @@ async def shutdown_all_clients():
 
 async def shutdown_all(server, input_task):
     await shutdown_all_games()
+    await shutdown_all_clients()
     await shutdown(server)
     input_task.cancel()
     await input_task
