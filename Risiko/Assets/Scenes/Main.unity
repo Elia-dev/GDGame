@@ -2991,8 +2991,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86b8e3b3f19848d44b9f61989ab7218a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerName: {fileID: 0}
-  playerInfo: {fileID: 0}
+  containerInfo: {fileID: 1087950845}
+  contentFather: {fileID: 1603462678}
 --- !u!114 &279374960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14092,8 +14092,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86b8e3b3f19848d44b9f61989ab7218a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerName: {fileID: 0}
-  playerInfo: {fileID: 0}
+  containerInfo: {fileID: 0}
+  contentFather: {fileID: 0}
 --- !u!114 &1087950848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18591,7 +18591,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1459599852}
   - component: {fileID: 1459599854}
-  - component: {fileID: 1459599853}
   m_Layer: 5
   m_Name: VolumeSlider
   m_TagString: Untagged
@@ -18621,20 +18620,6 @@ RectTransform:
   m_AnchoredPosition: {x: 583.5, y: -293.5}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1459599853
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1459599851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3f9eda1e92d7897eaf21dba0750badb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  musicVolumeSlider: {fileID: 0}
-  sfxVolumeSlider: {fileID: 0}
 --- !u!114 &1459599854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21557,8 +21542,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 20, y: -20.110012}
-  m_SizeDelta: {x: 40, y: 40}
+  m_AnchoredPosition: {x: 25, y: -20}
+  m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1660690142
 MonoBehaviour:
