@@ -155,24 +155,27 @@ async def handle_input(server, input_task):
         elif user_input == "games":
             print("Games:")
             for game in games:
-                print(game.game_id)
+                print(f"lobby id:{game.game_id}, players: {len(game.players)}")
         elif user_input == "players":
             print("Players:")
             for game in games:
                 for player in game.players:
-                    print(f"{player.name}-{player.lobby_id}-{player.player_id}")
+                    print(f"Name: {player.name}, id lobby: {player.lobby_id}, player id: {player.player_id}")
         elif user_input == "force_remove_empty_games":
+            count = 0
             for game in games:
                 if len(game.players) == 0 or game.lobby_id is None:
+                    count += 1
                     games.remove(game)
+            print(f"Removed {count} empty games")
         elif user_input == "help":
             print("Commands: games, players, force_remove_empty_games, quit, help, test, kill_lobby <lobby_id>, kick_player <player_id>")
         elif "help" in user_input:
             command = user_input.split(" ")[1]
             if command == "games":
-                print("Prints all the games")
+                print("Prints all the games, including their lobby id and number of players")
             elif command == "players":
-                print("Prints all the players")
+                print("Prints all the players, including their lobby id and player id")
             elif command == "force_remove_empty_games":
                 print("Force the server to remove all the empty games")
             elif command == "quit":
