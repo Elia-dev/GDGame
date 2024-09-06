@@ -35,6 +35,7 @@ namespace UI
         async void Start()
         {
             AudioListener.volume = PlayerPrefs.GetFloat("musicVolume", 1.0f);
+            AudioListener.volume = PlayerPrefs.GetFloat("SFXVolume", 1.0f);
         }
     
         private void Update() {

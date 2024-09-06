@@ -6183,7 +6183,7 @@ GameObject:
   - component: {fileID: 567784024}
   - component: {fileID: 567784023}
   m_Layer: 5
-  m_Name: ErrorGameMenuText
+  m_Name: ErrorLeftGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6205,7 +6205,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 312, y: -110.08389}
+  m_AnchoredPosition: {x: 312, y: -144.20737}
   m_SizeDelta: {x: 539.9655, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &567784023
@@ -22784,7 +22784,7 @@ GameObject:
   - component: {fileID: 1762174551}
   - component: {fileID: 1762174550}
   m_Layer: 5
-  m_Name: Button
+  m_Name: XpopUpLeftGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27170,13 +27170,14 @@ MonoBehaviour:
   - {fileID: 1341229216}
   endTurnButton: {fileID: 886352705}
   popUpAttack: {fileID: 638433803}
-  popUpPlayerLeftGame: {fileID: 623515486}
   popUpMoveTanks: {fileID: 217625267}
   gameManager: {fileID: 64225033}
   popUpAttackResult: {fileID: 1718548842}
   endGame: {fileID: 1255752440}
   tenArmyFlag: {fileID: 58386152}
   escMenu: {fileID: 1601001035}
+  popUpPlayerLeftGame: {fileID: 623515486}
+  xPopUpLeftGame: {fileID: 1762174550}
 --- !u!114 &2029590057
 MonoBehaviour:
   m_ObjectHideFlags: 0

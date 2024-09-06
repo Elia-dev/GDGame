@@ -4,7 +4,7 @@ using businesslogic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 using Image = UnityEngine.UI.Image;
 
@@ -13,13 +13,14 @@ namespace UI
     public class TerritoriesManagerGamePhaseUI : TerritoriesManagerUI
     {
         [SerializeField] private GameObject popUpAttack;
-        [SerializeField] private GameObject popUpPlayerLeftGame;
         [SerializeField] private GameObject popUpMoveTanks;
         [SerializeField] private GameObject gameManager;
         [SerializeField] private GameObject popUpAttackResult;
         [SerializeField] private GameObject endGame;
         [SerializeField] private GameObject tenArmyFlag;
         [SerializeField] private GameObject escMenu;
+        [SerializeField] private GameObject popUpPlayerLeftGame;
+        [SerializeField] private Button xPopUpLeftGame;
 
         private List<GameObject> _neighborhoodGameObj = new List<GameObject>();
         private List<Territory> _neighborhoodTerritories = new List<Territory>();
@@ -69,6 +70,17 @@ namespace UI
             set => _strategicMove = value;
         }
 
+        private void Awake() {
+            xPopUpLeftGame.onClick.AddListener(() =>
+            {
+                SceneManager.LoadScene("MainMenu");
+                Player.Instance.ResetPlayer();
+                GameManager.Instance.ResetGameManager();
+                ClientManager.Instance.ResetConnection();
+                popUpPlayerLeftGame.SetActive(false);
+            });
+        }
+
         private void Update()
         {
             if (!GameManager.Instance.GetGameRunning())
@@ -76,13 +88,6 @@ namespace UI
                 popUpPlayerLeftGame.SetActive(true);
                 GameObject.Find("PopUpContainer").GetComponent<DisplayMessageOnPopUpUI>()
                     .SetErrorText("Player left the game\nyou will be redirected to the main menu...");
-                
-                //Bisogna mettere una X per chiudere il popup e tornare al menu principale
-                
-                Player.Instance.ResetPlayer();
-                GameManager.Instance.ResetGameManager();
-                ClientManager.Instance.ResetConnection();
-                SceneManager.LoadScene("MainMenu");
             }
 
             if (Player.Instance.IsMyTurn && !_isTurnInitialized)
