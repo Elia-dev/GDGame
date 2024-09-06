@@ -1,6 +1,5 @@
 import asyncio
 import websockets
-from quodlibet.cli import is_running
 
 import utils
 from Player import Player
