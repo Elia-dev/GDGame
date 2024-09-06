@@ -112,12 +112,34 @@ async def shutdown(server):
     server.close()
     await server.wait_closed()
 
+async def shutdown_all_games():
+    for game in games:
+        game.end_game()
+        for player in game.players:
+            await player.sock.close()
+    games.clear()
+    print("All games have been shut down.")
+
+async def shutdown_all_clients():
+    for game in games:
+        for player in game.players:
+            await player.sock.close()
+    games.clear()
+    print("All clients have been disconnected.")
+
+async def shutdown_all():
+    await shutdown_all_games()
+    await shutdown_all_clients()
+
+
 async def handle_input():
     while True:
         user_input = await asyncio.get_event_loop().run_in_executor(None, input, "Enter command: ")
         print(f"Received input: {user_input}")
-        if user_input == "exit":
+        if user_input == "quit":
+            await shutdown_all()
             break
+
         elif user_input == "list":
             print("Games:")
             for game in games:
@@ -127,14 +149,6 @@ async def handle_input():
             for game in games:
                 for player in game.players:
                     print(f"{player.name}-{player.lobby_id}-{player.player_id}")
-        elif user_input == "start":
-            for game in games:
-                if len(game.players) > 1:
-                    game.game_waiting_to_start = False
-                    game.start_game()
-        elif user_input == "end":
-            for game in games:
-                game.end_game() #Chiude la partita e rimuove i giocatori
         elif user_input == "remove":
             for game in games:
                 if len(game.players) == 0:
@@ -153,7 +167,7 @@ async def handle_input():
             for game in games:
                 for player in game.players:
                     if player.player_id == player_id:
-                        await player.sock.send("LOBBY_KILLED_BY_HOST")
+                        await player.sock.send("GAME_KILLED_BY_HOST")
                         game.remove_player(player)
 
         else:
