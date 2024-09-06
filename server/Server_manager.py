@@ -127,17 +127,20 @@ async def shutdown_all_clients():
     games.clear()
     print("All clients have been disconnected.")
 
-async def shutdown_all():
+async def shutdown_all(server, input_task):
     await shutdown_all_games()
-    await shutdown_all_clients()
+    await shutdown(server)
+    input_task.cancel()
+    await input_task
+    print("Server and all tasks have been shut down.")
 
 
-async def handle_input():
+async def handle_input(server, input_task):
     while True:
         user_input = await asyncio.get_event_loop().run_in_executor(None, input, "Enter command: ")
         print(f"Received input: {user_input}")
         if user_input == "quit":
-            await shutdown_all()
+            await shutdown_all(server, input_task)
             break
 
         elif user_input == "list":
@@ -154,9 +157,9 @@ async def handle_input():
                 if len(game.players) == 0:
                     games.remove(game)
         elif user_input == "help":
-            print("Commands: list, players, start, end, remove, exit, help, test, kill_lobby <lobby_id>, kick_player <player_id>")
+            print("Commands: list, players, remove, exit, help, test, kill_lobby <lobby_id>, kick_player <player_id>")
         elif user_input == "test":
-            print("Test")
+            print("This is a test")
         elif "kill_lobby" in user_input:
             lobby_id = user_input.split(" ")[1]
             for game in games:
@@ -180,7 +183,7 @@ async def main():
     async with websockets.serve(handler, "0.0.0.0", 12345, ping_interval=300, ping_timeout=300) as server:
 
       # await asyncio.Future()  # Run forever
-      input_task = asyncio.create_task(handle_input())
+      input_task = asyncio.create_task(handle_input(server, asyncio.current_task()))
 
       try:
           await asyncio.Future()  # Run forever
