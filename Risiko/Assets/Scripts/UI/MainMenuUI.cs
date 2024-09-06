@@ -16,7 +16,7 @@ namespace UI
         [SerializeField] private Button x;
     
         private bool _pressedButton = false;
-        private readonly float _delay = 12.0f; // Durata del ritardo in secondi
+        private readonly float _delay = 8.0f; // Durata del ritardo in secondi
         private float _timer;
 
         private void Awake() {

@@ -74,7 +74,7 @@ namespace businesslogic
         private async Task<bool> IsServerOnline(string serverUri)
         {
             using ClientWebSocket webSocket = new ClientWebSocket();
-            var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(4));
             try
             {
                 await webSocket.ConnectAsync(new Uri(serverUri), cancellationTokenSource.Token);
@@ -131,7 +131,7 @@ namespace businesslogic
         {
             if (_webSocket == null)
             {
-                var cancellationTokenSourceFirstConnection = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+                var cancellationTokenSourceFirstConnection = new CancellationTokenSource(TimeSpan.FromSeconds(6));
                 var cancellationTokenSource = new CancellationTokenSource();
                 var uri = new Uri(_server);
             

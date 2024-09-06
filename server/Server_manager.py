@@ -140,7 +140,6 @@ async def shutdown_all(server, input_task):
     await shutdown(server)
     input_task.cancel()
     await input_task
-    print("Quit.")
 
 
 async def handle_input(server, input_task):
@@ -219,7 +218,7 @@ async def main():
       try:
         await asyncio.Future()
       except asyncio.CancelledError:
-        print("Server has been shut down.")
+        print("Quit.")
       except Exception as e:
         print(f"Unexpected error: {e}")
 
