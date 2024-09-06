@@ -193,9 +193,10 @@ async def main():
       try:
           await asyncio.Future()  # Run forever
       except asyncio.CancelledError:
-          await shutdown(server)
-          input_task.cancel()
-          await input_task
+          pass
+          #await shutdown(server)
+          #input_task.cancel()
+          #await input_task
 
 
 if __name__ == "__main__":
