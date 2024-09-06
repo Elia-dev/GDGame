@@ -348,7 +348,7 @@ class Game:
                     #print(f"Prima {attacker_player.name} aveva {len(attacker_player.territories)} territori")
                     #print(f"Sempre prima {defender_player.name} aveva {len(defender_player.territories)} territori")
                     if defender_territory.num_tanks == 0:  # Capisce se il territorio attaccato è stato conquistato oppure no
-                        print(f"OH NO! {defender_player.name} È STATO SCOPATO ED HA PERSO IL TERRITORIO!!")
+                        print(f"OH NO! {defender_player.name} HA PERSO IL TERRITORIO!!")
                         defender_territory.player_id = attacker_id
                         defender_player.removeTerritory(defender_territory)
                         defender_territory.num_tanks = attacker_army_num - defender_wins
@@ -374,7 +374,7 @@ class Game:
                         self.dead_players.append(defender_player)
                         self.players.remove(defender_player)
                         print(
-                            f"Il brother {defender_player.name} è stato scopato così forte che è morto nell'atto e adesso verrà rimosso dalla lista dei players vivi per essere messo in quella dei players scassati...")
+                            f"Il brother {defender_player.name} è morto e adesso verrà rimosso dalla lista dei players vivi per essere messo in quella dei players scassati...")
                         #print("done")
                     await self.broadcast("ATTACK_FINISHED_FORCE_UPDATE")
                     self.event.set()
@@ -419,7 +419,7 @@ class Game:
                     self.remove_player(player)
 
     async def listen_to_player_request(self, player):
-        while True:  # Da cambiare mettendo finché il giocatore può giocare/è ancora in gioco
+        while self.game_running:
             try:
                 async for message in player.sock:
                     await self.queue.put((player, message))
@@ -431,8 +431,10 @@ class Game:
                 print(f"Client {player} disconnected")
                 self.remove_player(player)
 
-    def end_game(self):
+    async def end_game(self):
         self.game_running = False
+        await self.broadcast("LOBBY_KILLED_BY_HOST")
+        self.remove_all_players()
         print(f"Game {self.game_id} is terminated.")
 
     async def __game_order__(self):
