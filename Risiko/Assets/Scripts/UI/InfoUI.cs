@@ -1,7 +1,9 @@
 using System.Linq;
 using businesslogic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UI {
     public class InfoUI : MonoBehaviour {
@@ -9,20 +11,31 @@ namespace UI {
         [SerializeField] private Transform contentFather;
 
         private void OnEnable() {
+            Debug.Log("InfoUI enabled");
             contentFather.gameObject.SetActive(true);
             
-            foreach (Transform child in contentFather) {
+            foreach (Transform child in containerInfo.transform) {
                 Destroy(child.gameObject);
             }
 
             foreach (var playerId in GameManager.Instance.GetPlayersId()) {
                 GameObject newPlayer = Instantiate(contentFather.gameObject, containerInfo.transform);
-                newPlayer.transform.Find("playerName").GetComponent<TMP_Text>().color = Utils.ColorCode(GameManager.Instance.GetPlayerColor(playerId), 255);
-                newPlayer.transform.Find("playerName").GetComponent<TMP_Text>().text = GameManager.Instance.getEnemyNameById(playerId);
+                newPlayer.transform.SetParent(containerInfo.transform);
+                
+                // Attiva i componenti necessari
+                newPlayer.transform.Find("PlayerName").GetComponent<TMP_Text>().enabled = true;
+                newPlayer.transform.Find("PlayerInfo").GetComponent<TMP_Text>().enabled = true;
+                newPlayer.transform.Find("PlayerInfo").GetComponent<ContentSizeFitter>().enabled = true;
+                
+                newPlayer.transform.Find("PlayerName").GetComponent<TMP_Text>().color = Utils.ColorCode(GameManager.Instance.GetPlayerColor(playerId), 255);
+                newPlayer.transform.Find("PlayerName").GetComponent<TMP_Text>().text = GameManager.Instance.getEnemyNameById(playerId);
+                
+                if(playerId.Equals(Player.Instance.PlayerId))
+                    newPlayer.transform.Find("PlayerName").GetComponent<TMP_Text>().text += " (You)";
 
-                newPlayer.transform.Find("playerInfo").GetComponent<TMP_Text>().text = "Armies Number: " + GameManager.Instance.AllTerritories
+                newPlayer.transform.Find("PlayerInfo").GetComponent<TMP_Text>().text = "Armies Number: " + GameManager.Instance.AllTerritories
                                       .Where(territory => territory.player_id.Equals(playerId))
-                                      .Sum(territory => territory.num_tanks) + "\n"
+                                      .Sum(territory => territory.num_tanks) + "\n\n"
                                   + "Territories Number: " + GameManager.Instance.AllTerritories
                                       .Count(territory => territory.player_id.Equals(playerId));
             }
