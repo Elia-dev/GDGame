@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace businesslogic
@@ -355,7 +356,10 @@ namespace businesslogic
     
         public string getGame_order()
         {
-            return _gameOrder;
+            // Regular expression to match "-0", "-1", etc.
+            string pattern = @"-\d";
+            return Regex.Replace(_gameOrder.Replace("(", "").Replace("'", "").Replace(")", "").Replace(",", ""), 
+                pattern, string.Empty);//_gameOrder.Replace("(", "").Replace("'", "").Replace(")", "").Replace(",", "");
         }
         public void setGame_order(string value)
         {

@@ -50,8 +50,8 @@ namespace UI
             
             x.onClick.AddListener(() =>
             {
-                popupError.SetActive(false);
                 SceneManager.LoadScene("MainMenu");
+                popupError.SetActive(false);
             });
         }
 
