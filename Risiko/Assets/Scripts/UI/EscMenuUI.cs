@@ -41,10 +41,21 @@ namespace UI
         }
 
         public void ExitButtonForExitMenu() {
-            ClientManager.Instance.LeaveGame();
-            Player.Instance.ResetPlayer();
-            GameManager.Instance.ResetGameManager();
-            ClientManager.Instance.ResetConnection();
+            if (!GameManager.Instance.getKillerId().Equals("")) 
+            {
+                // Se sono stato ucciso da qualcuno esco senza far chiudere la partita a tutti
+                ClientManager.Instance.LeaveLobby();
+                Player.Instance.ResetPlayer();
+                GameManager.Instance.ResetGameManager();
+                ClientManager.Instance.ResetConnection();
+            }
+            else
+            {
+                ClientManager.Instance.LeaveGame();
+                Player.Instance.ResetPlayer();
+                GameManager.Instance.ResetGameManager();
+                ClientManager.Instance.ResetConnection();
+            }
             SceneManager.LoadScene("MainMenu");
         }
     }
