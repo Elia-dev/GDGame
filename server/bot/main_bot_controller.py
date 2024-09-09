@@ -210,7 +210,7 @@ async def _reinforce(client_manager, terr_of_interest, my_territories):
             else:
                 break
         terr_to_reinforce = list(
-            filter(lambda terr: terr.node == path[index_of_terr_to_reinforce], my_territories)
+            filter(lambda terr: terr.node == path[index_of_terr_to_reinforce-1], my_territories)
         ).pop()
         if client_manager.player.tanks_available > 0:
             terr_to_reinforce.num_tanks += 1
@@ -256,8 +256,9 @@ async def reinforce_phase(client_manager):
             enemies = utils.get_enemy_neighbors_of(my_territory, my_territories, all_territories)
             enemies_tanks = 0
             for enemy in enemies:
-                enemies_tanks += enemy.num_tanks
-            necessary_tanks[my_territory.node] = enemies_tanks - my_territory.num_tanks
+                if enemy:
+                    enemies_tanks += enemy.num_tanks
+            necessary_tanks[my_territory] = enemies_tanks - my_territory.num_tanks
 
         necessary_tanks = dict(sorted(necessary_tanks.items(), key=lambda item: item[1], reverse=True))
         while client_manager.player.tanks_available > 0:
@@ -365,6 +366,8 @@ async def _manage_attack(my_strong_territories, terr_of_interest, client_manager
         defender = list(filter(lambda terr: terr.node == int(path[1]), terr_of_interest))
         if defender:
             await _attack(attacker, defender.pop(), client_manager)
+    await client_manager.update_territories_state()
+    client_manager.player.is_my_turn = False
 
 
 async def _attack(attacker, defender, client_manager):
@@ -375,14 +378,16 @@ async def _attack(attacker, defender, client_manager):
         client_manager.game_manager.set_im_attacking(True)
         await client_manager.attack_enemy_territory(attacker, defender, tanks_attacker)
         print(f'{attacker.name} is attacking {defender.name} with {tanks_attacker} tanks')
-        while client_manager.game_manager.extracted_my_numbers:
+        while not client_manager.game_manager.extracted_my_numbers:
             await asyncio.sleep(0.5)
         print(f'MY NUMBERS: {client_manager.game_manager.extracted_my_numbers}')
         print(f'ENEMY NUMBERS: {client_manager.game_manager.extracted_enemy_numbers}')
         client_manager.game_manager.reset_enemy_extracted_numbers()
         client_manager.game_manager.reset_my_extracted_numbers()
-    await client_manager.update_territories_state()
-    client_manager.player.is_my_turn = False
+        defender = list(
+            filter(lambda terr: terr.node == defender.node, client_manager.game_manager.all_territories)
+        ).pop()
+        print(f'{defender.name} is own by {defender.player_id}')
 
 
 async def attack_phase(client_manager):
@@ -405,7 +410,7 @@ async def attack_phase(client_manager):
 async def main():
     print('Client started!')
     client_manager = ClientManager()
-    await asyncio.gather(client_manager.start_client('localhost'), game(client_manager, '162 994'))
+    await asyncio.gather(client_manager.start_client('localhost'), game(client_manager, '446 951'))
     # await asyncio.gather(client_manager.start_client('128.116.252.173'), game(client_manager, '645 768'))
     # await asyncio.gather(client_manager.start_client('150.217.51.105'), game(client_manager, '601 763'))
 
