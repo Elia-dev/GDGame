@@ -14,6 +14,7 @@ class Game:
     def __init__(self, game_id):
         self.game_id = game_id
         self.players = []
+        self.players_alive = []
         self.dead_players = []
         self.game_running = True
         self.game_waiting_to_start = True
@@ -87,9 +88,11 @@ class Game:
                 territories_list.append(territory.to_dict())
         await self.broadcast("SEND_TERRITORIES_TO_ALL: " + json.dumps(territories_list, indent=4))
 
-        initial_army_number = self.__army_start_num__(len(self.players))
+        self.players_alive = self.players.copy()
+
+        initial_army_number = self.__army_start_num__(len(self.players_alive))
         #print("Initial army number: " + str(initial_army_number))
-        for player in self.players:
+        for player in self.players_alive:
             player.tanks_num = initial_army_number
             player.tanks_placed = len(player.territories)
             player.tanks_available = player.tanks_num - player.tanks_placed
@@ -97,7 +100,7 @@ class Game:
         await self.broadcast("IS_YOUR_TURN: FALSE")
         await self.army_color_chose()
         dict_id_color = "ID_COLORS_DICT: "
-        dict_id_color += ", ".join([f"{player.player_id}-{player.army_color}" for player in self.players])
+        dict_id_color += ", ".join([f"{player.player_id}-{player.army_color}" for player in self.players_alive])
         #print("DICT ID COLOR DA MANDARE: " + dict_id_color)
         await self.broadcast(dict_id_color)
         await self._give_objective_cards()
@@ -109,7 +112,7 @@ class Game:
         # Game loop TOBE TESTED
         print("---INIZIO FASE DI GIOCO---")
         while self.game_running:
-            for player in self.players:
+            for player in self.players_alive:
                 await self.broadcast("PLAYER_TURN: " + player.player_id)
                 print(f"Turno del player id: {player.player_id} con nome {player.name}")
                 if not self.firstRound:
@@ -259,20 +262,6 @@ class Game:
                     # Aggiorno la matrice di adiacenza
                     utils.update_adjacent_matrix(self.players, self.adj_matrix)
 
-                if "REQUEST_TERRITORY_INFO:" in message:  # TOBE TESTED
-                    message = self._remove_request(message, "REQUEST_TERRITORY_INFO: ")
-                    playerId, territoryId = message.split("-")
-                    tempPlayer = None
-                    for player in self.players:
-                        if player.player_id == playerId:
-                            tempPlayer = player
-
-                    for player in self.players:
-                        for territory in player.territories:
-                            if territory.id == territoryId:
-                                await tempPlayer.sock.send(
-                                    "RECEIVED_REQUEST_TERRITORY_INFO: " + json.dumps(territory.to_dict()))
-
                 if "ATTACK_TERRITORY:" in message:
                     # (parte animazione su clientAttaccante con messaggio C->S) TERRITORY_ATTACK: idPlayerAttaccante-idPlayerDifensore, idTerrAttaccante-idTerrDifensore, numArmateAttaccante-numArmateDifensore
 
@@ -288,7 +277,7 @@ class Game:
                     clean_message = [segmento.strip() for segmento in message.split(",")]
                     # Extract values separated by "-" removing extra blank spaces
                     attacker_id, defender_id = clean_message[0].split("-")
-                    for player in self.players:
+                    for player in self.players_alive:
                         if player.player_id == attacker_id:
                             attacker_player = player
                         if player.player_id == defender_id:
@@ -372,7 +361,7 @@ class Game:
                     #print(f"Sempre adesso {defender_player.name} ha {len(defender_player.territories)} territori")
                     # updateAllTerritories in broadcast e controllo lato client della vittoria/sconfitta
                     territories_list = []
-                    for player in self.players:
+                    for player in self.players_alive:
                         for territory in player.territories:
                             territories_list.append(territory.to_dict())
 
@@ -382,9 +371,10 @@ class Game:
                     # Mandare un messaggio all'attaccante e all'attaccato per dirgli che l'attacco è finito?
                     #print("Aggiornati tutti i client sul risultato del combattimento")
                     if len(defender_player.territories) == 0:
+                        await defender_player.sock.send("PLAYER_KILLED_BY: " + attacker_player.player_id)
                         defender_player.killed_by = attacker_player
                         self.dead_players.append(defender_player)
-                        self.players.remove(defender_player)
+                        self.players_alive.remove(defender_player)
                         print(
                             f"Il brother {defender_player.name} è morto e adesso verrà rimosso dalla lista dei players vivi per essere messo in quella dei players scassati...")
                         #print("done")
@@ -737,7 +727,7 @@ class Game:
         if player.objective_card.id == "obj9":  # DA IMPLEMENTARE IL SALVATAGGIO DEL KILLER DENTRO AGLI ATTACCHI
             control = 0
             killer = None
-            enemy_player = next((player for player in self.players if player.army_color == "red"), None)
+            enemy_player = next((player for player in self.players_alive if player.army_color == "red"), None)
             if enemy_player is None:
                 for dead_player in self.dead_players:
                     if dead_player.army_color == "red":
@@ -747,8 +737,8 @@ class Game:
                             killer = dead_player.killed_by
             else:
                 return False
-            while control < (len(self.players) + len(self.dead_players)):
-                if killer in self.players:
+            while control < (len(self.players_alive) + len(self.dead_players)):
+                if killer in self.players_alive:
                     print(
                         "Il fratello deve ancora uccidere il king con l'armata rossa o quello che gli ha rubato la kill")
                     return False
@@ -764,7 +754,7 @@ class Game:
         if player.objective_card.id == "obj10":
             control = 0
             killer = None
-            enemy_player = next((player for player in self.players if player.army_color == "blue"), None)
+            enemy_player = next((player for player in self.players_alive if player.army_color == "blue"), None)
             if enemy_player is None:
                 for dead_player in self.dead_players:
                     if dead_player.army_color == "blue":
@@ -774,8 +764,8 @@ class Game:
                             killer = dead_player.killed_by
             else:
                 return False
-            while control < (len(self.players) + len(self.dead_players)):
-                if killer in self.players:
+            while control < (len(self.players_alive) + len(self.dead_players)):
+                if killer in self.players_alive:
                     print(
                         "Il fratello deve ancora uccidere il king con l'armata blu o quello che gli ha rubato la kill")
                     return False
@@ -791,7 +781,7 @@ class Game:
         if player.objective_card.id == "obj11":
             control = 0
             killer = None
-            enemy_player = next((player for player in self.players if player.army_color == "green"), None)
+            enemy_player = next((player for player in self.players_alive if player.army_color == "green"), None)
             if enemy_player is None:
                 for dead_player in self.dead_players:
                     if dead_player.army_color == "green":
@@ -801,8 +791,8 @@ class Game:
                             killer = dead_player.killed_by
             else:
                 return False
-            while control < (len(self.players) + len(self.dead_players)):
-                if killer in self.players:
+            while control < (len(self.players_alive) + len(self.dead_players)):
+                if killer in self.players_alive:
                     print(
                         "Il fratello deve ancora uccidere il king con l'armata verde o quello che gli ha rubato la kill")
                     return False
