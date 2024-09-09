@@ -337,6 +337,7 @@ class Game:
                             # print("Il difensore vince il confronto")
                             defender_wins += 1
                     # print(f"ATTACCANTE VINCE {attacker_wins} CONFRONTI, DIFENSORE VINCE {defender_wins} CONFRONTI")
+
                     # Rimuove i carri in funzione del risultato precedente
                     attacker_territory.num_tanks -= defender_wins
                     defender_territory.num_tanks -= attacker_wins
@@ -353,6 +354,7 @@ class Game:
                         defender_territory.player_id = attacker_id
                         defender_player.removeTerritory(defender_territory)
                         defender_territory.num_tanks = attacker_army_num - defender_wins
+                        attacker_territory -= attacker_army_num - defender_wins
                         attacker_player.addTerritory(defender_territory)
                         print(
                             f"Adesso {defender_territory.name} appartinene a {defender_territory.player_id} con {defender_territory.num_tanks} armate")
