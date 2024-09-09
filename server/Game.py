@@ -257,7 +257,7 @@ class Game:
                     # durante la fase di gioco
                     self.event.set()
                     # Aggiorno la matrice di adiacenza
-                    utils.update_adjacent_matrix(self.players, self.adj_matrix)
+                    self.adj_matrix = utils.update_adjacent_matrix(self.players, self.adj_matrix)
 
                 if "REQUEST_TERRITORY_INFO:" in message:  # TOBE TESTED
                     message = self._remove_request(message, "REQUEST_TERRITORY_INFO: ")
@@ -396,12 +396,15 @@ class Game:
                     player_id, territories_json = message.split("-")
                     territories_list_dict = json.loads(territories_json)
                     territories = [Territory.Territory.from_dict(data) for data in territories_list_dict]
+                    print(f'Player: {player_id} request shortest paths between: {len(territories)} territories')
                     friends_territories = list(
-                        filter(lambda terr: terr.player_id == int(player_id), territories)
+                        filter(lambda terr: terr.player_id == player_id, territories)
                     )
+                    print(f'Friends territories: {len(friends_territories)}')
                     enemies_territories = list(
-                        filter(lambda terr: terr.player_id != int(player_id), territories)
+                        filter(lambda terr: terr.player_id != player_id, territories)
                     )
+                    print(f'Enemy territories: {len(enemies_territories)}')
                     paths = []
                     for friend in friends_territories:
                         for enemy in enemies_territories:
@@ -412,6 +415,7 @@ class Game:
                         if player.player_id == player_id:
                             requesting_player = player
                     if requesting_player:
+                        print(f'Send {len(paths)} to {player.name}')
                         await requesting_player.sock.send(f"SHORTEST_PATH: " + json.dumps(paths))
 
                 self.queue.task_done()

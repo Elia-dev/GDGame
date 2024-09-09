@@ -94,4 +94,5 @@ class ClientManager:
 
     async def request_shortest_path(self, my_territories, enemies_territories):
         terr_to_send = my_territories + enemies_territories
-        await self.send_message(f"REQUEST_SHORTEST_PATH: {self.player.player_id}-" + json.dumps(terr_to_send))
+        territories_dict_list = [territory.to_dict() for territory in terr_to_send]
+        await self.send_message(f"REQUEST_SHORTEST_PATH: {self.player.player_id}-" + json.dumps(territories_dict_list, indent=4))

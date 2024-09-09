@@ -180,7 +180,8 @@ class RequestHandler:
                     elif "SHORTEST_PATH" in message:
                         request = message.replace('SHORTEST_PATH: ', '').strip()
                         paths = json.loads(request)
-                        self.game_manager.shortest_path = paths
+                        print(f'Receive {len(paths)} paths\n{paths}')
+                        self.game_manager.shortest_paths = paths
 
                     else:
                         print(f'HANDLER: request not manageable {message}')

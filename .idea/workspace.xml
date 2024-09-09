@@ -10,11 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="15a525f4-bad4-4648-b874-5035d788ad12" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Risiko/Assets/Scripts/businesslogic/ClientManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Risiko/Assets/Scripts/businesslogic/ClientManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/server/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/.idea/server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/server/.idea/server.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/bot/Client_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/bot/Client_manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/bot/main_bot_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/bot/main_bot_controller.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -66,7 +64,8 @@
       <option name="presentableId" value="Default" />
       <updated>1720597993082</updated>
       <workItem from="1720597994361" duration="2337000" />
-      <workItem from="1725561305835" duration="920000" />
+      <workItem from="1725561305835" duration="1522000" />
+      <workItem from="1725606157893" duration="1032000" />
     </task>
     <servers />
   </component>
