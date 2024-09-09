@@ -1,3 +1,4 @@
+using System;
 using businesslogic;
 using TMPro;
 using UnityEngine;
@@ -12,10 +13,10 @@ namespace UI
         [SerializeField] private GameObject clickHandler;
         [SerializeField] private TMP_Text allInfo;
         [SerializeField] private GameObject userSpace;
+        
         private string _territoryInfo;
         private static bool _settingGame = true;
         private bool _dimensionSetted = false;
-
         private static bool _distributionPhase = false;
         private static bool _reinforcePhase = false;
         private static bool _attackPhase = false;
@@ -46,6 +47,10 @@ namespace UI
         }
 
         void Update() {
+            if (Player.Instance is null || GameManager.Instance is null || ClientManager.Instance is null) {
+                return;
+            }
+            
             allInfo.text = "";
             if (Player.Instance.IsMyTurn) {
                 turn.color = new Color32(255, 216, 0, 255);

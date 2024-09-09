@@ -37,7 +37,8 @@ namespace businesslogic
         //private string _server = "ws://93.57.245.63:12345"; // Elia
         //private string _server = "ws://101.58.64.113:12345"; // Filo
         //private string _server = "ws://128.116.252.173:12345"; // Franci
-        private string _server = "ws://localhost:12345";
+        //private string _server = "ws://localhost:12345";
+        private string _server = "ws://192.168.1.173:12345";
         private ClientWebSocket _webSocket = null;
         private CancellationToken _cancellationToken;
         private bool _isConnectedToLobby = false;
@@ -73,7 +74,7 @@ namespace businesslogic
         private async Task<bool> IsServerOnline(string serverUri)
         {
             using ClientWebSocket webSocket = new ClientWebSocket();
-            var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(4));
             try
             {
                 await webSocket.ConnectAsync(new Uri(serverUri), cancellationTokenSource.Token);
@@ -130,7 +131,7 @@ namespace businesslogic
         {
             if (_webSocket == null)
             {
-                var cancellationTokenSourceFirstConnection = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+                var cancellationTokenSourceFirstConnection = new CancellationTokenSource(TimeSpan.FromSeconds(6));
                 var cancellationTokenSource = new CancellationTokenSource();
                 var uri = new Uri(_server);
             
@@ -209,7 +210,7 @@ namespace businesslogic
         public async void KillLobby()
         {
             setIsConnectedToLobby(false);
-            await SendMessage(_webSocket, _cancellationToken, "LOBBY_KILLED_BY_HOST: " + Player.Instance.PlayerId);
+            await SendMessage(_webSocket, _cancellationToken, "GAME_KILLED_BY_HOST: " + Player.Instance.PlayerId);
         }
 
         public async void LeaveLobby()

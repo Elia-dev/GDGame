@@ -238,6 +238,16 @@ namespace businesslogic
             }
         }
 
+        public List<string> GetPlayersName()
+        {
+            return PlayersName;
+        }
+        
+        public List<string> GetPlayersId()
+        {
+            return new List<string>(_playersDict.Keys);
+        }
+        
         // Funzione per rimuovere un player dal dizionario
         public void RemovePlayerFromLobbyDict(string playerId)
         {

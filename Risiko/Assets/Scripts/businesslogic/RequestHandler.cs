@@ -45,6 +45,10 @@ namespace businesslogic
                 {
                     GameManager.Instance.SetGameRunning(false);
                 }
+                else if (message.Contains("KICKED_FROM_GAME"))
+                {
+                    GameManager.Instance.SetGameRunning(false);
+                }
                 else if (message.Contains("SELECT_ALL_GAMES:"))
                 {
                     Debug.Log("Ricevuta richiesta: SELECT_ALL_GAMES");

@@ -1,5 +1,6 @@
 import asyncio
 import websockets
+
 import utils
 from Player import Player
 from Game import Game
@@ -18,7 +19,6 @@ dentro la classe Game e lo stato del gioco,
 La classe Game avrà la lista dei giocatori che fanno parte di quella partita, ogni player avrà salvato la propria websocket
 '''
 
-
 async def handler(websocket):
     client_id = websocket.remote_address
     player = Player(websocket)
@@ -27,10 +27,7 @@ async def handler(websocket):
     try:
         async for message in websocket:
             print(f"SERVER: Received message from {client_id}: {message}")
-            games_to_remove = [game for game in games if game.game_id is None or len(game.players) == 0] #Check if there are empty lobby and delete them
-            for game in games_to_remove:
-                games.remove(game)
-            print("Pulizia completata")
+            remove_empty_games()
 
             if "HOST_GAME" in message:
                 game_id = None
@@ -108,36 +105,124 @@ async def handler(websocket):
         await websocket.close()  # Chiusura esplicita della WebSocket
         print("WebSocket chiusa e risorse liberate")
 
+def remove_empty_games():
+    games_to_remove = [game for game in games if game.game_id is None or len(game.players) == 0] #Check if there are empty lobby and delete them
+    for game in games_to_remove:
+        games.remove(game)
+    print("Pulizia completata")
+
 async def shutdown(server):
+    print("Shutting down server...")
     server.close()
     await server.wait_closed()
+    print("Server has been shut down.")
 
-async def handle_input():
-    while True:
+async def shutdown_all_games():
+    print("Shutting down all games...")
+    for game in games:
+        game.end_game()
+        for player in game.players:
+            await player.sock.close()
+    games.clear()
+    print("All games have been shut down.")
+
+async def shutdown_all_clients():
+    print("Shutting down all clients...")
+    for game in games:
+        for player in game.players:
+            await player.sock.close()
+    games.clear()
+    print("All clients have been disconnected.")
+
+async def shutdown_all(server, input_task):
+    await shutdown_all_games()
+    await shutdown_all_clients()
+    await shutdown(server)
+    input_task.cancel()
+    await input_task
+
+
+async def handle_input(server, input_task):
+    is_running = True
+    print("Type 'help' for a list of commands")
+    while is_running:
         user_input = await asyncio.get_event_loop().run_in_executor(None, input, "Enter command: ")
         print(f"Received input: {user_input}")
-        # Gestisci l'input dell'utente qui
+        if user_input == "quit":
+            await shutdown_all(server, input_task)
+            is_running = False
+
+        elif user_input == "games":
+            print("Games:")
+            for game in games:
+                print(f"lobby id:{game.game_id}, players: {len(game.players)}")
+        elif user_input == "players":
+            print("Players:")
+            for game in games:
+                for player in game.players:
+                    print(f"Name: {player.name}, id lobby: {player.lobby_id}, player id: {player.player_id}")
+        elif user_input == "force_remove_empty_games":
+            count = 0
+            for game in games:
+                if len(game.players) == 0 or game.lobby_id is None:
+                    count += 1
+                    games.remove(game)
+            print(f"Removed {count} empty games")
+        elif user_input == "help":
+            print("Commands: games, players, force_remove_empty_games, quit, help, test, kill_lobby <lobby_id>, kick_player <player_id>")
+        elif "help" in user_input:
+            command = user_input.split(" ")[1]
+            if command == "games":
+                print("Prints all the games, including their lobby id and number of players")
+            elif command == "players":
+                print("Prints all the players, including their lobby id and player id")
+            elif command == "force_remove_empty_games":
+                print("Force the server to remove all the empty games")
+            elif command == "quit":
+                print("Shuts down the server and disconnects all the clients, all the games will be ended")
+            elif command == "help":
+                print("Prints all the commands")
+            elif command == "test":
+                print("This is a test, it will print 'This is a test'")
+            elif command == "kill_lobby":
+                print("Kills a lobby with the specified id, all the players will be disconnected")
+            elif command == "kick_player":
+                print("Kicks a player with the specified id from the game, the player will be disconnected")
+            else:
+                print("Unknown command")
+        elif user_input == "test":
+            print("This is a test")
+        elif "kill_lobby" in user_input:
+            lobby_id = user_input.split(" ")[1]
+            for game in games:
+                if game.game_id == lobby_id:
+                    game.end_game()
+        elif "kick_player" in user_input:
+            player_id = user_input.split(" ")[1]
+            for game in games:
+                for player in game.players:
+                    if player.player_id == player_id:
+                        await player.sock.send("KICKED_FROM_GAME")
+                        game.remove_player(player)
+        else:
+            print("Unknown command")
 
 async def main():
     print("server started")
 
     # Gestisce il timeout della connessione mandando ogni 5 minuti un ping e aspettando il pong di risposta entro altri 5 minuti
-    async with websockets.serve(handler, "0.0.0.0", 12345, ping_interval=300, ping_timeout=300):
+    async with websockets.serve(handler, "0.0.0.0", 12345, ping_interval=300, ping_timeout=300) as server:
 
-        await asyncio.Future()  # Run forever
+      # await asyncio.Future()  # Run forever
+      input_task = asyncio.create_task(handle_input(server, asyncio.current_task()))
+      try:
+        await asyncio.Future()
+      except asyncio.CancelledError:
+        print("Quit.")
+      except Exception as e:
+        print(f"Unexpected error: {e}")
 
-        '''
-        Da commentare l'await subito sopra e scommentare tutto soto, ANCORA DA PROVARE
-        SICURAMENTE NON DA PROVARE IN TRENO
-        input_task = asyncio.create_task(handle_input())
 
-        try:
-            await asyncio.Future()  # Run forever
-        except asyncio.CancelledError:
-            await shutdown(server)
-            input_task.cancel()
-            await input_task
-        '''
 
 
 if __name__ == "__main__":
