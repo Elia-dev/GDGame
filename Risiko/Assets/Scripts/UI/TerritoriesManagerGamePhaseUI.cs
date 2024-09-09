@@ -31,6 +31,7 @@ namespace UI
         private static bool _strategicMove = false;
         private static bool _underAttack = false;
         private static bool _firstTurn = true;
+        private static bool _IAmAlive = true;
 
         public static bool FirstTurn
         {
@@ -88,6 +89,14 @@ namespace UI
                 popUpPlayerLeftGame.SetActive(true);
                 GameObject.Find("PopUpContainer").GetComponent<DisplayMessageOnPopUpUI>()
                     .SetErrorText("Player left the game\nyou will be redirected to the main menu...");
+            }
+
+            if (!GameManager.Instance.getKillerId().Equals("") && _IAmAlive)
+            {
+                _IAmAlive = false;
+                popUpPlayerLeftGame.SetActive(true);
+                GameObject.Find("PopUpContainer").GetComponent<DisplayMessageOnPopUpUI>()
+                    .SetErrorText("You have been destroyed by " + GameManager.Instance.getEnemyNameById(GameManager.Instance.getKillerId()) + "!\nYOU HAVE BEEN DEFEATED, now you will be a spectator of a world in which you no longer have influence...");
             }
 
             if (Player.Instance.IsMyTurn && !_isTurnInitialized)
