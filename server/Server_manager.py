@@ -51,6 +51,7 @@ async def handler(websocket):
                     print(f"Errore durante l'esecuzione del task del gioco: {e}")
 
 
+
             elif "JOIN_GAME" in message:
                 joined = False
                 foundGame = False
@@ -91,8 +92,6 @@ async def handler(websocket):
                     await websocket.send("SELECT_ALL_GAMES: " + response.__str__())
                 else:
                     print("Non mando niente tanto non c'è nessuna partita")
-                
-
 
     except websockets.exceptions.ConnectionClosed as e:
         print(f"Client {player.name} disconnected")
@@ -140,7 +139,6 @@ async def shutdown_all(server, input_task):
     await shutdown(server)
     input_task.cancel()
     await input_task
-
 
 async def handle_input(server, input_task):
     is_running = True
