@@ -88,11 +88,11 @@ class Game:
                 territories_list.append(territory.to_dict())
         await self.broadcast("SEND_TERRITORIES_TO_ALL: " + json.dumps(territories_list, indent=4))
 
-        self.players_alive = self.players.copy()
 
-        initial_army_number = self.__army_start_num__(len(self.players_alive))
+
+        initial_army_number = self.__army_start_num__(len(self.players))
         #print("Initial army number: " + str(initial_army_number))
-        for player in self.players_alive:
+        for player in self.players:
             player.tanks_num = initial_army_number
             player.tanks_placed = len(player.territories)
             player.tanks_available = player.tanks_num - player.tanks_placed
@@ -100,7 +100,7 @@ class Game:
         await self.broadcast("IS_YOUR_TURN: FALSE")
         await self.army_color_chose()
         dict_id_color = "ID_COLORS_DICT: "
-        dict_id_color += ", ".join([f"{player.player_id}-{player.army_color}" for player in self.players_alive])
+        dict_id_color += ", ".join([f"{player.player_id}-{player.army_color}" for player in self.players])
         #print("DICT ID COLOR DA MANDARE: " + dict_id_color)
         await self.broadcast(dict_id_color)
         await self._give_objective_cards()
@@ -108,7 +108,7 @@ class Game:
         await self.broadcast("PREPARATION_PHASE_TERMINATED")
         print("PREPARATION_PHASE_TERMINATED")
         # Preparation phase terminated
-
+        self.players_alive = self.players.copy()
         # Game loop TOBE TESTED
         print("---INIZIO FASE DI GIOCO---")
         while self.game_running:
