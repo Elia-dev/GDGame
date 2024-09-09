@@ -12,11 +12,11 @@ namespace UI {
 
         private void OnEnable() {
             Debug.Log("InfoUI enabled");
-            contentFather.gameObject.SetActive(true);
             
             foreach (Transform child in containerInfo.transform) {
                 Destroy(child.gameObject);
             }
+            contentFather.gameObject.SetActive(true);
 
             foreach (var playerId in GameManager.Instance.GetPlayersId()) {
                 GameObject newPlayer = Instantiate(contentFather.gameObject, containerInfo.transform);
