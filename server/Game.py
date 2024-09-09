@@ -170,10 +170,10 @@ class Game:
                 #print(
                 #    f"GAME: handling request from client id - : {player.player_id} with name {player.name}: {message}")
                 if "ADD_BOT" in message:
-                    # Franci metti qui il codice per aggiungere il bot
+                    # TODO: Franci metti qui il codice per aggiungere il bot
                     pass
                 if "REMOVE_BOT" in message:
-                    # Franci metti qui il codice per rimuovere il bot
+                    # TODO: Franci metti qui il codice per rimuovere il bot
                     pass
                 if "LOBBY_KILLED_BY_HOST" in message:
                     self.game_id = None
