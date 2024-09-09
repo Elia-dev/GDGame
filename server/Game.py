@@ -354,7 +354,7 @@ class Game:
                         defender_territory.player_id = attacker_id
                         defender_player.removeTerritory(defender_territory)
                         defender_territory.num_tanks = attacker_army_num - defender_wins
-                        attacker_territory -= attacker_army_num - defender_wins
+                        attacker_territory.num_tanks -= attacker_army_num - defender_wins
                         attacker_player.addTerritory(defender_territory)
                         print(
                             f"Adesso {defender_territory.name} appartinene a {defender_territory.player_id} con {defender_territory.num_tanks} armate")
