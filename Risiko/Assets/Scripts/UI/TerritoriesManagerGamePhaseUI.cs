@@ -31,7 +31,7 @@ namespace UI
         private static bool _strategicMove = false;
         private static bool _underAttack = false;
         private static bool _firstTurn = true;
-        private static bool _IAmAlive = true;
+        private static bool _iAmAlive = true;
 
         public static bool FirstTurn
         {
@@ -91,9 +91,9 @@ namespace UI
                     .SetErrorText("Player left the game\nyou will be redirected to the main menu...");
             }
 
-            if (!GameManager.Instance.getKillerId().Equals("") && _IAmAlive)
+            if (!GameManager.Instance.getKillerId().Equals("") && _iAmAlive)
             {
-                _IAmAlive = false;
+                _iAmAlive = false;
                 popUpPlayerLeftGame.SetActive(true);
                 GameObject.Find("PopUpContainer").GetComponent<DisplayMessageOnPopUpUI>()
                     .SetErrorText("You have been destroyed by " + GameManager.Instance.getEnemyNameById(GameManager.Instance.getKillerId()) + "!\nYOU HAVE BEEN DEFEATED, now you will be a spectator of a world in which you no longer have influence...");
@@ -231,10 +231,12 @@ namespace UI
             //Dpopo aver effettuato uno spostamento strategico fa finire il turno e aggiorna stato e  informazioni
             if (_strategicMove)
             {
-                endTurnButton.interactable = false;
-                _strategicMove = false;
                 _attackPhase = false;
                 GameManagerUI.AttackPhase = false;
+                endTurnButton.interactable = false;
+                if (_firstTurn)
+                    _firstTurn = false;
+                _strategicMove = false;
                 _isTurnInitialized = false;
                 DeselectState();
                 gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
