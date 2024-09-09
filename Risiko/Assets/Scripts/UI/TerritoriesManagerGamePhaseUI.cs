@@ -95,6 +95,7 @@ namespace UI
             {
                 _iAmAlive = false;
                 popUpPlayerLeftGame.SetActive(true);
+                // Perché la riga sotto mi ha dato nullReferenceException?
                 GameObject.Find("PopUpContainer").GetComponent<DisplayMessageOnPopUpUI>()
                     .SetErrorText("You have been destroyed by " + GameManager.Instance.getEnemyNameById(GameManager.Instance.getKillerId()) + "!\nYOU HAVE BEEN DEFEATED, now you will be a spectator of a world in which you no longer have influence...");
             }

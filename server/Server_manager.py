@@ -119,7 +119,7 @@ async def shutdown(server):
 async def shutdown_all_games():
     print("Shutting down all games...")
     for game in games:
-        game.end_game()
+        await game.end_game()
         for player in game.players:
             await player.sock.close()
     games.clear()
@@ -194,7 +194,7 @@ async def handle_input(server, input_task):
             lobby_id = user_input.split(" ")[1]
             for game in games:
                 if game.game_id == lobby_id:
-                    game.end_game()
+                    await game.end_game()
         elif "kick_player" in user_input:
             player_id = user_input.split(" ")[1]
             for game in games:
