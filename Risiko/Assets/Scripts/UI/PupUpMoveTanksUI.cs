@@ -24,8 +24,8 @@ namespace UI
             moveButton.onClick.AddListener(() => {
                 _fromTerritory.num_tanks -= _armyToMove;
                 _toTerritory.num_tanks += _armyToMove;
-                TerritoriesManagerGamePhaseUI.StategicMove = true;
                 ClientManager.Instance.UpdateTerritoriesState();
+                TerritoriesManagerGamePhaseUI.StategicMove = true;
                 this.gameObject.SetActive(false);
             });
         }

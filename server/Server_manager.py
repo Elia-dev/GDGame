@@ -51,6 +51,7 @@ async def handler(websocket):
                     print(f"Errore durante l'esecuzione del task del gioco: {e}")
 
 
+
             elif "JOIN_GAME" in message:
                 joined = False
                 foundGame = False
@@ -91,8 +92,6 @@ async def handler(websocket):
                     await websocket.send("SELECT_ALL_GAMES: " + response.__str__())
                 else:
                     print("Non mando niente tanto non c'è nessuna partita")
-                
-
 
     except websockets.exceptions.ConnectionClosed as e:
         print(f"Client {player.name} disconnected")
@@ -120,7 +119,7 @@ async def shutdown(server):
 async def shutdown_all_games():
     print("Shutting down all games...")
     for game in games:
-        game.end_game()
+        await game.end_game()
         for player in game.players:
             await player.sock.close()
     games.clear()
@@ -140,7 +139,6 @@ async def shutdown_all(server, input_task):
     await shutdown(server)
     input_task.cancel()
     await input_task
-
 
 async def handle_input(server, input_task):
     is_running = True
@@ -196,7 +194,7 @@ async def handle_input(server, input_task):
             lobby_id = user_input.split(" ")[1]
             for game in games:
                 if game.game_id == lobby_id:
-                    game.end_game()
+                    await game.end_game()
         elif "kick_player" in user_input:
             player_id = user_input.split(" ")[1]
             for game in games:

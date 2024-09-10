@@ -2494,7 +2494,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 639, y: -170}
+  m_AnchoredPosition: {x: 583.5, y: -161}
   m_SizeDelta: {x: 400, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &245082021
@@ -7236,7 +7236,6 @@ GameObject:
   m_Component:
   - component: {fileID: 622872776}
   - component: {fileID: 622872774}
-  - component: {fileID: 622872775}
   m_Layer: 5
   m_Name: SFXVolumelider
   m_TagString: Untagged
@@ -7307,20 +7306,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &622872775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 622872773}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3f9eda1e92d7897eaf21dba0750badb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  musicVolumeSlider: {fileID: 0}
-  sfxVolumeSlider: {fileID: 0}
 --- !u!224 &622872776
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9108,7 +9093,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 639, y: -485}
+  m_AnchoredPosition: {x: 583.5, y: -476}
   m_SizeDelta: {x: 400, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &730066906
@@ -14882,7 +14867,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 639, y: -380}
+  m_AnchoredPosition: {x: 583.5, y: -266}
   m_SizeDelta: {x: 400, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1143216921
@@ -19392,7 +19377,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 639, y: -275}
+  m_AnchoredPosition: {x: 583.5, y: -371}
   m_SizeDelta: {x: 400, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1501219108
@@ -20474,8 +20459,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 245082020}
-  - {fileID: 1501219107}
   - {fileID: 1143216920}
+  - {fileID: 1501219107}
   - {fileID: 730066905}
   - {fileID: 1207151748}
   m_Father: {fileID: 0}

@@ -286,6 +286,10 @@ namespace UI {
 
             _selectedTerritories.territories = new Territory[_armyNumber];
             _selectedTerritories.count = new int[_armyNumber];
+            /*if(!distributionPhase && Player.Instance.TanksAvailable == 0) {
+                endTurnButton.interactable = true;
+                endTurnButton.onClick.Invoke();
+            }*/
         }
 
         //Trova un territorio nei territori del Player dato l'id del territorio
