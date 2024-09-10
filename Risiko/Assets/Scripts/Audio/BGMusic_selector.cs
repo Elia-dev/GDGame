@@ -10,7 +10,7 @@ namespace Audio {
         public AudioSource menuTrack;
         public AudioSource winTrack;
         public AudioSource loseTrack;
-
+        public AudioSource easterEggTrack;
         private void Awake()
         {
             if (Instance == null)
@@ -27,25 +27,7 @@ namespace Audio {
             winTrack.volume = volume;
             loseTrack.volume = volume;
         }
-        /*public static BGMusic_selector Instance { get; private set; }
-
-        public AudioSource menuTrack;
-        public AudioSource gameTrack;
-        public AudioSource winTrack;
-        public AudioSource loseTrack;
-
-
-        private void Awake() {
-            if (Instance == null) {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
-        }*/
-
+       
         void Start() {
             menuTrack.Play();
             gameTrack.Stop();
@@ -70,13 +52,24 @@ namespace Audio {
             }
             else if (SceneManager.GetActiveScene().name.Equals("Main") &&
                      !GameManager.Instance.getWinnerGameId().Equals("")) {
-                if (GameManager.Instance.getWinnerGameId().Equals(Player.Instance.PlayerId) && !winTrack.isPlaying) {
+                if (GameManager.Instance.getWinnerGameId().Equals(Player.Instance.PlayerId) && !winTrack.isPlaying && !easterEggTrack.isPlaying) {
                     Debug.Log("Hai vinto scemo");
                     loseTrack.Stop();
                     menuTrack.Stop();
                     gameTrack.Stop();
                     SFX_selector.Instance.StopAllSFX();
-                    winTrack.Play();
+                    if (Player.Instance.ArmyColor.Equals("red")) // Faccio suonare l'inno dell'URSS se il rosso vince
+                    {
+                        Debug.Log("Lmao ha vinto l'URSS");
+                        easterEggTrack.Play();
+                        winTrack.Stop();
+                    }
+                    else
+                    {
+                        easterEggTrack.Stop();
+                        winTrack.Play();
+                    }
+                    
                 }
                 else if (!GameManager.Instance.getWinnerGameId().Equals(Player.Instance.PlayerId) &&
                          !loseTrack.isPlaying) {
