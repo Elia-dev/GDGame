@@ -113,15 +113,22 @@ def remove_empty_games():
 async def shutdown(server):
     print("Shutting down server...")
     server.close()
-    await server.wait_closed()
+    try:
+        await asyncio.wait_for(server.wait_closed(), 3)
+    except asyncio.TimeoutError:
+        print("Closing...")
     print("Server has been shut down.")
 
 async def shutdown_all_games():
     print("Shutting down all games...")
     for game in games:
+        ''''
+        try:
+            await asyncio.wait_for(game.end_game(), 3)
+        except asyncio.TimeoutError:
+            print("Closing...")
+            '''
         await game.end_game()
-        for player in game.players:
-            await player.sock.close()
     games.clear()
     print("All games have been shut down.")
 
@@ -129,6 +136,12 @@ async def shutdown_all_clients():
     print("Shutting down all clients...")
     for game in games:
         for player in game.players:
+            ''''
+                    try:
+                        await asyncio.wait_for(player.sock.close(), 3)
+                    except asyncio.TimeoutError:
+                        print("Closing...")
+                        '''
             await player.sock.close()
     games.clear()
     print("All clients have been disconnected.")
@@ -147,8 +160,9 @@ async def handle_input(server, input_task):
         user_input = await asyncio.get_event_loop().run_in_executor(None, input, "Enter command: ")
         print(f"Received input: {user_input}")
         if user_input == "quit":
-            await shutdown_all(server, input_task)
             is_running = False
+            await shutdown_all(server, input_task)
+
 
         elif user_input == "games":
             print("Games:")
