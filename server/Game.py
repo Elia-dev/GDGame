@@ -4,10 +4,13 @@ import random
 import time
 import websockets
 import os
+import signal
+import subprocess
 
 import Card
 import Territory
 import utils
+from bot.main_bot_controller import main
 
 
 class Game:
@@ -32,6 +35,7 @@ class Game:
         self.event = asyncio.Event()
         self.event_strategic_movement = asyncio.Event()
         self.firstRound = True
+        self.bots_pid = []
 
     def add_player(self, player):
         if player.name is None:
@@ -170,11 +174,18 @@ class Game:
                 #print(
                 #    f"GAME: handling request from client id - : {player.player_id} with name {player.name}: {message}")
                 if "ADD_BOT" in message:
-                    # Franci metti qui il codice per aggiungere il bot
-                    pass
+                    print(f'Try to create bot')
+                    host_id = self.game_id.replace(' ', '_')
+                    bot_name = f'Computer{len(self.bots_pid)}'
+                    script_path = os.path.join(os.getcwd(), 'run_bot.sh')
+                    bot_pid = subprocess.check_output(f"{script_path} %s %s" % (host_id, bot_name), shell=True, text=True).strip()
+                    self.bots_pid.append(bot_pid)
+                    print(f'Bot {bot_pid} created')
                 if "REMOVE_BOT" in message:
-                    # Franci metti qui il codice per rimuovere il bot
-                    pass
+                    bot_pid = self.bots_pid.pop()
+                    kill_command = ['kill', '-9', str(bot_pid)]
+                    subprocess.run(kill_command)
+                    print(f'Bot removed')
                 if "LOBBY_KILLED_BY_HOST" in message:
                     self.game_id = None
                     self.game_running = False
@@ -818,3 +829,7 @@ class Game:
                 control += 1
             print("Il fratello deve ancora uccidere il king con l'armata verde o quello che gli ha rubato la kill")
             return False
+
+async def _run_script(host_id, bot_name):
+    await asyncio.gather(main(host_id, bot_name))
+    #subprocess.run(["python3", script_name, host_id, bot_name])
