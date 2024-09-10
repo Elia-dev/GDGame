@@ -54,12 +54,12 @@ async def game(client_manager, host_id):
     first_round = True
     while True:
         if client_manager.player.is_my_turn:
-            await asyncio.sleep(1)
+            await asyncio.sleep(0.5)
 
             # REINFORCE PHASE
             if client_manager.player.tanks_available > 0 and not first_round:
                 await reinforce_phase(client_manager)
-            await asyncio.sleep(1)
+            await asyncio.sleep(0.5)
 
             # ATTACK OR MOVE PHASE
             await choose_what_to_do(client_manager)
@@ -70,7 +70,7 @@ async def game(client_manager, host_id):
             print('Passo il turno')
             first_round = False
         else:
-            await asyncio.sleep(1)
+            await asyncio.sleep(0.5)
 
     print('DEAD')
 
@@ -362,10 +362,15 @@ async def _manage_attack(my_strong_territories, terr_of_interest, client_manager
     paths = sorted(client_manager.game_manager.shortest_paths, key=len)
     client_manager.game_manager.shortest_paths = []
     for path in paths:
+        win = False
         attacker = list(filter(lambda terr: terr.node == int(path[0]), my_territories)).pop()
         defender = list(filter(lambda terr: terr.node == int(path[1]), terr_of_interest))
         if defender:
-            await _attack(attacker, defender.pop(), client_manager)
+            defender = defender.pop()
+            win = await _attack(attacker, defender, client_manager)
+        if win:
+            terr_of_interest.remove(defender)
+            my_territories.append(defender)
     await client_manager.update_territories_state()
     client_manager.player.is_my_turn = False
 
@@ -387,8 +392,11 @@ async def _attack(attacker, defender, client_manager):
         defender = list(
             filter(lambda terr: terr.node == defender.node, client_manager.game_manager.all_territories)
         ).pop()
+        attacker = list(
+            filter(lambda terr: terr.node == attacker.node, client_manager.game_manager.all_territories)
+        ).pop()
         print(f'{defender.name} is own by {defender.player_id}')
-
+    return defender.player_id == attacker.player_id
 
 async def attack_phase(client_manager):
     terr_attackers = list(
@@ -410,7 +418,7 @@ async def attack_phase(client_manager):
 async def main():
     print('Client started!')
     client_manager = ClientManager()
-    await asyncio.gather(client_manager.start_client('localhost'), game(client_manager, '446 951'))
+    await asyncio.gather(client_manager.start_client('localhost'), game(client_manager, '957 481'))
     # await asyncio.gather(client_manager.start_client('128.116.252.173'), game(client_manager, '645 768'))
     # await asyncio.gather(client_manager.start_client('150.217.51.105'), game(client_manager, '601 763'))
 
