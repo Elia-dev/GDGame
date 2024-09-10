@@ -46,7 +46,7 @@ namespace Audio {
                 menuTrack.Play();
                 easterEggTrack.Stop();
             } else if (SceneManager.GetActiveScene().name.Equals("Main") && !gameTrack.isPlaying && !winTrack.isPlaying &&
-                     !loseTrack.isPlaying) {
+                     !loseTrack.isPlaying && !easterEggTrack.isPlaying) {
                 Debug.Log("Gioco Mia si da foho");
                 winTrack.Stop();
                 loseTrack.Stop();
