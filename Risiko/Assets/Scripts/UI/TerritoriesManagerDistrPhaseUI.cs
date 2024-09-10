@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq;
 using businesslogic;
 using TMPro;
@@ -35,15 +36,35 @@ namespace UI {
                     SendArmy();
                 } // Se è la fase di attacco sistemo le booleane e invio al server i territori aggiornati
                 else if (TerritoriesManagerGamePhaseUI.AttackPhase) {
-                    TerritoriesManagerGamePhaseUI.IsTurnInitialized = false;
                     TerritoriesManagerGamePhaseUI.AttackPhase = false;
                     GameManagerUI.AttackPhase = false;
                     if (TerritoriesManagerGamePhaseUI.FirstTurn)
                         TerritoriesManagerGamePhaseUI.FirstTurn = false;
                     ClientManager.Instance.UpdateTerritoriesState();
                     endTurnButton.interactable = false;
+                    Debug.Log("IsTurnInitialized = false");
+                    //Attendo che Player.Instance.IsMyTurn diventi false
+                    StartCoroutine(WaitForTurnToEnd());
                 }
             });
+        }
+
+        private IEnumerator WaitForTurnToEnd()
+        {
+            // Attendi finché Player.Instance.IsMyTurn è true
+            while (Player.Instance.IsMyTurn)
+            {
+                yield return null; // Attendi il frame successivo
+            }
+
+            // Esegui il codice per il cambio di turno
+            OnTurnEnded();
+        }
+
+        private void OnTurnEnded()
+        {
+            // Codice da eseguire quando il turno è terminato
+            TerritoriesManagerGamePhaseUI.IsTurnInitialized = false;
         }
         
         public void Start() {
@@ -143,7 +164,7 @@ namespace UI {
             ClientManager.Instance.UpdateTerritoriesState();
             endTurnButton.interactable = false; //Disattiva il tasto per il passaggio del turno
             _isTurnInitialized = false;
-            
+
             // Se siamo nella fase di attacco aggiusta le booleane ed aggiorna i territori
             if (!distributionPhase) {
                 this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = false;
@@ -186,6 +207,7 @@ namespace UI {
                         }
                     }
                 }
+
                 //Se il collider colpito è un territorio allora lo seleziona altrimenti ignora
                 Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 RaycastHit2D[] hits = Physics2D.RaycastAll(mousePosition, Vector2.zero);
@@ -217,6 +239,7 @@ namespace UI {
                     }
                 }
             }
+
             //Se non è il turnoi del giocatore allora mostra SOLO le informazioni del territorio
             if (!Player.Instance.IsMyTurn) {
                 if (Input.GetMouseButtonDown(0)) {
@@ -246,6 +269,7 @@ namespace UI {
                     }
                 }
             }
+
             // Effettua il cambio di scena se si è in game phase
             if (GameManager.Instance.GetGamePhase() && distributionPhase) {
                 TerritoriesManagerUI.distributionPhase = false;
@@ -254,6 +278,7 @@ namespace UI {
                 this.GetComponent<TerritoriesManagerGamePhaseUI>().enabled = true;
                 this.GetComponent<TerritoriesManagerGamePhaseUI>().ActivateOtherPlayersTerritories();
             }
+
             //Gestion del tasto ESC
             if (Input.GetKeyDown(KeyCode.Escape)) {
                 Canvas[] allCanvases = FindObjectsOfType<Canvas>();
@@ -270,7 +295,8 @@ namespace UI {
                 if (popUpAddTank.activeInHierarchy) {
                     popUpAddTank.SetActive(false);
                     if (selectedTerritory is not null) selectedTerritory = null;
-                } else
+                }
+                else
                     escMenu.SetActive(true);
             }
         }
@@ -296,6 +322,7 @@ namespace UI {
         private Territory TerritoryInformationsPlayer(string id) {
             return Player.Instance.Territories.Find(x => x.id.Equals(id));
         }
+
         //Trova un territorio nei territori di tutti i giocatori dato l'id del territorio
         private Territory TerritoryInformationsAllPlayers(string id) {
             return GameManager.Instance.AllTerritories.Find(terr => terr.id.Equals(id));
@@ -312,6 +339,7 @@ namespace UI {
                 tankNumber.color = Color.white;
                 tankToAdd.color = Color.white;
             }
+
             //Se il territorio è di un giocatore allora mostra il popup per aggiungere armate
             if (TerritoryInformationsPlayer(newTerritory.name) is not null) {
                 stateNameAddTank.text = TerritoryInformationsPlayer(newTerritory.name).name;

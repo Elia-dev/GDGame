@@ -126,7 +126,7 @@ namespace UI {
                 }
             }
             else if (_attackPhase && !IsPhaseGoing) {
-                Debug.Log("Inizio la fase di attacco");
+                //Debug.Log("Inizio la fase di attacco");
                 // Se sono in fase di attacco catturo i click sugli stati e mostro le informazioni
                 endTurnButton.interactable = true;
                 if (Input.GetMouseButtonDown(0)) {
@@ -350,7 +350,7 @@ namespace UI {
         //Setta le impostazioni iniziali del turno
         private void StartTurn()
         {
-            Debug.Log("StartTurn Game phase");
+            Debug.Log("StartTurn Game phase; MyTurn: " + Player.Instance.IsMyTurn);
             RefreshTerritories();
             _isTurnInitialized = true;
             if (_firstTurn)
