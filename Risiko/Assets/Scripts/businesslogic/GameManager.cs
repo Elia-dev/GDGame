@@ -33,6 +33,8 @@ namespace businesslogic
         private bool _forceUpdateAfterAttack = false;
         private string _lobbyID = "";
         private bool _imAttacking = false;
+        private string _killer_id = "";
+        
 
         private GameManager() // Private constructor to allow instantiation using singleton only
         {
@@ -52,7 +54,16 @@ namespace businesslogic
                 }
             }
         }
-
+    
+        public void setKillerId(string id)
+        {
+            _killer_id = id;
+        }
+        
+        public string getKillerId()
+        {
+            return _killer_id;
+        }
         public void setWinnerBattleId(string id)
         {
             _winnerBattleId = id;

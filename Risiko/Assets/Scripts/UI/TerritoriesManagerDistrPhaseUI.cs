@@ -35,13 +35,13 @@ namespace UI {
                     SendArmy();
                 } // Se è la fase di attacco sistemo le booleane e invio al server i territori aggiornati
                 else if (TerritoriesManagerGamePhaseUI.AttackPhase) {
+                    TerritoriesManagerGamePhaseUI.IsTurnInitialized = false;
                     TerritoriesManagerGamePhaseUI.AttackPhase = false;
                     GameManagerUI.AttackPhase = false;
                     if (TerritoriesManagerGamePhaseUI.FirstTurn)
                         TerritoriesManagerGamePhaseUI.FirstTurn = false;
                     ClientManager.Instance.UpdateTerritoriesState();
                     endTurnButton.interactable = false;
-                    TerritoriesManagerGamePhaseUI.IsTurnInitialized = false;
                 }
             });
         }
@@ -286,6 +286,10 @@ namespace UI {
 
             _selectedTerritories.territories = new Territory[_armyNumber];
             _selectedTerritories.count = new int[_armyNumber];
+            /*if(!distributionPhase && Player.Instance.TanksAvailable == 0) {
+                endTurnButton.interactable = true;
+                endTurnButton.onClick.Invoke();
+            }*/
         }
 
         //Trova un territorio nei territori del Player dato l'id del territorio

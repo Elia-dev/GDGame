@@ -134,6 +134,13 @@ namespace businesslogic
                 
 
                 }
+                else if (message.Contains("PLAYER_KILLED_BY:"))
+                {
+                    Debug.Log("Server_Request: PLAYER_KILLED_BY");
+                    _request = RemoveRequest(message, "PLAYER_KILLED_BY: ");
+                    Debug.Log("Ucciso da: " + _request);
+                    GameManager.Instance.setKillerId(_request);
+                }
                 else if (message.Contains("EXTRACTED_NUMBER:"))
                 {
                     Debug.Log("Server_Request: EXTRACTED_NUMBER");
