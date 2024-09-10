@@ -1,7 +1,6 @@
 using System.Linq;
 using businesslogic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,13 +10,10 @@ namespace UI {
         [SerializeField] private Transform contentFather;
 
         private void OnEnable() {
-            Debug.Log("InfoUI enabled");
-            
             foreach (Transform child in containerInfo.transform) {
                 Destroy(child.gameObject);
             }
             contentFather.gameObject.SetActive(true);
-
             foreach (var playerId in GameManager.Instance.GetPlayersId()) {
                 GameObject newPlayer = Instantiate(contentFather.gameObject, containerInfo.transform);
                 newPlayer.transform.SetParent(containerInfo.transform);
@@ -39,7 +35,6 @@ namespace UI {
                                   + "Territories Number: " + GameManager.Instance.AllTerritories
                                       .Count(territory => territory.player_id.Equals(playerId));
             }
-            
             contentFather.gameObject.SetActive(false);
         }
     }

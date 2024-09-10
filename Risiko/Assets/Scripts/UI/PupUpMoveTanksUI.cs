@@ -1,3 +1,4 @@
+using System.Collections;
 using businesslogic;
 using TMPro;
 using UnityEngine;
@@ -25,9 +26,27 @@ namespace UI
                 _fromTerritory.num_tanks -= _armyToMove;
                 _toTerritory.num_tanks += _armyToMove;
                 ClientManager.Instance.UpdateTerritoriesState();
-                TerritoriesManagerGamePhaseUI.StategicMove = true;
                 this.gameObject.SetActive(false);
+                StartCoroutine(WaitForTurnToEnd());
             });
+        }
+        
+        private IEnumerator WaitForTurnToEnd()
+        {
+            // Attendi finché Player.Instance.IsMyTurn è true
+            while (Player.Instance.IsMyTurn)
+            {
+                yield return null; // Attendi il frame successivo
+            }
+
+            // Esegui il codice per il cambio di turno
+            OnTurnEnded();
+        }
+
+        private void OnTurnEnded()
+        {
+            // Codice da eseguire quando il turno è terminato
+            TerritoriesManagerGamePhaseUI.StategicMove = true;
         }
 
         private void AddArmy() {
