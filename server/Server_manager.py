@@ -114,17 +114,21 @@ async def shutdown(server):
     print("Shutting down server...")
     server.close()
     try:
-        await asyncio.wait_for(server.wait_closed(), 5)
+        await asyncio.wait_for(server.wait_closed(), 3)
     except asyncio.TimeoutError:
-        print("Timeout while waiting for server to close")
+        print("Closing...")
     print("Server has been shut down.")
 
 async def shutdown_all_games():
     print("Shutting down all games...")
     for game in games:
+        ''''
+        try:
+            await asyncio.wait_for(game.end_game(), 3)
+        except asyncio.TimeoutError:
+            print("Closing...")
+            '''
         await game.end_game()
-        for player in game.players:
-            await player.sock.close()
     games.clear()
     print("All games have been shut down.")
 
@@ -132,6 +136,12 @@ async def shutdown_all_clients():
     print("Shutting down all clients...")
     for game in games:
         for player in game.players:
+            ''''
+                    try:
+                        await asyncio.wait_for(player.sock.close(), 3)
+                    except asyncio.TimeoutError:
+                        print("Closing...")
+                        '''
             await player.sock.close()
     games.clear()
     print("All clients have been disconnected.")
