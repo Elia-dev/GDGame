@@ -4,7 +4,7 @@ import random
 import time
 import websockets
 import os
-import signal
+import platform
 import subprocess
 
 import Card
@@ -180,7 +180,11 @@ class Game:
                     print(f'Try to create bot')
                     host_id = self.game_id.replace(' ', '_')
                     bot_name = f'Computer{len(self.bots_pid)}'
-                    script_path = os.path.join(os.getcwd(), 'run_bot.sh')
+                    if platform.system() == 'Windows':
+                        script_path = os.path.join(os.getcwd(), 'run_bot.bat')
+                    else:
+                        script_path = os.path.join(os.getcwd(), 'run_bot.sh')
+
                     bot_pid = subprocess.check_output(f"{script_path} %s %s" % (host_id, bot_name), shell=True, text=True).strip()
                     self.bots_pid.append(bot_pid)
                     print(f'Bot {bot_pid} created')
