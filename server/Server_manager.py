@@ -113,7 +113,10 @@ def remove_empty_games():
 async def shutdown(server):
     print("Shutting down server...")
     server.close()
-    await server.wait_closed()
+    try:
+        await asyncio.wait_for(server.wait_closed(), 5)
+    except asyncio.TimeoutError:
+        print("Timeout while waiting for server to close")
     print("Server has been shut down.")
 
 async def shutdown_all_games():
@@ -147,8 +150,9 @@ async def handle_input(server, input_task):
         user_input = await asyncio.get_event_loop().run_in_executor(None, input, "Enter command: ")
         print(f"Received input: {user_input}")
         if user_input == "quit":
-            await shutdown_all(server, input_task)
             is_running = False
+            await shutdown_all(server, input_task)
+
 
         elif user_input == "games":
             print("Games:")

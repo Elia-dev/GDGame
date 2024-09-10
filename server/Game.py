@@ -441,6 +441,7 @@ class Game:
 
     async def end_game(self):
         self.game_running = False
+
         await self.broadcast("GAME_KILLED_BY_HOST")
         self.remove_all_players()
         print(f"Game {self.game_id} is terminated.")
