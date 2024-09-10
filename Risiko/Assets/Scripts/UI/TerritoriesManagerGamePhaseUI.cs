@@ -74,11 +74,21 @@ namespace UI
         private void Awake() {
             xPopUpLeftGame.onClick.AddListener(() =>
             {
-                Player.Instance.ResetPlayer();
-                GameManager.Instance.ResetGameManager();
-                ClientManager.Instance.ResetConnection();
-                popUpPlayerLeftGame.SetActive(false);
-                SceneManager.LoadScene("MainMenu");
+                // Quando si preme il tasto X del popup si ritorna al menu principale se il gioco è finito
+                // Altrimenti torno al gioco chiudendo il popup
+                if (GameManager.Instance.GetGameRunning())
+                {
+                    popUpPlayerLeftGame.SetActive(false);
+                }
+                else
+                {
+                    Player.Instance.ResetPlayer();
+                    GameManager.Instance.ResetGameManager();
+                    ClientManager.Instance.ResetConnection();
+                    popUpPlayerLeftGame.SetActive(false);
+                    SceneManager.LoadScene("MainMenu");
+                }
+                
             });
         }
 
