@@ -109,23 +109,28 @@ namespace UI {
             //Inizio la fase di rinforzo abilitando lo script TerritoriesManagerDistrPhaseUI
             if (_reinforcePhase && !IsPhaseGoing)
             {
-                //if (Player.Instance.Territories.Count >= 3)
-                //{
+                Debug.Log
+                    ("Inizio la fase di rinforzo");
+                if (Player.Instance.TanksAvailable > 0 || Player.Instance.Territories.Count >= 3) {
+                    Debug.Log("Ho carri da piazzare");
                     GameManagerUI.ReinforcePhase = true;
                     IsPhaseGoing = true;
                     this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = true;
                     GetComponent<TerritoriesManagerDistrPhaseUI>().StartTurn();
-                //}
-                /*else
-                {
+                }
+                else {
+                    Debug.Log("Non ho carri da piazzare");
                     //Se invece non ho carri da piazzare paso direttamente alla fase di attacco
+                    ClientManager.Instance.UpdateTerritoriesState();
                     _reinforcePhase = false;
                     GameManagerUI.ReinforcePhase = false;
                     _attackPhase = true;
                     GameManagerUI.AttackPhase = true;
-                }*/
+                }
+                
             }
             else if (_attackPhase && !IsPhaseGoing) {
+                
                 Debug.Log("Inizio la fase di attacco");
                 // Se sono in fase di attacco catturo i click sugli stati e mostro le informazioni
                 endTurnButton.interactable = true;
