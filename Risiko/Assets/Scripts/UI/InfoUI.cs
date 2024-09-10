@@ -2,21 +2,22 @@ using System.Linq;
 using businesslogic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace UI {
     public class InfoUI : MonoBehaviour {
-        [SerializeField] private GameObject containerInfo;
+        [SerializeField] private GameObject infoPlayer;
         [SerializeField] private Transform contentFather;
 
         private void OnEnable() {
-            foreach (Transform child in containerInfo.transform) {
+            foreach (Transform child in contentFather) {
                 Destroy(child.gameObject);
             }
-            contentFather.gameObject.SetActive(true);
+            infoPlayer.gameObject.SetActive(true);
             foreach (var playerId in GameManager.Instance.GetPlayersId()) {
-                GameObject newPlayer = Instantiate(contentFather.gameObject, containerInfo.transform);
-                newPlayer.transform.SetParent(containerInfo.transform);
+                GameObject newPlayer = Instantiate(infoPlayer, contentFather);
+                newPlayer.transform.SetParent(contentFather);
                 
                 // Attiva i componenti necessari
                 newPlayer.transform.Find("PlayerName").GetComponent<TMP_Text>().enabled = true;
@@ -35,7 +36,7 @@ namespace UI {
                                   + "Territories Number: " + GameManager.Instance.AllTerritories
                                       .Count(territory => territory.player_id.Equals(playerId));
             }
-            contentFather.gameObject.SetActive(false);
+            infoPlayer.gameObject.SetActive(false);
         }
     }
 }

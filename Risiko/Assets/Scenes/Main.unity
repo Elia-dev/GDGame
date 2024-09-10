@@ -2991,8 +2991,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86b8e3b3f19848d44b9f61989ab7218a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  containerInfo: {fileID: 1087950845}
-  contentFather: {fileID: 1603462678}
+  infoPlayer: {fileID: 1603462677}
+  contentFather: {fileID: 1087950846}
 --- !u!114 &279374960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20498,7 +20498,7 @@ GameObject:
   - component: {fileID: 1603462678}
   - component: {fileID: 1603462679}
   m_Layer: 5
-  m_Name: ContainerInfo
+  m_Name: InfoPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
