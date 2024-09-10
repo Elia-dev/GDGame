@@ -380,6 +380,7 @@ namespace UI
         //Setta le impostazioni iniziali del turno
         private void StartTurn()
         {
+            Debug.Log("StartTurn Game phase");
             RefreshTerritories();
             _isTurnInitialized = true;
             if (_firstTurn)
