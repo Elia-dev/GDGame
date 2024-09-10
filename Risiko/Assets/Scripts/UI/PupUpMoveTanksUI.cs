@@ -26,8 +26,8 @@ namespace UI
                 _fromTerritory.num_tanks -= _armyToMove;
                 _toTerritory.num_tanks += _armyToMove;
                 ClientManager.Instance.UpdateTerritoriesState();
-                this.gameObject.SetActive(false);
                 StartCoroutine(WaitForTurnToEnd());
+                this.gameObject.SetActive(false);
             });
         }
         
