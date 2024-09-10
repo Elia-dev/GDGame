@@ -284,6 +284,16 @@ namespace businesslogic
             await SendMessage(_webSocket, _cancellationToken, "REQUEST_TERRITORY_INFO: " + Player.Instance.PlayerId + "-" + Terr_id);
     
         }
-        
+
+        public async void RequestAddBot()
+        {
+            await SendMessage(_webSocket, _cancellationToken, "ADD_BOT");
+        }
+
+        public async void RequestRemoveBot()
+        {
+            await SendMessage(_webSocket, _cancellationToken, "REMOVE_BOT");
+        }
+
     }
 }

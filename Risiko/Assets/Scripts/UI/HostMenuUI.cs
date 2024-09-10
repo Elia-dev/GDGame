@@ -33,6 +33,14 @@ namespace UI {
                 popUpDiceHostMenu.SetActive(true);
             });
 
+            addBotButton.onClick.AddListener(() => {
+                ClientManager.Instance.RequestAddBot();
+            });
+
+            removeBotButton.onClick.AddListener(() => {
+                ClientManager.Instance.RequestRemoveBot();
+            });
+
             updateButton.onClick.AddListener(() => { ClientManager.Instance.RequestNameUpdatePlayerList(); });
         }
 
