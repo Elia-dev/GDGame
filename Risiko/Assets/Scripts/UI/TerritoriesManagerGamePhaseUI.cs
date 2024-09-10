@@ -108,7 +108,9 @@ namespace UI {
             //Se è il mio turno e non è in corso nessuna fase e ho dei carri armati da piazzare
             //Inizio la fase di rinforzo abilitando lo script TerritoriesManagerDistrPhaseUI
             if (_reinforcePhase && !IsPhaseGoing) {
+                Debug.Log("Inizio la fase di rinforzo");
                 if (Player.Instance.Territories.Count >= 3) {
+                    Debug.Log("Ho carri da piazzare (territories count >= 3)");
                     GameManagerUI.ReinforcePhase = true;
                     IsPhaseGoing = true;
                     this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = true;
