@@ -28,45 +28,43 @@ namespace UI
         private static bool _reinforcePhase = false;
         private static bool _attackPhase = false;
         private static bool _isTurnInitialized = false;
+        private bool _isPhaseGoing = false;
         private static bool _strategicMove = false;
         private static bool _underAttack = false;
         private static bool _firstTurn = true;
         private static bool _iAmAlive = true;
 
-        public static bool FirstTurn
-        {
+        public static bool FirstTurn {
             get => _firstTurn;
             set => _firstTurn = value;
         }
 
-        public static bool UnderAttack
-        {
+        public static bool UnderAttack {
             get => _underAttack;
             set => _underAttack = value;
         }
 
-        public static bool IsTurnInitialized
-        {
+        public static bool IsTurnInitialized {
             get => _isTurnInitialized;
             set => _isTurnInitialized = value;
         }
 
-        public bool IsPhaseGoing { get; set; } = false;
+        public bool IsPhaseGoing {
+            get => _isPhaseGoing; 
+            set => _isPhaseGoing = value;
+        }
 
-        public static bool ReinforcePhase
-        {
+        public static bool ReinforcePhase {
             get => _reinforcePhase;
             set => _reinforcePhase = value;
         }
 
-        public static bool AttackPhase
-        {
+        public static bool AttackPhase {
             get => _attackPhase;
             set => _attackPhase = value;
         }
 
-        public static bool StategicMove
-        {
+        public static bool StategicMove {
             get => _strategicMove;
             set => _strategicMove = value;
         }
@@ -135,6 +133,9 @@ namespace UI
                     GameManagerUI.ReinforcePhase = false;
                     _attackPhase = true;
                     GameManagerUI.AttackPhase = true;
+                    _isPhaseGoing = false;
+                    endTurnButton.GetComponentInChildren<TMP_Text>().text = "End Turn!";
+                    endTurnButton.interactable = true;
                 }
             }
             else if (_attackPhase && !IsPhaseGoing)
