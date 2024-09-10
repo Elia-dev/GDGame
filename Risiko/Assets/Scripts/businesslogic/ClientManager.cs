@@ -37,8 +37,8 @@ namespace businesslogic
         //private string _server = "ws://93.57.245.63:12345"; // Elia
         //private string _server = "ws://101.58.64.113:12345"; // Filo
         //private string _server = "ws://128.116.252.173:12345"; // Franci
-        //private string _server = "ws://localhost:12345";
-        private string _server = "ws://192.168.1.173:12345";
+        private string _server = "ws://localhost:12345";
+        //private string _server = "ws://192.168.1.173:12345";
         private ClientWebSocket _webSocket = null;
         private CancellationToken _cancellationToken;
         private bool _isConnectedToLobby = false;
@@ -74,7 +74,7 @@ namespace businesslogic
         private async Task<bool> IsServerOnline(string serverUri)
         {
             using ClientWebSocket webSocket = new ClientWebSocket();
-            var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(4));
+            var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(3));
             try
             {
                 await webSocket.ConnectAsync(new Uri(serverUri), cancellationTokenSource.Token);
