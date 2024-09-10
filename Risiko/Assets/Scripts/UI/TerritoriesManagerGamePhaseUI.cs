@@ -87,7 +87,7 @@ namespace UI {
         private void Update() {
             if (!GameManager.Instance.GetGameRunning()) {
                 popUpPlayerLeftGame.SetActive(true);
-                GameObject.Find("PopUpContainer").GetComponent<DisplayMessageOnPopUpUI>()
+                popUpPlayerLeftGame.GetComponent<DisplayMessageOnPopUpUI>()
                     .SetErrorText("Player left the game\nyou will be redirected to the main menu...");
             }
 
@@ -95,7 +95,7 @@ namespace UI {
                 _iAmAlive = false;
                 popUpPlayerLeftGame.SetActive(true);
                 // Perché la riga sotto mi ha dato nullReferenceException?
-                GameObject.Find("PopUpContainer").GetComponent<DisplayMessageOnPopUpUI>()
+                popUpPlayerLeftGame.GetComponent<DisplayMessageOnPopUpUI>()
                     .SetErrorText("You have been destroyed by "
                                   + GameManager.Instance.getEnemyNameById(GameManager.Instance.getKillerId())
                                   + "!\nYOU HAVE BEEN DEFEATED, now you will be a spectator of a world in which you no longer have influence...");
@@ -110,15 +110,12 @@ namespace UI {
             if (_reinforcePhase && !IsPhaseGoing)// && Player.Instance.TanksAvailable > 0)
             {
                 //if (Player.Instance.Territories.Count >= 3)
-                if (Player.Instance.TanksAvailable > 0)
-                {
+                if (Player.Instance.TanksAvailable > 0) {
                     GameManagerUI.ReinforcePhase = true;
                     IsPhaseGoing = true;
                     this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = true;
                     GetComponent<TerritoriesManagerDistrPhaseUI>().StartTurn();
-                }
-                else
-                {
+                } else {
                     //Se invece non ho carri da piazzare paso direttamente alla fase di attacco
                     ClientManager.Instance.UpdateTerritoriesState();
                     _reinforcePhase = false;
