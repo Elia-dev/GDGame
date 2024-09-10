@@ -26,6 +26,7 @@ namespace Audio {
             menuTrack.volume = volume;
             winTrack.volume = volume;
             loseTrack.volume = volume;
+            easterEggTrack.volume = volume;
         }
        
         void Start() {
@@ -33,6 +34,7 @@ namespace Audio {
             gameTrack.Stop();
             winTrack.Stop();
             loseTrack.Stop();
+            easterEggTrack.Stop();
         }
 
         void Update() {
@@ -42,6 +44,7 @@ namespace Audio {
                 winTrack.Stop();
                 loseTrack.Stop();
                 menuTrack.Play();
+                easterEggTrack.Stop();
             } else if (SceneManager.GetActiveScene().name.Equals("Main") && !gameTrack.isPlaying && !winTrack.isPlaying &&
                      !loseTrack.isPlaying) {
                 Debug.Log("Gioco Mia si da foho");
@@ -49,6 +52,7 @@ namespace Audio {
                 loseTrack.Stop();
                 menuTrack.Stop();
                 gameTrack.Play();
+                easterEggTrack.Stop();
             }
             else if (SceneManager.GetActiveScene().name.Equals("Main") &&
                      !GameManager.Instance.getWinnerGameId().Equals("")) {
@@ -77,6 +81,7 @@ namespace Audio {
                     menuTrack.Stop();
                     gameTrack.Stop();
                     winTrack.Stop();
+                    easterEggTrack.Stop();
                     SFX_selector.Instance.StopAllSFX();
                     loseTrack.Play();
                 }
