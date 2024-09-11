@@ -209,7 +209,7 @@ class Game:
                 if "PLAYER_HAS_LEFT_THE_GAME" in message:
                     # TODO: IMPLEMENTARE RIMPIAZZO CON BOT
                     # Implementazione temporanea sotto, chiude la partita
-                    print("Ricevuto PLAYER_HAS_LEFT_THE_GAME, chiusura della partita in corso...")
+                    print("Ricevuto PLAYER_HAS_LEFT_THE_GAME, chiusura della partita in corso, notifico tutti i player...")
                     id = self._remove_request(message, "PLAYER_HAS_LEFT_THE_GAME: ")
                     await self.broadcast("GAME_KILLED_BY_HOST")
                     self.remove_all_players()
@@ -217,6 +217,7 @@ class Game:
                     self.game_running = False
 
                 if "PLAYER_HAS_LEFT_THE_LOBBY" in message:
+                    print("Un player è uscito dalla lobby, lo rimuovo senza avvisare nessuno, la partita continua...")
                     id = self._remove_request(message, "PLAYER_HAS_LEFT_THE_LOBBY: ")
                     for player in self.players:
                         if player.player_id == id:

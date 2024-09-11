@@ -43,6 +43,8 @@ namespace businesslogic
                 }
                 else if (message.Contains("GAME_KILLED_BY_HOST"))
                 {
+                    Debug.Log("Server_Request: GAME_KILLED_BY_HOST");
+                    Debug.Log("Setto gameRunning a false");
                     GameManager.Instance.SetGameRunning(false);
                 }
                 else if (message.Contains("KICKED_FROM_GAME"))
