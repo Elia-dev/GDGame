@@ -1,5 +1,3 @@
 @echo off
-set game_id=%1
-set bot_name=%2
-start /B python main_bot_controller.py %game_id% %bot_name%
+start /B python.exe main_bot_controller.py %1 %2 > output_run_bot.log 2>&1
 echo %ERRORLEVEL%
