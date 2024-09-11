@@ -52,6 +52,7 @@ async def game(client_manager, host_id, bot_name):
     first_round = True
     while True:
         if client_manager.player.is_my_turn:
+            client_manager.game_manager.shortest_paths = []
             await asyncio.sleep(0.5)
 
             # REINFORCE PHASE
@@ -433,6 +434,7 @@ async def _manage_attack(my_strong_territories, terr_of_interest, client_manager
             defender = defender.pop()
             win = await _attack(attacker, defender, client_manager)
         if win:
+            await asyncio.sleep(2)
             terr_of_interest.remove(defender)
 
 
