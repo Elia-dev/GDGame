@@ -369,7 +369,7 @@ namespace businesslogic
         {
             // Regular expression to match "-0", "-1", etc.
             string pattern = @"-\d";
-            return Regex.Replace(_gameOrder.Replace("(", "").Replace("'", "").Replace(")", "").Replace(",", ""), 
+            return Regex.Replace(_gameOrder.Replace("{", "").Replace("'", "").Replace("}", ""), 
                 pattern, string.Empty);//_gameOrder.Replace("(", "").Replace("'", "").Replace(")", "").Replace(",", "");
         }
         public void setGame_order(string value)

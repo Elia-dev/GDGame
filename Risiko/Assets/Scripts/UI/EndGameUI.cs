@@ -11,6 +11,7 @@ namespace UI
         [SerializeField] private TMP_Text endGameResult;
         private void Awake() {
             exitButton.onClick.AddListener(() => {
+                GameManagerUI.ThisIsTheEnd = true;
                 Player.Instance.ResetPlayer();
                 GameManager.Instance.ResetGameManager();
                 ClientManager.Instance.ResetConnection();

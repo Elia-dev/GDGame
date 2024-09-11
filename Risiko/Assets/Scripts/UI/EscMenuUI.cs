@@ -41,6 +41,7 @@ namespace UI
         }
 
         public void ExitButtonForExitMenu() {
+            GameManagerUI.ThisIsTheEnd = true;
             if (!GameManager.Instance.getKillerId().Equals("")) 
             {
                 // Se sono stato ucciso da qualcuno esco senza far chiudere la partita a tutti

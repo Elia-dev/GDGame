@@ -1,6 +1,7 @@
 using System;
 using businesslogic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,7 +21,12 @@ namespace UI
         private static bool _distributionPhase = false;
         private static bool _reinforcePhase = false;
         private static bool _attackPhase = false;
+        private static bool _thisIsTheEnd = false;
 
+        public static bool ThisIsTheEnd {
+            get => _thisIsTheEnd;
+            set => _thisIsTheEnd = value;
+        }
 
         public static bool SettingGame {
             get => _settingGame;
@@ -47,7 +53,7 @@ namespace UI
         }
 
         void Update() {
-            if (Player.Instance is null || GameManager.Instance is null || ClientManager.Instance is null) {
+            if (!GameManager.Instance.GetGameRunning() || !GameManager.Instance.getWinnerGameId().Equals("") || _thisIsTheEnd) {
                 return;
             }
             

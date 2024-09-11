@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using businesslogic;
 using TMPro;
@@ -97,7 +98,7 @@ namespace UI {
                 popUpPlayerLeftGame.GetComponent<DisplayMessageOnPopUpUI>()
                     .SetErrorText("You have been destroyed by "
                                   + GameManager.Instance.getEnemyNameById(GameManager.Instance.getKillerId())
-                                  + "!\nNow you will be a spectator of a world in which you no longer have influence...");
+                                  + "!\n<i>Now you will be a spectator of a world in which you no longer have influence...</i>");
             }
 
             if (Player.Instance.IsMyTurn && !_isTurnInitialized) {
@@ -121,6 +122,7 @@ namespace UI {
                     GameManagerUI.ReinforcePhase = false;
                     _attackPhase = true;
                     GameManagerUI.AttackPhase = true;
+                    endTurnButton.GetComponentInChildren<TMP_Text>().text = "End Turn!";
                     endTurnButton.interactable = true;
                 }
             }
@@ -218,7 +220,8 @@ namespace UI {
                 if (_firstTurn)
                     _firstTurn = false;
                 _strategicMove = false;
-                _isTurnInitialized = false;
+                StartCoroutine(WaitForTurnToEnd());
+                Debug.Log("IsTurnInitialized: " + _isTurnInitialized + "; MyTurn: " + Player.Instance.IsMyTurn);
                 DeselectState();
                 gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
                 RefreshTerritories();
@@ -260,107 +263,24 @@ namespace UI {
                     escMenu.SetActive(true);
             }
         }
-
-        //Funzione che aggiorna i colori degli stati e le bandierine
-        public void RefreshTerritories() {
-            foreach (var territory in GameManager.Instance.AllTerritories) {
-                GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
-                if (terr is not null) {
-                    string color = GameManager.Instance.GetPlayerColor(territory.player_id);
-                    terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 50);
-                    terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 50);
-
-                    //Distruggo tutte le precedenti bandierine
-                    foreach (Transform child in terr.GetComponent<Transform>()) {
-                        Destroy(child.gameObject);
-                    }
-
-                    PlaceFlags(terr.GetComponent<PolygonCollider2D>(), territory);
-                }
-            }
-        }
-
-        //Posiziona le bandierine negli stati
-        public void PlaceFlags(PolygonCollider2D polygonCollider, Territory territory) {
-            int numFlags = Mathf.Min(territory.num_tanks / 10, 3); // Calcola il numero di bandierine (massimo 3)
-            Vector2[] flagPositions = CalculateFlagPositions(polygonCollider, numFlags);
-
-            for (int i = 0; i < numFlags; i++) {
-                GameObject flag = Instantiate(tenArmyFlag, polygonCollider.transform);
-                flag.GetComponent<SpriteRenderer>().sprite = LoadSprite("Army/TenArmy" +
-                                                                        GameManager.Instance.GetPlayerColor(
-                                                                            territory.player_id));
-                flag.transform.localScale = new Vector3(0.15f, 0.15f, flag.transform.localScale.z);
-                flag.transform.position = flagPositions[i];
-                flag.transform.position = new Vector3(flag.transform.position.x, flag.transform.position.y,
-                    polygonCollider.transform.position.z);
-            }
-        }
-
-        //Calcola le posizioni delle bandierine
-        private Vector2[] CalculateFlagPositions(PolygonCollider2D polygonCollider, int numFlags) {
-            Vector2 center = CalculatePolygonCenter(polygonCollider);
-            Vector2[] positions = new Vector2[numFlags];
-
-            float angleStep = 360f / numFlags;
-            for (int i = 0; i < numFlags; i++) {
-                float angle = i * angleStep * Mathf.Deg2Rad;
-                Vector2 offset =
-                    new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) *
-                    0.5f; // Offset per posizionare le bandierine attorno al centro
-                positions[i] = center + offset;
-                positions[i] = polygonCollider.transform.TransformPoint(positions[i]);
-            }
-
-            return positions;
-        }
-
-        //Calcola il centro dello stato basandosi sul PolygonCollider2D
-        private Vector2 CalculatePolygonCenter(PolygonCollider2D polygonCollider) {
-            Vector2[] points = polygonCollider.points;
-            Vector2 sum = Vector2.zero;
-
-            foreach (Vector2 point in points) {
-                sum += point;
-            }
-
-            return sum / points.Length;
-        }
-
-        public Sprite LoadSprite(string spriteName) {
-            return Resources.Load<Sprite>(spriteName);
-        }
-
-        //Attiva i territori degli altri giocatori
-        public void ActivateOtherPlayersTerritories() {
-            foreach (var territory in GameManager.Instance.AllTerritories) {
-                if (!territory.player_id.Equals(Player.Instance.PlayerId)) {
-                    GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
-                    if (terr is not null) {
-                        terr.GetComponent<PolygonCollider2D>().enabled = true;
-                        string color = GameManager.Instance.GetPlayerColor(territory.player_id);
-                        terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 50);
-                        terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 50);
-                    }
-                }
-            }
-        }
-
+        
         //Setta le impostazioni iniziali del turno
         private void StartTurn()
         {
             Debug.Log("StartTurn Game phase; MyTurn: " + Player.Instance.IsMyTurn);
             RefreshTerritories();
             _isTurnInitialized = true;
-            if (_firstTurn)
+            if (_firstTurn) {
                 _attackPhase = true;
+                GameManagerUI.AttackPhase = true; // Per barra dx
+            }
             else {
                 _reinforcePhase = true;
                 endTurnButton.GetComponentInChildren<TMP_Text>().text = "Next Phase!";
             }
         }
-
-        public void SelectState(TerritoryHandlerUI newTerritory) {
+        
+         public void SelectState(TerritoryHandlerUI newTerritory) {
             //Info stato
             gameManager.GetComponent<GameManagerUI>()
                 .ShowTerritoryInfo(TerritoryInformationsAllPlayers(newTerritory.gameObject.name));
@@ -426,6 +346,91 @@ namespace UI {
             }
         }
 
+        //Funzione che aggiorna i colori degli stati e le bandierine
+        public void RefreshTerritories() {
+            foreach (var territory in GameManager.Instance.AllTerritories) {
+                GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
+                if (terr is not null) {
+                    string color = GameManager.Instance.GetPlayerColor(territory.player_id);
+                    terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 50);
+                    terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 50);
+
+                    //Distruggo tutte le precedenti bandierine
+                    foreach (Transform child in terr.GetComponent<Transform>()) {
+                        Destroy(child.gameObject);
+                    }
+
+                    PlaceFlags(terr.GetComponent<PolygonCollider2D>(), territory);
+                }
+            }
+        }
+
+        //Posiziona le bandierine negli stati
+        public void PlaceFlags(PolygonCollider2D polygonCollider, Territory territory) {
+            int numFlags = Mathf.Min(territory.num_tanks / 10, 3); // Calcola il numero di bandierine (massimo 3)
+            Vector2[] flagPositions = CalculateFlagPositions(polygonCollider, numFlags);
+
+            for (int i = 0; i < numFlags; i++) {
+                GameObject flag = Instantiate(tenArmyFlag, polygonCollider.transform);
+                flag.GetComponent<SpriteRenderer>().sprite = LoadSprite("Army/TenArmy" +
+                                                                        GameManager.Instance.GetPlayerColor(
+                                                                            territory.player_id));
+                flag.transform.localScale = new Vector3(0.15f, 0.15f, flag.transform.localScale.z);
+                flag.transform.position = flagPositions[i];
+                flag.transform.position = new Vector3(flag.transform.position.x, flag.transform.position.y,
+                    polygonCollider.transform.position.z);
+            }
+        }
+        
+        public Sprite LoadSprite(string spriteName) {
+            return Resources.Load<Sprite>(spriteName);
+        }
+
+        //Calcola le posizioni delle bandierine
+        private Vector2[] CalculateFlagPositions(PolygonCollider2D polygonCollider, int numFlags) {
+            Vector2 center = CalculatePolygonCenter(polygonCollider);
+            Vector2[] positions = new Vector2[numFlags];
+
+            float angleStep = 360f / numFlags;
+            for (int i = 0; i < numFlags; i++) {
+                float angle = i * angleStep * Mathf.Deg2Rad;
+                Vector2 offset =
+                    new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) *
+                    0.5f; // Offset per posizionare le bandierine attorno al centro
+                positions[i] = center + offset;
+                positions[i] = polygonCollider.transform.TransformPoint(positions[i]);
+            }
+
+            return positions;
+        }
+
+        //Calcola il centro dello stato basandosi sul PolygonCollider2D
+        private Vector2 CalculatePolygonCenter(PolygonCollider2D polygonCollider) {
+            Vector2[] points = polygonCollider.points;
+            Vector2 sum = Vector2.zero;
+
+            foreach (Vector2 point in points) {
+                sum += point;
+            }
+
+            return sum / points.Length;
+        }
+
+        //Attiva i territori degli altri giocatori
+        public void ActivateOtherPlayersTerritories() {
+            foreach (var territory in GameManager.Instance.AllTerritories) {
+                if (!territory.player_id.Equals(Player.Instance.PlayerId)) {
+                    GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
+                    if (terr is not null) {
+                        terr.GetComponent<PolygonCollider2D>().enabled = true;
+                        string color = GameManager.Instance.GetPlayerColor(territory.player_id);
+                        terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 50);
+                        terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 50);
+                    }
+                }
+            }
+        }
+
         //Funzione che ritorna le informazioni di uno stato del giocatore
         private Territory TerritoryInformationsPlayer(string id) {
             return Player.Instance.Territories.Find(terr => terr.id.Equals(id));
@@ -456,6 +461,23 @@ namespace UI {
                 _enemyTerritory.Deselect();
                 _enemyTerritory = null;
             }
+        }
+        
+        private IEnumerator WaitForTurnToEnd() {
+            // Attendi finché Player.Instance.IsMyTurn è true
+            while (Player.Instance.IsMyTurn)
+            {
+                yield return null; // Attendi il frame successivo
+            }
+
+            // Esegui il codice per il cambio di turno
+            OnTurnEnded();
+        }
+
+        private void OnTurnEnded() {
+            // Codice da eseguire quando il turno è terminato
+            _isTurnInitialized = false;
+            Debug.Log("IsTurnInitialized: " + _isTurnInitialized + "; MyTurn: " + Player.Instance.IsMyTurn);
         }
     }
 }
