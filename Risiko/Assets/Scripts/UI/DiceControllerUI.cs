@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Text.RegularExpressions;
 using businesslogic;
 using TMPro;
 using UnityEngine;
@@ -25,18 +26,14 @@ namespace UI
             if (GameManager.Instance.GetExtractedNumber() != 0 && _pressedButton) {
                 diceAnimator.gameObject.SetActive(false);
                 diceAnimator.SetBool("Roll", false);
-                string gameOrder = "1 - ";
-                for (int i = 1, n = 2; i < GameManager.Instance.getGame_order().Length - 1; i++) {
-                    if(GameManager.Instance.getGame_order()[i] == ' ') 
-                        gameOrder += " " + n++ + " - ";
-                    else 
-                        gameOrder += GameManager.Instance.getGame_order()[i];
-                }
+                
+                string gameOrder = GameManager.Instance.getGame_order();
+                gameOrder = gameOrder.Substring(0, gameOrder.Length - 2);
+                
                 diceResults.text = "Extracted number: " + GameManager.Instance.GetExtractedNumber() + "\n Game order: " 
                                    + gameOrder;
                 diceResults.gameObject.SetActive(true);
-                StartCoroutine(WaitAndLoadScene(1f)); //Delay di qualcosa o un tasto per passare di scena ////ERA 8
-                // GameManager.LoadScene("Main") -> scena della mappa
+                StartCoroutine(WaitAndLoadScene(5f)); //Delay di 5 secondi per passare di scena
             }
         }
 
