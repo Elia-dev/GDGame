@@ -1,220 +1,186 @@
-import threading
-import Territory
+import random
+import os
+import heapq
+import xml.etree.ElementTree as ET
+from Card import Card
+from Territory import Territory
+import secrets
+import numpy as np
 
 
-class GameManager:
-    _instance = None
-    _lock = threading.Lock()
+def read_objects_cards():
+    tree = ET.parse('assets/config.xml')
+    root = tree.getroot()
+    cards = []
 
-    def __init__(self):
-        if GameManager._instance is not None:
-            raise Exception("This class is a singleton!")
+    for card in root.findall('objects/object'):
+        card_id = card.get('id')
+        image = card.find('image').text
+        function = card.find('function').text
+        description = card.find('description').text
 
-        self.enemy_attacker_territory = None
-        self.my_territory_under_attack = None
-        self._players_dict = {}
-        self._colors_dict = {}
-        self.all_territories = []  # List of all territories in the game
-        self.players_name = []
-        self.available_colors = []
-        self._game_order = ""
-        self._extracted_number = 0
-        self._game_order_extracted_numbers = ""
-        self._game_waiting_to_start = True
-        self._game_running = True
-        self._preparation_phase = True
-        self._game_phase = False
-        self._im_under_attack = False
-        self._id_playing_player = ""
-        self._enemy_attacker_army_num = 0
-        self._my_army_num_to_defend = 0
-        self._lobby_id = ""
-        self._im_attacking = False
-        self.extracted_enemy_numbers = None
-        self.extracted_my_numbers = None
-        self.enemy_army_num = 0
-        self.my_army_num = 0
-        self.force_update_after_attack = False
-        self.shortest_paths = []
+        card = Card(card_id, image, function, description)
+        cards.append(card)
+    return cards
 
-    @classmethod
-    def get_instance(cls):
-        with cls._lock:
-            if cls._instance is None:
-                cls._instance = cls()
-            return cls._instance
 
-    def get_my_army_num_to_defend(self):
-        return self._my_army_num_to_defend
+def read_territories_cards():
+    tree = ET.parse('assets/config.xml')
+    root = tree.getroot()
+    cards = []
 
-    def set_my_army_num_to_defend(self, num_army):
-        self._my_army_num_to_defend = num_army
+    for card in root.findall('.//territory'):
+        card_id = card.get('id')
+        name = card.find('name').text
+        image = card.find('image').text
+        function = card.find('function').text
+        description = card.find('description').text
+        continent = card.find('continent').text
+        node = int(card.find('node').text)
 
-    def reset_my_army_num_to_defend(self):
-        self._my_army_num_to_defend = 0
+        card = Territory(card_id, image, function, description, name, continent, node, None, 1)
+        cards.append(card)
+    return cards
 
-    def get_enemy_attacker_army_num(self):
-        return self._enemy_attacker_army_num
 
-    def set_enemy_attacker_army_num(self, num_army):
-        self._enemy_attacker_army_num = num_army
+def generate_game_id():
+    return ' '.join([str(random.randint(0, 999)).zfill(3) for _ in range(2)])
 
-    def reset_enemy_attacker_army_num(self):
-        self._enemy_attacker_army_num = 0
 
-    def add_player_color(self, player_id, color):
-        if player_id not in self._colors_dict:
-            self._colors_dict[player_id] = color
-            print(f"Color added: ID = {player_id}, Color = {color}")
-        else:
-            print(f"Color with ID = {player_id} already exists.")
+def generate_player_id():
+    return secrets.token_hex(16)
 
-    def remove_player_color(self, player_id):
-        if player_id in self._colors_dict:
-            del self._colors_dict[player_id]
-            print(f"Color with ID = {player_id} removed.")
-        else:
-            print(f"Color with ID = {player_id} does not exist.")
 
-    def get_player_color(self, player_id):
-        color = self._colors_dict.get(player_id)
-        if color:
-            print(f"Color found: ID = {player_id}, Color = {color}")
-            return color
-        print(f"Color with ID = {player_id} not found.")
-        return "Player not found"
+def get_adj_matrix(path):
+    return np.load(path)
 
-    def get_id_playing_player(self):
-        return self._id_playing_player
 
-    def set_id_playing_player(self, player):
-        self._id_playing_player = player
+def get_neighbors_node_of(territory_node, file_path):
+    adj_matrix = get_adj_matrix(file_path)
+    neighbors = []
+    row = adj_matrix[territory_node]
+    for i, node in enumerate(row):
+        if node == 1:
+            neighbors.append(i)
+    return neighbors
 
-    def reset_id_playing_player(self):
-        self._id_playing_player = ""
 
-    def get_enemy_name_by_id(self, player_id):
-        name = self._players_dict.get(player_id)
-        if name:
-            return name
-        return "This player doesn't exist"
+def get_territory_from_node(node, all_territories):
+    for territory in all_territories:
+        if node == territory.node:
+            return territory
+    return None
 
-    def add_player_to_lobby_dict(self, player_id, name):
-        if player_id not in self._players_dict:
-            self._players_dict[player_id] = name
-            print(f"Player added: ID = {player_id}, Name = {name}")
-        else:
-            print(f"Player with ID = {player_id} already exists.")
 
-    def remove_player_from_lobby_dict(self, player_id):
-        if player_id in self._players_dict:
-            del self._players_dict[player_id]
-            print(f"Player with ID = {player_id} removed.")
-        else:
-            print(f"Player with ID = {player_id} does not exist.")
+def get_neighbors_of(territory, all_terr):
+    territories = []
+    nodes = get_neighbors_node_of(territory.node, os.path.join(os.getcwd(), 'assets/adj_matrix.npy'))
+    for node in nodes:
+        territories.append(get_territory_from_node(node, all_terr))
+    return territories
 
-    def get_my_territory_under_attack(self):
-        if self._my_territory_under_attack is None:
-            self._my_territory_under_attack = Territory.empty_territory()
-        return self._my_territory_under_attack
 
-    def delete_my_territory_under_attack(self):
-        self._my_territory_under_attack = None
+def get_isolate_territory(my_territories, all_territories):
+    isolate_territories = []
+    for terr in my_territories:
+        is_isolate = True
+        neighbors = get_neighbors_of(terr, all_territories)
+        for neighbor in neighbors:
+            if neighbor not in my_territories:
+                is_isolate = False
+        if is_isolate:
+            isolate_territories.append(terr)
+    return isolate_territories
 
-    def get_enemy_attacker_territory(self):
-        if self._enemy_attacker_territory is None:
-            self._enemy_attacker_territory = Territory.empty_territory()
-        return self._enemy_attacker_territory
 
-    def delete_attacker_territory(self):
-        self._enemy_attacker_territory = None
+def get_friends_neighbors(territory, my_territories, all_terr):
+    friends = []
+    neighbors = get_neighbors_of(territory, all_terr)
+    for neighbor in neighbors:
+        for my_terr in my_territories:
+            if neighbor.id == my_terr.id:
+                friends.append(neighbor)
+    return friends
 
-    def set_im_under_attack(self, value):
-        self._im_under_attack = value
 
-    def get_im_under_attack(self):
-        return self._im_under_attack
+def get_enemy_neighbors_of(territory, my_terrs, all_terrs):
+    neighbors = get_neighbors_of(territory, all_terrs)
+    enemy = list(
+        filter(lambda neighbor: neighbor not in my_terrs, neighbors)
+    )
+    return enemy
 
-    def reset_game_manager(self):
-        GameManager._instance = None
 
-    def get_preparation_phase(self):
-        return self._preparation_phase
+def get_all_enemies_neighbors_of(my_terrs, all_terrs):
+    enemy = []
+    neighbors = []
+    for my_terr in my_terrs:
+        neighbors += get_neighbors_of(my_terr, all_terrs)
+    for neighbor in neighbors:
+        for my_terr in my_terrs:
+            if neighbor.id != my_terr.id:
+                enemy.append(neighbor)
+    return enemy
 
-    def set_preparation_phase(self, value):
-        self._preparation_phase = value
 
-    def get_game_phase(self):
-        return self._game_phase
+def update_adjacent_matrix(players, adj_matrix):
+    for player in players:
+        for territory in player.territories:
+            node = territory.node
+            neighbors_node = get_neighbors_node_of(node, os.path.join(os.getcwd(), 'assets/adj_matrix.npy'))
+            for neighbor in neighbors_node:
+                adj_matrix[neighbor][node] = territory.num_tanks
+    print(f'Adjacent matrix updated')
+    return adj_matrix
 
-    def set_game_phase(self, value):
-        self._game_phase = value
 
-    def get_extracted_number(self):
-        return self._extracted_number
+def get_shortest_path(from_node, to_node, adj_matrix):
+    # Number of nodes in the graph
+    num_nodes = adj_matrix.shape[0]
 
-    def set_extracted_number(self, value):
-        self._extracted_number = value
+    # Distance array - Initialize all distances to infinity
+    distances = [float('inf')] * num_nodes
+    # Previous node array - To reconstruct the path
+    previous_nodes = [None] * num_nodes
 
-    def get_game_order_extracted_numbers(self):
-        return self._game_order_extracted_numbers
+    # Distance to the start node is 0
+    distances[from_node] = 0
 
-    def set_game_order_extracted_numbers(self, value):
-        self._game_order_extracted_numbers = value
+    # Priority queue to explore the nodes with the smallest distance
+    priority_queue = [(0, from_node)]
 
-    def get_game_order(self):
-        return self._game_order
+    while priority_queue:
+        # Get the node with the smallest distance
+        current_distance, current_node = heapq.heappop(priority_queue)
 
-    def set_game_order(self, value):
-        self._game_order = value
+        # If we have already reached the target node, we can stop
+        if current_node == to_node:
+            break
 
-    def get_lobby_id(self):
-        return self._lobby_id
+        # Explore neighbors
+        for neighbor in range(num_nodes):
+            if adj_matrix[current_node][neighbor] != 0:
+                distance = adj_matrix[current_node][neighbor]
+                new_distance = current_distance + distance
 
-    def set_lobby_id(self, lobby_id):
-        self._lobby_id = lobby_id
+                # If a shorter path is found
+                if new_distance < distances[neighbor]:
+                    distances[neighbor] = new_distance
+                    previous_nodes[neighbor] = current_node
+                    heapq.heappush(priority_queue, (new_distance, neighbor))
 
-    def reset_players_name(self):
-        self.players_name.clear()
+    # Reconstruct the path
+    path = []
+    current_node = to_node
+    while current_node is not None:
+        path.append(current_node)
+        current_node = previous_nodes[current_node]
 
-    def add_player_name(self, name):
-        self.players_name.append(name)
+    # If the path is not empty and the last node is the start node, return the path
+    if path[-1] == from_node:
+        path.reverse()
+        return path
+    else:
+        # If there is no path from from_node to to_node
+        return []
 
-    def get_players_number(self):
-        return len(self.players_name)
-
-    def add_available_color(self, color):
-        self.available_colors.append(color)
-
-    def get_available_colors(self):
-        return self.available_colors
-
-    def get_game_waiting_to_start(self):
-        return self._game_waiting_to_start
-
-    def set_game_waiting_to_start(self, value):
-        self._game_waiting_to_start = value
-
-    def get_game_running(self):
-        return self._game_running
-
-    def set_game_running(self, value):
-        self._game_running = value
-
-    def set_im_attacking(self, value):
-        self._im_attacking = value
-
-    def get_im_attacking(self):
-        return self._im_attacking
-
-    def reset_enemy_extracted_numbers(self):
-        self.extracted_enemy_numbers = None
-
-    def reset_my_extracted_numbers(self):
-        self.extracted_my_numbers = None
-
-    def reset_enemy_army_num(self):
-        self.enemy_army_num = 0
-
-    def reset_my_army_num(self):
-        self.my_army_num = 0
