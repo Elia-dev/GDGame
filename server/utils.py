@@ -74,7 +74,7 @@ def get_territory_from_node(node, all_territories):
 
 def get_neighbors_of(territory, all_terr):
     territories = []
-    nodes = get_neighbors_node_of(territory.node, os.path.join(os.getcwd(), os.pardir, 'assets/adj_matrix.npy'))
+    nodes = get_neighbors_node_of(territory.node, os.path.join(os.getcwd(), 'assets/adj_matrix.npy'))
     for node in nodes:
         territories.append(get_territory_from_node(node, all_terr))
     return territories
@@ -93,11 +93,11 @@ def get_isolate_territory(my_territories, all_territories):
     return isolate_territories
 
 
-def get_friends_neighbors(territory, my_terr, all_terr):
+def get_friends_neighbors(territory, my_territories, all_terr):
     friends = []
     neighbors = get_neighbors_of(territory, all_terr)
     for neighbor in neighbors:
-        for my_terr in my_terr:
+        for my_terr in my_territories:
             if neighbor.id == my_terr.id:
                 friends.append(neighbor)
     return friends

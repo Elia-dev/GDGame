@@ -10,7 +10,7 @@ import subprocess
 import Card
 import Territory
 import utils
-from bot.main_bot_controller import main
+from main_bot_controller import main
 
 
 class Game:
