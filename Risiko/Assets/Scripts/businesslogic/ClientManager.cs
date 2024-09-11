@@ -53,6 +53,7 @@ namespace businesslogic
             "ws://150.217.51.105:12345", // 105
             "ws://93.57.245.63:12345", // Elia
             "ws://101.58.64.113:12345", // Filo
+            "ws://localhost:12345", // Franci
             "ws://localhost:12345"
         };
 
