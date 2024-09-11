@@ -104,25 +104,6 @@ namespace UI {
             else {
                 animationDone = true;
             }
-            
-            //CONTROLLI DA TOGLIERE SE L'ERRORE NON SI RIPRESENTA
-            if (clickHandler == null) {
-                Debug.LogError("clickHandler is null");
-                return;
-            }
-        
-            var territoriesManager = clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>();
-            if (territoriesManager == null) {
-                Debug.LogError("TerritoriesManagerDistrPhaseUI component not found on clickHandler");
-                return;
-            }
-
-            try {
-                territoriesManager.ActivateTerritories();
-            }
-            catch (Exception ex) {
-                Debug.LogError("Exception in ActivateTerritories: " + ex.Message);
-            }
 
             if (animationDone && Input.GetMouseButtonDown(0)) {
                 territoryCardsCanvas.SetActive(false);

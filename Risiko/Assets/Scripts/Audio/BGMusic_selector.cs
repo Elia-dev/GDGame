@@ -11,24 +11,22 @@ namespace Audio {
         public AudioSource winTrack;
         public AudioSource loseTrack;
         public AudioSource easterEggTrack;
-        private void Awake()
-        {
-            if (Instance == null)
-            {
+
+        private void Awake() {
+            if (Instance == null) {
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
             }
         }
 
-        public void SetVolume(float volume)
-        {
+        public void SetVolume(float volume) {
             gameTrack.volume = volume;
             menuTrack.volume = volume;
             winTrack.volume = volume;
             loseTrack.volume = volume;
             easterEggTrack.volume = volume;
         }
-       
+
         void Start() {
             menuTrack.Play();
             gameTrack.Stop();
@@ -39,45 +37,37 @@ namespace Audio {
 
         void Update() {
             if (SceneManager.GetActiveScene().name.Equals("MainMenu") && !menuTrack.isPlaying) {
-                Debug.Log("Menu Pirati caraibi");
                 gameTrack.Stop();
                 winTrack.Stop();
                 loseTrack.Stop();
                 menuTrack.Play();
                 easterEggTrack.Stop();
             } else if (SceneManager.GetActiveScene().name.Equals("Main") && !gameTrack.isPlaying && !winTrack.isPlaying &&
-                     !loseTrack.isPlaying && !easterEggTrack.isPlaying) {
-                Debug.Log("Gioco Mia si da foho");
+                      !loseTrack.isPlaying && !easterEggTrack.isPlaying) {
                 winTrack.Stop();
                 loseTrack.Stop();
                 menuTrack.Stop();
                 gameTrack.Play();
                 easterEggTrack.Stop();
-            }
-            else if (SceneManager.GetActiveScene().name.Equals("Main") &&
-                     !GameManager.Instance.getWinnerGameId().Equals("")) {
-                if (GameManager.Instance.getWinnerGameId().Equals(Player.Instance.PlayerId) && !winTrack.isPlaying && !easterEggTrack.isPlaying) {
-                    Debug.Log("Hai vinto scemo");
+            } else if (SceneManager.GetActiveScene().name.Equals("Main") &&
+                      !GameManager.Instance.getWinnerGameId().Equals("")) {
+                if (GameManager.Instance.getWinnerGameId().Equals(Player.Instance.PlayerId) && !winTrack.isPlaying &&
+                    !easterEggTrack.isPlaying) {
                     loseTrack.Stop();
                     menuTrack.Stop();
                     gameTrack.Stop();
                     SFX_selector.Instance.StopAllSFX();
-                    if (Player.Instance.ArmyColor.Equals("red")) // Faccio suonare l'inno dell'URSS se il rosso vince
-                    {
-                        Debug.Log("Lmao ha vinto l'URSS");
+                    // Faccio suonare l'inno dell'URSS se il rosso vince
+                    if (Player.Instance.ArmyColor.Equals("red")) {
                         easterEggTrack.Play();
                         winTrack.Stop();
                     }
-                    else
-                    {
+                    else {
                         easterEggTrack.Stop();
                         winTrack.Play();
                     }
-                    
-                }
-                else if (!GameManager.Instance.getWinnerGameId().Equals(Player.Instance.PlayerId) &&
-                         !loseTrack.isPlaying) {
-                    Debug.Log("Hai perso coglione");
+                } else if (!GameManager.Instance.getWinnerGameId().Equals(Player.Instance.PlayerId) &&
+                          !loseTrack.isPlaying) {
                     menuTrack.Stop();
                     gameTrack.Stop();
                     winTrack.Stop();

@@ -1,20 +1,21 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace UI
 {
     public class ExitMenuUI : MonoBehaviour
     {
-        [SerializeField] private Button StayButton;
-        [SerializeField] private Button QuitButton;
+        [SerializeField] private Button stayButton;
+        [SerializeField] private Button quitButton;
 
         private void Awake() {
-            StayButton.onClick.AddListener(() => {
+            stayButton.onClick.AddListener(() => {
                 SceneManager.LoadScene("MainMenu");
             });
         
-            QuitButton.onClick.AddListener(Application.Quit);
+            quitButton.onClick.AddListener(Application.Quit);
         }
 
     }

@@ -90,6 +90,7 @@ namespace UI {
                 popUpPlayerLeftGame.SetActive(true);
                 popUpPlayerLeftGame.GetComponent<DisplayMessageOnPopUpUI>()
                     .SetErrorText("Player left the game\nyou will be redirected to the main menu...");
+                Debug.Log("Game running = false (TerritoriesManagerGamePhaseUI)");
             }
 
             if (!GameManager.Instance.getKillerId().Equals("") && _iAmAlive) {

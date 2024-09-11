@@ -758,8 +758,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f78095a91124e49fea1fa9227c3e7bfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StayButton: {fileID: 45898415}
-  QuitButton: {fileID: 146383215}
+  stayButton: {fileID: 45898415}
+  quitButton: {fileID: 146383215}
 --- !u!1 &777184941
 GameObject:
   m_ObjectHideFlags: 0
