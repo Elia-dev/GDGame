@@ -82,7 +82,11 @@ namespace Audio {
         private IEnumerator FadeOutBackgroundMusic(AudioSource oldSound, AudioSource newSound) {
             float duration = 0.2f;
             float targetVolume = 0.05f;
-            float startVolume = PlayerPrefs.GetFloat("musicVolume");//AudioListener.volume;
+            float startVolume = PlayerPrefs.GetFloat("musicVolume");
+            
+            if(startVolume <= targetVolume) {
+                targetVolume = 0;
+            }
 
             float time = 0;
 
@@ -104,6 +108,8 @@ namespace Audio {
             float duration = 1.2f;
             float targetVolume = PlayerPrefs.GetFloat("musicVolume");
             float startVolume = newSound.volume;
+            
+            
 
             float time = 0;
             while (time < duration) {
