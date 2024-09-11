@@ -28060,6 +28060,7 @@ MonoBehaviour:
   minusButton: {fileID: 801302892}
   gameManager: {fileID: 64225033}
   escMenu: {fileID: 1601001035}
+  popUpPlayerLeftGame: {fileID: 623515486}
 --- !u!114 &2029590058
 MonoBehaviour:
   m_ObjectHideFlags: 0

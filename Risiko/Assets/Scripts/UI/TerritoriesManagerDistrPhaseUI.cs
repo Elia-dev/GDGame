@@ -21,10 +21,12 @@ namespace UI {
         [SerializeField] private Button minusButton;
         [SerializeField] private GameObject gameManager;
         [SerializeField] private GameObject escMenu;
+        [SerializeField] private GameObject popUpPlayerLeftGame;
 
         private SelectedTerritories _selectedTerritories;
         private bool _isTurnInitialized = false; // Variabile per tracciare se il turno è stato inizializzato
         private int _armyNumber;
+        private static bool _iAmAlive = true;
 
         public int ArmyNumber => _armyNumber;
 
@@ -191,6 +193,21 @@ namespace UI {
         }
 
         private void Update() {
+            if (!GameManager.Instance.GetGameRunning()) {
+                popUpPlayerLeftGame.SetActive(true);
+                popUpPlayerLeftGame.GetComponent<DisplayMessageOnPopUpUI>()
+                    .SetErrorText("Player left the game\nyou will be redirected to the main menu...");
+                Debug.Log("Game running = false (TerritoriesManagerGamePhaseUI)");
+            }
+
+            if (!GameManager.Instance.getKillerId().Equals("") && _iAmAlive) {
+                _iAmAlive = false;
+                popUpPlayerLeftGame.SetActive(true);
+                popUpPlayerLeftGame.GetComponent<DisplayMessageOnPopUpUI>()
+                    .SetErrorText("You have been destroyed by "
+                                  + GameManager.Instance.getEnemyNameById(GameManager.Instance.getKillerId())
+                                  + "!\n<i>Now you will be a spectator of a world in which you no longer have influence...</i>");
+            }
             if (Player.Instance.IsMyTurn && !_isTurnInitialized) {
                 StartTurn();
             }
