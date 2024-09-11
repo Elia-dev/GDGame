@@ -18,7 +18,7 @@ class ClientManager:
 
     async def start_client(self, ip):
         print("Try to connect...")
-        async with websockets.connect(f'ws://{ip}:12345') as websocket:
+        async with websockets.connect(f'ws://{ip}:12345', timeout=30) as websocket:
             try:
                 print("debug")
                 self._connected = True
