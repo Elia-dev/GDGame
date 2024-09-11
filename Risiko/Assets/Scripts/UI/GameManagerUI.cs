@@ -56,6 +56,7 @@ namespace UI
             if (!GameManager.Instance.GetGameRunning() || !GameManager.Instance.getWinnerGameId().Equals("") || _thisIsTheEnd) {
                 Debug.Log("Game running = false (GameManagerUI)");
                 gameObject.SetActive(false);
+                return;
             }
             
             allInfo.text = "";
