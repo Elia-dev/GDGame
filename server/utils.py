@@ -83,12 +83,8 @@ def get_neighbors_of(territory, all_terr):
 def get_isolate_territory(my_territories, all_territories):
     isolate_territories = []
     for terr in my_territories:
-        is_isolate = True
-        neighbors = get_neighbors_of(terr, all_territories)
-        for neighbor in neighbors:
-            if neighbor not in my_territories:
-                is_isolate = False
-        if is_isolate:
+        enemies = get_enemy_neighbors_of(terr, my_territories, all_territories)
+        if not enemies:
             isolate_territories.append(terr)
     return isolate_territories
 
