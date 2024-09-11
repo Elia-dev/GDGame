@@ -82,6 +82,7 @@ namespace businesslogic
         {
             List<Territory> territories = new List<Territory>();
             List<int> nodes = GetNeighborsNodeOf(territory.node);
+            Debug.Log(nodes.ToString());
             foreach (var node in nodes)
             {
                 Debug.Log(GetTerritoryFromNode(node).name);
