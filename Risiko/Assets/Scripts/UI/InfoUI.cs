@@ -2,7 +2,6 @@ using System.Linq;
 using businesslogic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace UI {
@@ -18,15 +17,11 @@ namespace UI {
             foreach (var playerId in GameManager.Instance.GetPlayersId()) {
                 GameObject newPlayer = Instantiate(infoPlayer, contentFather);
                 newPlayer.transform.SetParent(contentFather);
-                
-                // Attiva i componenti necessari
                 newPlayer.transform.Find("PlayerName").GetComponent<TMP_Text>().enabled = true;
                 newPlayer.transform.Find("PlayerInfo").GetComponent<TMP_Text>().enabled = true;
                 newPlayer.transform.Find("PlayerInfo").GetComponent<ContentSizeFitter>().enabled = true;
-                
                 newPlayer.transform.Find("PlayerName").GetComponent<TMP_Text>().color = Utils.ColorCode(GameManager.Instance.GetPlayerColor(playerId), 255);
                 newPlayer.transform.Find("PlayerName").GetComponent<TMP_Text>().text = GameManager.Instance.GetEnemyNameById(playerId);
-                
                 if(playerId.Equals(Player.Instance.PlayerId))
                     newPlayer.transform.Find("PlayerName").GetComponent<TMP_Text>().text += " (You)";
 

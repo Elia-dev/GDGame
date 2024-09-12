@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using businesslogic;
 using TMPro;
@@ -25,7 +24,6 @@ namespace UI
             });
 
             joinLobbyButton.onClick.AddListener(() => { JoinLobby(); });
-
             browseLobbiesButton.onClick.AddListener(() => SceneManager.LoadScene("JoinAvailableGames"));
         }
 
@@ -38,12 +36,11 @@ namespace UI
             _lobbyID = lobbyIdInputField.text;
             GameManager.Instance.SetLobbyId(_lobbyID);
         
-            // Se il campo è vuoto, mostra un errore
             if (_lobbyID.Equals("")) {
                 popUpIdLobbyError.SetActive(true);
                 GameObject.Find("PopUpContainer").GetComponent<DisplayMessageOnPopUpUI>()
                     .SetErrorText("Insert a lobby ID");
-            } else { // Altrimenti, prova a connettersi alla lobby
+            } else { 
                 ClientManager.Instance.JoinLobbyAsClient(_lobbyID);
                 popUpIdLobbyError.SetActive(true);
                 GameObject.Find("PopUpContainer").GetComponent<DisplayMessageOnPopUpUI>()
@@ -51,25 +48,19 @@ namespace UI
                 StartCoroutine(AttemptJoinLobby());
             }
         }
-        // Coroutine che prova a connettersi alla lobby
         private IEnumerator AttemptJoinLobby() {        
             float timerConnection = 5.0f;
-
             while (timerConnection > 0) {
-                timerConnection -= Time.deltaTime; //DA COPIARE DI LA
+                timerConnection -= Time.deltaTime;
                 if (ClientManager.Instance.IsConnectedToLobby()) {
                     SceneManager.LoadScene("WaitingRoomClient");
-                    yield break; // Esci dalla coroutine se ci si connette alla lobby
+                    yield break; 
                 }
-
-                yield return null; // Aspetta il prossimo frame e continua la coroutine
+                yield return null; 
             }
-
-            // Se il timer scade e non ci si è connessi alla lobby, mostra un errore
             GameObject.Find("PopUpContainer").GetComponent<DisplayMessageOnPopUpUI>()
                 .SetErrorText("Unable to join the lobby.\nTry again");
         }
-
 
         private void Update() {
             if (Input.GetKeyDown(KeyCode.Return))

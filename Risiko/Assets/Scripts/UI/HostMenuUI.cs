@@ -15,7 +15,7 @@ namespace UI {
         [SerializeField] private Button addBotButton;
         [SerializeField] private Button removeBotButton;
 
-        private readonly float _delay = 1.0f; // Durata del ritardo in secondi
+        private readonly float _delay = 1.0f;
         private float _timer;
         private string _playerListFromServer;
 
@@ -24,7 +24,6 @@ namespace UI {
                 ClientManager.Instance.KillLobby();
                 Player.Instance.ResetPlayer();
                 GameManager.Instance.ResetGameManager();
-
                 SceneManager.LoadScene("GameMenu");
             });
 
@@ -44,7 +43,7 @@ namespace UI {
             updateButton.onClick.AddListener(() => { ClientManager.Instance.RequestNameUpdatePlayerList(); });
         }
 
-        void Start() {
+        private void Start() {
             _playerListFromServer = null;
             ClientManager.Instance.CreateLobbyAsHost();
             _timer = _delay;
@@ -54,23 +53,16 @@ namespace UI {
             lobbyID.text = GameManager.Instance.GetLobbyId();
 
             if (_timer > 0) {
-                _timer -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
+                _timer -= Time.deltaTime; 
             } else {
-                ClientManager.Instance
-                    .SendName(); // Da vedere, se si potesse fare soltanto la prima volta sarebbe meglio
+                ClientManager.Instance.SendName(); 
                 ClientManager.Instance.RequestNameUpdatePlayerList();
-
-                // Reset del timer
                 _timer = _delay;
-                Debug.Log("HOSTMENU - playerList:" + playerList.text);
             }
 
-            //Aggiornamento lista giocatori
             _playerListFromServer = string.Join(", ", GameManager.Instance.PlayersName);
             playerList.text = "Players: " + _playerListFromServer;
 
-
-            //Quando i giocatori saranno 3+
             if (GameManager.Instance.GetPlayersNumber() >= 2) {
                 runGameButton.interactable = true;
             } else {

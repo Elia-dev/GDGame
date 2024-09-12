@@ -1,7 +1,5 @@
-using System;
 using businesslogic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,46 +19,31 @@ namespace UI
         private static bool _distributionPhase = false;
         private static bool _reinforcePhase = false;
         private static bool _attackPhase = false;
-        private static bool _thisIsTheEnd = false;
 
-        public static bool ThisIsTheEnd {
-            get => _thisIsTheEnd;
-            set => _thisIsTheEnd = value;
-        }
+        public static bool ThisIsTheEnd { get; set; } = false;
 
         public static bool SettingGame {
-            get => _settingGame;
             set => _settingGame = value;
         }
     
         public static bool DistributionPhase {
-            get => _distributionPhase;
             set => _distributionPhase = value;
         }
 
         public static bool ReinforcePhase {
-            get => _reinforcePhase;
             set => _reinforcePhase = value;
         }
 
         public static bool AttackPhase {
-            get => _attackPhase;
             set => _attackPhase = value;
         }
 
-        void Start() {
-            Debug.Log(Player.Instance);
-            Debug.Log(Player.Instance.PlayerId);
-            Debug.Log(GameManager.Instance);
-            Debug.Log(GameManager.Instance.GetLobbyId());
-            Debug.Log(GameManager.Instance.GetPlayersId());
+        private void Start() {
             playerName.text = Player.Instance.Name;
         }
 
-        void Update() {
-            if (!GameManager.Instance.GetGameRunning() || !GameManager.Instance.GetWinnerGameId().Equals("") || _thisIsTheEnd) {
-                Debug.Log("Game running = false (GameManagerUI)");
-                //gameObject.SetActive(false);
+        private void Update() {
+            if (!GameManager.Instance.GetGameRunning() || !GameManager.Instance.GetWinnerGameId().Equals("") || ThisIsTheEnd) {
                 return;
             }
             
@@ -78,7 +61,6 @@ namespace UI
             if (!_settingGame) {
                 if(!_dimensionSetted) {
                     _dimensionSetted = true;
-                    //Impostazione dimensioni text
                     allInfo.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(
                         userSpace.GetComponent<RectTransform>().rect.width - 30,
                         allInfo.gameObject.GetComponent<RectTransform>().sizeDelta.y);
@@ -87,7 +69,6 @@ namespace UI
                         turn.gameObject.GetComponent<RectTransform>().sizeDelta.y);
                 }
                 circlePlayerColor.gameObject.SetActive(true);
-                //Colore giocaore
                 circlePlayerColor.GetComponent<Image>().color = Utils.ColorCode(Player.Instance.ArmyColor, 255);
                 allInfo.text += "\n<b>Objective</b>: " + Player.Instance.ObjectiveCard.description + "\n";
             }
@@ -111,7 +92,6 @@ namespace UI
         }
 
         public void ShowTerritoryInfo(Territory territory) {
-            //Sostituzione sigla continente con nome
             if (territory is not null) {
                 string continent = territory.continent;
                 switch (continent) {
@@ -144,7 +124,6 @@ namespace UI
             
             }
         }
-    
         public void HideTerritoryInfo() {
             _territoryInfo = "";
         }

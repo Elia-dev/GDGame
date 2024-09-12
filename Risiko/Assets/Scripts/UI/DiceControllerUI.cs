@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Text.RegularExpressions;
 using businesslogic;
 using TMPro;
 using UnityEngine;
@@ -10,13 +9,12 @@ namespace UI
 {
     public class DiceControllerUI : MonoBehaviour {
         [SerializeField] private Button diceButton;
-        [SerializeField] private Animator diceAnimator; // Riferimento all'Animator
+        [SerializeField] private Animator diceAnimator;
         [SerializeField] private TMP_Text diceResults;
         private bool _pressedButton = false;
 
         private void Awake() {
             diceButton.onClick.AddListener(() => {
-                // Inizio animazione dei dadi
                 diceAnimator.SetBool("Roll", true);
                 ThrowDice();
             });
@@ -33,25 +31,22 @@ namespace UI
                 diceResults.text = "Extracted number: " + GameManager.Instance.GetExtractedNumber() + "\n Game order: " 
                                    + gameOrder;
                 diceResults.gameObject.SetActive(true);
-                StartCoroutine(WaitAndLoadScene(5f)); //Delay di 5 secondi per passare di scena
+                StartCoroutine(WaitAndLoadScene(5f));
             }
         }
 
-        public void ThrowDice() {
+        private void ThrowDice() {
             diceButton.interactable = false;
             StartCoroutine(Wait(4f));
         }
 
-        IEnumerator Wait(float delay) {
+        private IEnumerator Wait(float delay) {
             yield return new WaitForSeconds(delay);
             _pressedButton = true;
         }
 
-        IEnumerator WaitAndLoadScene(float delay) {
-            // Aspetta il numero di secondi specificato
+        private IEnumerator WaitAndLoadScene(float delay) {
             yield return new WaitForSeconds(delay);
-
-            // Cambia scena
             SceneManager.LoadScene("Main");
         }
     }

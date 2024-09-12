@@ -29,7 +29,6 @@ namespace UI {
         }
 
         private void Update() {
-            //Se i dati riguardanti la vittoria sono arrivati li mostro
             if (!GameManager.Instance.GetWinnerBattleId().Equals("") && !_dataArrived) {
                 _dataArrived = true;
                 if (GameManager.Instance.GetWinnerBattleId().Equals(Player.Instance.PlayerId)) {
@@ -51,14 +50,12 @@ namespace UI {
                 popUpAttackTitle.text = "You're under attack!";
             this._enemyTerritory = GameManager.Instance.GetEnemyTerritory();
             this._myTerritory = GameManager.Instance.GetMyTerritory();
-            //Tu
             myInfo.text = Player.Instance.Name + "\n" +
                           "<b>" + _myTerritory.name + "</b>" + "\nWith " + GameManager.Instance.GetMyArmyNum() +
                           " army";
             myState.sprite = LoadSprite("TerritoriesSprite/" + _myTerritory.id);
             myState.color = Utils.ColorCode(Player.Instance.ArmyColor, 150);
             
-            //Risultati dadi
             int[] myExtractedNumbers = GameManager.Instance.GetMyExtractedNumbers();
             int[] enemyExtractedNumbers = GameManager.Instance.GetEnemyExtractedNumbers();
             diceResult.text = "\n<b>Dice results</b>\n";
@@ -70,7 +67,6 @@ namespace UI {
                         diceResult.text += "        " + enemyExtractedNumbers[i];
                     diceResult.text += "\n";
                 }
-                //Aggiungo righe vuote per evitare sovrapposizione tr la scritta vittoria/perdita e gli stati a dx e sx
                 switch (enemyExtractedNumbers.Length) {
                     case 1:
                         diceResult.text += "\n\n";
@@ -88,7 +84,6 @@ namespace UI {
                         diceResult.text += myExtractedNumbers[i] + "<color=#FFFFFF00> - 0</color>";
                     diceResult.text += "\n";
                 }
-                //Aggiungo righe vuote per evitare sovrapposizione tr la scritta vittoria/perdita e gli stati a dx e sx
                 switch (myExtractedNumbers.Length) {
                     case 1:
                         diceResult.text += "\n\n";
@@ -100,7 +95,6 @@ namespace UI {
             }
             diceResult.text += "\n";
 
-            //Altro giocatore
             enemyInfo.text = GameManager.Instance.GetEnemyNameById(_enemyTerritory.player_id) + "\n" +
                              "<b>" + _enemyTerritory.name + "</b>" + "\nWith " +
                              GameManager.Instance.GetEnemyArmyNum() + " army";
@@ -108,7 +102,7 @@ namespace UI {
             enemyState.color = Utils.ColorCode(GameManager.Instance.GetPlayerColor(_enemyTerritory.player_id), 150);
         }
 
-        public Sprite LoadSprite(string spriteName) {
+        private Sprite LoadSprite(string spriteName) {
             return Resources.Load<Sprite>(spriteName);
         }
     }

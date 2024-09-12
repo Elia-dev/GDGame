@@ -5,12 +5,7 @@ public class Objective : Card {
         : base(card_id, image, function, description, player_id)
     {
     }
-    
-    public new string ToJson()
-    {
-        return JsonConvert.SerializeObject(this);
-    }
-    
+
     public new static Objective FromJson(string json)
     {
         return JsonConvert.DeserializeObject<Objective>(json);
