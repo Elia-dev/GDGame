@@ -241,7 +241,7 @@ namespace UI {
             }
 
             // Se premo ESC mostro il menu di pausa o chiudo i popup o deseleziono gli stati
-            if (Input.GetKeyDown(KeyCode.Escape)) {
+            if (Input.GetKeyDown(KeyCode.Escape) && (Player.Instance.IsMyTurn || !distributionPhase)) {
                 Canvas[] allCanvases = FindObjectsOfType<Canvas>();
                 foreach (Canvas canvas in allCanvases) {
                     // Controlla se il canvas è in modalità Screen Space - Overlay

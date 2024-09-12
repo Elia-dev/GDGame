@@ -175,9 +175,9 @@ namespace UI {
                 TerritoriesManagerGamePhaseUI.AttackPhase = true;
                 GameManagerUI.AttackPhase = true; // Per barra dx
                 this.GetComponent<TerritoriesManagerGamePhaseUI>().IsPhaseGoing = false;
-                this.GetComponent<TerritoriesManagerGamePhaseUI>().RefreshTerritories();
                 endTurnButton.GetComponentInChildren<TMP_Text>().text = "End Turn!";
                 endTurnButton.interactable = true;
+                this.GetComponent<TerritoriesManagerGamePhaseUI>().RefreshTerritories();
             }
         }
 
@@ -296,7 +296,7 @@ namespace UI {
                 this.GetComponent<TerritoriesManagerGamePhaseUI>().ActivateOtherPlayersTerritories();
             }
 
-            //Gestion del tasto ESC
+            //Gestione del tasto ESC
             if (Input.GetKeyDown(KeyCode.Escape)) {
                 Canvas[] allCanvases = FindObjectsOfType<Canvas>();
                 foreach (Canvas canvas in allCanvases) {
@@ -310,6 +310,7 @@ namespace UI {
                 }
 
                 if (popUpAddTank.activeInHierarchy) {
+                    Debug.Log("Disattivo il popup AddTank");
                     popUpAddTank.SetActive(false);
                     if (selectedTerritory is not null) selectedTerritory = null;
                 }
