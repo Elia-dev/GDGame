@@ -93,12 +93,12 @@ namespace UI {
                 Debug.Log("Game running = false (TerritoriesManagerGamePhaseUI)");
             }
 
-            if (!GameManager.Instance.getKillerId().Equals("") && _iAmAlive) {
+            if (!GameManager.Instance.GetKillerId().Equals("") && _iAmAlive) {
                 _iAmAlive = false;
                 popUpPlayerLeftGame.SetActive(true);
                 popUpPlayerLeftGame.GetComponent<DisplayMessageOnPopUpUI>()
                     .SetErrorText("You have been destroyed by "
-                                  + GameManager.Instance.getEnemyNameById(GameManager.Instance.getKillerId())
+                                  + GameManager.Instance.GetEnemyNameById(GameManager.Instance.GetKillerId())
                                   + "!\n<i>Now you will be a spectator of a world in which you no longer have influence...</i>");
             }
 
@@ -206,10 +206,10 @@ namespace UI {
             }
 
             // Refresh necessario dopo attacco
-            if (GameManager.Instance.getForceUpdateAfterAttack()) {
+            if (GameManager.Instance.GetForceUpdateAfterAttack()) {
                 RefreshTerritories();
                 DeselectState();
-                GameManager.Instance.setForceUpdateAfterAttack(false);
+                GameManager.Instance.SetForceUpdateAfterAttack(false);
                 gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
             }
 
@@ -229,15 +229,15 @@ namespace UI {
             }
 
             //Se sono sotto attacco o sto attaccando mostro il popup
-            if ((GameManager.Instance.getImUnderAttack() || GameManager.Instance.getImAttacking()) && !_underAttack) {
+            if ((GameManager.Instance.GetImUnderAttack() || GameManager.Instance.GetImAttacking()) && !_underAttack) {
                 _underAttack = true;
                 popUpAttackResult.GetComponent<PopUpAttackResultUI>().SetPupUp();
             }
 
             // Se il gioco è finito mostro il popup con vincitore/perdente
-            if (!GameManager.Instance.getWinnerGameId().Equals("")) {
+            if (!GameManager.Instance.GetWinnerGameId().Equals("")) {
                 gameObject.GetComponent<TerritoriesManagerGamePhaseUI>().enabled = false;
-                endGame.GetComponent<EndGameUI>().SetPopUp(GameManager.Instance.getWinnerGameId());
+                endGame.GetComponent<EndGameUI>().SetPopUp(GameManager.Instance.GetWinnerGameId());
             }
 
             // Se premo ESC mostro il menu di pausa o chiudo i popup o deseleziono gli stati

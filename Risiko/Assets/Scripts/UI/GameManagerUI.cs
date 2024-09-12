@@ -53,7 +53,7 @@ namespace UI
         }
 
         void Update() {
-            if (!GameManager.Instance.GetGameRunning() || !GameManager.Instance.getWinnerGameId().Equals("") || _thisIsTheEnd) {
+            if (!GameManager.Instance.GetGameRunning() || !GameManager.Instance.GetWinnerGameId().Equals("") || _thisIsTheEnd) {
                 Debug.Log("Game running = false (GameManagerUI)");
                 //gameObject.SetActive(false);
                 return;
@@ -65,8 +65,8 @@ namespace UI
                 turn.text = "Is your turn!\n";
             }
             else {
-                turn.color = Utils.ColorCode(GameManager.Instance.GetPlayerColor(GameManager.Instance.getIdPlayingPlayer()), 255);
-                turn.text = GameManager.Instance.getEnemyNameById(GameManager.Instance.getIdPlayingPlayer()) +
+                turn.color = Utils.ColorCode(GameManager.Instance.GetPlayerColor(GameManager.Instance.GetIdPlayingPlayer()), 255);
+                turn.text = GameManager.Instance.GetEnemyNameById(GameManager.Instance.GetIdPlayingPlayer()) +
                             "'s turn!\n";
             }
 
@@ -134,7 +134,7 @@ namespace UI
                 }
                 _territoryInfo = "\n<b>" + territory.name + $"</b>: state of the continent {continent}, owned by the player " +
                                  $"<color={GameManager.Instance.GetPlayerColor(territory.player_id)}>" +
-                                 $"{GameManager.Instance.getEnemyNameById(territory.player_id)}</color>.\n" +
+                                 $"{GameManager.Instance.GetEnemyNameById(territory.player_id)}</color>.\n" +
                                  $"On the territory there are <b>{territory.num_tanks}</b> army on it.\n";
             
             }

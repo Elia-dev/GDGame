@@ -1,4 +1,3 @@
-using System.Collections;
 using businesslogic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -50,14 +49,14 @@ namespace Audio {
                 gameTrack.Play();
                 easterEggTrack.Stop();
             } else if (SceneManager.GetActiveScene().name.Equals("Main") &&
-                      !GameManager.Instance.getWinnerGameId().Equals("")) {
-                if (GameManager.Instance.getWinnerGameId().Equals(Player.Instance.PlayerId) && !winTrack.isPlaying &&
+                      !GameManager.Instance.GetWinnerGameId().Equals("")) {
+                if (GameManager.Instance.GetWinnerGameId().Equals(Player.Instance.PlayerId) && !winTrack.isPlaying &&
                     !easterEggTrack.isPlaying) {
                     loseTrack.Stop();
                     menuTrack.Stop();
                     gameTrack.Stop();
                     SFX_selector.Instance.StopAllSFX();
-                    // Faccio suonare l'inno dell'URSS se il rosso vince
+                    // Play easter egg track if player is red, else play win track
                     if (Player.Instance.ArmyColor.Equals("red")) {
                         easterEggTrack.Play();
                         winTrack.Stop();
@@ -66,7 +65,7 @@ namespace Audio {
                         easterEggTrack.Stop();
                         winTrack.Play();
                     }
-                } else if (!GameManager.Instance.getWinnerGameId().Equals(Player.Instance.PlayerId) &&
+                } else if (!GameManager.Instance.GetWinnerGameId().Equals(Player.Instance.PlayerId) &&
                           !loseTrack.isPlaying) {
                     menuTrack.Stop();
                     gameTrack.Stop();

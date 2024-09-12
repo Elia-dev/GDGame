@@ -10,11 +10,11 @@ namespace businesslogic
         private static readonly object Lock = new object();
         private Territory _enemyTerritory = null;
         private Territory _myTerritory = null;
-        private Dictionary<string, string> _playersDict = new Dictionary<string, string>();
-        private Dictionary<string, string> _colorsDict = new Dictionary<string, string>();
-        public List<Territory> AllTerritories = new List<Territory>(); // Lista di tutti i territori della partita
-        public List<string> PlayersName = new List<string>(); 
-        public List<string> AvailableColors = new List<string>();
+        private readonly Dictionary<string, string> _playersDict = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _colorsDict = new Dictionary<string, string>();
+        public List<Territory> AllTerritories = new List<Territory>();
+        public readonly List<string> PlayersName = new List<string>();
+        private readonly List<string> _availableColors = new List<string>();
         private string _winnerGameId = "";
         private string _winnerBattleId = "";
         private string _gameOrder = "";
@@ -33,7 +33,7 @@ namespace businesslogic
         private bool _forceUpdateAfterAttack = false;
         private string _lobbyID = "";
         private bool _imAttacking = false;
-        private string _killer_id = "";
+        private string _killerID = "";
         
 
         private GameManager() // Private constructor to allow instantiation using singleton only
@@ -55,104 +55,104 @@ namespace businesslogic
             }
         }
     
-        public void setKillerId(string id)
+        public void SetKillerId(string id)
         {
-            _killer_id = id;
+            _killerID = id;
         }
         
-        public string getKillerId()
+        public string GetKillerId()
         {
-            return _killer_id;
+            return _killerID;
         }
-        public void setWinnerBattleId(string id)
+        public void SetWinnerBattleId(string id)
         {
             _winnerBattleId = id;
         }
 
-        public string getWinnerBattleId()
+        public string GetWinnerBattleId()
         {
             return _winnerBattleId;
         }
 
-        public void resetWinnerBattleId()
+        private void ResetWinnerBattleId()
         {
             _winnerBattleId = "";
         }
     
-        public void setWinnerGameId(string id)
+        public void SetWinnerGameId(string id)
         {
             _winnerGameId = id;
         }
 
-        public string getWinnerGameId()
+        public string GetWinnerGameId()
         {
             return _winnerGameId;
         }
     
-        public void setEnemyExtractedNumbers(int[] vet)
+        public void SetEnemyExtractedNumbers(int[] vet)
         {
             _extractedEnemyNumbers = vet;
         }
     
-        public int[] getEnemyExtractedNumbers()
+        public int[] GetEnemyExtractedNumbers()
         {
             return _extractedEnemyNumbers;
         }
-    
-        public void resetEnemyExtractedNumbers()
+
+        private void ResetEnemyExtractedNumbers()
         {
             _extractedEnemyNumbers = null;
         }
     
-        public void setMyExtractedNumbers(int[] vet)
+        public void SetMyExtractedNumbers(int[] vet)
         {
             _extractedMyNumbers = vet;
         }
 
-        public int[] getMyExtractedNumbers()
+        public int[] GetMyExtractedNumbers()
         {
             return _extractedMyNumbers;
         }
-    
-        public void resetMyExtractedNumbers()
+
+        private void ResetMyExtractedNumbers()
         {
             _extractedMyNumbers = null;
         }
     
-        public bool getForceUpdateAfterAttack()
+        public bool GetForceUpdateAfterAttack()
         {
             return _forceUpdateAfterAttack;
         }
 
-        public void setForceUpdateAfterAttack(bool value)
+        public void SetForceUpdateAfterAttack(bool value)
         {
             _forceUpdateAfterAttack = value;
         }
 
-        public void cleanAfterBattle()
+        public void CleanAfterBattle()
         {
-            resetEnemyArmyNum();
-            resetMyArmyNum();
-            resetEnemyTerritory();
-            resetMyTerritory();
-            resetEnemyExtractedNumbers();
-            resetMyExtractedNumbers();
-            resetWinnerBattleId();
-            setImUnderAttack(false);
-            setImAttacking(false);
+            ResetEnemyArmyNum();
+            ResetMyArmyNum();
+            ResetEnemyTerritory();
+            ResetMyTerritory();
+            ResetEnemyExtractedNumbers();
+            ResetMyExtractedNumbers();
+            ResetWinnerBattleId();
+            SetImUnderAttack(false);
+            SetImAttacking(false);
         }
     
-        public int getMyArmyNum()
+        public int GetMyArmyNum()
         {
             return _myArmyNum;
         }
 
-        public void setMyArmyNum(int numArmy)
+        public void SetMyArmyNum(int numArmy)
         {
             _myArmyNum = numArmy;
         }
 
-        public void resetMyArmyNum()
+        private void ResetMyArmyNum()
         {
             _myArmyNum = 0;
         }
@@ -162,139 +162,68 @@ namespace businesslogic
             return _enemyArmyNum;
         }
 
-        public void setEnemyArmyNum(int numArmy)
+        public void SetEnemyArmyNum(int numArmy)
         {
             _enemyArmyNum = numArmy;
         }
 
-        public void resetEnemyArmyNum()
+        private void ResetEnemyArmyNum()
         {
             _enemyArmyNum = 0;
         }
     
         public void AddPlayerColor(string id, string color)
         {
-            if (!_colorsDict.ContainsKey(id))
-            {
-                _colorsDict.Add(id, color);
-                //Debug.Log($"Colore aggiunto: ID = {id}, Colore = {color}");
-            }
-            else
-            {
-                //Debug.Log($"Il colore con ID = {id} esiste già.");
-            }
+            _colorsDict.TryAdd(id, color);
         }
-
-        // Funzione per rimuovere un colore dal dizionario
-        public void RemovePlayerColor(string id)
-        {
-            if (_colorsDict.ContainsKey(id))
-            {
-                _colorsDict.Remove(id);
-                //Debug.Log($"Colore con ID = {id} rimosso.");
-            }
-            else
-            {
-                //Debug.Log($"Il colore con ID = {id} non esiste.");
-            }
-        }
-
-        // Funzione per leggere un colore dal dizionario
         public string GetPlayerColor(string id)
         {
-            if (_colorsDict.TryGetValue(id, out string color))
-            {
-                //Debug.Log($"Colore trovato: ID = {id}, Colore = {color}");
-                return color;
-            }
-            //Debug.Log($"Il colore con ID = {id} non è stato trovato.");
-            return "Player non trovato";
+            return _colorsDict.GetValueOrDefault(id, " ");
         }
     
-        public string getIdPlayingPlayer()
+        public string GetIdPlayingPlayer()
         {
             return _idPlayingPlayer;
         }
 
-        public void setIdPlayingPlayer(string player)
+        public void SetIdPlayingPlayer(string player)
         {
             _idPlayingPlayer = player;
         }
-
-        public void resetIdPlayingPlayer()
-        {
-            _idPlayingPlayer = "";
-        }
     
-        public string getEnemyNameById(string playerId)
+        public string GetEnemyNameById(string playerId)
         {
-            if (_playersDict.TryGetValue(playerId, out string name))
-            {
-                //Debug.Log($"Player trovato: ID = {playerId}, Nome = {name}");
-                return name;
-            }
-            //Debug.Log($"Player non trovato: ID = {playerId}");
-            return "This player doesn't exist";
+            return _playersDict.GetValueOrDefault(playerId, " ");
         }
     
         public void AddPlayerToLobbyDict(string playerId, string name)
         {
-            if (!_playersDict.ContainsKey(playerId))
-            {
-                _playersDict.Add(playerId, name);
-                //Debug.Log($"Player aggiunto: ID = {playerId}, Nome = {name}");
-            }
-            else
-            {
-                //Debug.Log($"Il player con ID = {playerId} esiste già.");
-            }
+            _playersDict.TryAdd(playerId, name);
         }
-
-        public List<string> GetPlayersName()
-        {
-            return PlayersName;
-        }
-        
         public List<string> GetPlayersId()
         {
             return new List<string>(_playersDict.Keys);
         }
-        
-        // Funzione per rimuovere un player dal dizionario
-        public void RemovePlayerFromLobbyDict(string playerId)
-        {
-            if (_playersDict.ContainsKey(playerId))
-            {
-                _playersDict.Remove(playerId);
-                //Debug.Log($"Player con ID = {playerId} rimosso.");
-            }
-            else
-            {
-                //Debug.Log($"Il player con ID = {playerId} non esiste.");
-            }
-        }
-    
-        public Territory getMyTerritory()
+        public Territory GetMyTerritory()
         {
             if (_myTerritory is null)
             {
                 _myTerritory = Territory.EmptyTerritory();
             }
-
             return _myTerritory;
         }
 
-        public void setMyTerritory(Territory ter)
+        public void SetMyTerritory(Territory ter)
         {
             _myTerritory = ter;
         }
-    
-        public void resetMyTerritory()
+
+        private void ResetMyTerritory()
         {
             _myTerritory = null;
         }
     
-        public Territory getEnemyTerritory()
+        public Territory GetEnemyTerritory()
         {
             if (_enemyTerritory is null)
             {
@@ -304,32 +233,27 @@ namespace businesslogic
             return _enemyTerritory;
         }
 
-        public void resetEnemyTerritory()
+        private void ResetEnemyTerritory()
         {
             _enemyTerritory = null;
         }
 
-        public void setEnemyTerritoy(Territory ter)
+        public void SetEnemyTerritoy(Territory ter)
         {
             _enemyTerritory = ter;
         }
-        public void setImUnderAttack(bool value)
+        public void SetImUnderAttack(bool value)
         {
             _imUnderAttack = value;
         }
 
-        public bool getImUnderAttack()
+        public bool GetImUnderAttack()
         {
             return _imUnderAttack;
         }
         public void ResetGameManager()
         {
             _instance = null;
-        }
-    
-        public bool GetPreparationPhase()
-        {
-            return _preparationPhase;
         }
 
         public void SetPreparationPhase(bool value)
@@ -355,11 +279,6 @@ namespace businesslogic
         {
             _extractedNumber = value;
         }
-
-        public string GetGameOrderExtractedNumbers()
-        {
-            return _gameOrderExtractedNumbers;
-        }
         public void SetGameOrderExtractedNumbers(string value)
         {
             _gameOrderExtractedNumbers = value;
@@ -370,7 +289,7 @@ namespace businesslogic
             // Regular expression to match "-0", "-1", etc.
             string pattern = @"-\d";
             return Regex.Replace(_gameOrder.Replace("{", "").Replace("'", "").Replace("}", ""), 
-                pattern, string.Empty);//_gameOrder.Replace("(", "").Replace("'", "").Replace(")", "").Replace(",", "");
+                pattern, string.Empty);
         }
         public void setGame_order(string value)
         {
@@ -383,7 +302,7 @@ namespace businesslogic
         }
         public void SetLobbyId(string lobbyID)
         {
-            this._lobbyID = lobbyID;
+            _lobbyID = lobbyID;
         }
 
         public void ResetPlayersName()
@@ -403,12 +322,12 @@ namespace businesslogic
 
         public void AddAvailableColor(string color)
         {
-            AvailableColors.Add(color);
+            _availableColors.Add(color);
         }
 
         public List<string> GetAvailableColors()
         {
-            return AvailableColors;
+            return _availableColors;
         }
     
         public bool GetGameWaitingToStart()
@@ -431,11 +350,11 @@ namespace businesslogic
             _gameRunning = value;
         }
 
-        public void setImAttacking(bool value)
+        public void SetImAttacking(bool value)
         {
             _imAttacking = value;
         }
-        public bool getImAttacking()
+        public bool GetImAttacking()
         {
             return _imAttacking;
         }

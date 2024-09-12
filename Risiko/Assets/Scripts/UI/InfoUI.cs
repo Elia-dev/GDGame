@@ -25,7 +25,7 @@ namespace UI {
                 newPlayer.transform.Find("PlayerInfo").GetComponent<ContentSizeFitter>().enabled = true;
                 
                 newPlayer.transform.Find("PlayerName").GetComponent<TMP_Text>().color = Utils.ColorCode(GameManager.Instance.GetPlayerColor(playerId), 255);
-                newPlayer.transform.Find("PlayerName").GetComponent<TMP_Text>().text = GameManager.Instance.getEnemyNameById(playerId);
+                newPlayer.transform.Find("PlayerName").GetComponent<TMP_Text>().text = GameManager.Instance.GetEnemyNameById(playerId);
                 
                 if(playerId.Equals(Player.Instance.PlayerId))
                     newPlayer.transform.Find("PlayerName").GetComponent<TMP_Text>().text += " (You)";

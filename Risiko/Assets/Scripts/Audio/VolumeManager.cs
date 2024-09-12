@@ -52,13 +52,11 @@ namespace Audio
 
         private void ApplyMusicVolume(float volume)
         {
-            // Assuming you have a reference to your music AudioSource
             BGMusic_selector.Instance.SetVolume(volume);
         }
 
         private void ApplySfxVolume(float volume)
         {
-            // Assuming you have a reference to your SFX AudioSource
             SFX_selector.Instance.SetVolume(volume);
         }
     }

@@ -42,7 +42,7 @@ namespace UI
 
         public void ExitButtonForExitMenu() {
             GameManagerUI.ThisIsTheEnd = true;
-            if (!GameManager.Instance.getKillerId().Equals("")) {
+            if (!GameManager.Instance.GetKillerId().Equals("")) {
                 // Se sono stato ucciso da qualcuno esco senza far chiudere la partita a tutti
                 Debug.Log("Sono stato ucciso da qualcuno esco senza far chiudere la partita a tutti");
                 ClientManager.Instance.LeaveLobby();

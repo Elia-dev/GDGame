@@ -200,12 +200,12 @@ namespace UI {
                 Debug.Log("Game running = false (TerritoriesManagerGamePhaseUI)");
             }
 
-            if (!GameManager.Instance.getKillerId().Equals("") && _iAmAlive) {
+            if (!GameManager.Instance.GetKillerId().Equals("") && _iAmAlive) {
                 _iAmAlive = false;
                 popUpPlayerLeftGame.SetActive(true);
                 popUpPlayerLeftGame.GetComponent<DisplayMessageOnPopUpUI>()
                     .SetErrorText("You have been destroyed by "
-                                  + GameManager.Instance.getEnemyNameById(GameManager.Instance.getKillerId())
+                                  + GameManager.Instance.GetEnemyNameById(GameManager.Instance.GetKillerId())
                                   + "!\n<i>Now you will be a spectator of a world in which you no longer have influence...</i>");
             }
             if (Player.Instance.IsMyTurn && !_isTurnInitialized) {
