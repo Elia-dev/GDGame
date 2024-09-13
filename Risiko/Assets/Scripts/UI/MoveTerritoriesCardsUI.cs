@@ -31,7 +31,7 @@ namespace UI {
         }
 
         private void AdjustCellsSize() {
-            RectTransform cardContainer = gridTransform.GetComponent<RectTransform>();
+            //RectTransform cardContainer = gridTransform.GetComponent<RectTransform>();
             GridLayoutGroup gridLayoutGroup = gridTransform.GetComponent<GridLayoutGroup>();
             float aspectRatio = 4f / 3f; // Rapporto di aspetto originale delle carte
 
@@ -79,6 +79,10 @@ namespace UI {
 
             // Imposta la dimensione delle celle nel GridLayoutGroup
             gridLayoutGroup.cellSize = new Vector2(cellWidth, cellHeight);
+            
+            int actualRows = Mathf.CeilToInt((float)cardNumber / maxColumns);
+            gridLayoutGroup.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+            gridLayoutGroup.constraintCount = actualRows;
         }
 
         private void CardAnimation() {
