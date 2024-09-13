@@ -237,7 +237,7 @@ async def _reinforce(client_manager, terr_of_interest, my_territories, is_setup)
 
     # Reinforce territories of which neighbor is an enemy
     for my_terr in my_territories:
-        neighbors = utils.get_enemy_neighbors_of(my_terr, my_territories,
+        neighbors = utils.get_enemy_neighbors_of(my_terr, client_manager.player.territories,
                                                  client_manager.game_manager.all_territories)
         neighbors_of_interest = list(
             filter(lambda neighbor: neighbor in terr_of_interest, neighbors)
@@ -462,6 +462,9 @@ async def _attack(attacker, defender, client_manager):
         print(f'ENEMY NUMBERS: {client_manager.game_manager.extracted_enemy_numbers}')
         while not client_manager.game_manager.all_territories:
             await asyncio.sleep(0.5)
+        client_manager.player.territories = list(
+            filter(lambda terr: terr.player_id == attacker.player_id, client_manager.game_manager.all_territories)
+        )
         client_manager.game_manager.reset_enemy_extracted_numbers()
         client_manager.game_manager.reset_my_extracted_numbers()
         defender = list(
