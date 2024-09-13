@@ -33,8 +33,11 @@ namespace UI
             serverListButton.onClick.AddListener(() => { SceneManager.LoadScene("ServerListMenu"); });
         }
 
-        async void Start()
+        void Start()
         {
+            Player.Instance.ResetPlayer();
+            GameManager.Instance.ResetGameManager();
+            ClientManager.Instance.ResetConnection();
             BGMusic_selector.Instance.SetVolume(PlayerPrefs.GetFloat("musicVolume", 1.0f));
             SFX_selector.Instance.SetVolume(PlayerPrefs.GetFloat("SFXVolume", 1.0f));
         }
