@@ -51,6 +51,7 @@ namespace UI
         void Start() {
             Debug.Log("Player: " + Player.Instance);
             Debug.Log("PlayerID: " + Player.Instance.PlayerId);
+            Debug.Log("PlayerName: " + Player.Instance.Name);
             Debug.Log("GameManager: " + GameManager.Instance);
             Debug.Log("GameManager LobbyID: " + GameManager.Instance.GetLobbyId());
             Debug.Log("GameManager PlayersID: " + GameManager.Instance.GetPlayersId());
