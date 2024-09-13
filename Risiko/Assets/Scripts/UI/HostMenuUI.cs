@@ -18,6 +18,8 @@ namespace UI {
         private readonly float _delay = 1.0f; // Durata del ritardo in secondi
         private float _timer;
         private string _playerListFromServer;
+        private int _playersNumber;
+        private bool _addedBot = false;
 
         private void Awake() {
             backButton.onClick.AddListener(() => {
@@ -34,7 +36,10 @@ namespace UI {
             });
 
             addBotButton.onClick.AddListener(() => {
+                _playersNumber = GameManager.Instance.GetPlayersNumber();
                 ClientManager.Instance.RequestAddBot();
+                addBotButton.interactable = false;
+                _addedBot = true;
             });
 
             removeBotButton.onClick.AddListener(() => {
@@ -75,6 +80,18 @@ namespace UI {
                 runGameButton.interactable = true;
             } else {
                 runGameButton.interactable = false;
+            }
+
+            if (GameManager.Instance.GetPlayersNumber() >= 6) 
+                addBotButton.interactable = false;
+            else 
+                addBotButton.interactable = true;
+
+            if (_addedBot) {
+                if (GameManager.Instance.GetPlayersNumber() > _playersNumber) {
+                    _addedBot = false;
+                    removeBotButton.interactable = true;
+                }
             }
         }
     }
