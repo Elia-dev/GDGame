@@ -102,6 +102,7 @@ namespace UI
                 timerConnection -= Time.deltaTime;
                 if (ClientManager.Instance.IsConnectedToLobby()) {
                     SceneManager.LoadScene("WaitingRoomClient");
+                    _lobbies = null;
                     yield break; // Esci dalla coroutine se ci si connette alla lobby
                 }
 

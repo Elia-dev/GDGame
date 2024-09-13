@@ -573,7 +573,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 345739141}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1161172406}
+        m_TargetAssemblyTypeName: UI.PopUpSettingsUI, Assembly-CSharp
+        m_MethodName: Close
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &345739141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2538,8 +2550,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 41769865}
   m_HandleRect: {fileID: 41769864}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.95843345
+  m_Value: 0.99999756
+  m_Size: 0.9584332
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
