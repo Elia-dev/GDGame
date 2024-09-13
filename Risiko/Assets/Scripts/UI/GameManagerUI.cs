@@ -49,6 +49,11 @@ namespace UI
         }
 
         void Start() {
+            Debug.Log("Player: " + Player.Instance);
+            Debug.Log("PlayerID: " + Player.Instance.PlayerId);
+            Debug.Log("GameManager: " + GameManager.Instance);
+            Debug.Log("GameManager LobbyID: " + GameManager.Instance.GetLobbyId());
+            Debug.Log("GameManager PlayersID: " + GameManager.Instance.GetPlayersId());
             playerName.text = Player.Instance.Name;
         }
 

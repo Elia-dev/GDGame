@@ -76,6 +76,7 @@ namespace UI {
                     popUpPlayerLeftGame.SetActive(false);
                 }
                 else {
+                    ClientManager.Instance.LeaveGame();
                     Player.Instance.ResetPlayer();
                     GameManager.Instance.ResetGameManager();
                     ClientManager.Instance.ResetConnection();
@@ -241,7 +242,7 @@ namespace UI {
             }
 
             // Se premo ESC mostro il menu di pausa o chiudo i popup o deseleziono gli stati
-            if (Input.GetKeyDown(KeyCode.Escape)) {
+            if (Input.GetKeyDown(KeyCode.Escape) && !_reinforcePhase) {
                 Canvas[] allCanvases = FindObjectsOfType<Canvas>();
                 foreach (Canvas canvas in allCanvases) {
                     // Controlla se il canvas è in modalità Screen Space - Overlay
