@@ -7,7 +7,6 @@ using UnityEngine.UI;
 namespace UI {
     public class HostMenuUI : MonoBehaviour {
         [SerializeField] private Button backButton;
-        [SerializeField] private Button updateButton;
         [SerializeField] private Button runGameButton;
         [SerializeField] private TMP_Text playerList;
         [SerializeField] private TMP_Text lobbyID;
@@ -18,8 +17,10 @@ namespace UI {
         private readonly float _delay = 1.0f; // Durata del ritardo in secondi
         private float _timer;
         private string _playerListFromServer;
-        private int _playersNumber;
-        private bool _addedBot = false;
+        private int _botNumber = 0;
+        private int _numPlayersOnAddBot = 0;
+        private int _pendingBots = 0; // Numero di bot richiesti ma non ancora confermati
+        private int _totalPlayers = 0;
 
         private void Awake() {
             backButton.onClick.AddListener(() => {
@@ -36,17 +37,29 @@ namespace UI {
             });
 
             addBotButton.onClick.AddListener(() => {
-                _playersNumber = GameManager.Instance.GetPlayersNumber();
-                ClientManager.Instance.RequestAddBot();
+                /*_botNumber++;
+                _numPlayersOnAddBot = GameManager.Instance.GetPlayersNumber();
+               // if(_botNumber + _numPlayersOnAddBot >= 6)
                 addBotButton.interactable = false;
-                _addedBot = true;
+                await ClientManager.Instance.RequestAddBot();
+                addBotButton.interactable = true;*/
+                ClientManager.Instance.RequestAddBot();
+                _pendingBots++; // Incrementa il contatore dei bot in attesa
+                UpdateAddBotButtonState(); // Aggiorna lo stato del pulsante subito dopo la richiesta
             });
 
             removeBotButton.onClick.AddListener(() => {
+                //_numPlayersOnAddBot = GameManager.Instance.GetPlayersNumber() - 1;
+                /*if(_botNumber > 0)
+                    _botNumber--;
+                await ClientManager.Instance.RequestRemoveBot();*/
+                if (_pendingBots > 0)
+                    _pendingBots--; // Incrementa il contatore dei bot in attesa
+                else
+                    _totalPlayers = GameManager.Instance.GetPlayersNumber();
+                UpdateAddBotButtonState(); // Aggiorna lo stato del pulsante subito dopo la richiesta
                 ClientManager.Instance.RequestRemoveBot();
             });
-
-            updateButton.onClick.AddListener(() => { ClientManager.Instance.RequestNameUpdatePlayerList(); });
         }
 
         void Start() {
@@ -67,7 +80,6 @@ namespace UI {
 
                 // Reset del timer
                 _timer = _delay;
-                Debug.Log("HOSTMENU - playerList:" + playerList.text);
             }
 
             //Aggiornamento lista giocatori
@@ -76,22 +88,36 @@ namespace UI {
 
 
             //Quando i giocatori saranno 3+
-            if (GameManager.Instance.GetPlayersNumber() >= 2) {
-                runGameButton.interactable = true;
-            } else {
-                runGameButton.interactable = false;
-            }
+            runGameButton.interactable = GameManager.Instance.GetPlayersNumber() >= 2;
 
-            if (GameManager.Instance.GetPlayersNumber() >= 6) 
+            // Aggiorna lo stato del pulsante addBot
+            UpdateAddBotButtonState();
+            
+            /*if (GameManager.Instance.GetPlayersNumber() >= 6) 
                 addBotButton.interactable = false;
-            else 
+            else {
                 addBotButton.interactable = true;
+            }
+            /*
+            else if (_numPlayersOnAddBot + _botNumber >= 6) {
+                addBotButton.interactable = false;
+            }
+            else {
+                addBotButton.interactable = true;
+            } */
+        }
+        
+        private void UpdateAddBotButtonState() {
+            _totalPlayers = GameManager.Instance.GetPlayersNumber() + _pendingBots;
 
-            if (_addedBot) {
-                if (GameManager.Instance.GetPlayersNumber() > _playersNumber) {
-                    _addedBot = false;
-                    removeBotButton.interactable = true;
-                }
+            // Se il numero totale di giocatori (inclusi i bot in attesa) è inferiore a 6, abilita il pulsante
+            addBotButton.interactable = _totalPlayers < 6;
+
+            // Calcola i bot in sospeso in base al numero effettivo di giocatori confermati
+            if (_totalPlayers > GameManager.Instance.GetPlayersNumber()) {
+                _pendingBots = _totalPlayers - GameManager.Instance.GetPlayersNumber();
+            } else {
+                _pendingBots = 0;
             }
         }
     }

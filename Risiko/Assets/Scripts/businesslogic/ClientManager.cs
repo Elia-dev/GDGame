@@ -286,12 +286,12 @@ namespace businesslogic
     
         }
 
-        public async void RequestAddBot()
+        public async Task RequestAddBot()
         {
             await SendMessage(_webSocket, _cancellationToken, "ADD_BOT");
         }
 
-        public async void RequestRemoveBot()
+        public async Task RequestRemoveBot()
         {
             await SendMessage(_webSocket, _cancellationToken, "REMOVE_BOT");
         }
