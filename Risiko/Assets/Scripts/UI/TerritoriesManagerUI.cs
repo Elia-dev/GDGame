@@ -13,7 +13,11 @@ namespace UI
         public static bool distributionPhase = true;
 
         public static TerritoriesManagerUI Instance { get; private set; }
-    
+
+        private void Start() {
+            distributionPhase = true;
+        }
+
         public void SelectState(TerritoryHandlerUI newTerritory) {
         
         }

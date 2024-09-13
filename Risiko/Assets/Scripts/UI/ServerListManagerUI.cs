@@ -21,7 +21,6 @@ namespace UI
         [SerializeField] private Button x;
         private List<string> _servers = new List<string>();
 
-
         private void Awake()
         {
             backButton.onClick.AddListener(() => { SceneManager.LoadScene("MainMenu"); });

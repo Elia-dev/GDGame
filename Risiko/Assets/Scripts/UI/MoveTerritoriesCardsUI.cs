@@ -13,8 +13,8 @@ namespace UI {
         [SerializeField] private GameObject clickHandler;
         private float _animationTime = 15f;
 
-        private bool animationDone = false;
-        private List<Territory> territories;
+        private bool _animationDone = false;
+        private List<Territory> _territories;
 
         void Start() {
             if (clickHandler == null) {
@@ -24,7 +24,7 @@ namespace UI {
                 Debug.Log("clickHandler is assigned correctly");
             }
 
-            territories = Player.Instance.Territories;
+            _territories = Player.Instance.Territories;
             AdjustCellsSize();
             CardAnimation();
             imagePrefab.SetActive(false);
@@ -40,7 +40,7 @@ namespace UI {
             float containerHeight = Screen.height - 60;
 
             // Calcola il numero di carte
-            int cardNumber = territories.Count;
+            int cardNumber = _territories.Count;
 
             // Definisci il numero massimo di righe e colonne
             int maxRows = Mathf.CeilToInt(Mathf.Sqrt(cardNumber));
@@ -82,9 +82,9 @@ namespace UI {
         }
 
         private void CardAnimation() {
-            for (int i = 0; i < territories.Count; i++) {
+            for (int i = 0; i < _territories.Count; i++) {
                 GameObject nuovaCarta = Instantiate(imagePrefab, gridTransform);
-                LoadSprite("Territories/" + territories[i].id);
+                LoadSprite("Territories/" + _territories[i].id);
                 nuovaCarta.GetComponent<Image>().sprite = imgSprite;
 
                 // Nascondi inizialmente la carta (o scala piccola)
@@ -94,7 +94,7 @@ namespace UI {
                 nuovaCarta.transform.DOScale(Vector3.one, 0.5f).SetDelay(i * 0.2f); // Anima con ritardo progressivo
             }
             // Calcola la durata totale dell'animazione
-            _animationTime = territories.Count * 0.2f + 0.5f;
+            _animationTime = _territories.Count * 0.2f + 0.5f;
         }
 
         private void Update() {
@@ -102,10 +102,10 @@ namespace UI {
                 _animationTime -= Time.deltaTime;
             }
             else {
-                animationDone = true;
+                _animationDone = true;
             }
 
-            if (animationDone && Input.GetMouseButtonDown(0)) {
+            if (_animationDone && Input.GetMouseButtonDown(0)) {
                 territoryCardsCanvas.SetActive(false);
                 clickHandler.GetComponent<TerritoriesManagerDistrPhaseUI>()
                     .ActivateTerritories();

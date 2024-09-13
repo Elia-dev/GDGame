@@ -86,6 +86,16 @@ namespace UI {
             });
         }
 
+        private void Start() {
+            _reinforcePhase = false;
+            _attackPhase = false;
+            _isTurnInitialized = false;
+            _strategicMove = false;
+            _underAttack = false;
+            _firstTurn = true;
+            _iAmAlive = true;
+        }
+
         private void Update() {
             if (!GameManager.Instance.GetGameRunning()) {
                 popUpPlayerLeftGame.SetActive(true);
@@ -109,7 +119,7 @@ namespace UI {
 
             //Se è il mio turno e non è in corso nessuna fase e ho dei carri armati da piazzare
             //Inizio la fase di rinforzo abilitando lo script TerritoriesManagerDistrPhaseUI
-            if (_reinforcePhase && !IsPhaseGoing)// && Player.Instance.TanksAvailable > 0)
+            if (_reinforcePhase && !IsPhaseGoing) // && Player.Instance.TanksAvailable > 0)
             {
                 //if (Player.Instance.Territories.Count >= 3)
                 if (Player.Instance.TanksAvailable > 0) {
@@ -117,7 +127,8 @@ namespace UI {
                     IsPhaseGoing = true;
                     this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = true;
                     GetComponent<TerritoriesManagerDistrPhaseUI>().StartTurn();
-                } else {
+                }
+                else {
                     //Se invece non ho carri da piazzare paso direttamente alla fase di attacco
                     ClientManager.Instance.UpdateTerritoriesState();
                     _reinforcePhase = false;
@@ -265,10 +276,9 @@ namespace UI {
                     escMenu.SetActive(true);
             }
         }
-        
+
         //Setta le impostazioni iniziali del turno
-        private void StartTurn()
-        {
+        private void StartTurn() {
             Debug.Log("StartTurn Game phase; MyTurn: " + Player.Instance.IsMyTurn);
             RefreshTerritories();
             _isTurnInitialized = true;
@@ -281,8 +291,8 @@ namespace UI {
                 endTurnButton.GetComponentInChildren<TMP_Text>().text = "Next Phase!";
             }
         }
-        
-         public void SelectState(TerritoryHandlerUI newTerritory) {
+
+        public void SelectState(TerritoryHandlerUI newTerritory) {
             //Info stato
             gameManager.GetComponent<GameManagerUI>()
                 .ShowTerritoryInfo(TerritoryInformationsAllPlayers(newTerritory.gameObject.name));
@@ -383,7 +393,7 @@ namespace UI {
                     polygonCollider.transform.position.z);
             }
         }
-        
+
         public Sprite LoadSprite(string spriteName) {
             return Resources.Load<Sprite>(spriteName);
         }
@@ -464,11 +474,10 @@ namespace UI {
                 _enemyTerritory = null;
             }
         }
-        
+
         private IEnumerator WaitForTurnToEnd() {
             // Attendi finché Player.Instance.IsMyTurn è true
-            while (Player.Instance.IsMyTurn)
-            {
+            while (Player.Instance.IsMyTurn) {
                 yield return null; // Attendi il frame successivo
             }
 

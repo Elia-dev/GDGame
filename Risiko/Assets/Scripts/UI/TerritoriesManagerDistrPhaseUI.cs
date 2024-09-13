@@ -26,7 +26,7 @@ namespace UI {
         private SelectedTerritories _selectedTerritories;
         private bool _isTurnInitialized = false; // Variabile per tracciare se il turno è stato inizializzato
         private int _armyNumber;
-        private static bool _iAmAlive = true;
+        private bool _iAmAlive = true;
 
         public int ArmyNumber => _armyNumber;
 

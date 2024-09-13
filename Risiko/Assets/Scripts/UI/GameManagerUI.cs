@@ -55,6 +55,11 @@ namespace UI
             Debug.Log("GameManager: " + GameManager.Instance);
             Debug.Log("GameManager LobbyID: " + GameManager.Instance.GetLobbyId());
             Debug.Log("GameManager PlayersID: " + GameManager.Instance.GetPlayersId());
+            _settingGame = true;
+            _distributionPhase = false;
+            _reinforcePhase = false;
+            _attackPhase = false;
+            _thisIsTheEnd = false;
             playerName.text = Player.Instance.Name;
         }
 
