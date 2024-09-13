@@ -98,6 +98,7 @@ namespace UI {
 
         private void Update() {
             if (!GameManager.Instance.GetGameRunning()) {
+                GameManagerUI.ThisIsTheEnd = true;
                 popUpPlayerLeftGame.SetActive(true);
                 popUpPlayerLeftGame.GetComponent<DisplayMessageOnPopUpUI>()
                     .SetErrorText("Player left the game\nyou will be redirected to the main menu...");
