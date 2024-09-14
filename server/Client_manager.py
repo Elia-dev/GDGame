@@ -81,10 +81,12 @@ class ClientManager:
 
     async def update_territories_state(self):
         territories_dict = [terr.to_dict() for terr in self.player.territories]
+        self.game_manager.all_territories = []
         await self.send_message(f"UPDATE_TERRITORIES_STATE: {self.player.player_id}, {json.dumps(territories_dict)}")
 
     async def attack_enemy_territory(self, my_territory, enemy_territory, my_num_army):
         enemy_num_army = min(3, enemy_territory.num_tanks)
+        self.game_manager.all_territories = []
         await self.send_message(f"ATTACK_TERRITORY: {self.player.player_id}-{enemy_territory.player_id}, "
                                 f"{my_territory.id}-{enemy_territory.id}, {my_num_army}-{enemy_num_army}")
         GameManager.get_instance().set_im_attacking(True)
@@ -93,6 +95,7 @@ class ClientManager:
         await self.send_message(f"REQUEST_TERRITORY_INFO: {self.player.player_id}-{terr_id}")
 
     async def request_shortest_path(self, my_territories, enemies_territories):
+        self.game_manager.shortest_paths = []
         terr_to_send = my_territories + enemies_territories
         territories_dict_list = [territory.to_dict() for territory in terr_to_send]
         await self.send_message(f"REQUEST_SHORTEST_PATH: {self.player.player_id}-" + json.dumps(territories_dict_list, indent=4))
