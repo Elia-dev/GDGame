@@ -157,6 +157,13 @@ namespace businesslogic
                     _request = RemoveRequest(message, "GAME_ORDER_EXTRACTED_NUMBERS: ");
                     GameManager.Instance.SetGameOrderExtractedNumbers(_request);
                 }
+                else if (message.Contains("BOT_NUMBER:"))
+                {
+                    Debug.Log("Server_Request: BOT_NUMBER");
+                    _request = RemoveRequest(message, "BOT_NUMBER: ");
+                    int botNumber = int.Parse(_request);
+                    GameManager.Instance.SetBotNumber(botNumber);
+                }
                 else if (message.Contains("PLAYER_ID:"))
                 {
                     Debug.Log("Server_Request: PLAYER_ID");

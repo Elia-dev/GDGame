@@ -296,5 +296,9 @@ namespace businesslogic
             await SendMessage(_webSocket, _cancellationToken, "REMOVE_BOT");
         }
 
+        public async Task RequestBotNumber()
+        {
+            await SendMessage(_webSocket, _cancellationToken, "REQUEST_BOT_NUMBER");
+        }
     }
 }
