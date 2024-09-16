@@ -31,7 +31,7 @@ class Game:
             'green': None,
             'yellow': None,
             'purple': None,
-            'black': None
+            'brown': None
         }
         self.event = asyncio.Event()
         self.event_strategic_movement = asyncio.Event()
