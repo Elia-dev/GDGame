@@ -178,19 +178,16 @@ class Game:
                 #    f"GAME: handling request from client id - : {player.player_id} with name {player.name}: {message}")
                 if "ADD_BOT" in message:
                     print(f'Try to create bot')
-                    if len(self.players) + len(self.bots_pid) < 6:
-                        host_id = self.game_id.replace(' ', '_')
-                        bot_name = f'Computer{len(self.bots_pid)}'
-                        if platform.system() == 'Windows':
-                            script_path = os.path.join(os.getcwd(), 'run_bot.bat')
-                        else:
-                            script_path = os.path.join(os.getcwd(), 'run_bot.sh')
-
-                        bot_pid = subprocess.check_output(f"{script_path} %s %s" % (host_id, bot_name), shell=True, text=True).strip()
-                        self.bots_pid.append(bot_pid)
-                        print(f'Bot {bot_pid} created')
+                    host_id = self.game_id.replace(' ', '_')
+                    bot_name = f'Computer{len(self.bots_pid)}'
+                    if platform.system() == 'Windows':
+                        script_path = os.path.join(os.getcwd(), 'run_bot.bat')
                     else:
-                        print(f'Lobby is full, cannot create more bots')
+                        script_path = os.path.join(os.getcwd(), 'run_bot.sh')
+
+                    bot_pid = subprocess.check_output(f"{script_path} %s %s" % (host_id, bot_name), shell=True, text=True).strip()
+                    self.bots_pid.append(bot_pid)
+                    print(f'Bot {bot_pid} created')
                 if "REMOVE_BOT" in message:
                     bot_pid = self.bots_pid.pop()
                     kill_command = ['kill', '-9', str(bot_pid)]
