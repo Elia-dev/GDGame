@@ -14,11 +14,13 @@ namespace UI
         [SerializeField] public GameObject rowPrefab; // Il prefab per la riga
         [SerializeField] public Transform contentParent; // Il contenitore (Content) delle righe
         [SerializeField] private Button backButton;
-        [SerializeField] private GameObject popupError;
+        [SerializeField] private GameObject popupMessages;
         [SerializeField] private Button refreshButton;
         [SerializeField] private TMP_InputField serverIPInput;
         [SerializeField] private Button selectButton;
         [SerializeField] private Button x;
+        [SerializeField] private GameObject loading;
+        
         private List<string> _servers = new List<string>();
 
         private void Awake()
@@ -41,7 +43,7 @@ namespace UI
                 }
                 else
                 {
-                    popupError.SetActive(true);
+                    popupMessages.SetActive(true);
                     GameObject.Find("PopUpContainer").GetComponent<DisplayMessageOnPopUpUI>()
                         .SetErrorText("Please insert a server IP");
                 }
@@ -50,13 +52,18 @@ namespace UI
             x.onClick.AddListener(() =>
             {
                 SceneManager.LoadScene("MainMenu");
-                popupError.SetActive(false);
+                popupMessages.SetActive(false);
             });
         }
 
         private async Task RetrieveServers()
         {
             refreshButton.interactable = false;
+            foreach (Transform child in contentParent)
+            {
+                Destroy(child.gameObject);
+            }
+            loading.SetActive(true);
             await ClientManager.Instance.FetchOnlineServers();
             _servers = ClientManager.Instance.GetOnlineServersList();
             RefreshServerList();
@@ -70,10 +77,6 @@ namespace UI
         private void RefreshServerList()
         {
             rowPrefab.SetActive(true);
-            foreach (Transform child in contentParent)
-            {
-                Destroy(child.gameObject);
-            }
             
             _servers.ForEach(server =>
             {
@@ -83,9 +86,13 @@ namespace UI
                 newRow.transform.Find("serverIP").GetComponent<TMP_Text>().text = "Server: " + server;
 
                 // Aggiungi un listener al click del bottone per restituire l'idLobby
-                newRow.GetComponent<Button>().onClick.AddListener(() => FillInputField(server));
+                newRow.GetComponent<Button>().onClick.AddListener(() => {
+                    //FillInputField(server);
+                    SetActiveServer(server);
+                });
             });
             rowPrefab.SetActive(false);
+            loading.SetActive(false);
             refreshButton.interactable = true;
         }
         
@@ -97,7 +104,7 @@ namespace UI
         private void SetActiveServer(string server)
         {
             ClientManager.Instance.SetActiveServer(server);
-            popupError.SetActive(true);
+            popupMessages.SetActive(true);
             GameObject.Find("PopUpContainer").GetComponent<DisplayMessageOnPopUpUI>()
                 .SetErrorText("Server selected");
         }
