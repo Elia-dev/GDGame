@@ -162,7 +162,8 @@ namespace businesslogic
                     Debug.Log("Server_Request: BOT_NUMBER");
                     _request = RemoveRequest(message, "BOT_NUMBER: ");
                     int botNumber = int.Parse(_request);
-                    GameManager.Instance.SetBotNumber(botNumber);
+                    Debug.Log("Numero bot settato: " + botNumber);
+                    GameManager.Instance.SetBotNumber(botNumber); 
                 }
                 else if (message.Contains("PLAYER_ID:"))
                 {

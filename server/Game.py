@@ -194,7 +194,8 @@ class Game:
                     subprocess.run(kill_command)
                     print(f'Bot removed')
                 if "REQUEST_BOT_NUMBER" in message:
-                    await player.sock.send(f'BOT_NUMBER: {len(self.bots_pid)}')
+                    print(f"Request bot number, sent {len(self.bots_pid)}")
+                    await player.sock.send("BOT_NUMBER: " + str(len(self.bots_pid)))
                 if "LOBBY_KILLED_BY_HOST" in message:
                     self.game_id = None
                     self.game_running = False
