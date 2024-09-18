@@ -45,6 +45,7 @@ namespace UI {
                     //_numPlayersOnAddBot = GameManager.Instance.GetPlayersNumber();
                     // if(_botNumber + _numPlayersOnAddBot >= 6)
                     addBotButton.interactable = false;
+                    removeBotButton.interactable = false;
                     await ClientManager.Instance.RequestAddBot();
                     await ClientManager.Instance.RequestBotNumber();
                     StartCoroutine(CheckPlayerNumber());
@@ -124,6 +125,7 @@ namespace UI {
                 yield return new WaitForSeconds(0.1f);
             }
             _isBotAdded = false;
+            removeBotButton.interactable = true;
             yield return null;
         }
     }

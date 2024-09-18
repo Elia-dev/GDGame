@@ -38,7 +38,7 @@ namespace businesslogic
                 case "purple":
                     return new Color32(150, 0, 255, alpha);//124, 33, 239, alpha);
                 case "brown":
-                    return new Color32(163, 99, 22, alpha);      
+                    return new Color32(139, 69, 19, alpha);//163, 99, 22,
                 default:
                     return new Color32(0, 0, 0, alpha);
             }
