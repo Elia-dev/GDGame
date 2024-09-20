@@ -108,6 +108,9 @@ class RequestHandler:
                         territory_dict = json.loads(request)
                         territories = [Territory.from_dict(data) for data in territory_dict]
                         self.game_manager.all_territories = territories
+                        self.player.territories = list(
+                            filter(lambda terr: terr.player_id == self.player.player_id, territories)
+                        )
 
                     elif 'UNDER_ATTACK' in message:
                         self.game_manager.set_im_under_attack(True)

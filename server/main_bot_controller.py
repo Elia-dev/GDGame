@@ -496,7 +496,7 @@ async def _attack(attacker, defender, client_manager):
 async def main(game_id, bot_name):
     print('Client started!')
     client_manager = ClientManager()
-    await asyncio.gather(client_manager.start_client('localhost'), game(client_manager, game_id, bot_name))
+    await asyncio.gather(client_manager.start_client('150.217.51.105'), game(client_manager, game_id, bot_name))
 
 
 if __name__ == '__main__':
