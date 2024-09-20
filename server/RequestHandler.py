@@ -174,7 +174,7 @@ class RequestHandler:
                                 print('nothing to do')
 
                             else:
-                                player_terr = list(filter(lambda x: x.id == territory.id, self.player.territories))
+                                player_terr = list(filter(lambda x: x.id == territory.id, self.player.territories)).pop()
                                 player_terr.num_tanks = territory.num_tanks
 
                         self.game_manager.set_im_under_attack(False)
