@@ -3,6 +3,7 @@ using businesslogic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace UI {
@@ -12,7 +13,7 @@ namespace UI {
         [SerializeField] private GameObject blueArmy;
         [SerializeField] private GameObject yellowArmy;
         [SerializeField] private GameObject purpleArmy;
-        [SerializeField] private GameObject blackArmy;
+        [SerializeField] private GameObject brownArmy;
         [SerializeField] private TMP_Text title;
         [SerializeField] private TMP_Text errorMessage;
         [SerializeField] private GameObject objectiveCardCanvas;
@@ -45,7 +46,7 @@ namespace UI {
             blueArmy.GetComponent<Image>().raycastTarget = false;
             yellowArmy.GetComponent<Image>().raycastTarget = false;
             purpleArmy.GetComponent<Image>().raycastTarget = false;
-            blackArmy.GetComponent<Image>().raycastTarget = false;
+            brownArmy.GetComponent<Image>().raycastTarget = false;
         }
 
         //Metodo che attiva solo i reaycast delle armate disponibili
@@ -70,8 +71,8 @@ namespace UI {
                     case "purple":
                         purpleArmy.GetComponent<Image>().raycastTarget = true;
                         break;
-                    case "black":
-                        blackArmy.GetComponent<Image>().raycastTarget = true;
+                    case "brown":
+                        brownArmy.GetComponent<Image>().raycastTarget = true;
                         break;
                 }
             }

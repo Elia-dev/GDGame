@@ -75,7 +75,7 @@ namespace businesslogic
         private async Task<bool> IsServerOnline(string serverUri)
         {
             using ClientWebSocket webSocket = new ClientWebSocket();
-            var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(3));
+            var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(2));
             try
             {
                 await webSocket.ConnectAsync(new Uri(serverUri), cancellationTokenSource.Token);
@@ -296,5 +296,9 @@ namespace businesslogic
             await SendMessage(_webSocket, _cancellationToken, "REMOVE_BOT");
         }
 
+        public async Task RequestBotNumber()
+        {
+            await SendMessage(_webSocket, _cancellationToken, "REQUEST_BOT_NUMBER");
+        }
     }
 }

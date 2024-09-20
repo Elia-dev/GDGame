@@ -34,7 +34,7 @@ namespace businesslogic
         private string _lobbyID = "";
         private bool _imAttacking = false;
         private string _killer_id = "";
-        
+        private int _botNumber = 0;
 
         private GameManager() // Private constructor to allow instantiation using singleton only
         {
@@ -429,6 +429,16 @@ namespace businesslogic
         public void SetGameRunning(bool value)
         {
             _gameRunning = value;
+        }
+
+        public void SetBotNumber(int num)
+        {
+            _botNumber = num;
+        }
+
+        public int GetBotNumber()
+        {
+            return _botNumber;
         }
 
         public void setImAttacking(bool value)

@@ -31,7 +31,7 @@ class Game:
             'green': None,
             'yellow': None,
             'purple': None,
-            'black': None
+            'brown': None
         }
         self.event = asyncio.Event()
         self.event_strategic_movement = asyncio.Event()
@@ -193,6 +193,9 @@ class Game:
                     kill_command = ['kill', '-9', str(bot_pid)]
                     subprocess.run(kill_command)
                     print(f'Bot removed')
+                if "REQUEST_BOT_NUMBER" in message:
+                    print(f"Request bot number, sent {len(self.bots_pid)}")
+                    await player.sock.send("BOT_NUMBER: " + str(len(self.bots_pid)))
                 if "LOBBY_KILLED_BY_HOST" in message:
                     self.game_id = None
                     self.game_running = False
