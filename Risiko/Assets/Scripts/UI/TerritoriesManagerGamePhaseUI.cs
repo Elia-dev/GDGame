@@ -63,7 +63,7 @@ namespace UI {
             set => _attackPhase = value;
         }
 
-        public static bool StategicMove {
+        public static bool StrategicMove {
             get => _strategicMove;
             set => _strategicMove = value;
         }

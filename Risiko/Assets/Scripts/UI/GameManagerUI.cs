@@ -145,8 +145,8 @@ namespace UI
                         break;
                 }
                 _territoryInfo = "\n<b>" + territory.name + $"</b>: state of the continent {continent}, owned by the player " +
-                                 $"<color=#{ColorUtility.ToHtmlStringRGB(Utils.ColorCode(GameManager.Instance.GetPlayerColor(territory.player_id), 255))}>" +
-                                 $"{GameManager.Instance.getEnemyNameById(territory.player_id)}</color>.\n" +
+                                 $"<b><color=#{ColorUtility.ToHtmlStringRGB(Utils.ColorCode(GameManager.Instance.GetPlayerColor(territory.player_id), 255))}>" +
+                                 $"{GameManager.Instance.getEnemyNameById(territory.player_id)}</color></b>.\n" +
                                  $"On the territory there are <b>{territory.num_tanks}</b> army on it.\n";
             
             }

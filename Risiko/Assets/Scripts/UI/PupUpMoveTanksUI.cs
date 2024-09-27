@@ -26,7 +26,7 @@ namespace UI
                 _fromTerritory.num_tanks -= _armyToMove;
                 _toTerritory.num_tanks += _armyToMove;
                 ClientManager.Instance.UpdateTerritoriesState();
-                TerritoriesManagerGamePhaseUI.StategicMove = true;
+                TerritoriesManagerGamePhaseUI.StrategicMove = true;
                 Debug.Log("StartegicMove true; MyTurn: " + Player.Instance.IsMyTurn);
                 this.gameObject.SetActive(false);
             });
