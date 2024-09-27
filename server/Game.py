@@ -423,7 +423,7 @@ class Game:
                         if player.player_id == player_id:
                             requesting_player = player
                     if requesting_player:
-                        print(f'Send {len(paths)} to {player.name}')
+                        print(f'Send {len(paths)} to {requesting_player.name}')
                         await requesting_player.sock.send(f"SHORTEST_PATH: " + json.dumps(paths))
 
                 self.queue.task_done()
