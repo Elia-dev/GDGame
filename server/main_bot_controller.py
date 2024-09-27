@@ -81,22 +81,22 @@ async def strategic_move_phase(client_manager):
     objective = client_manager.player.objective_card
     objective_id = objective.id.replace('obj', '')
     objective_id = int(objective_id)
-    if objective_id == 1 or objective_id == 2:
-        return
-    # Check if I have isolated territories and move away its thanks
-    isolate_territories = utils.get_isolate_territory(client_manager.player.territories,
+
+    if not objective_id == 1:
+        # Check if I have isolated territories and move away its thanks
+        isolate_territories = utils.get_isolate_territory(client_manager.player.territories,
+                                                          client_manager.game_manager.all_territories)
+        for isolate_territory in isolate_territories:
+            if isolate_territory.num_tanks > 1:
+                tanks_to_move = isolate_territory.num_tanks - 1
+                friends = utils.get_friends_neighbors(isolate_territory, client_manager.player.territories,
                                                       client_manager.game_manager.all_territories)
-    for isolate_territory in isolate_territories:
-        if isolate_territory.num_tanks > 1:
-            tanks_to_move = isolate_territory.num_tanks - 1
-            friends = utils.get_friends_neighbors(isolate_territory, client_manager.player.territories,
-                                                  client_manager.game_manager.all_territories)
-            while tanks_to_move > 0:
-                friend = random.choice(friends)
-                friend.num_tanks += 1
-                tanks_to_move -= 1
-                isolate_territory.num_tanks -= 1
-                print(f'Move thank from {isolate_territory.name} to {friend.name}')
+                while tanks_to_move > 0:
+                    friend = random.choice(friends)
+                    friend.num_tanks += 1
+                    tanks_to_move -= 1
+                    isolate_territory.num_tanks -= 1
+                    print(f'Move thank from {isolate_territory.name} to {friend.name}')
     await client_manager.update_territories_state()
     while not client_manager.game_manager.all_territories:
         await asyncio.sleep(0.5)
@@ -245,7 +245,18 @@ async def reinforce_phase(client_manager):
 
     # Create a ranking of territories in danger and start from it
     # to reinforce
-    if objective_id == 1 or objective_id == 2:
+    if objective_id == 1:
+        if len(client_manager.player.territories) > 17:
+            terr_of_interest = list(
+                filter(lambda terr: terr.num_tanks == 1, client_manager.player.territories)
+            )
+        else:
+            terr_of_interest = list(
+                filter(lambda terr: terr.player_id != client_manager.player.player_id, all_territories)
+            )
+        await _reinforce(client_manager, terr_of_interest, my_territories, False)
+
+    if objective_id == 2:
         terr_of_interest = list(
             filter(lambda terr: terr.player_id != client_manager.player.player_id, all_territories)
         )
