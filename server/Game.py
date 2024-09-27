@@ -169,6 +169,8 @@ class Game:
                     self.game_running = False
                 print(" Check objective card terminated")
             self.firstRound = False
+        await asyncio.sleep(1)
+        self.kill_all_bots()
 
     async def handle_requests(self):
         while self.game_running:
@@ -457,10 +459,10 @@ class Game:
 
     async def end_game(self):
         self.game_running = False
-
         await self.broadcast("GAME_KILLED_BY_HOST")
         self.remove_all_players()
         print(f"Game {self.game_id} is terminated.")
+        self.kill_all_bots()
 
     async def __game_order__(self):
         response = {}
@@ -827,6 +829,14 @@ class Game:
                 control += 1
             print("Il fratello deve ancora uccidere il king con l'armata verde o quello che gli ha rubato la kill")
             return False
+
+    def kill_all_bots(self):
+        for bot_pid in self.bots_pid:
+            kill_command = ['kill', '-9', str(bot_pid)]
+            subprocess.run(kill_command)
+            print(f'Bot {bot_pid} killed')
+
+
 
 async def _run_script(host_id, bot_name):
     await asyncio.gather(main(host_id, bot_name))
