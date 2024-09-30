@@ -56,12 +56,6 @@ namespace UI {
             }
             OnTurnEnded();
         }
-
-        private void OnTurnEnded()
-        {
-            TerritoriesManagerGamePhaseUI.IsTurnInitialized = false;
-        }
-        
         public void Start() {
             GameManagerUI.DistributionPhase = true;
         }
@@ -83,11 +77,11 @@ namespace UI {
         private void AddArmy() {
             int totalArmy = _selectedTerritories.Count.Sum();
             if (totalArmy < ArmyNumber) {
-                int result = FindTerritory(SelectedTerritory.name);
+                int result = FindTerritory(selectedTerritory.name);
                 if (result == -1) {
                     for (int i = 0; i < _selectedTerritories.Count.Length; i++)
                         if (_selectedTerritories.Count[i] == 0) {
-                            _selectedTerritories.Territories[i] = TerritoryInformationsPlayer(SelectedTerritory.name);
+                            _selectedTerritories.Territories[i] = TerritoryInformationsPlayer(selectedTerritory.name);
                             _selectedTerritories.Count[i]++;
                             tankToAdd.text = _selectedTerritories.Count[i] + "";
                             i = _selectedTerritories.Count.Length;
@@ -97,20 +91,20 @@ namespace UI {
                     _selectedTerritories.Count[result]++;
                     tankToAdd.text = _selectedTerritories.Count[result] + "";
                 }
-                SelectedTerritory.Select();
+                selectedTerritory.Select();
                 CheckTotalArmy();
             }
         }
 
         private void RemoveArmy() {
             if (int.Parse(tankToAdd.text) > 0) {
-                int result = FindTerritory(SelectedTerritory.name);
+                int result = FindTerritory(selectedTerritory.name);
 
                 _selectedTerritories.Count[result]--;
                 tankToAdd.text = _selectedTerritories.Count[result] + "";
                 if (_selectedTerritories.Count[result] == 0) {
                     _selectedTerritories.Territories[result] = null;
-                    SelectedTerritory.Deselect();
+                    selectedTerritory.Deselect();
                 }
 
                 CheckTotalArmy();
@@ -212,15 +206,15 @@ namespace UI {
                 if (hit.collider is PolygonCollider2D) {
                     TerritoryHandlerUI territoryHandlerUI = hit.transform.GetComponent<TerritoryHandlerUI>();
                     if (territoryHandlerUI is not null) {
-                        SelectedTerritory = territoryHandlerUI;
-                        SelectState(SelectedTerritory);
+                        selectedTerritory = territoryHandlerUI;
+                        SelectState(selectedTerritory);
                     }
                 }
                 else if (hit.collider is null) {
                     gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
                     popUpAddTank.SetActive(false);
-                    if (SelectedTerritory is not null) {
-                        SelectedTerritory = null;
+                    if (selectedTerritory is not null) {
+                        selectedTerritory = null;
                     }
                 }
             }
@@ -273,57 +267,10 @@ namespace UI {
                 if (popUpAddTank.activeInHierarchy) {
                     Debug.Log("Disattivo il popup AddTank");
                     popUpAddTank.SetActive(false);
-                    if (SelectedTerritory is not null) SelectedTerritory = null;
+                    if (selectedTerritory is not null) selectedTerritory = null;
                 }
                 else
                     escMenu.SetActive(true);
-            }
-        }
-
-        public void AddArmy() {
-            int totalArmy = _selectedTerritories.count.Sum(); //Numero totale di armate da posizionare in questo turno
-            if (totalArmy < _armyNumber) {
-                // Se il totale è inferiore a quelle totali posizionabili
-                // Cerca la posizione del territorio nel vettore delle armate selezionate nel turno
-                int result = FindTerritory(selectedTerritory.name);
-
-                if (result == -1) {
-                    //Vuol dire che nessuna armata è stata posizionata su quello stato in questo turno
-                    //Cerca il primo posto vuoto nel vettore ed inserisce il territorio corrispondente
-                    for (int i = 0; i < _selectedTerritories.count.Length; i++)
-                        if (_selectedTerritories.count[i] == 0) {
-                            _selectedTerritories.territories[i] = TerritoryInformationsPlayer(selectedTerritory.name);
-                            //Incrementa il numero di armate che saranno posizionate sul territorio
-                            _selectedTerritories.count[i]++;
-                            tankToAdd.text = _selectedTerritories.count[i] + "";
-                            i = _selectedTerritories.count.Length;
-                        }
-                }
-                else {
-                    //Se il territorio è già nella lista allora è sufficiente incrementare il numero di armate
-                    _selectedTerritories.count[result]++;
-                    tankToAdd.text = _selectedTerritories.count[result] + "";
-                }
-
-                //Seleziona lo stato
-                selectedTerritory.Select();
-                CheckTotalArmy();
-            }
-        }
-
-        //Rimuove il numero di armate da posizionare su uno stato (nel caso ne fossero già state assegnate a questo turno)
-        public void RemoveArmy() {
-            if (int.Parse(tankToAdd.text) > 0) {
-                int result = FindTerritory(selectedTerritory.name);
-
-                _selectedTerritories.count[result]--;
-                tankToAdd.text = _selectedTerritories.count[result] + "";
-                if (_selectedTerritories.count[result] == 0) {
-                    _selectedTerritories.territories[result] = null;
-                    selectedTerritory.Deselect();
-                }
-
-                CheckTotalArmy();
             }
         }
 
@@ -337,13 +284,6 @@ namespace UI {
 
             _selectedTerritories.Territories = new Territory[ArmyNumber];
             _selectedTerritories.Count = new int[ArmyNumber];
-        }
-
-        //Mostra il popup per aggiungere o togliere armate
-        public void SelectState(TerritoryHandlerUI newTerritory) {
-            //Mostra le informazioni del territorio
-        private Territory TerritoryInformationsPlayer(string id) {
-            return Player.Instance.Territories.Find(x => x.id.Equals(id));
         }
 
         private Territory TerritoryInformationsAllPlayers(string id) {
@@ -362,7 +302,7 @@ namespace UI {
             if (TerritoryInformationsPlayer(newTerritory.name) is not null) {
                 stateNameAddTank.text = TerritoryInformationsPlayer(newTerritory.name).name;
                 tankNumber.text = TerritoryInformationsPlayer(newTerritory.name).num_tanks + "";
-                int result = FindTerritory(SelectedTerritory.name);
+                int result = FindTerritory(selectedTerritory.name);
                 if (result == -1)
                     tankToAdd.text = 0 + "";
                 else
@@ -374,90 +314,13 @@ namespace UI {
             }
             else {
                 popUpAddTank.SetActive(false);
-                SelectedTerritory.Deselect();
-                SelectedTerritory = null;
+                selectedTerritory.Deselect();
+                selectedTerritory = null;
             }
         }
-
-        // Aggiorna il numero di armate nei varri territori del Player ed invia al server di aggiornare i territori
-        private void SendArmy() {
-            for (int i = 0; i < _armyNumber; i++) {
-                Player.Instance.Territories.ForEach(terr => {
-                    if (_selectedTerritories.territories[i] is not null &&
-                        terr.id.Equals(_selectedTerritories.territories[i].id)) {
-                        terr.num_tanks += _selectedTerritories.count[i];
-                        base.territories.Find(obj => obj.name.Equals(terr.id))
-                            .GetComponent<TerritoryHandlerUI>().Deselect();
-                    }
-                });
-            }
-
-            popUpAddTank.SetActive(false); //Toglie il popup dei tank
-            Player.Instance.TanksAvailable -= _selectedTerritories.count.Sum(); //Decrementa le armate disponinbili
-            Player.Instance.TanksPlaced += _selectedTerritories.count.Sum(); //Incrementa i carri posizionati
-            gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
-            ClientManager.Instance.UpdateTerritoriesState();
-            endTurnButton.interactable = false; //Disattiva il tasto per il passaggio del turno
-            _isTurnInitialized = false;
-
-            // Se siamo nella fase di attacco aggiusta le booleane ed aggiorna i territori
-            if (!distributionPhase) {
-                this.GetComponent<TerritoriesManagerDistrPhaseUI>().enabled = false;
-                TerritoriesManagerGamePhaseUI.ReinforcePhase = false;
-                GameManagerUI.ReinforcePhase = false; // Per barra dx
-                TerritoriesManagerGamePhaseUI.AttackPhase = true;
-                GameManagerUI.AttackPhase = true; // Per barra dx
-                this.GetComponent<TerritoriesManagerGamePhaseUI>().IsPhaseGoing = false;
-                endTurnButton.GetComponentInChildren<TMP_Text>().text = "End Turn!";
-                endTurnButton.interactable = true;
-                this.GetComponent<TerritoriesManagerGamePhaseUI>().RefreshTerritories();
-            }
-        }
-
-        //Trova un territorio nei territori del Player dato l'id del territorio
+        
         private Territory TerritoryInformationsPlayer(string id) {
             return Player.Instance.Territories.Find(x => x.id.Equals(id));
-        }
-
-        //Trova un territorio nei territori di tutti i giocatori dato l'id del territorio
-        private Territory TerritoryInformationsAllPlayers(string id) {
-            return GameManager.Instance.AllTerritories.Find(terr => terr.id.Equals(id));
-        }
-
-        //restituisce l'indice del territorio all'interno del vettore dei territori su cui posizionare le armate
-        private int FindTerritory(string territoryName) {
-            for (int i = 0; i < _armyNumber; i++) {
-                if (_selectedTerritories.territories[i] is not null &&
-                    _selectedTerritories.territories[i].id.Equals(territoryName))
-                    return i;
-            }
-
-            return -1;
-        }
-
-        public void DeselectState() {
-            selectedTerritory.Deselect();
-            selectedTerritory = null;
-        }
-
-        //Attiva il tasto per il passaggio del turno che permetterà quindi di inviare le armate
-        private void CheckTotalArmy() {
-            if (_selectedTerritories.count.Sum() == _armyNumber)
-                endTurnButton.interactable = true;
-            else
-                endTurnButton.interactable = false;
-        }
-
-        private IEnumerator WaitForTurnToEnd()
-        {
-            // Attendi finché Player.Instance.IsMyTurn è true
-            while (Player.Instance.IsMyTurn)
-            {
-                yield return null; // Attendi il frame successivo
-            }
-
-            // Esegui il codice per il cambio di turno
-            OnTurnEnded();
         }
 
         private void OnTurnEnded()

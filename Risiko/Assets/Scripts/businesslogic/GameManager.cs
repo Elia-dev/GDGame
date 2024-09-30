@@ -55,9 +55,9 @@ namespace businesslogic
             }
         }
     
-        public void setKillerId(string id)
+        public void SetKillerId(string id)
         {
-            _killer_id = id;
+            _killerID = id;
         }
         
         public string GetKillerId()
@@ -84,7 +84,7 @@ namespace businesslogic
             _winnerGameId = id;
         }
 
-        public string GetWinnerGameId()
+        public string GetWinnerId()
         {
             return _winnerGameId;
         }

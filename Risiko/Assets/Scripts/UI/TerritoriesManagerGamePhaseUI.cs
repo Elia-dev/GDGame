@@ -220,9 +220,9 @@ namespace UI {
                 popUpAttackResult.GetComponent<PopUpAttackResultUI>().SetPupUp();
             }
 
-            if (!GameManager.Instance.GetWinnerGameId().Equals("")) {
+            if (!GameManager.Instance.GetWinnerId().Equals("")) {
                 gameObject.GetComponent<TerritoriesManagerGamePhaseUI>().enabled = false;
-                endGame.GetComponent<EndGameUI>().SetPopUp(GameManager.Instance.GetWinnerGameId());
+                endGame.GetComponent<EndGameUI>().SetPopUp(GameManager.Instance.GetWinnerId());
             }
 
             // Se premo ESC mostro il menu di pausa o chiudo i popup o deseleziono gli stati
@@ -240,7 +240,7 @@ namespace UI {
                     popUpAttack.SetActive(false);
                     popUpMoveTanks.SetActive(false);
                 }
-                else if (SelectedTerritory is not null) {
+                else if (selectedTerritory is not null) {
                     DeselectState();
                 }
                 else
@@ -270,7 +270,7 @@ namespace UI {
                     if (popUpAttack.activeInHierarchy)
                         popUpAttack.SetActive(false);
                     popUpMoveTanks.GetComponent<PupUpMoveTanksUI>().SetPupUp(
-                        TerritoryInformationsPlayer(SelectedTerritory.gameObject.name),
+                        TerritoryInformationsPlayer(selectedTerritory.gameObject.name),
                         TerritoryInformationsPlayer(newTerritory.gameObject.name),
                         newTerritory.gameObject);
                 }
@@ -278,10 +278,10 @@ namespace UI {
                     popUpMoveTanks.SetActive(false);
                     popUpAttack.SetActive(false);
                     DeselectState();
-                    SelectedTerritory = newTerritory;
-                    SelectedTerritory.Select();
+                    selectedTerritory = newTerritory;
+                    selectedTerritory.Select();
                     _neighborhoodTerritories =
-                        Utils.GetNeighborsOf(TerritoryInformationsPlayer(SelectedTerritory.gameObject.name));
+                        Utils.GetNeighborsOf(TerritoryInformationsPlayer(selectedTerritory.gameObject.name));
                     _neighborhoodGameObj = new List<GameObject>();
                     foreach (var territory in _neighborhoodTerritories) {
                         GameObject terr = base.territories.Find(obj => obj.name.Equals(territory.id));
@@ -300,7 +300,7 @@ namespace UI {
                     if (popUpMoveTanks.activeInHierarchy)
                         popUpMoveTanks.SetActive(false);
                     popUpAttack.GetComponent<PopUpAttackUI>().SetPupUp(
-                        TerritoryInformationsPlayer(SelectedTerritory.gameObject.name),
+                        TerritoryInformationsPlayer(selectedTerritory.gameObject.name),
                         TerritoryInformationsAllPlayers(_enemyTerritory.gameObject.name),
                         _enemyTerritory.gameObject);
                 }
@@ -403,8 +403,8 @@ namespace UI {
         }
 
         private void DeselectState() {
-            if (SelectedTerritory is not null) {
-                SelectedTerritory.Deselect();
+            if (selectedTerritory is not null) {
+                selectedTerritory.Deselect();
                 foreach (var terr in _neighborhoodGameObj) {
                     Color32 tempColor = terr.GetComponent<SpriteRenderer>().color;
                     tempColor.a = 50;
@@ -412,7 +412,7 @@ namespace UI {
                     terr.GetComponent<TerritoryHandlerUI>().StartColor = tempColor;
                 }
 
-                SelectedTerritory = null;
+                selectedTerritory = null;
                 _neighborhoodGameObj = new List<GameObject>();
                 _neighborhoodTerritories = new List<Territory>();
             }

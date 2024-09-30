@@ -52,12 +52,12 @@ namespace UI
             _distributionPhase = false;
             _reinforcePhase = false;
             _attackPhase = false;
-            _thisIsTheEnd = false;
+            ThisIsTheEnd = false;
             playerName.text = Player.Instance.Name;
         }
 
         private void Update() {
-            if (!GameManager.Instance.GetGameRunning() || !GameManager.Instance.GetWinnerGameId().Equals("") || ThisIsTheEnd) {
+            if (!GameManager.Instance.GetGameRunning() || !GameManager.Instance.GetWinnerId().Equals("") || ThisIsTheEnd) {
                 return;
             }
             
