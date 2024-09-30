@@ -9,21 +9,11 @@ namespace UI
     {
         [SerializeField] public List<GameObject> territories;
         [SerializeField] public Button endTurnButton;
-        [NonSerialized] protected TerritoryHandlerUI selectedTerritory;
+        [NonSerialized] protected TerritoryHandlerUI SelectedTerritory;
         protected static bool distributionPhase = true;
-
-        public static TerritoriesManagerUI Instance { get; private set; }
 
         private void Start() {
             distributionPhase = true;
-        }
-
-        public void SelectState(TerritoryHandlerUI newTerritory) {
-        
-        }
-
-        public void DeselectState() {
-        
         }
     }
 }

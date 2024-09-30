@@ -22,8 +22,10 @@ namespace UI
         private static bool _distributionPhase = false;
         private static bool _reinforcePhase = false;
         private static bool _attackPhase = false;
-
-        public static bool ThisIsTheEnd { get; set; } = false;
+        private static bool _thisIsTheEnd = false;
+        public static bool ThisIsTheEnd {
+            set => _thisIsTheEnd = value;
+        }
 
         public static bool SettingGame {
             set => _settingGame = value;
@@ -42,22 +44,16 @@ namespace UI
         }
 
         private void Start() {
-            Debug.Log("Player: " + Player.Instance);
-            Debug.Log("PlayerID: " + Player.Instance.PlayerId);
-            Debug.Log("PlayerName: " + Player.Instance.Name);
-            Debug.Log("GameManager: " + GameManager.Instance);
-            Debug.Log("GameManager LobbyID: " + GameManager.Instance.GetLobbyId());
-            Debug.Log("GameManager PlayersID: " + GameManager.Instance.GetPlayersId());
             _settingGame = true;
             _distributionPhase = false;
             _reinforcePhase = false;
             _attackPhase = false;
-            ThisIsTheEnd = false;
+            _thisIsTheEnd = false;
             playerName.text = Player.Instance.Name;
         }
 
         private void Update() {
-            if (!GameManager.Instance.GetGameRunning() || !GameManager.Instance.GetWinnerId().Equals("") || ThisIsTheEnd) {
+            if (!GameManager.Instance.GetGameRunning() || !GameManager.Instance.GetWinnerId().Equals("") || _thisIsTheEnd) {
                 return;
             }
             

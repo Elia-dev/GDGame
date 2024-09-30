@@ -89,12 +89,7 @@ namespace UI
             loading.SetActive(false);
             refreshButton.interactable = true;
         }
-        
-        private void FillInputField(string server)
-        {
-            serverIPInput.text = server;
-        }
-        
+
         private void SetActiveServer(string server)
         {
             ClientManager.Instance.SetActiveServer(server);

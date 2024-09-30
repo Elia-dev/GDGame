@@ -77,11 +77,11 @@ namespace UI {
         private void AddArmy() {
             int totalArmy = _selectedTerritories.Count.Sum();
             if (totalArmy < ArmyNumber) {
-                int result = FindTerritory(selectedTerritory.name);
+                int result = FindTerritory(SelectedTerritory.name);
                 if (result == -1) {
                     for (int i = 0; i < _selectedTerritories.Count.Length; i++)
                         if (_selectedTerritories.Count[i] == 0) {
-                            _selectedTerritories.Territories[i] = TerritoryInformationsPlayer(selectedTerritory.name);
+                            _selectedTerritories.Territories[i] = TerritoryInformationsPlayer(SelectedTerritory.name);
                             _selectedTerritories.Count[i]++;
                             tankToAdd.text = _selectedTerritories.Count[i] + "";
                             i = _selectedTerritories.Count.Length;
@@ -91,20 +91,20 @@ namespace UI {
                     _selectedTerritories.Count[result]++;
                     tankToAdd.text = _selectedTerritories.Count[result] + "";
                 }
-                selectedTerritory.Select();
+                SelectedTerritory.Select();
                 CheckTotalArmy();
             }
         }
 
         private void RemoveArmy() {
             if (int.Parse(tankToAdd.text) > 0) {
-                int result = FindTerritory(selectedTerritory.name);
+                int result = FindTerritory(SelectedTerritory.name);
 
                 _selectedTerritories.Count[result]--;
                 tankToAdd.text = _selectedTerritories.Count[result] + "";
                 if (_selectedTerritories.Count[result] == 0) {
                     _selectedTerritories.Territories[result] = null;
-                    selectedTerritory.Deselect();
+                    SelectedTerritory.Deselect();
                 }
 
                 CheckTotalArmy();
@@ -206,15 +206,15 @@ namespace UI {
                 if (hit.collider is PolygonCollider2D) {
                     TerritoryHandlerUI territoryHandlerUI = hit.transform.GetComponent<TerritoryHandlerUI>();
                     if (territoryHandlerUI is not null) {
-                        selectedTerritory = territoryHandlerUI;
-                        SelectState(selectedTerritory);
+                        SelectedTerritory = territoryHandlerUI;
+                        SelectState(SelectedTerritory);
                     }
                 }
                 else if (hit.collider is null) {
                     gameManager.GetComponent<GameManagerUI>().HideTerritoryInfo();
                     popUpAddTank.SetActive(false);
-                    if (selectedTerritory is not null) {
-                        selectedTerritory = null;
+                    if (SelectedTerritory is not null) {
+                        SelectedTerritory = null;
                     }
                 }
             }
@@ -267,7 +267,7 @@ namespace UI {
                 if (popUpAddTank.activeInHierarchy) {
                     Debug.Log("Disattivo il popup AddTank");
                     popUpAddTank.SetActive(false);
-                    if (selectedTerritory is not null) selectedTerritory = null;
+                    if (SelectedTerritory is not null) SelectedTerritory = null;
                 }
                 else
                     escMenu.SetActive(true);
@@ -302,7 +302,7 @@ namespace UI {
             if (TerritoryInformationsPlayer(newTerritory.name) is not null) {
                 stateNameAddTank.text = TerritoryInformationsPlayer(newTerritory.name).name;
                 tankNumber.text = TerritoryInformationsPlayer(newTerritory.name).num_tanks + "";
-                int result = FindTerritory(selectedTerritory.name);
+                int result = FindTerritory(SelectedTerritory.name);
                 if (result == -1)
                     tankToAdd.text = 0 + "";
                 else
@@ -314,8 +314,8 @@ namespace UI {
             }
             else {
                 popUpAddTank.SetActive(false);
-                selectedTerritory.Deselect();
-                selectedTerritory = null;
+                SelectedTerritory.Deselect();
+                SelectedTerritory = null;
             }
         }
         
