@@ -107,10 +107,10 @@ class RequestHandler:
                         request = message.replace('SEND_TERRITORIES_TO_ALL: ', '').strip()
                         territory_dict = json.loads(request)
                         territories = [Territory.from_dict(data) for data in territory_dict]
-                        self.game_manager.all_territories = territories
                         self.player.territories = list(
                             filter(lambda terr: terr.player_id == self.player.player_id, territories)
                         )
+                        self.game_manager.all_territories = territories
 
                     elif 'UNDER_ATTACK' in message:
                         self.game_manager.set_im_under_attack(True)
@@ -171,7 +171,8 @@ class RequestHandler:
                                 self.player.territories.append(territory)
 
                             elif territory not in self.player.territories and territory.player_id != self.player.player_id:
-                                print('nothing to do')
+                                # print('nothing to do')
+                                pass
 
                             else:
                                 player_terr = list(filter(lambda x: x.id == territory.id, self.player.territories)).pop()
@@ -183,7 +184,7 @@ class RequestHandler:
                     elif "SHORTEST_PATH" in message:
                         request = message.replace('SHORTEST_PATH: ', '').strip()
                         paths = json.loads(request)
-                        print(f'Receive {len(paths)} paths\n{paths}')
+                        # print(f'Receive {len(paths)} paths\n{paths}')
                         self.game_manager.shortest_paths = paths
 
                     else:
