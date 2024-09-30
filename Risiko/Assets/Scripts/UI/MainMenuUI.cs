@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Audio;
 using businesslogic;
 using UnityEngine;
@@ -16,7 +15,7 @@ namespace UI
         [SerializeField] private Button x;
     
         private bool _pressedButton = false;
-        private readonly float _delay = 8.0f; // Durata del ritardo in secondi
+        private readonly float _delay = 8.0f;
         private float _timer;
 
         private void Awake() {
@@ -33,7 +32,7 @@ namespace UI
             serverListButton.onClick.AddListener(() => { SceneManager.LoadScene("ServerListMenu"); });
         }
 
-        void Start()
+        private void Start()
         {
             Player.Instance.ResetPlayer();
             GameManager.Instance.ResetGameManager();
@@ -46,7 +45,7 @@ namespace UI
             if (_pressedButton) {
                 ClientManager.Instance.StartClient();
                 if (_timer > 0) {
-                    _timer -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
+                    _timer -= Time.deltaTime;
                     if (ClientManager.Instance.IsConnected())
                     {
                         SceneManager.LoadScene("GameMenu");

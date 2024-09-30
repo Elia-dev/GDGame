@@ -123,7 +123,6 @@ namespace businesslogic
 
         public async void ResetConnection()
         {
-            //await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
             _connected = false;
             _webSocket = null;
         }
@@ -140,13 +139,11 @@ namespace businesslogic
             
                 try
                 {
-                    //await _webSocket.ConnectAsync(uri, cancellationTokenSource.Token);
-                    _webSocket.Options.KeepAliveInterval = TimeSpan.FromMinutes(2.5); // invia un ping ogni 2.5 minuti
+                    _webSocket.Options.KeepAliveInterval = TimeSpan.FromMinutes(2.5);
                     await _webSocket.ConnectAsync(uri, cancellationTokenSourceFirstConnection.Token);
             
                     if (_webSocket.State == WebSocketState.Open)
                     {
-                        Debug.Log("Connected");
                         SetConnected(true);
                     
                         var handlerTask = RequestHandler.HandleRequests(cancellationTokenSource.Token);
@@ -155,26 +152,22 @@ namespace businesslogic
                     }
                     else
                     {
-                        Debug.Log("[ClientManager] WebSocket connection could not be established.");
                         _webSocket = null;
                         SetConnected(false);
                     }
                 }
                 catch (OperationCanceledException)
                 {
-                    Debug.Log("WebSocket connection was canceled due to timeout.");
                     _webSocket = null;
                     SetConnected(false);
                 }
                 catch (WebSocketException ex)
                 {
-                    Debug.Log($"WebSocketException: {ex.Message}");
                     _webSocket = null;
                     SetConnected(false);
                 }
                 catch (Exception ex)
                 {
-                    Debug.Log($"Exception: {ex.Message}");
                     _webSocket = null;
                     SetConnected(false);
                 }
@@ -196,7 +189,6 @@ namespace businesslogic
                 var response = Encoding.UTF8.GetString(buffer, 0, result.Count);
                 RequestHandler.AddRequest(webSocket.Options.ClientCertificates.ToString(), response);
             }
-            Debug.Log("Uscito dal loop delle richieste");
         }
 
         public async void RequestAllGames()
@@ -267,23 +259,16 @@ namespace businesslogic
                 enemyArmyNum = enemyTerritory.num_tanks;
             }
         
-            GameManager.Instance.setEnemyArmyNum(enemyArmyNum);
-            GameManager.Instance.setMyArmyNum(myNumArmy);
-            GameManager.Instance.setImUnderAttack(false);
-            GameManager.Instance.setMyTerritory(myTerritory);
-            GameManager.Instance.setEnemyTerritoy(enemyTerritory);
+            GameManager.Instance.SetEnemyArmyNum(enemyArmyNum);
+            GameManager.Instance.SetMyArmyNum(myNumArmy);
+            GameManager.Instance.SetImUnderAttack(false);
+            GameManager.Instance.SetMyTerritory(myTerritory);
+            GameManager.Instance.SetEnemyTerritoy(enemyTerritory);
         
             await SendMessage(_webSocket, _cancellationToken, "ATTACK_TERRITORY: " + 
                                                               Player.Instance.PlayerId + "-" + enemyTerritory.player_id + ", " 
                                                               + myTerritory.id + "-" + enemyTerritory.id + ", " + 
                                                               myNumArmy.ToString() + "-" + enemyArmyNum.ToString());
-            //GameManager.Instance.setImAttacking(true); SPOSTATO IN requestHandler
-        }
-    
-        public async void RequestTerritoryInfo(string Terr_id)
-        {
-            await SendMessage(_webSocket, _cancellationToken, "REQUEST_TERRITORY_INFO: " + Player.Instance.PlayerId + "-" + Terr_id);
-    
         }
 
         public async Task RequestAddBot()

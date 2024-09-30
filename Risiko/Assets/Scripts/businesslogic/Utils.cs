@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace businesslogic
 {
-    public class Utils 
+    public abstract class Utils 
     {
         public static string CheckNickname(string username)
         {
@@ -47,20 +47,19 @@ namespace businesslogic
         static int[,] LoadAdjMatrix(string filePath, int n)
         {
             int[,] adjMatrix = new int[n, n];
-            using (BinaryReader reader = new BinaryReader(File.Open(filePath, FileMode.Open)))
+            using BinaryReader reader = new BinaryReader(File.Open(filePath, FileMode.Open));
+            for (int i = 0; i < n; i++)
             {
-                for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++)
                 {
-                    for (int j = 0; j < n; j++)
-                    {
-                        adjMatrix[i, j] = reader.ReadInt32();
-                    }
+                    adjMatrix[i, j] = reader.ReadInt32();
                 }
             }
+
             return adjMatrix;
         }
-    
-        public static List<int> GetNeighborsNodeOf(int territoryNode)
+
+        private static List<int> GetNeighborsNodeOf(int territoryNode)
         {
             string filePath = Path.Combine(Application.streamingAssetsPath, "adj_matrix.bin");
             int[,] adjMatrix = LoadAdjMatrix(filePath, 42);
@@ -82,16 +81,14 @@ namespace businesslogic
         {
             List<Territory> territories = new List<Territory>();
             List<int> nodes = GetNeighborsNodeOf(territory.node);
-            Debug.Log(nodes.ToString());
             foreach (var node in nodes)
             {
-                Debug.Log(GetTerritoryFromNode(node).name);
                 territories.Add(GetTerritoryFromNode(node));
             }
             return territories;
         }
-    
-        public static Territory GetTerritoryFromNode(int node)
+
+        private static Territory GetTerritoryFromNode(int node)
         {
             foreach (var terr in GameManager.Instance.AllTerritories)
             {
@@ -100,9 +97,7 @@ namespace businesslogic
                     return terr;
                 }
             }
-            //Debug.Log("Territorio non trovato");
             return null;
-            //return GameManager.Instance.AllTerritories.Find(x => x.node == node);
         }
     }
 }

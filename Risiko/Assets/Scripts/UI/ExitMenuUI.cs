@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace UI
@@ -14,9 +13,7 @@ namespace UI
             stayButton.onClick.AddListener(() => {
                 SceneManager.LoadScene("MainMenu");
             });
-        
             quitButton.onClick.AddListener(Application.Quit);
         }
-
     }
 }

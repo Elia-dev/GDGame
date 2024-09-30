@@ -1,4 +1,3 @@
-using System;
 using businesslogic;
 using TMPro;
 using UnityEngine;
@@ -28,7 +27,6 @@ namespace UI {
                     SceneManager.LoadScene("HostMenu");
                 }
                 else {
-                    Debug.Log("Invalid username");
                     popupError.SetActive(true);
                     GameObject.Find("PopUpContainer").GetComponent<DisplayMessageOnPopUpUI>()
                         .SetErrorText(Utils.CheckNickname(username));
@@ -51,7 +49,6 @@ namespace UI {
         }
 
         private void Start() {
-            // Imposta il focus sull'input field
             usernameInputField.Select();
             usernameInputField.ActivateInputField();
         }

@@ -23,16 +23,15 @@ namespace UI {
         private void Awake() {
             x.onClick.AddListener(() => {
                 gameObject.SetActive(false);
-                GameManager.Instance.cleanAfterBattle();
+                GameManager.Instance.CleanAfterBattle();
                 TerritoriesManagerGamePhaseUI.UnderAttack = false;
             });
         }
 
         private void Update() {
-            //Se i dati riguardanti la vittoria sono arrivati li mostro
-            if (!GameManager.Instance.getWinnerBattleId().Equals("") && !_dataArrived) {
+            if (!GameManager.Instance.GetWinnerBattleId().Equals("") && !_dataArrived) {
                 _dataArrived = true;
-                if (GameManager.Instance.getWinnerBattleId().Equals(Player.Instance.PlayerId)) {
+                if (GameManager.Instance.GetWinnerBattleId().Equals(Player.Instance.PlayerId)) {
                     diceResult.text += "<color=green>You WIN!\n" + _enemyTerritory.name + " now is yours!</color>";
                 }
                 else {
@@ -45,22 +44,20 @@ namespace UI {
         public void SetPupUp() {
             _dataArrived = false;
             gameObject.SetActive(true);
-            if (GameManager.Instance.getImAttacking())
+            if (GameManager.Instance.GetImAttacking())
                 popUpAttackTitle.text = "You're attacking!";
             else
                 popUpAttackTitle.text = "You're under attack!";
-            this._enemyTerritory = GameManager.Instance.getEnemyTerritory();
-            this._myTerritory = GameManager.Instance.getMyTerritory();
-            //Tu
+            this._enemyTerritory = GameManager.Instance.GetEnemyTerritory();
+            this._myTerritory = GameManager.Instance.GetMyTerritory();
             myInfo.text = Player.Instance.Name + "\n" +
-                          "<b>" + _myTerritory.name + "</b>" + "\nWith " + GameManager.Instance.getMyArmyNum() +
+                          "<b>" + _myTerritory.name + "</b>" + "\nWith " + GameManager.Instance.GetMyArmyNum() +
                           " army";
             myState.sprite = LoadSprite("TerritoriesSprite/" + _myTerritory.id);
             myState.color = Utils.ColorCode(Player.Instance.ArmyColor, 150);
             
-            //Risultati dadi
-            int[] myExtractedNumbers = GameManager.Instance.getMyExtractedNumbers();
-            int[] enemyExtractedNumbers = GameManager.Instance.getEnemyExtractedNumbers();
+            int[] myExtractedNumbers = GameManager.Instance.GetMyExtractedNumbers();
+            int[] enemyExtractedNumbers = GameManager.Instance.GetEnemyExtractedNumbers();
             diceResult.text = "\n<b>Dice results</b>\n";
             if (myExtractedNumbers.Length <= enemyExtractedNumbers.Length) {
                 for (int i = 0; i < enemyExtractedNumbers.Length; i++) {
@@ -70,7 +67,6 @@ namespace UI {
                         diceResult.text += "        " + enemyExtractedNumbers[i];
                     diceResult.text += "\n";
                 }
-                //Aggiungo righe vuote per evitare sovrapposizione tr la scritta vittoria/perdita e gli stati a dx e sx
                 switch (enemyExtractedNumbers.Length) {
                     case 1:
                         diceResult.text += "\n\n";
@@ -88,7 +84,6 @@ namespace UI {
                         diceResult.text += myExtractedNumbers[i] + "<color=#FFFFFF00> - 0</color>";
                     diceResult.text += "\n";
                 }
-                //Aggiungo righe vuote per evitare sovrapposizione tr la scritta vittoria/perdita e gli stati a dx e sx
                 switch (myExtractedNumbers.Length) {
                     case 1:
                         diceResult.text += "\n\n";
@@ -100,15 +95,14 @@ namespace UI {
             }
             diceResult.text += "\n";
 
-            //Altro giocatore
-            enemyInfo.text = GameManager.Instance.getEnemyNameById(_enemyTerritory.player_id) + "\n" +
+            enemyInfo.text = GameManager.Instance.GetEnemyNameById(_enemyTerritory.player_id) + "\n" +
                              "<b>" + _enemyTerritory.name + "</b>" + "\nWith " +
                              GameManager.Instance.GetEnemyArmyNum() + " army";
             enemyState.sprite = LoadSprite("TerritoriesSprite/" + _enemyTerritory.id);
             enemyState.color = Utils.ColorCode(GameManager.Instance.GetPlayerColor(_enemyTerritory.player_id), 150);
         }
 
-        public Sprite LoadSprite(string spriteName) {
+        private Sprite LoadSprite(string spriteName) {
             return Resources.Load<Sprite>(spriteName);
         }
     }

@@ -1,5 +1,3 @@
-using Newtonsoft.Json;
-
 public class Territory : Card
 {
     public string name { get; set; }
@@ -20,16 +18,6 @@ public class Territory : Card
     public static Territory EmptyTerritory()
     {
         return new Territory(null, null, null, null, null, null, null, -1, -1);
-    }
-    
-    public new string ToJson()
-    {
-        return JsonConvert.SerializeObject(this);
-    }
-    
-    public new static Territory FromJson(string json)
-    {
-        return JsonConvert.DeserializeObject<Territory>(json);
     }
 
     public override string ToString()

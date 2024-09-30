@@ -1,5 +1,3 @@
-using Newtonsoft.Json;
-
 public class Card
 {
     
@@ -18,16 +16,6 @@ public class Card
         player_id = playerId;
     }
 
-    public string ToJson()
-    {
-        return JsonConvert.SerializeObject(this);
-    }
-    
-    public static Card FromJson(string json)
-    {
-        return JsonConvert.DeserializeObject<Card>(json);
-    }
-    
     public override string ToString()
     {
         return $"Card(id={id}, image={image}, function={function}, description={description}, player_id={player_id})";

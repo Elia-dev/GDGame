@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using businesslogic;
@@ -11,8 +10,8 @@ namespace UI
 {
     public class ServerListManagerUI : MonoBehaviour
     {
-        [SerializeField] public GameObject rowPrefab; // Il prefab per la riga
-        [SerializeField] public Transform contentParent; // Il contenitore (Content) delle righe
+        [SerializeField] public GameObject rowPrefab;
+        [SerializeField] public Transform contentParent;
         [SerializeField] private Button backButton;
         [SerializeField] private GameObject popupMessages;
         [SerializeField] private Button refreshButton;
@@ -20,7 +19,7 @@ namespace UI
         [SerializeField] private Button selectButton;
         [SerializeField] private Button x;
         [SerializeField] private GameObject loading;
-        
+
         private List<string> _servers = new List<string>();
 
         private void Awake()
@@ -28,9 +27,6 @@ namespace UI
             backButton.onClick.AddListener(() => { SceneManager.LoadScene("MainMenu"); });
             refreshButton.onClick.AddListener(async () =>
             {
-                /*await ClientManager.Instance.FetchOnlineServers();
-                _servers = ClientManager.Instance.GetOnlineServersList();
-                RefreshServerList();*/
                 RetrieveServers();
                 serverIPInput.text = "";
             });
@@ -69,7 +65,7 @@ namespace UI
             RefreshServerList();
         }
 
-        void Start()
+        private void Start()
         {
             RetrieveServers();
         }
@@ -82,10 +78,8 @@ namespace UI
             {
                 GameObject newRow = Instantiate(rowPrefab, contentParent);
                 newRow.transform.SetParent(contentParent);
-
                 newRow.transform.Find("serverIP").GetComponent<TMP_Text>().text = "Server: " + server;
 
-                // Aggiungi un listener al click del bottone per restituire l'idLobby
                 newRow.GetComponent<Button>().onClick.AddListener(() => {
                     //FillInputField(server);
                     SetActiveServer(server);

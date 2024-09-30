@@ -27,7 +27,7 @@ namespace UI
             }
             else {
                 endGameResult.color = Color.red;
-                endGameResult.text = "The winner is " + GameManager.Instance.getEnemyNameById(playerId) + "!";
+                endGameResult.text = "The winner is " + GameManager.Instance.GetEnemyNameById(playerId) + "!";
             }
         }
     }

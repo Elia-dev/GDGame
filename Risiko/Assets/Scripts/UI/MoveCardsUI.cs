@@ -1,14 +1,14 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 namespace UI
 {
     public abstract class MoveCardsUI : MonoBehaviour
     {
-        [NonSerialized] public Sprite imgSprite;
-        public void LoadSprite(string spriteName) {
-            imgSprite = Resources.Load<Sprite>(spriteName);
+        [NonSerialized] protected Sprite ImgSprite;
+
+        protected void LoadSprite(string spriteName) {
+            ImgSprite = Resources.Load<Sprite>(spriteName);
         }
     }
 }

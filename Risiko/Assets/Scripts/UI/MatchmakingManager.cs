@@ -11,14 +11,13 @@ namespace UI
     public class MatchmakingManager : MonoBehaviour {
         [SerializeField] private Button backButton;
         [SerializeField] private GameObject popupError;
-        [SerializeField] public GameObject rowPrefab; // Il prefab per la riga
-        [SerializeField] public Transform contentParent; // Il contenitore (Content) delle righe
+        [SerializeField] public GameObject rowPrefab;
+        [SerializeField] public Transform contentParent;
         
         private static List<Lobby> _lobbies = new List<Lobby>();
-        private readonly float _delay = 6.0f; // Durata del ritardo in secondi
+        private readonly float _delay = 6.0f;
         private float _timer;
         private bool _reloadLobbies = false;
-
 
         private void Awake() {
             backButton.onClick.AddListener(() => {
@@ -28,53 +27,42 @@ namespace UI
             });
         }
 
-
         void Start() {
             _timer = _delay;
-        
-            // Per ogni partita disponibile, crea una riga nella lista
+
             _lobbies.ForEach(lobby => {
                 GameObject newRow = Instantiate(rowPrefab, contentParent);
                 newRow.transform.SetParent(contentParent);
-
-                newRow.transform.Find("idLobbyText").GetComponent<TMP_Text>().text = "Lobby: " + lobby.getLobbyID();
-                newRow.transform.Find("hostNameText").GetComponent<TMP_Text>().text = "Host: " + lobby.getHostName();
-                newRow.transform.Find("numPlayersText").GetComponent<TMP_Text>().text = "Players: " +lobby.getPlayersNum();
-
-                // Aggiungi un listener al click del bottone per restituire l'idLobby
-                newRow.GetComponent<Button>().onClick.AddListener(() => JoinLobby(lobby.getLobbyID()));
+                newRow.transform.Find("idLobbyText").GetComponent<TMP_Text>().text = "Lobby: " + lobby.GetLobbyID();
+                newRow.transform.Find("hostNameText").GetComponent<TMP_Text>().text = "Host: " + lobby.GetHostName();
+                newRow.transform.Find("numPlayersText").GetComponent<TMP_Text>().text = "Players: " +lobby.GetPlayersNum();
+                newRow.GetComponent<Button>().onClick.AddListener(() => JoinLobby(lobby.GetLobbyID()));
             });
             rowPrefab.SetActive(false);
         }
 
         private void Update() {
             if (_timer > 0) {
-                _timer -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
+                _timer -= Time.deltaTime;
             }
 
             if (_timer > 3 && !_reloadLobbies) {
                 _reloadLobbies = true;
                 rowPrefab.SetActive(true);
-                
-                //Elimina tutte le righe esistenti
                 foreach (Transform child in contentParent) {
                     Destroy(child.gameObject);
                 }
-
                 _lobbies.ForEach(lobby => {
                     GameObject newRow = Instantiate(rowPrefab, contentParent);
                     newRow.transform.SetParent(contentParent);
+                    newRow.transform.Find("idLobbyText").GetComponent<TMP_Text>().text = "Lobby: " + lobby.GetLobbyID();
+                    newRow.transform.Find("hostNameText").GetComponent<TMP_Text>().text = "Host: " + lobby.GetHostName();
+                    newRow.transform.Find("numPlayersText").GetComponent<TMP_Text>().text = "Players: " +lobby.GetPlayersNum();
 
-                    newRow.transform.Find("idLobbyText").GetComponent<TMP_Text>().text = "Lobby: " + lobby.getLobbyID();
-                    newRow.transform.Find("hostNameText").GetComponent<TMP_Text>().text = "Host: " + lobby.getHostName();
-                    newRow.transform.Find("numPlayersText").GetComponent<TMP_Text>().text = "Players: " +lobby.getPlayersNum();
-
-                    // Aggiungi un listener al click del bottone per restituire l'idLobby
-                    newRow.GetComponent<Button>().onClick.AddListener(() => JoinLobby(lobby.getLobbyID()));
+                    newRow.GetComponent<Button>().onClick.AddListener(() => JoinLobby(lobby.GetLobbyID()));
                 });
                 rowPrefab.SetActive(false);
             }
-            // Se il timer scade, richiedi nuovamente la lista delle partite disponibili
             if (_timer <= 0) {
                 _timer = _delay;
                 ClientManager.Instance.RequestAllGames();
@@ -97,19 +85,17 @@ namespace UI
 
         private IEnumerator AttemptJoinLobby() {
             float timerConnection = 5.0f;
-
             while (timerConnection > 0) {
                 timerConnection -= Time.deltaTime;
                 if (ClientManager.Instance.IsConnectedToLobby()) {
                     SceneManager.LoadScene("WaitingRoomClient");
                     _lobbies = null;
-                    yield break; // Esci dalla coroutine se ci si connette alla lobby
+                    yield break;
                 }
 
-                yield return null; // Aspetta il prossimo frame e continua la coroutine
+                yield return null;
             }
 
-            // Se il timer scade e non ci si è connessi alla lobby, mostra un errore
             GameObject.Find("PopUpContainer").GetComponent<DisplayMessageOnPopUpUI>()
                 .SetErrorText("Unable to join the lobby.\nTry another one.");
         }

@@ -46,8 +46,8 @@ namespace Audio {
                 !conqueredTerritory.isPlaying &&
                 !lostTerritory.isPlaying) {
                 if (_countBattle == 0) {
-                    if (!GameManager.Instance.getWinnerBattleId().Equals("")) {
-                        if (GameManager.Instance.getWinnerBattleId().Equals(Player.Instance.PlayerId)) {
+                    if (!GameManager.Instance.GetWinnerBattleId().Equals("")) {
+                        if (GameManager.Instance.GetWinnerBattleId().Equals(Player.Instance.PlayerId)) {
                             PlaySoundWithFade(BGMusic_selector.Instance.gameTrack, conqueredTerritory);
                             _countBattle++;
                         }
@@ -58,7 +58,7 @@ namespace Audio {
                     }
                 }
 
-                if (GameManager.Instance.getWinnerBattleId().Equals("")) {
+                if (GameManager.Instance.GetWinnerBattleId().Equals("")) {
                     _countBattle = 0;
                 }
             }

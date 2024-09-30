@@ -22,34 +22,26 @@ namespace UI
         private static bool _distributionPhase = false;
         private static bool _reinforcePhase = false;
         private static bool _attackPhase = false;
-        private static bool _thisIsTheEnd = false;
 
-        public static bool ThisIsTheEnd {
-            get => _thisIsTheEnd;
-            set => _thisIsTheEnd = value;
-        }
+        public static bool ThisIsTheEnd { get; set; } = false;
 
         public static bool SettingGame {
-            get => _settingGame;
             set => _settingGame = value;
         }
     
         public static bool DistributionPhase {
-            get => _distributionPhase;
             set => _distributionPhase = value;
         }
 
         public static bool ReinforcePhase {
-            get => _reinforcePhase;
             set => _reinforcePhase = value;
         }
 
         public static bool AttackPhase {
-            get => _attackPhase;
             set => _attackPhase = value;
         }
 
-        void Start() {
+        private void Start() {
             Debug.Log("Player: " + Player.Instance);
             Debug.Log("PlayerID: " + Player.Instance.PlayerId);
             Debug.Log("PlayerName: " + Player.Instance.Name);
@@ -64,10 +56,8 @@ namespace UI
             playerName.text = Player.Instance.Name;
         }
 
-        void Update() {
-            if (!GameManager.Instance.GetGameRunning() || !GameManager.Instance.getWinnerGameId().Equals("") || _thisIsTheEnd) {
-                Debug.Log("Game running = false (GameManagerUI)");
-                //gameObject.SetActive(false);
+        private void Update() {
+            if (!GameManager.Instance.GetGameRunning() || !GameManager.Instance.GetWinnerGameId().Equals("") || ThisIsTheEnd) {
                 return;
             }
             
@@ -77,15 +67,14 @@ namespace UI
                 turn.text = "Is your turn!\n";
             }
             else {
-                turn.color = Utils.ColorCode(GameManager.Instance.GetPlayerColor(GameManager.Instance.getIdPlayingPlayer()), 255);
-                turn.text = GameManager.Instance.getEnemyNameById(GameManager.Instance.getIdPlayingPlayer()) +
+                turn.color = Utils.ColorCode(GameManager.Instance.GetPlayerColor(GameManager.Instance.GetIdPlayingPlayer()), 255);
+                turn.text = GameManager.Instance.GetEnemyNameById(GameManager.Instance.GetIdPlayingPlayer()) +
                             "'s turn!\n";
             }
 
             if (!_settingGame) {
                 if(!_dimensionSetted) {
                     _dimensionSetted = true;
-                    //Impostazione dimensioni text
                     allInfo.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(
                         userSpace.GetComponent<RectTransform>().rect.width - 30,
                         allInfo.gameObject.GetComponent<RectTransform>().sizeDelta.y);
@@ -94,7 +83,6 @@ namespace UI
                         turn.gameObject.GetComponent<RectTransform>().sizeDelta.y);
                 }
                 circlePlayerColor.gameObject.SetActive(true);
-                //Colore giocaore
                 circlePlayerColor.GetComponent<Image>().color = Utils.ColorCode(Player.Instance.ArmyColor, 255);
                 allInfo.text += "\n<b>Objective</b>: " + Player.Instance.ObjectiveCard.description + "\n";
             }
@@ -118,7 +106,6 @@ namespace UI
         }
 
         public void ShowTerritoryInfo(Territory territory) {
-            //Sostituzione sigla continente con nome
             if (territory is not null) {
                 string continent = territory.continent;
                 switch (continent) {
@@ -146,12 +133,11 @@ namespace UI
                 }
                 _territoryInfo = "\n<b>" + territory.name + $"</b>: state of the continent {continent}, owned by the player " +
                                  $"<b><color=#{ColorUtility.ToHtmlStringRGB(Utils.ColorCode(GameManager.Instance.GetPlayerColor(territory.player_id), 255))}>" +
-                                 $"{GameManager.Instance.getEnemyNameById(territory.player_id)}</color></b>.\n" +
+                                 $"{GameManager.Instance.GetEnemyNameById(territory.player_id)}</color></b>.\n" +
                                  $"On the territory there are <b>{territory.num_tanks}</b> army on it.\n";
             
             }
         }
-    
         public void HideTerritoryInfo() {
             _territoryInfo = "";
         }

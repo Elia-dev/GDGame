@@ -7,7 +7,6 @@ from Territory import Territory
 import secrets
 import numpy as np
 
-
 def read_objects_cards():
     tree = ET.parse('assets/config.xml')
     root = tree.getroot()
@@ -18,7 +17,6 @@ def read_objects_cards():
         image = card.find('image').text
         function = card.find('function').text
         description = card.find('description').text
-
         card = Card(card_id, image, function, description)
         cards.append(card)
     return cards
@@ -37,23 +35,18 @@ def read_territories_cards():
         description = card.find('description').text
         continent = card.find('continent').text
         node = int(card.find('node').text)
-
         card = Territory(card_id, image, function, description, name, continent, node, None, 1)
         cards.append(card)
     return cards
 
-
 def generate_game_id():
     return ' '.join([str(random.randint(0, 999)).zfill(3) for _ in range(2)])
-
 
 def generate_player_id():
     return secrets.token_hex(16)
 
-
 def get_adj_matrix(path):
     return np.load(path)
-
 
 def get_neighbors_node_of(territory_node, file_path):
     adj_matrix = get_adj_matrix(file_path)
@@ -64,13 +57,11 @@ def get_neighbors_node_of(territory_node, file_path):
             neighbors.append(i)
     return neighbors
 
-
 def get_territory_from_node(node, all_territories):
     for territory in all_territories:
         if node == territory.node:
             return territory
     return None
-
 
 def get_neighbors_of(territory, all_terr):
     territories = []
@@ -79,7 +70,6 @@ def get_neighbors_of(territory, all_terr):
         territories.append(get_territory_from_node(node, all_terr))
     return territories
 
-
 def get_isolate_territory(my_territories, all_territories):
     isolate_territories = []
     for terr in my_territories:
@@ -87,7 +77,6 @@ def get_isolate_territory(my_territories, all_territories):
         if not enemies:
             isolate_territories.append(terr)
     return isolate_territories
-
 
 def get_friends_neighbors(territory, my_territories, all_terr):
     friends = []
@@ -98,14 +87,12 @@ def get_friends_neighbors(territory, my_territories, all_terr):
                 friends.append(neighbor)
     return friends
 
-
 def get_enemy_neighbors_of(territory, my_terrs, all_terrs):
     neighbors = get_neighbors_of(territory, all_terrs)
     enemy = list(
         filter(lambda neighbor: neighbor not in my_terrs, neighbors)
     )
     return enemy
-
 
 def get_all_enemies_neighbors_of(my_terrs, all_terrs):
     enemy = []
@@ -118,7 +105,6 @@ def get_all_enemies_neighbors_of(my_terrs, all_terrs):
                 enemy.append(neighbor)
     return enemy
 
-
 def update_adjacent_matrix(players, adj_matrix):
     for player in players:
         for territory in player.territories:
@@ -126,9 +112,7 @@ def update_adjacent_matrix(players, adj_matrix):
             neighbors_node = get_neighbors_node_of(node, os.path.join(os.getcwd(), 'assets/adj_matrix.npy'))
             for neighbor in neighbors_node:
                 adj_matrix[neighbor][node] = territory.num_tanks
-    print(f'Adjacent matrix updated')
     return adj_matrix
-
 
 def get_shortest_path(from_node, to_node, adj_matrix):
     # Number of nodes in the graph
@@ -179,4 +163,3 @@ def get_shortest_path(from_node, to_node, adj_matrix):
     else:
         # If there is no path from from_node to to_node
         return []
-

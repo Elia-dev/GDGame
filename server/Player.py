@@ -2,13 +2,12 @@ from Card import Card
 from Objective import Objective
 from Territory import Territory
 
-
 class Player:
     def __init__(self, websocket, name=None, lobby_id=None, player_id=None):
         self.name = name
         self.sock = websocket
         self.lobby_id = lobby_id
-        self.player_id = player_id  # Unique id for player, to internal manage
+        self.player_id = player_id  # Unique identifier for the player, for internal use
         self.tanks_num = 0
         self.tanks_available = 0
         self.tanks_placed = 0
@@ -21,7 +20,7 @@ class Player:
     def to_dict(self):
         return {
             "name": self.name,
-            "sock": "sock",  # How to represent socket ?
+            "sock": "sock",
             "lobby_id": self.lobby_id,
             "player_id": self.player_id,
             "tanks_num": self.tanks_num,

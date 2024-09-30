@@ -11,7 +11,7 @@ namespace UI {
         [SerializeField] private TMP_Text lobbyID;
         [SerializeField] private GameObject popUpDice;
 
-        private readonly float _delay = 1.0f; // Durata del ritardo in secondi
+        private readonly float _delay = 1.0f; 
         private float _timer;
 
         private void Awake() {
@@ -22,30 +22,25 @@ namespace UI {
             });
         }
 
-        void Start() {
+        private void Start() {
             lobbyID.text = GameManager.Instance.GetLobbyId();
             _timer = _delay;
         }
 
-        void Update() {
+        private void Update() {
             if (_timer > 0) {
-                _timer -= Time.deltaTime; // Decrementa il timer in base al tempo trascorso dall'ultimo frame
+                _timer -= Time.deltaTime; 
             }
             else {
                 ClientManager.Instance.RequestNameUpdatePlayerList();
-                ClientManager.Instance
-                    .SendName(); // Da vedere, se si potesse fare soltanto la prima volta sarebbe meglio
-                // Reset del timer
+                ClientManager.Instance.SendName(); 
                 _timer = _delay;
-                Debug.Log("WAITING_ROOM - playerList:" + playerList.text);
             }
 
-            string stringa = string.Join(", ", GameManager.Instance.PlayersName);
-            playerList.text = "Players: " + stringa;
+            string str = string.Join(", ", GameManager.Instance.PlayersName);
+            playerList.text = "Players: " + str;
 
-            //Quando l'HOST avvia il gioco
             if (!GameManager.Instance.GetGameWaitingToStart()) {
-                Debug.Log("L'HOST HA FATTO COMINCIARE LA PARTITA");
                 popUpDice.SetActive(true);
             }
         }
