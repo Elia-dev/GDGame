@@ -43,7 +43,7 @@ namespace UI
             set => _attackPhase = value;
         }
 
-        private void Start() {
+        void Start() {
             _settingGame = true;
             _distributionPhase = false;
             _reinforcePhase = false;
@@ -52,7 +52,7 @@ namespace UI
             playerName.text = Player.Instance.Name;
         }
 
-        private void Update() {
+        void Update() {
             if (!GameManager.Instance.GetGameRunning() || !GameManager.Instance.GetWinnerId().Equals("") || _thisIsTheEnd) {
                 return;
             }

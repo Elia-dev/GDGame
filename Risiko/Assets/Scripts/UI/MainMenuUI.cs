@@ -32,7 +32,7 @@ namespace UI
             serverListButton.onClick.AddListener(() => { SceneManager.LoadScene("ServerListMenu"); });
         }
 
-        private void Start()
+        void Start()
         {
             Player.Instance.ResetPlayer();
             GameManager.Instance.ResetGameManager();

@@ -65,7 +65,7 @@ namespace UI
             RefreshServerList();
         }
 
-        private void Start()
+        void Start()
         {
             RetrieveServers();
         }

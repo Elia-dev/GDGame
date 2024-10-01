@@ -7,7 +7,7 @@ namespace UI
         private SpriteRenderer _sprite;
         public Color32 startColor = new Color32(0, 0, 0, 0);
         private Color32 _hoverColor = new Color32(205, 185, 52, 100);
-        private static Color32 _selectionColor = new Color32(205, 185, 52, 100);
+        private Color32 _selectionColor = new Color32(205, 185, 52, 100); //private static Color32 _selectionColor = new Color32(205, 185, 52, 100);
         private bool Selected { get; set; } = false;
         public static Color32 UserColor { get; set; }
         public Color32 StartColor {

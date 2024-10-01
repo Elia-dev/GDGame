@@ -16,7 +16,7 @@ namespace UI
         private RectTransform _rectTransform;
         private bool _flipped = false;
 
-        private void Start() {
+        void Start() {
             _rectTransform = GetComponent<RectTransform>();
             _targetPosition = new Vector2(0, 0);
 

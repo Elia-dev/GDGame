@@ -14,7 +14,7 @@ namespace UI {
         private bool _animationDone = false;
         private List<Territory> _territories;
 
-        private void Start() {
+        void Start() {
             _territories = Player.Instance.Territories;
             AdjustCellsSize();
             CardAnimation();

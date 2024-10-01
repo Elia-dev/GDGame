@@ -22,12 +22,12 @@ namespace UI {
             });
         }
 
-        private void Start() {
+        void Start() {
             lobbyID.text = GameManager.Instance.GetLobbyId();
             _timer = _delay;
         }
 
-        private void Update() {
+        void Update() {
             if (_timer > 0) {
                 _timer -= Time.deltaTime; 
             }

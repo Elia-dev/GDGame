@@ -58,7 +58,7 @@ namespace UI {
             });
         }
 
-        private void Start() {
+        void Start() {
             _playerListFromServer = null;
             ClientManager.Instance.CreateLobbyAsHost();
             _timer = _delay;
