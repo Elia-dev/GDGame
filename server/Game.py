@@ -74,6 +74,7 @@ class Game:
             await asyncio.sleep(1)
 
         # Preparation phase
+        print("Game started\n")
         await self.__game_order__()
         name_id_dict = "ID_NAMES_DICT: " + ", ".join(f"{player.player_id}-{player.name}" for player in self.players)
         await self.broadcast(name_id_dict)
@@ -86,8 +87,6 @@ class Game:
             for territory in player.territories:
                 territories_list.append(territory.to_dict())
         await self.broadcast("SEND_TERRITORIES_TO_ALL: " + json.dumps(territories_list, indent=4))
-
-
 
         initial_army_number = self.__army_start_num__(len(self.players))
         for player in self.players:
@@ -131,21 +130,21 @@ class Game:
                     self.event = asyncio.Event()
                     await self.event.wait()
 
-                print("Fight phase terminated")
+                #print("Fight phase terminated")
                 # FIGHT PHASE AND STRATEGIC MOVEMENT TERMINATED
 
                 self.event = asyncio.Event()
                 self.event_strategic_movement = asyncio.Event()
-                print("Strategic movement terminated")
+                #print("Strategic movement terminated")
                 await player.sock.send("IS_YOUR_TURN: FALSE")
 
                 # CHECK for victory
                 if self.check_for_victory(player) is True:
                     await self.broadcast("WINNER: " + player.player_id)
-                    print(f"Player {player.name} has won the game")
+                    #print(f"Player {player.name} has won the game")
                     self.game_running = False
             self.firstRound = False
-        await asyncio.sleep(1)
+        await asyncio.sleep(2)
         self.kill_all_bots()
 
     async def handle_requests(self):
