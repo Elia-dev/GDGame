@@ -12,7 +12,7 @@ namespace UI
         [NonSerialized] protected TerritoryHandlerUI SelectedTerritory;
         protected static bool distributionPhase = true;
 
-        private void Start() {
+        void Start() {
             distributionPhase = true;
         }
     }
