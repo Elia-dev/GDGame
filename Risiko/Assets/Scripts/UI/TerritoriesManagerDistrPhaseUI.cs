@@ -58,6 +58,9 @@ namespace UI {
         }
         public void Start() {
             GameManagerUI.DistributionPhase = true;
+            Debug.Log("Game phase active: " + GetComponent<TerritoriesManagerGamePhaseUI>().isActiveAndEnabled);
+            Debug.Log("Distr phase: " + distributionPhase);
+            
         }
 
         public void ActivateTerritories() {
