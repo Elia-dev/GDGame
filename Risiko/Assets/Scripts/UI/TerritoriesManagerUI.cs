@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public abstract class TerritoriesManagerUI : MonoBehaviour
+    public class TerritoriesManagerUI : MonoBehaviour
     {
         [SerializeField] public List<GameObject> territories;
         [SerializeField] public Button endTurnButton;
