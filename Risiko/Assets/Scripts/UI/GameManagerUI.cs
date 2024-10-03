@@ -53,7 +53,8 @@ namespace UI
         }
 
         void Update() {
-            if (!GameManager.Instance.GetGameRunning() || !GameManager.Instance.GetWinnerId().Equals("") || _thisIsTheEnd) {
+            if (!GameManager.Instance.GetGameRunning() || !GameManager.Instance.GetWinnerGameId().Equals("") || _thisIsTheEnd) {
+                Debug.Log("Gioco finito, faccio return in GameManagerUI");
                 return;
             }
             

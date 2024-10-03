@@ -144,7 +144,7 @@ class Game:
                     #print(f"Player {player.name} has won the game")
                     self.game_running = False
             self.firstRound = False
-        await asyncio.sleep(2)
+        await asyncio.sleep(1)
         self.kill_all_bots()
 
     async def handle_requests(self):

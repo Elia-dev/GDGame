@@ -43,15 +43,18 @@ namespace UI
         public void ExitButtonForExitMenu() {
             GameManagerUI.ThisIsTheEnd = true;
             if (!GameManager.Instance.GetKillerId().Equals("")) {
+                
                 ClientManager.Instance.LeaveLobby();
                 Player.Instance.ResetPlayer();
                 GameManager.Instance.ResetGameManager();
                 ClientManager.Instance.ResetConnection();
+                Debug.Log("Sono uscito facendo leavLobby, ero stato scassato da qualcuno");
             } else {
                 ClientManager.Instance.LeaveGame();
                 Player.Instance.ResetPlayer();
                 GameManager.Instance.ResetGameManager();
                 ClientManager.Instance.ResetConnection();
+                Debug.Log("Sono uscito facendo leaveGame, ho deciso io di uscire");
             }
             SceneManager.LoadScene("MainMenu");
         }

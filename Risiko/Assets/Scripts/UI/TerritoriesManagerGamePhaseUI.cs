@@ -220,9 +220,9 @@ namespace UI {
                 popUpAttackResult.GetComponent<PopUpAttackResultUI>().SetPupUp();
             }
 
-            if (!GameManager.Instance.GetWinnerId().Equals("")) {
+            if (!GameManager.Instance.GetWinnerGameId().Equals("")) {
                 gameObject.GetComponent<TerritoriesManagerGamePhaseUI>().enabled = false;
-                endGame.GetComponent<EndGameUI>().SetPopUp(GameManager.Instance.GetWinnerId());
+                endGame.GetComponent<EndGameUI>().SetPopUp(GameManager.Instance.GetWinnerGameId());
             }
 
             // Se premo ESC mostro il menu di pausa o chiudo i popup o deseleziono gli stati

@@ -313,6 +313,7 @@ namespace businesslogic
                 {
                     _request = RemoveRequest(message, "WINNER: ");
                     GameManager.Instance.SetWinnerGameId(_request);
+                    Debug.Log("Winner: " + GameManager.Instance.GetEnemyNameById(GameManager.Instance.GetWinnerGameId()));
                 }
                 else
                 {

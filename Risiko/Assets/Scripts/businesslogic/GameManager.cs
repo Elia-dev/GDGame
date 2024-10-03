@@ -84,7 +84,7 @@ namespace businesslogic
             _winnerGameId = id;
         }
 
-        public string GetWinnerId()
+        public string GetWinnerGameId()
         {
             return _winnerGameId;
         }

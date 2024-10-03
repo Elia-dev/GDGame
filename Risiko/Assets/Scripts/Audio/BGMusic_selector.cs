@@ -49,8 +49,8 @@ namespace Audio {
                 gameTrack.Play();
                 easterEggTrack.Stop();
             } else if (SceneManager.GetActiveScene().name.Equals("Main") &&
-                      !GameManager.Instance.GetWinnerId().Equals("")) {
-                if (GameManager.Instance.GetWinnerId().Equals(Player.Instance.PlayerId) && !winTrack.isPlaying &&
+                      !GameManager.Instance.GetWinnerGameId().Equals("")) {
+                if (GameManager.Instance.GetWinnerGameId().Equals(Player.Instance.PlayerId) && !winTrack.isPlaying &&
                     !easterEggTrack.isPlaying) {
                     loseTrack.Stop();
                     menuTrack.Stop();
@@ -65,7 +65,7 @@ namespace Audio {
                         easterEggTrack.Stop();
                         winTrack.Play();
                     }
-                } else if (!GameManager.Instance.GetWinnerId().Equals(Player.Instance.PlayerId) &&
+                } else if (!GameManager.Instance.GetWinnerGameId().Equals(Player.Instance.PlayerId) &&
                           !loseTrack.isPlaying) {
                     menuTrack.Stop();
                     gameTrack.Stop();
