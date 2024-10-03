@@ -249,7 +249,6 @@ namespace UI {
         }
 
         private void StartTurn() {
-            Debug.Log("StartTurn Game phase; MyTurn: " + Player.Instance.IsMyTurn);
             RefreshTerritories();
             _isTurnInitialized = true;
             if (_firstTurn) {
