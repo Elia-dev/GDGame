@@ -58,8 +58,6 @@ namespace UI {
         }
         public void Start() {
             GameManagerUI.DistributionPhase = true;
-            Debug.Log("Game phase active: " + GetComponent<TerritoriesManagerGamePhaseUI>().isActiveAndEnabled);
-            Debug.Log("Distr phase: " + distributionPhase);
         }
 
         public void ActivateTerritories() {
@@ -283,7 +281,6 @@ namespace UI {
             if (ArmyNumber > 3 && distributionPhase) {
                 ArmyNumber = 3;
             }
-            Debug.Log("armate piazzabili: " + ArmyNumber);
 
             _selectedTerritories.Territories = new Territory[ArmyNumber];
             _selectedTerritories.Count = new int[ArmyNumber];

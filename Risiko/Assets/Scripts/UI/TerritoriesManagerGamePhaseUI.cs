@@ -322,7 +322,7 @@ namespace UI {
                     string color = GameManager.Instance.GetPlayerColor(territory.player_id);
                     terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 50);
                     terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 50);
-
+                    terr.transform.Find("Tanks").GetComponent<TMP_Text>().text = territory.num_tanks+"";
                     //Distruggo tutte le precedenti bandierine
                     foreach (Transform child in terr.GetComponent<Transform>()) {
                         Destroy(child.gameObject);
