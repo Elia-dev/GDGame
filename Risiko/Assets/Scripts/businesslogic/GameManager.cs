@@ -21,10 +21,8 @@ namespace businesslogic
         private int _extractedNumber = 0;
         private int[] _extractedEnemyNumbers = new int[3];
         private int[] _extractedMyNumbers = new int[3];
-        private string _gameOrderExtractedNumbers = "";
         private bool _gameWaitingToStart = true;
         private bool _gameRunning = true;
-        private bool _preparationPhase = true;
         private bool _gamePhase = false;
         private bool _imUnderAttack = false;
         private string _idPlayingPlayer = "";
@@ -258,7 +256,6 @@ namespace businesslogic
 
         public void SetPreparationPhase(bool value)
         {
-            _preparationPhase = value;
         }
 
         public bool GetGamePhase()
@@ -281,7 +278,6 @@ namespace businesslogic
         }
         public void SetGameOrderExtractedNumbers(string value)
         {
-            _gameOrderExtractedNumbers = value;
         }
     
         public string getGame_order()

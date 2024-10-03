@@ -121,7 +121,7 @@ namespace businesslogic
             _connected = value;
         }
 
-        public async void ResetConnection()
+        public void ResetConnection()
         {
             _connected = false;
             _webSocket = null;
