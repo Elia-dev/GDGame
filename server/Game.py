@@ -261,7 +261,7 @@ class Game:
                     for terr in defender_player.territories:
                         if terr.id == defender_ter_id:
                             defender_territory = terr
-
+                    print("Ricevuto richiesta attacco da " + attacker_player + " verso " + defender_player)
                     attacker_army_num, defender_army_num = clean_message[2].split("-")
                     attacker_army_num = int(attacker_army_num)
                     defender_army_num = int(defender_army_num)
@@ -317,6 +317,7 @@ class Game:
                         self.players_alive.remove(defender_player)
                     await self.broadcast("ATTACK_FINISHED_FORCE_UPDATE")
                     self.event.set()
+                    print("Attacco terminato")
 
                 if 'REQUEST_SHORTEST_PATH' in message:
                     message = self._remove_request(message, "REQUEST_SHORTEST_PATH: ")
@@ -421,8 +422,10 @@ class Game:
             #print("Available color in this turn: " + available_colors.__str__())
             await player.sock.send("AVAILABLE_COLORS: " + ", ".join(available_colors))
             await player.sock.send("IS_YOUR_TURN: TRUE")
+            print("Turno di " + player.name)
             await self.event.wait()  # Waiting for player choice
             await player.sock.send("IS_YOUR_TURN: FALSE")
+            print("Fine turno di " + player.name)
             self.event = asyncio.Event()
 
     def __army_start_num__(self, num_player):
