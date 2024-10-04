@@ -217,7 +217,6 @@ namespace UI {
                         SelectedTerritory = null;
                     }
                 }
-                this.GetComponent<TerritoriesManagerGamePhaseUI>().RefreshTankNumbersFlags();
             }
 
             if (!Player.Instance.IsMyTurn) {
@@ -273,6 +272,7 @@ namespace UI {
                 else
                     escMenu.SetActive(true);
             }
+            this.GetComponent<TerritoriesManagerGamePhaseUI>().RefreshTankNumbersFlags();
         }
 
         //Metodo che inizializza la struct per la selezione dei territori e attiva il turno
