@@ -25,6 +25,14 @@ namespace UI {
 
         private void Awake() {
             backButton.onClick.AddListener(() => {
+                Canvas[] allCanvases = FindObjectsOfType<Canvas>();
+                foreach (Canvas canvas in allCanvases) {
+                    if (canvas.renderMode == RenderMode.ScreenSpaceOverlay) {
+                        if (canvas.gameObject.activeInHierarchy) {
+                            return;
+                        }
+                    }
+                }
                 ClientManager.Instance.KillLobby();
                 Player.Instance.ResetPlayer();
                 GameManager.Instance.ResetGameManager();
@@ -32,11 +40,27 @@ namespace UI {
             });
 
             runGameButton.onClick.AddListener(() => {
+                Canvas[] allCanvases = FindObjectsOfType<Canvas>();
+                foreach (Canvas canvas in allCanvases) {
+                    if (canvas.renderMode == RenderMode.ScreenSpaceOverlay) {
+                        if (canvas.gameObject.activeInHierarchy) {
+                            return;
+                        }
+                    }
+                }
                 ClientManager.Instance.StartHostGame();
                 popUpDiceHostMenu.SetActive(true);
             });
 
             addBotButton.onClick.AddListener(async() => {
+                Canvas[] allCanvases = FindObjectsOfType<Canvas>();
+                foreach (Canvas canvas in allCanvases) {
+                    if (canvas.renderMode == RenderMode.ScreenSpaceOverlay) {
+                        if (canvas.gameObject.activeInHierarchy) {
+                            return;
+                        }
+                    }
+                }
                 if (_botNumber < 5 && !_isBotAdded) {
                     _oldPlayerNumber = GameManager.Instance.GetPlayersNumber();
                     _isBotAdded = true;
@@ -51,6 +75,14 @@ namespace UI {
             });
 
             removeBotButton.onClick.AddListener(async () => {
+                Canvas[] allCanvases = FindObjectsOfType<Canvas>();
+                foreach (Canvas canvas in allCanvases) {
+                    if (canvas.renderMode == RenderMode.ScreenSpaceOverlay) {
+                        if (canvas.gameObject.activeInHierarchy) {
+                            return;
+                        }
+                    }
+                }
                 if(_botNumber > 0)
                     _botNumber--;
                 await ClientManager.Instance.RequestRemoveBot();

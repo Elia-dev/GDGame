@@ -16,6 +16,14 @@ namespace UI {
 
         private void Awake() {
             backButton.onClick.AddListener(() => {
+                Canvas[] allCanvases = FindObjectsOfType<Canvas>();
+                foreach (Canvas canvas in allCanvases) {
+                    if (canvas.renderMode == RenderMode.ScreenSpaceOverlay) {
+                        if (canvas.gameObject.activeInHierarchy) {
+                            return;
+                        }
+                    }
+                }
                 ClientManager.Instance.LeaveLobby();
                 GameManager.Instance.ResetGameManager();
                 SceneManager.LoadScene("JoinGameMenu");
