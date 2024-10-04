@@ -200,14 +200,20 @@ async def choose_what_to_do(client_manager):
 
 async def _reinforce(client_manager, terr_of_interest, my_territories, is_setup):
     try:
-        if terr_of_interest:
-            tanks_available = client_manager.player.tanks_available
-            if is_setup and tanks_available > 3:
-                tanks_available = 3
-                client_manager.player.tanks_available -= tanks_available
-            elif is_setup and tanks_available <= 3:
-                client_manager.player.tanks_available -= tanks_available
+        tanks_available = client_manager.player.tanks_available
+        if is_setup and tanks_available > 3:
+            tanks_available = 3
+            client_manager.player.tanks_available -= tanks_available
+        elif is_setup and tanks_available <= 3:
+            client_manager.player.tanks_available -= tanks_available
 
+        if not terr_of_interest:
+            while tanks_available > 0:
+                terr_to_reinforce = random.choice(my_territories)
+                terr_to_reinforce.num_tanks += 1
+                tanks_available -= 1
+                print(f'Placed 1 tank in {terr_to_reinforce.name}')
+        else:
             # Reinforce territories forward enemy (not neighbor)
             await client_manager.request_shortest_path(my_territories, terr_of_interest)
             while not client_manager.game_manager.shortest_paths:
@@ -232,15 +238,6 @@ async def _reinforce(client_manager, terr_of_interest, my_territories, is_setup)
                     print(f'Placed 1 tank in {terr_to_reinforce.name}')
             if not is_setup:
                 client_manager.player.tanks_available = 0
-            else:
-                tanks_available = client_manager.player.tanks_available
-                client_manager.player.territories = sorted(client_manager.player.territories, key=lambda terr: terr.num_tanks)
-                while tanks_available > 0:
-                    for territory in client_manager.player.territories:
-                        if tanks_available > 0:
-                            territory.num_tanks += 1
-                            tanks_available -= 1
-
     except Exception as e:
         client_manager.player.tanks_available = 0
         print(e)
@@ -453,6 +450,7 @@ async def _manage_attack(my_strong_territories, terr_of_interest, client_manager
 
 async def _attack(attacker, defender, client_manager):
     while attacker.num_tanks > 1 and attacker.num_tanks - defender.num_tanks > 0 and defender.player_id != attacker.player_id:
+        await asyncio.sleep(2)
         tanks_attacker = attacker.num_tanks - 1
         if tanks_attacker > 3:
             tanks_attacker = 3
