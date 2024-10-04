@@ -325,7 +325,8 @@ namespace UI {
                     terr.transform.Find("Tanks").GetComponent<TMP_Text>().text = territory.num_tanks+"";
                     //Distruggo tutte le precedenti bandierine
                     foreach (Transform child in terr.GetComponent<Transform>()) {
-                        Destroy(child.gameObject);
+                        if(!child.gameObject.name.Equals("Tanks"))
+                            Destroy(child.gameObject);
                     }
                     PlaceFlags(terr.GetComponent<PolygonCollider2D>(), territory);
                 }
