@@ -147,8 +147,8 @@ namespace UI {
                 this.GetComponent<TerritoriesManagerGamePhaseUI>().IsPhaseGoing = false;
                 endTurnButton.GetComponentInChildren<TMP_Text>().text = "End Turn!";
                 endTurnButton.interactable = true;
-                this.GetComponent<TerritoriesManagerGamePhaseUI>().RefreshTerritories();
             }
+            this.GetComponent<TerritoriesManagerGamePhaseUI>().RefreshTerritories();
         }
 
         private int FindTerritory(string territoryName) {
