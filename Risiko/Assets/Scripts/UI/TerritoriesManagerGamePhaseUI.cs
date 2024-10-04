@@ -246,6 +246,8 @@ namespace UI {
                 else
                     escMenu.SetActive(true);
             }
+
+            RefreshTankNumbersFlags();
         }
 
         private void StartTurn() {
@@ -322,13 +324,22 @@ namespace UI {
                     string color = GameManager.Instance.GetPlayerColor(territory.player_id);
                     terr.GetComponent<SpriteRenderer>().color = Utils.ColorCode(color, 50);
                     terr.GetComponent<TerritoryHandlerUI>().StartColor = Utils.ColorCode(color, 50);
-                    terr.transform.Find("Tanks").GetComponent<TMP_Text>().text = 
-                        "<b>" + territory.num_tanks + "</b>";
+                    
                     //Distruggo tutte le precedenti bandierine
                     foreach (Transform child in terr.GetComponent<Transform>()) {
                         if(!child.gameObject.name.Equals("Tanks"))
                             Destroy(child.gameObject);
                     }
+                }
+            }
+        }
+
+        public void RefreshTankNumbersFlags() {
+            foreach (var territory in GameManager.Instance.AllTerritories) {
+                GameObject terr = base.territories.Find(x => x.name.Equals(territory.id));
+                if (terr is not null) {
+                    terr.transform.Find("Tanks").GetComponent<TMP_Text>().text = 
+                        "<b>" + territory.num_tanks + "</b>";
                     PlaceFlags(terr.GetComponent<PolygonCollider2D>(), territory);
                 }
             }
