@@ -217,6 +217,7 @@ namespace UI {
                         SelectedTerritory = null;
                     }
                 }
+                this.GetComponent<TerritoriesManagerGamePhaseUI>().RefreshTankNumbersFlags();
             }
 
             if (!Player.Instance.IsMyTurn) {
