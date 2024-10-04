@@ -1,4 +1,4 @@
-HOW TO HOST A GAME FOR AN ONLINE GAME:
+HOW TO HOST AN ONLINE GAME:
 
 1) Open the Port 12345 on the router for TCP/UDP to your server-ip
 2) Install python with the following modules:
@@ -9,4 +9,10 @@ HOW TO HOST A GAME FOR AN ONLINE GAME:
 5) Enjoy the game :)
 
 HOW TO HOST A GAME FOR A LOCAL GAME:
-	Coming soon...
+
+1) Install python with the following modules:
+	1.1) websockets
+	1.2) asyncio
+2) Launch python file "Server_manager.py"
+3) Now you can open the game and connect to the server using "localhost" as ip, it will appear in the server list, otherwise you can write "localhost" on the text input
+4) Enjoy the game :)
