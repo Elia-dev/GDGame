@@ -67,7 +67,7 @@ class Game:
         await asyncio.gather(*tasks)
 
     async def handle_game(self):
-        print("Waiting for players to start the game\n")
+        print("Waiting for players to start the game...\n")
         while self.game_waiting_to_start is True:
             if self.game_id is None:
                 return
@@ -141,7 +141,7 @@ class Game:
                 # CHECK for victory
                 if self.check_for_victory(player) is True:
                     await self.broadcast("WINNER: " + player.player_id)
-                    #print(f"Player {player.name} has won the game")
+                    print(f"Player {player.name} has won the game")
                     self.game_running = False
             self.firstRound = False
         await asyncio.sleep(1)
@@ -152,7 +152,6 @@ class Game:
             try:
                 player, message = await self.queue.get()
                 if "ADD_BOT" in message:
-                    print(f'Try to create bot')
                     host_id = self.game_id.replace(' ', '_')
                     bot_name = f'Computer{len(self.bots_pid)}'
                     if platform.system() == 'Windows':
@@ -162,14 +161,11 @@ class Game:
 
                     bot_pid = subprocess.check_output(f"{script_path} %s %s" % (host_id, bot_name), shell=True, text=True).strip()
                     self.bots_pid.append(bot_pid)
-                    print(f'Bot {bot_pid} created')
                 if "REMOVE_BOT" in message:
                     bot_pid = self.bots_pid.pop()
                     kill_command = ['kill', '-9', str(bot_pid)]
                     subprocess.run(kill_command)
-                    print(f'Bot removed')
                 if "REQUEST_BOT_NUMBER" in message:
-                    print(f"Request bot number, sent {len(self.bots_pid)}")
                     await player.sock.send("BOT_NUMBER: " + str(len(self.bots_pid)))
                 if "LOBBY_KILLED_BY_HOST" in message:
                     self.game_id = None
@@ -194,7 +190,6 @@ class Game:
                     self.game_running = False
 
                 if "PLAYER_HAS_LEFT_THE_LOBBY" in message:
-                    print("Un player è uscito dalla lobby, lo rimuovo senza avvisare nessuno, la partita continua...")
                     id = self._remove_request(message, "PLAYER_HAS_LEFT_THE_LOBBY: ")
                     for player in self.players:
                         if player.player_id == id:
@@ -328,15 +323,12 @@ class Game:
                     player_id, territories_json = message.split("-")
                     territories_list_dict = json.loads(territories_json)
                     territories = [Territory.Territory.from_dict(data) for data in territories_list_dict]
-                    print(f'Player: {player_id} request shortest paths between: {len(territories)} territories')
                     friends_territories = list(
                         filter(lambda terr: terr.player_id == player_id, territories)
                     )
-                    print(f'Friends territories: {len(friends_territories)}')
                     enemies_territories = list(
                         filter(lambda terr: terr.player_id != player_id, territories)
                     )
-                    print(f'Enemy territories: {len(enemies_territories)}')
                     paths = []
                     for friend in friends_territories:
                         for enemy in enemies_territories:
@@ -347,7 +339,6 @@ class Game:
                         if player.player_id == player_id:
                             requesting_player = player
                     if requesting_player:
-                        print(f'Send {len(paths)} to {requesting_player.name}')
                         await requesting_player.sock.send(f"SHORTEST_PATH: " + json.dumps(paths))
 
                 self.queue.task_done()
@@ -720,7 +711,6 @@ class Game:
         for bot_pid in self.bots_pid:
             kill_command = ['kill', '-9', str(bot_pid)]
             subprocess.run(kill_command)
-            print(f'Bot {bot_pid} killed')
 
 
 

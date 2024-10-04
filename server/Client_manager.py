@@ -5,7 +5,6 @@ import asyncio
 from Player import Player
 from Game_manager import GameManager
 from RequestHandler import RequestHandler
-from Territory import Territory
 
 
 class ClientManager:
@@ -17,16 +16,13 @@ class ClientManager:
         self.game_manager = GameManager()
 
     async def start_client(self, ip):
-        print("Try to connect...")
         async with websockets.connect(f'ws://{ip}:12345', timeout=30) as websocket:
             try:
-                print("debug")
                 self._connected = True
                 self.player = Player(websocket)
                 self._websocket = websocket
                 request_handler = RequestHandler(self.player, self.game_manager)
                 handler_task = asyncio.create_task(request_handler.handler(websocket))
-                print("Connected")
                 await asyncio.gather(handler_task)
             except Exception as e:
                 await websocket.close()
@@ -70,7 +66,6 @@ class ClientManager:
         await self.send_message("REQUEST_NAME_UPDATE_PLAYER_LIST: ")
 
     async def send_name(self):
-        print(f'Sending name: {self.player.name}')
         await self.send_message(f"UPDATE_NAME: {self.player.player_id}-{self.player.name}")
 
     async def start_host_game(self):
