@@ -207,30 +207,37 @@ async def _reinforce(client_manager, terr_of_interest, my_territories, is_setup)
         elif is_setup and tanks_available <= 3:
             client_manager.player.tanks_available -= tanks_available
 
-        # Reinforce territories forward enemy (not neighbor)
-        await client_manager.request_shortest_path(my_territories, terr_of_interest)
-        while not client_manager.game_manager.shortest_paths:
-            await asyncio.sleep(0.5)
-        paths = sorted(client_manager.game_manager.shortest_paths, key=len)
-        for path in paths:
-            index_of_terr_to_reinforce = 0
-            for node in path:
-                is_my_terr = list(
-                    filter(lambda terr: terr.node == int(node), my_territories)
-                )
-                if is_my_terr:
-                    index_of_terr_to_reinforce += 1
-                else:
-                    break
-            terr_to_reinforce = list(
-                filter(lambda terr: terr.node == path[index_of_terr_to_reinforce - 1], my_territories)
-            ).pop()
-            if tanks_available > 0:
+        if not terr_of_interest:
+            while tanks_available > 0:
+                terr_to_reinforce = random.choice(my_territories)
                 terr_to_reinforce.num_tanks += 1
                 tanks_available -= 1
                 print(f'Placed 1 tank in {terr_to_reinforce.name}')
-        if not is_setup:
-            client_manager.player.tanks_available = 0
+        else:
+            # Reinforce territories forward enemy (not neighbor)
+            await client_manager.request_shortest_path(my_territories, terr_of_interest)
+            while not client_manager.game_manager.shortest_paths:
+                await asyncio.sleep(0.5)
+            paths = sorted(client_manager.game_manager.shortest_paths, key=len)
+            for path in paths:
+                index_of_terr_to_reinforce = 0
+                for node in path:
+                    is_my_terr = list(
+                        filter(lambda terr: terr.node == int(node), my_territories)
+                    )
+                    if is_my_terr:
+                        index_of_terr_to_reinforce += 1
+                    else:
+                        break
+                terr_to_reinforce = list(
+                    filter(lambda terr: terr.node == path[index_of_terr_to_reinforce - 1], my_territories)
+                ).pop()
+                if tanks_available > 0:
+                    terr_to_reinforce.num_tanks += 1
+                    tanks_available -= 1
+                    print(f'Placed 1 tank in {terr_to_reinforce.name}')
+            if not is_setup:
+                client_manager.player.tanks_available = 0
     except Exception as e:
         client_manager.player.tanks_available = 0
         print(e)
@@ -421,6 +428,8 @@ async def setup(client_manager):
 
 
 async def _manage_attack(my_strong_territories, terr_of_interest, client_manager):
+    if not terr_of_interest:
+        return
     await client_manager.request_shortest_path(my_strong_territories, terr_of_interest)
     while not client_manager.game_manager.shortest_paths:
         await asyncio.sleep(0.5)
@@ -441,6 +450,7 @@ async def _manage_attack(my_strong_territories, terr_of_interest, client_manager
 
 async def _attack(attacker, defender, client_manager):
     while attacker.num_tanks > 1 and attacker.num_tanks - defender.num_tanks > 0 and defender.player_id != attacker.player_id:
+        await asyncio.sleep(2)
         tanks_attacker = attacker.num_tanks - 1
         if tanks_attacker > 3:
             tanks_attacker = 3
