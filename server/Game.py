@@ -261,7 +261,7 @@ class Game:
                     for terr in defender_player.territories:
                         if terr.id == defender_ter_id:
                             defender_territory = terr
-                    print("Ricevuto richiesta attacco da " + attacker_player + " verso " + defender_player)
+                    print("Ricevuto richiesta attacco da " + attacker_player.name + " verso " + defender_player.name)
                     attacker_army_num, defender_army_num = clean_message[2].split("-")
                     attacker_army_num = int(attacker_army_num)
                     defender_army_num = int(defender_army_num)
