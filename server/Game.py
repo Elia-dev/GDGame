@@ -179,15 +179,18 @@ class Game:
                             await player.sock.send("GAME_KILLED_BY_HOST")
                     self.game_id = None
                     self.remove_all_players()
+                    self.game_running = False
+                    self.kill_all_bots()
                     return
                 if "PLAYER_HAS_LEFT_THE_GAME" in message:
-                    # TODO: IMPLEMENTARE RIMPIAZZO CON BOT
-                    # Implementazione temporanea sotto, chiude la partita se un giocatore esce
+                    # Close the game if a player leaves
                     id = self._remove_request(message, "PLAYER_HAS_LEFT_THE_GAME: ")
                     await self.broadcast("GAME_KILLED_BY_HOST")
                     self.remove_all_players()
                     self.game_id = None
                     self.game_running = False
+                    self.kill_all_bots()
+                    return
 
                 if "PLAYER_HAS_LEFT_THE_LOBBY" in message:
                     id = self._remove_request(message, "PLAYER_HAS_LEFT_THE_LOBBY: ")
