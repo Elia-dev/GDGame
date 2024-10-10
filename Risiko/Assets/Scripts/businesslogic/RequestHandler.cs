@@ -117,10 +117,10 @@ namespace businesslogic
                 }
                 else if (message.Contains("BOT_NUMBER:"))
                 {
-                    Debug.Log("Server_Request: BOT_NUMBER");
+                    //Debug.Log("Server_Request: BOT_NUMBER");
                     _request = RemoveRequest(message, "BOT_NUMBER: ");
                     int botNumber = int.Parse(_request);
-                    Debug.Log("Numero bot settato: " + botNumber);
+                    //Debug.Log("Numero bot settato: " + botNumber);
                     GameManager.Instance.SetBotNumber(botNumber); 
                 }
                 else if (message.Contains("PLAYER_ID:"))
@@ -313,7 +313,7 @@ namespace businesslogic
                 {
                     _request = RemoveRequest(message, "WINNER: ");
                     GameManager.Instance.SetWinnerGameId(_request);
-                    Debug.Log("Winner: " + GameManager.Instance.GetEnemyNameById(GameManager.Instance.GetWinnerGameId()));
+                    //Debug.Log("Winner: " + GameManager.Instance.GetEnemyNameById(GameManager.Instance.GetWinnerGameId()));
                 }
                 else
                 {

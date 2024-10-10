@@ -15,7 +15,7 @@ namespace UI
                 Player.Instance.ResetPlayer();
                 GameManager.Instance.ResetGameManager();
                 ClientManager.Instance.ResetConnection();
-                Debug.Log("Resettato tutto dopo fine partita, torno al mainMenu");
+                //Debug.Log("Resettato tutto dopo fine partita, torno al mainMenu");
                 SceneManager.LoadScene("MainMenu");
             });
         }

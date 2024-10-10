@@ -116,7 +116,7 @@ namespace UI {
             if (GameManager.Instance.GetPlayersNumber() >= 6)
                 addBotButton.interactable = false;
             else if (!_isBotAdded) {
-                Debug.Log("_botNumber: " + _botNumber + " serverBotNumber: " + GameManager.Instance.GetBotNumber());
+                //Debug.Log("_botNumber: " + _botNumber + " serverBotNumber: " + GameManager.Instance.GetBotNumber());
                 if (_botNumber == GameManager.Instance.GetBotNumber())
                     addBotButton.interactable = true;
             }

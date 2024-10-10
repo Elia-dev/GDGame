@@ -74,7 +74,7 @@ class Game:
             await asyncio.sleep(1)
 
         # Preparation phase
-        print("Game started\n")
+        #print("Game started\n")
         await self.__game_order__()
         name_id_dict = "ID_NAMES_DICT: " + ", ".join(f"{player.player_id}-{player.name}" for player in self.players)
         await self.broadcast(name_id_dict)
@@ -264,7 +264,7 @@ class Game:
                     for terr in defender_player.territories:
                         if terr.id == defender_ter_id:
                             defender_territory = terr
-                    print("Ricevuto richiesta attacco da " + attacker_player.name + " verso " + defender_player.name)
+                    #print("Ricevuto richiesta attacco da " + attacker_player.name + " verso " + defender_player.name)
                     attacker_army_num, defender_army_num = clean_message[2].split("-")
                     attacker_army_num = int(attacker_army_num)
                     defender_army_num = int(defender_army_num)
@@ -320,7 +320,7 @@ class Game:
                         self.players_alive.remove(defender_player)
                     await self.broadcast("ATTACK_FINISHED_FORCE_UPDATE")
                     self.event.set()
-                    print("Attacco terminato")
+                    #print("Attacco terminato")
 
                 if 'REQUEST_SHORTEST_PATH' in message:
                     message = self._remove_request(message, "REQUEST_SHORTEST_PATH: ")
@@ -425,10 +425,10 @@ class Game:
             #print("Available color in this turn: " + available_colors.__str__())
             await player.sock.send("AVAILABLE_COLORS: " + ", ".join(available_colors))
             await player.sock.send("IS_YOUR_TURN: TRUE")
-            print("Turno di " + player.name)
+            #print("Turno di " + player.name)
             await self.event.wait()  # Waiting for player choice
             await player.sock.send("IS_YOUR_TURN: FALSE")
-            print("Fine turno di " + player.name)
+            #print("Fine turno di " + player.name)
             self.event = asyncio.Event()
 
     def __army_start_num__(self, num_player):

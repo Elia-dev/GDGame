@@ -9,7 +9,7 @@ games = []
 async def handler(websocket):
     client_id = websocket.remote_address
     player = Player(websocket)
-    print(f"Client {client_id} connected")
+    #print(f"Client {client_id} connected")
 
     try:
         async for message in websocket:
@@ -184,7 +184,7 @@ async def handle_input(server, input_task):
                         await player.sock.send("KICKED_FROM_GAME")
                         game.remove_player(player)
         else:
-            print("Unknown command")
+            print("Unknown command, type 'help' for a list of commands")
 
 async def main():
     print("server started")

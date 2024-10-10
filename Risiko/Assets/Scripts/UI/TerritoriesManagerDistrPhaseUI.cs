@@ -265,7 +265,7 @@ namespace UI {
                 }
 
                 if (popUpAddTank.activeInHierarchy) {
-                    Debug.Log("Disattivo il popup AddTank");
+                    //Debug.Log("Disattivo il popup AddTank");
                     popUpAddTank.SetActive(false);
                     if (SelectedTerritory is not null) SelectedTerritory = null;
                 }

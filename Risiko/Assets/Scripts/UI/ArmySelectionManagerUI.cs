@@ -75,7 +75,7 @@ namespace UI {
 
         private void Update() {
             if (Player.Instance.IsMyTurn && !_turn) {
-                Debug.Log("Turno in army selection");
+                //Debug.Log("Turno in army selection");
                 _turn = true;
                 ActivateRaycastTargetArmy();
             }

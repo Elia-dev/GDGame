@@ -31,15 +31,6 @@ class ClientManager:
     def is_connected(self):
         return self._connected
 
-    def set_connected(self, value):
-        self._connected = value
-
-    async def reset_connection(self):
-        if self._websocket is not None:
-            await self._websocket
-            self._connected = False
-            self._websocket = None
-
     async def send_message(self, message):
         if self._websocket is not None:
             await self._websocket.send(message)
@@ -50,15 +41,6 @@ class ClientManager:
             # Process the message using a RequestHandler (not implemented here)
             # RequestHandler.add_request(websocket.remote_address, message)
 
-    async def create_lobby_as_host(self):
-        await self.send_message("HOST_GAME:")
-
-    async def kill_lobby(self):
-        await self.send_message(f"LOBBY_KILLED_BY_HOST: {self.player.player_id}")
-
-    async def leave_lobby(self):
-        await self.send_message(f"PLAYER_HAS_LEFT_THE_LOBBY: {self.player.player_id}")
-
     async def join_lobby_as_client(self, lobby_id):
         await self.send_message(f"JOIN_GAME: {lobby_id}")
 
@@ -67,9 +49,6 @@ class ClientManager:
 
     async def send_name(self):
         await self.send_message(f"UPDATE_NAME: {self.player.player_id}-{self.player.name}")
-
-    async def start_host_game(self):
-        await self.send_message("GAME_STARTED_BY_HOST: ")
 
     async def send_chosen_army_color(self):
         await self.send_message(f"CHOSEN_ARMY_COLOR: {self.player.player_id}-{self.player.army_color}")
@@ -85,9 +64,6 @@ class ClientManager:
         await self.send_message(f"ATTACK_TERRITORY: {self.player.player_id}-{enemy_territory.player_id}, "
                                 f"{my_territory.id}-{enemy_territory.id}, {my_num_army}-{enemy_num_army}")
         GameManager.get_instance().set_im_attacking(True)
-
-    async def request_territory_info(self, terr_id):
-        await self.send_message(f"REQUEST_TERRITORY_INFO: {self.player.player_id}-{terr_id}")
 
     async def request_shortest_path(self, my_territories, enemies_territories):
         self.game_manager.shortest_paths = []

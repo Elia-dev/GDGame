@@ -54,7 +54,7 @@ namespace UI
 
         void Update() {
             if (!GameManager.Instance.GetGameRunning() || !GameManager.Instance.GetWinnerGameId().Equals("") || _thisIsTheEnd) {
-                Debug.Log("Gioco finito, faccio return in GameManagerUI");
+                //Debug.Log("Gioco finito, faccio return in GameManagerUI");
                 return;
             }
             

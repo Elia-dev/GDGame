@@ -22,7 +22,7 @@ namespace UI
             plusButton.onClick.AddListener(AddArmy);
             minusButton.onClick.AddListener(RemoveArmy);
             attackButton.onClick.AddListener(async () => {
-                Debug.Log("Attacco!");
+                //Debug.Log("Attacco!");
                 ClientManager.Instance.AttackEnemyTerritory(_myTerr, _enemyTerr, _armyNumAttack);
                 this.gameObject.SetActive(false);
             });
