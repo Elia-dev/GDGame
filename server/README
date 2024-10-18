@@ -8,11 +8,12 @@ HOW TO HOST AN ONLINE GAME:
 4) Client-side you can write the server-ip in the server list (in game)
 5) Enjoy the game :)
 
+
 HOW TO HOST A GAME FOR A LOCAL GAME:
 
 1) Install python with the following modules:
 	1.1) websockets
 	1.2) asyncio
 2) Launch python file "Server_manager.py"
-3) Now you can open the game and connect to the server using "localhost" as ip, it will appear in the server list, otherwise you can write "localhost" on the text input
+3) Now you can open the game and connect to the server using "localhost" as ip, it will appear in the server list, otherwise you can write "localhost" in the text input
 4) Enjoy the game :)
